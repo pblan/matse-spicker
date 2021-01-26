@@ -91,6 +91,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Rnonneg}{\mathbb{R}^+_0}
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
 \newcommand{\bigo}{\mathcal{O}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
