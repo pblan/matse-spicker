@@ -57,9 +57,94 @@
     \end{enumerate}
 \end{bonus}
 
+\newpage
 \subsection{Polynome}
 
+\begin{defi}{Polynom}
+    Eine Funktion $p(x) = \sum^n_{i=0} a_i x^i$ mit $a_i, x \in \R ~ (\C), a_n \neq 0$ heißt \emph{Polynom vom Grad $n$}.
+\end{defi}
+
+\emph{Wichtiges Vorwissen:}
+\begin{itemize}
+    \item Polynomdivision
+    \item Hornerschema
+\end{itemize}
+
+\subsubsection{Faktorisierung von Polynomen / Nullstellenberechnung}
+
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{defi}{Abspalten von Linearfaktoren}
+        Sei $x_0$ eine Nullstelle eines Polynoms $p(x)$, dann ist
+        $$ p(x) = q(x) \cdot (x-x_0).$$
+        Dabei ist $(x-x_0)$ ein abgespaltener Linearfaktor und $q(n)$ das entsprechend reduzierte Polynom mit $q(n) = \frac{p(x)}{x-x_0}$.
+    \end{defi}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{defi}{Faktorisierung}
+        Sind $x_1, \ldots, x_n$ Nullstellen eines Polynoms $p(x)$, so ist
+        $$ p(x) = a_n \cdot (x-x_1) \cdot \ldots \cdot (x-x_n)$$
+        die Faktorisierung von $p(x)$.
+    \end{defi}
+\end{halfboxr}%
+
+\subsubsection*{Polynome vom Grad 2}
+\begin{halfboxl}
+    \vspace{-\baselineskip}
+    \begin{algo}{$pq$-Formel}
+        \begin{enumerate}
+            \item Polynom der Form $x^2 + px + q = 0$
+            \item $x_{1,2} = -\frac{p}{2} \pm \sqrt{\left(\frac{p}{2}\right)^2 - q}$
+        \end{enumerate}
+    \end{algo}
+\end{halfboxl}%
+\begin{halfboxr}
+    \vspace{-\baselineskip}
+    \begin{algo}{Mitternachtsformel}
+        \begin{enumerate}
+            \item Polynom der Form $ax^2 + bx + c = 0$
+            \item $x_{1,2} = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$
+        \end{enumerate}
+    \end{algo}
+\end{halfboxr}
+
+\subsubsection*{Polynome vom Grad $n \geq 3$}
+\begin{algo}{Raten einer Nullstelle bei $n = 3$}
+    \begin{enumerate}
+        \item Polynom der Form $p(x) = ax^3 + bx^2 + cx + d = 0$
+        \item Nullstelle $x_1$ stets Teiler von $d$
+        \item Einsetzen aller Teiler von $d$ in die Funktion (auch negative!)
+        \item Polynomdivision durch Linearfaktor $(x-x_1)$: $\frac{p(x)}{x - x_1}$
+        \item Lösen der quadratischen Gleichung
+    \end{enumerate}
+\end{algo}
+
+\begin{algo}{Substitution bei geraden Exponenten}
+    \begin{enumerate}
+        \item Polynom der Form $ax^4 + bx^2 + c = 0$
+        \item Substituiere $y := x^2$
+        \item Lösen der quadratischen Gleichung $ay^2 + by + c = 0$
+        \item $x_{1,2} = \pm \sqrt{y_1} \land x_{3,4} = \pm \sqrt{y_2}$
+    \end{enumerate}
+\end{algo}
+
+\begin{bonus}{Besonderheiten bei $x \in \C$}
+    \begin{itemize}
+        \item Ist $x_i$ eine Nullstelle des Polynoms $p(x)$ mit \emph{reellen Koeffizienten}, dann ist auch $\overline{x_i}$ eine Nullstelle von $p(x)$.
+    \end{itemize}
+\end{bonus}
+
 \subsection{Gebrochen rationale Funktionen}
+
+\begin{defi}{Gebrochen rationale Funktionen}
+    Seien $p_m(x)$ und $p_n(x)$ Polynome vom Grad $m$ bzw. $n$, dann heißt
+    $$
+        f(x) = \frac{p_m(x)}{p_n(x)}
+    $$
+    \emph{gebrochen rationale Funktion}.\\
+    Im Fall $m<n$ heißt die Funktion \emph{echt gebrochen rational}, sonst \emph{unecht gebrochen rational}.
+\end{defi}
 
 \subsection{Gleichungen und Ungleichungen}
 
