@@ -200,18 +200,50 @@
 \end{bonus}
 
 \subsubsection{Partialbruchzerlegung}
-\todo{To Do}
+
+\begin{algo}{Partialbruchzerlegung}
+    Gegeben: \emph{Echt gebrochen rationale Funktion}  $f(x) = \frac{p_m(x)}{p_n(x)}$
+    \begin{enumerate}
+        \item Berechne Nullstellen des \emph{Nennerpolynoms} $x_0, \ldots, x_k \in \R$
+        \item Verschiedene Fälle:
+              \subitem Relle Nullstellen:
+              \subsubitem $x_i$ ist einfache Nullstelle $\implies \frac{A}{x-x_1}$
+              \subsubitem $x_i$ ist $r$-fache Nullstelle $\implies  \frac{A_1}{x-x_1} +  \frac{A_2}{(x-x_1)^2} + \ldots + \frac{A_r}{(x-x_1)^r}$
+              \subitem Nichtrelle Nullstellen:
+              \subsubitem Einfacher quadratischer Term $\implies \frac{Ax + B}{x^2+px+q}$
+              \subsubitem $r$-facher quadratischer Term $\implies \frac{A_1x + B_1}{x^2+px+q} + \frac{A_2x + B_2}{(x^2+px+q)^2} + \ldots + \frac{A_rx + B_r}{(x^2+px+q)^r}$
+        \item Koeffizientenvergleich:
+              \begin{enumerate}
+                  \item Brüche gleichnamig machen (Multipliziere beide Seiten mit Nennerpolynom)
+                  \item Potenzen von $x$ zusammenfassen
+                  \item Gleichungssystem lösen
+                  \item Lösungen in Ansatz einsetzen
+              \end{enumerate}
+    \end{enumerate}
+\end{algo}
+
+\begin{bonus}{Besonderheiten in $\C$}
+    \begin{itemize}
+        \item Für Partialbrüche ohne relle Nullstellen können wir in $\C$ stets Nullstellen finden. Das Verfahren erfolgt dann analog mit komplexen Nullstellen.
+    \end{itemize}
+\end{bonus}
+
+\begin{bonus}{Tipps und Tricks}
+    \begin{itemize}
+        \item Partialbruchzerlegung ist erst bei einer \emph{echt gebrochen rationale Funktion} sinnvoll
+        \item Ist die Funktion unecht gebrochen rational, führe zuerst eine Polynomdivision durch und zerlege dann den Rest in die Partialbrüche
+    \end{itemize}
+\end{bonus}
 
 \subsection{Gleichungen und Ungleichungen}
+\todo{To Do}
 
 \subsection{Komplexe Zahlen}
 \subsubsection{Rechenregeln für komplexe Zahlen in Polarkoordinaten}
-
-\subsubsection{Eigenschaften von $e^{i\pi}$}
+\todo{To Do}
 
 \subsubsection{Radizieren von komplexen Zahlen}
-
-\subsubsection{Faktorisierung von Polynomen mit komplexen Koeffizienten}
+\todo{To Do}
 
 \section{Folgen und Reihen}
 
