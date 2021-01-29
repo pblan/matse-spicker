@@ -52,10 +52,10 @@
 \end{algo}
 
 \begin{bonus}{Tipps und Tricks}
-    \begin{enumerate}
+    \begin{itemize}
         \item Gilt eine Eigenschaft nicht, ist ein Gegenbeispiel oft einfach gefunden.
         \item Gilt eine Eigenschaft nicht, ist die Abbildung auch nicht bijektiv.
-    \end{enumerate}
+    \end{itemize}
 \end{bonus}
 
 \subsection{Polynome}
@@ -235,8 +235,29 @@
     \end{itemize}
 \end{bonus}
 
-\subsection{Gleichungen und Ungleichungen}
-\todo{To Do}
+\subsection{Ungleichungen}
+
+\begin{algo}{Berechnen einer Lösungsmenge bei Ungleichungen}
+    Gegeben: Ungleichung mit Bezug auf Variable $x$
+    \begin{enumerate}
+        \item Für jeden Betrag $\left| a(x) \right|$, eine Fallunterscheidung machen für
+              \subitem $a(x) \geq 0 \implies \left| a(x) \right| = a(x)$
+              \subitem $a(x) < 0 \implies \left| a(x) \right| = -a(x)$
+        \item Ungleichungen nach $x$ auflösen
+        \item Jeder Fall $i$ erzeugt eine Lösungsmenge $L_i$
+        \item Lösungsmenge $L = \bigcup^n_{i = 1} L_i$, wobei $n$ die Anzahl der betrachteten Fälle ist
+    \end{enumerate}
+\end{algo}
+
+\begin{bonus}{Tipps und Tricks}
+    \begin{itemize}
+        \item $n$ Beträge in der Gleichung können zu $2^n$ Fällen führen.
+        \item Es kann vorkommen, dass ein Fall einer Fallunterscheidung unerreichbar ist, z.B. für $x > 5 \land x < 1$. Die Lösungsmenge $L$ ist dann leer ($L = \emptyset$).
+        \item Radizieren (Wurzelziehen) ist in Ungleichungen nur erlaubt, wenn danach der \emph{Betrag} der Wurzel betrachtet wird
+        \item Quadrieren einer Ungleichung `erzeugt' potentiell ein falsches Ergebnis. Nach dem Quadrieren sollte man also jedes Ergebnis prüfen.
+        \item Multiplikation mit negativen Zahlen sollte vermieden werden, da das Umdrehen des Ungleichheitszeichens schnell für Flüchtigkeitsfehler sorgen kann.
+    \end{itemize}
+\end{bonus}
 
 \subsection{Komplexe Zahlen}
 \subsubsection{Rechenregeln für komplexe Zahlen in Polarkoordinaten}
