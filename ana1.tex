@@ -1,6 +1,7 @@
 \documentclass[german]{spicker}
 
 \usepackage{amsmath}
+\usepackage{polynom}
 
 \title{Analysis 1}
 \author{Patrick Gustav Blaneck, Felix Racz}
@@ -57,18 +58,11 @@
     \end{enumerate}
 \end{bonus}
 
-\newpage
 \subsection{Polynome}
 
 \begin{defi}{Polynom}
     Eine Funktion $p(x) = \sum^n_{i=0} a_i x^i$ mit $a_i, x \in \R ~ (\C), a_n \neq 0$ heißt \emph{Polynom vom Grad $n$}.
 \end{defi}
-
-\emph{Wichtiges Vorwissen:}
-\begin{itemize}
-    \item Polynomdivision
-    \item Hornerschema
-\end{itemize}
 
 \subsubsection{Faktorisierung von Polynomen / Nullstellenberechnung}
 
@@ -145,6 +139,68 @@
     \emph{gebrochen rationale Funktion}.\\
     Im Fall $m<n$ heißt die Funktion \emph{echt gebrochen rational}, sonst \emph{unecht gebrochen rational}.
 \end{defi}
+
+\subsubsection{Polynomdivision}
+\begin{algo}{Polynomdivision}
+    Gegeben ist \emph{unecht gebrochen rationale Funktion} $f(x) = \frac{p_m(x)}{p_n(x)}$
+    \begin{enumerate}
+        \item \emph{Dividiere} die größten Exponenten aus beiden Polynomen
+        \item \emph{Mutipliziere} Ergebnis mit Divisor zurück
+        \item \emph{Subtrahiere} Ergebnis vom Dividenden
+        \item Wiederhole, bis:
+              \subitem Ergebnis 0 ist, oder
+              \subitem Grad des Ergebnisses kleiner ist als Grad des Divisors (ergibt \emph{Rest})
+    \end{enumerate}
+\end{algo}
+
+\begin{bonus}{Polynomdivision Beispiel}
+    \polylongdiv[style=C]{x^3+x^2-1}{x-1}
+\end{bonus}
+
+\subsubsection{Hornerschema}
+\begin{algo}{Hornerschema}
+    Gegeben ist \emph{Polynom} $p_m(x)$ und ein \emph{Wert} $x_0$
+
+    Vorbereitung:
+    \begin{itemize}
+        \item Erstelle eine Tabelle mit $m + 2$ Spalten und 3 Zeilen
+        \item Erste Zelle frei lassen und dann Koeffizienten $a_m, a_{m-1}, \ldots, a_0$ in die erste Zeile schreiben
+        \item In die erste Zelle der zweiten Zeile kommt $x_0$
+    \end{itemize}
+
+    Anwendung (beginnend in zweiter Zelle der dritten Zeile):
+    \begin{enumerate}
+        \item Erster Koeffizient der ersten Zeile in die dritte Zeile
+        \item \emph{Multipliziere} Zahl der ersten Spalte mit diesem Koeffizienten
+        \item Schreibe Ergebnis in zweite Zeile, unterhalb des nächsten Koeffizienten
+        \item \emph{Addiere} Ergebnis mit diesem Koeffizienten
+        \item Wiederhole 2-4 bis zum Schluss
+    \end{enumerate}
+
+    Ergebnis:
+    \begin{itemize}
+        \item Wert des Polynoms $p_m(x_0)$ in letzter Zelle der letzten Zeile
+        \item Bei Wert $p_m(x_0) = 0$ steht in der letzten Zeile das Polynom nach Abspalten des Linearfaktors $(x-x_0)$
+    \end{itemize}
+\end{algo}
+
+\begin{bonus}{Hornerschema Beispiel}
+    Gegeben: $p_4(x) = 2x^4-3x^3+4x^2-5x+2$ an der Stelle $x_0 = 1$
+
+    \polyhornerscheme[x=1]{2x^4-3x^3+4x^2-5x+2}
+
+    Ergebnis: $p_4(1) = 0 \implies (x-1) \text{ ist Linearfaktor von } p_4(x) \text{ und } \frac{p_4(x)}{x-1} = 2x^3 = x^2 + 3x -2$
+\end{bonus}
+
+\begin{bonus}{Tipps und Tricks}
+    \begin{itemize}
+        \item Polynomdivision und Hornerschema funktionieren auch sehr gut mit komplexen Zahlen
+        \item Bei mehreren abzuspaltenden Linearfaktoren bietet sich das Hornerschema sehr gut an
+    \end{itemize}
+\end{bonus}
+
+\subsubsection{Partialbruchzerlegung}
+\todo{To Do}
 
 \subsection{Gleichungen und Ungleichungen}
 
