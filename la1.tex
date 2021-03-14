@@ -1,0 +1,663 @@
+\documentclass[german]{spicker}
+
+\usepackage{amsmath}
+\usepackage{polynom}
+
+\title{Lineare Algebra 1}
+\author{Patrick Gustav Blaneck}
+
+\newcommand{\scalarprod}[1]{\left\langle #1 \right\rangle}
+\newcommand{\vektor}[1]{\begin{pmatrix*}[r] #1 \end{pmatrix*}}
+\renewcommand{\span}[1]{\operatorname{span}\left(#1\right)}
+\newcommand{\dx}{~\mathrm{d}x}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\setcounter{section}{1}
+
+\section{Analytische Geometrie}
+
+\subsection{Skalarprodukt und Norm}
+
+\begin{defi}{Skalarprodukt}
+    Eine Abbildung $\scalarprod{\cdot, \cdot}$ heißt Skalarprodukt, wenn folgende Bedingungen erfüllt sind:
+    \begin{itemize}
+        \item[\textbf{SP1}] Symmetrie: $\forall a, b \in \R^n: \scalarprod{a, b} = \scalarprod{b, a}$
+        \item[\textbf{SP2}] $\forall a, b, c \in \R^n: \scalarprod{a, b+c} = \scalarprod{a, b} + \scalarprod{a, c}$
+        \item[\textbf{SP3}] $\forall a \in \R^n: \scalarprod{\alpha a, b} = \alpha \scalarprod{a, b} = \scalarprod{a, \alpha b}$
+        \item[\textbf{SP4}] positive Definitheit: $\forall a \in \R^n \setminus \{0\}: \scalarprod{a, a} > 0 \land \scalarprod{0, 0} = 0$
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Euklidisches Skalarprodukt}
+    Für $a, b$ sei ihr \emph{euklidisches Skalarprodukt} $\scalarprod{a, b}$ definiert als
+    $$
+        \scalarprod{a, b} := \sum_{i=1}^n a_ib_i
+    $$
+\end{defi}
+
+\begin{defi}{Norm}
+    Eine Norm $\norm{a}$ hat folgende Eigenschaften:
+    \begin{itemize}
+        \item[\textbf{N0}] $\norm{a} \in \R$
+        \item[\textbf{N1}] $\norm{a} \geq 0$
+        \item[\textbf{N2}] $\norm{a} = 0 \iff a = 0$
+        \item[\textbf{N3}] $\forall \lambda \in \R : \norm{\lambda a} = \abs{\lambda} \norm{a}$
+        \item[\textbf{N4}] Dreiecksungleichung $\norm{a+b} \leq \norm{a} + \norm{b}$
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Euklidische Norm}
+    Einem Vektor $a$ wird die \emph{euklidische Norm} oder \emph{Standardnorm} $\norm{a}$ zugeordnet durch
+    $$
+        \norm{a} := \left(\sum_{i=1}^n a_i^2\right)^{\frac{1}{2}}
+    $$
+\end{defi}
+
+\begin{bonus}{Diskrete Minkowskische Ungleichung}
+    Für $p \geq 1$ definiert man die $\ell_p$-Norm durch
+    $$
+        \norm{a}_p := \left(\sum^n_{i=1} \abs{a_i}^p\right)^\frac{1}{p}
+    $$
+    \begin{itemize}
+        \item $p=1$: \emph{Betragssummennorm} oder \emph{Einsernorm}
+        \item $p=2$: euklidische Norm
+        \item $p=\infty$: \emph{Maximumnorm} pder $\ell_\infty$\emph{-Norm} ($\norm{a}_\infty = \max\{\abs{a_i}, \ldots, \abs{a_n}\}$)
+    \end{itemize}
+\end{bonus}
+
+\begin{defi}{Orthogonalität}
+    Seien $a,b \in \R^n$ und $\scalarprod{\cdot, \cdot}$ ein beliebiges Skalarprodukt.
+    Die Vektoren $a$ und $b$ stehen \emph{orthogonal} zueinander bzgl. $\scalarprod{\cdot, \cdot}$, Schreibweise $a \perp b$, wenn $\scalarprod{a, b} = 0$.
+\end{defi}
+
+\begin{algo}{Orthogonalen Vektor finden}
+    Wir betrachten den Vektor $a= (a_1, a_2)^T$.
+    Für den senkrechten Vektor $a'$ gilt: $(-a_2, a_1)^T$.
+\end{algo}
+
+\begin{bonus}{Satz des Pythagoras}
+    Seien $a,b \in \R^n$ mit $a \perp b$ und $\scalarprod{\cdot, \cdot}$ ein beliebiges Skalarprodukt.
+    Dann gilt:
+    $$
+        \norm{a + b}^2 = \norm{a}^2 + \norm{b}^2
+    $$
+\end{bonus}
+
+\begin{defi}{Orthogonale Projektion}
+    Seien $a, b$ zwei Vektoren und $b \neq 0$. Dann gilt für die orthogonale Projektion $p$ von $a$ in Richtung $b$:
+    $$
+        p_b(a) = \frac{\scalarprod{a, b}}{\scalarprod{b, b}} b
+    $$
+\end{defi}
+
+\begin{bonus}{Cauchy-Schwarzsche Ungleichung}
+    Für $a, b \in \R^n$ gilt:
+    $$
+        \abs{\scalarprod{a, b}} \leq \norm{a} \norm{b}
+    $$
+\end{bonus}
+
+\begin{defi}{Winkel zwischen Vektoren}
+    Seien $a, b\in \R^n\setminus \{0\}$.
+    Der Winkel zwischen $a$ und $b$, geschrieben $\angle (a, b)$, wird definiert als
+    $$
+        \angle (a, b) := \arccos \frac{\scalarprod{a, b}}{\norm{a} \norm{b}}
+    $$
+\end{defi}
+
+\begin{defi}{Vektorprodukt (Kreuzprodukt)}
+    Seien $a, b \in \R^n$. Dann heißt
+    $$
+        a \times b := \vektor{a_2b_3-a_3b_2 \\ a_3b_1-a_1b_3 \\ a_1b_2 - a_2b_1}
+    $$
+    das \emph{Vektorprodukt} oder \emph{Kreuzprodukt} von $a$ und $b$.
+\end{defi}
+
+\newpage
+\subsection{Geraden und Ebenen}
+
+\begin{defi}{Gerade (Punkt-Richtungsgleichung)}
+    Für einen \emph{Ortsvektor} oder \emph{Aufpunkt} $p$ und einen \emph{Richtungsvektor} $v \neq 0$ heißt
+    $$
+        x = p + \alpha v
+    $$
+    \emph{Punkt-Richtungsgleichung} einer \emph{Geraden} $G$.
+\end{defi}
+
+\begin{defi}{Gerade (Normalform in der Ebene)}
+    Sei $G$ eine Gerade in der Ebene, $p$ der Aufpunkt und $v$ der Richtungsvektor von $G$.\\
+    Gilt $n \perp v$, dann heißt
+    $$
+        \scalarprod{x,n} = \scalarprod{p, n} \iff n_1x_1 + n_2x_2 = c
+    $$
+    \emph{Normalform} von $G$.
+\end{defi}
+
+\begin{defi}{Ebene (Punkt-Richtungsgleichung)}
+    Seien $p, v, w \in \R^3, v\neq 0$ und $w \neq 0$, und seien $v$ und $w$ nicht parallel.
+    Dann heißt
+    $$
+        x = p + \alpha v + \beta w
+    $$
+    \emph{Punkt-Richtungsgleichung} einer \emph{Ebene} $E$.
+\end{defi}
+
+\begin{defi}{Ebene (Normalform)}
+    Sei $E$ eine Ebene im Raum, $p$ der Aufpunkt und $v, w$ Richtungsvektoren von $E$. \\
+    Gilt $n \perp v \land n \perp w$, dann heißt
+    $$
+        \scalarprod{x, n} = \scalarprod{p, n} \iff n_1x_1 + n_2x_2 + n_3x_3 = d
+    $$
+    \emph{Normalform} von $E$.
+\end{defi}
+
+
+\begin{defi}{Hessesche Normalform}
+    Sei $n$ ein Normalenvektor einer Gerade $G$ in der Ebene oder einer Ebene $E$ im Raum.
+    Gilt $\norm{n} = 1$, so heißt die damit gebildete Normalform \emph{Hessesche Normalform}.
+\end{defi}
+
+\begin{algo}{Normalform $\to$ Hessesche Normalform (Geraden und Ebenen)}
+    Man erhält die Hessesche Normalform aus einer beliebigen Normalform, indem man die Normalform durch $\norm{n}$ teilt:
+    $$
+        \frac{\scalarprod{x, n}}{\norm{n}} = \frac{\scalarprod{p, n}}{\norm{n}}
+    $$
+    Damit liegt der Normalvektor bis auf das Vorzeichen eindeutig fest.
+\end{algo}
+
+\begin{algo}{Punkt-Richtungsform $\to$ Normalform (Geraden)}
+    Sei eine Gerade $G$ gegeben durch $x = p + \alpha v$ mit $v = (v_1, v_2)^T$.
+    Einene Normalenvektor $n$ findet man durch
+    $$
+        n := \vektor{v_2 \\ -v_1}.
+    $$
+    Durch Ausrechnen von $\scalarprod{p, n}$ erhält man die rechte Seite der Normalform.
+\end{algo}
+
+\begin{algo}{Normalform $\to$ Punkt-Richtungsform (Geraden)}
+    Liegt die Gerade in der Normalform $ax_1 + bx_2 = c$ vor, wird ein Richtungsvektor $v \perp n \iff v \perp (a, b)^T$ benötigt.
+
+    Man kann hier $v = (b, -a)^T$ wählen. Einen Aufpunkt $p$ erhält man, indem man z.B. $x_1 = 0$ oder $x_2 = 0$ setzt und aus der parameterlosen Form die andere Komponente errechnet.
+\end{algo}
+
+\begin{algo}{Punkt-Richtungsform $\to$ Normalform (Ebenen)}
+    Um einen Normalenvektor $n$ für die Richtungsvektoren $v, w$ zu erhalten, kann man das Kreuzprodukt der beiden Richtungsvektoren berechnen.
+
+    Als Aufpunkt lässt sich jeder Punkt der Ebene verwenden, insbesondere der Vektor $p$ aus der Punkt-Richtungsform.
+\end{algo}
+
+\begin{algo}{Normalform $\to$ Punkt-Richtungsform (Ebenen)}
+    Aus der Normalgleichung $ax_1 + bx_2 + cx_3 = d$ liest man den Normalenvektor $n = (a, b, c)^T$ ab.
+    Mindestens eine Komponente $n_i$ von $n$ ist ungleich $0$.
+    Wir vertauschen $n_i$ mit einer anderen Komponente $n_j$ und verändern das Vorzeichen von $n_j$ im so erzeugten Vektor.
+
+    Weil es zwei Möglichkeiten gibt $i \neq j$ zu wählen, erhalten wir zwei Vektoren $v$ und $w$, mit $v \perp n$, $w\perp n$ und $v \neq 0 \neq w$ und $v \not \parallel w$.
+
+    Ein Aufpunkt lässt sich errechnen, indem man zwei der drei Koordinaten von $x = (x_1, x_2, x_3)^T$ z.B. den Wert 0 zuweist und dann aus der Normalform den Wert der fehlenden Koordinate errechnet.
+
+    Sollte dies nicht möglich sein, wähle man ein anderes Koordinatenpaar. Es gibt immer zwei Koordinaten in $x$, mit denen obige Rechnung möglich ist.
+
+\end{algo}
+
+\begin{defi}{Lagebeziehungen von Geraden und Ebenen}
+    Geraden:
+    \begin{itemize}
+        \item Zwei Geraden in $\R^2$ oder $\R^3$ heißen \emph{parallel}, wenn ihre Richtungsvektoren parallel sind.
+        \item Zwei sich schneidende Geraden heißen \emph{orthogonal}, wenn ihre Richtungsvektoren orthogonal sind.
+        \item Seien $G$ und $G'$ zwei sich schneidende Geraden mit Richtungsvektoren $v$ bzw. $v'$. Der Winkel zwischen den Geraden wird definiert durch
+              $$
+                  \angle (G, G') := \min \{\angle (v, v'), \angle (v', v)\} = \arccos \left(\frac{\abs{\scalarprod{v, v'}}}{\norm{v} \norm{v'}}\right)
+              $$
+    \end{itemize}
+
+    Ebenen:
+    \begin{itemize}
+        \item Zwei Ebenen heißen \emph{parallel}, wenn ihre Normalenvektoren parallel sind. Sie heißen \emph{orthogonal}, wenn ihre Normalenvektoren orthogonal sind.
+        \item Sei $E$ eine Ebene mit Normalenvektor $n$. Eine Gerade mit Richtungsvektoren $v$ heißt \emph{parallel} zur Ebene $E$, falls $v \perp n$.
+        \item Seien $n$ und $n'$ Normalenvektoren der beiden Ebenen $E$ und $E'$. Dann wird der Winkel $\angle (E, E')$ zwischen den beiden Ebenen erklärt durch
+              $$
+                  \angle (E, E') := \min \{\angle (n, n'), \angle (n', n)\} = \arccos \left(\frac{\abs{\scalarprod{n, n'}}}{\norm{n} \norm{n'}}\right)
+              $$
+    \end{itemize}
+\end{defi}
+
+\begin{algo}{Schnittmengen zwischen Geraden und Ebenen in $\R^2$ und $\R^3$}
+    \begin{enumerate}
+        \item Man sorgt eventuell durch Umrechnung dafür, dass das eine Objekt durch eine parameterlose (\emph{Normalgleichung}) und das andere durch eine parameterbehaftete Gleichung (\emph{Punkt-Richtungsgleichung}) beschrieben wird.
+        \item Man setzt die Parametergleichung in die parameterlose Gleichung ein und erhält Ausdrücke für den oder die Parameter.
+        \item Diese setzt man in die Parametergleichung ein und erhält eine Parametrisierung der Schnittmenge.
+    \end{enumerate}
+\end{algo}
+
+\begin{bonus}{Beispiel: Schnittmenge zwischen einer Gerade und einer Ebene}
+    Gegeben seien $p = (1, -1, 2)^T$, $q = (1, 1, 1)^T$ und $n = (1, 2, 3)^T$.
+    Gesucht wird der Schnittpunkt der Geraden $G$ durch $p$ in Richtung von $n$ mit der Ebene $E$ durch $q$ senkrecht zu $n$.
+    Man verwendet bei der Gleichsetzung für $E$ eine Normal- und für $G$ eine Parameterform, z.B.
+    $$
+        x = \vektor{x_1, x_2, x_3} = \vektor{1 \\ -1 \\ 2} + \alpha \cdot \vektor{1 \\ 2\\ 3}.
+    $$
+    Komponentenweise liest man daraus die Gleichungen
+    $$
+        x_1 = 1 + \alpha \qquad x_2 = -1+2\alpha \qquad x_3 = 2+3\alpha
+    $$
+    ab. Eine Normalform von $E$ lautet
+    $$
+        \scalarprod{x, n} = \scalarprod{q, n} \iff x_1 + 2x_2 + 3x_3 = 6.
+    $$
+    Einsetzen in die Normalgleichung liefert dann $\alpha = \frac{1}{14}$.
+    Den Schnittpunkt $s$ erhält man durch Ensetzen von $\alpha$ in die Parametergleichung:
+    $$
+        s = p + \alpha n = \left(\frac{15}{14}, -\frac{12}{14}, \frac{31}{14}\right)^T.
+    $$\qed
+\end{bonus}
+
+\begin{bonus}{Lotfußpunkt}
+    Sei $G$ eine Gerade mit Richtungsvektor $v$ und $q \notin G$.
+    Ein Punkt $q'\in G$ heißt \emph{Lotfußpunkt}, wenn $l := q=q' \perp G$ gilt, $l$ heißt \emph{Lot}, und der Abstand $d$ zwischen einem Punkt und einer Geraden in $\R^3$ wird definiert durch $d := \norm{l}$.
+\end{bonus}
+
+\begin{algo}{Abstandsberechnung (Punkte, Geraden und Hyperebenen)}
+    Abstandsberechnungen zwischen Punkten, Geraden und Hyperebenen lassen sich auf die Berechnung des Lotfußpunktes zurückführen:
+
+    \begin{enumerate}
+        \item Bestimme die Richtung $r$ des Lots.
+        \item Bestimme jeweils einen Punkt auf den beiden Objekten und (durch Differenzbildung) den Abstandsvektor $a$ zwischen den beiden Punkten (Aufpunkte!).
+        \item Das Lot $l$ ist die Projektion von $a$ auf $r$. Der gesuchte Abstand ist $d = \norm{l}$.
+    \end{enumerate}
+    $$
+        l = \frac{\scalarprod{a, r}}{\scalarprod{r, r}} r \qquad d = \frac{\abs{\scalarprod{a, r}}}{\scalarprod{r, r}} \norm{r} = \frac{\abs{\scalarprod{a, r}}}{\norm{r}}
+    $$
+
+    Tipps:
+    \begin{itemize}
+        \item Ist eine Hyperebene beteiligt, dann wählt man $r$ als Normalenvektor $n$ der Hyperebene.
+        \item Bei zwei Geraden in $\R^3$ muss $r$ senkrecht auf beiden Geraden stehen.
+        \item Bei nicht parallelen Geraden wählt man $r$ als Vektorprodukt der beiden Richtungsvektoren.
+        \item Der Abstand zweier paralleler Geraden lässt sich auf den Abstand eines Punkts zu einer Geraden zurückführen.
+    \end{itemize}
+\end{algo}
+
+\begin{algo}{Abstand Punkt-Gerade im $\R^3$}
+    \begin{enumerate}
+        \item $a = l + r$, also $l = a-r$
+        \item $r$ ist die Projektion von $a$ auf den Richtungsvektor der Geraden $v$, also
+              $$
+                  r = \frac{\scalarprod{a, v}}{\scalarprod{v, v}}v
+              $$
+        \item Zusammen ergibt sich
+              $$
+                  l = a - \frac{\scalarprod{a, v}}{\scalarprod{v, v}}v \qquad d = \norm{l}
+              $$
+    \end{enumerate}
+\end{algo}
+
+\newpage
+\subsection{Die Determinante im $\R^2$ und $\R^3$}
+\begin{defi}{Determinante}
+    Sei $A \in \R^{n\times n}$.
+    \begin{itemize}
+        \item[\textbf{n=1:}] $A = (a_1)$. Dann gilt
+              $$
+                  \det(A) := a_1
+              $$
+        \item[\textbf{n=2:}] Sei $A = (a, b)$ mit den Spaltenvektoren $a, b \in \R^2$. Dann gilt
+              $$
+                  \det A = \det(a, b) := a_1b_2 - b_1a_2
+              $$
+              Der Betrag der Determinanten entspricht genau der Fläche des von $a$ und $b$ aufgespannten Parallelogramms.
+        \item[\textbf{n=3:}]
+              $$
+                  \det(a, b, c) = \det \vektor{a_1 & b_1 & c_1 \\ a_2 & b_2 & c_2 \\ a_3 & b_3 & c_3} = a_1b_2c_3 + b_1c_2a_3 + c_1a_2b_3 - a_1c_2b_3 - b_1a_2c_3-c_1b_2a_3
+              $$
+    \end{itemize}
+
+\end{defi}
+
+\begin{defi}{Spatprodukt}
+    Für drei Vektoren $a, b, c \in \R^3$ nennt man
+    $$
+        \scalarprod{a, b \times c} \in \R
+    $$
+    das \emph{Spatprodukt} der drei Vektoren $a, b, c$.
+
+    Die Vektoren $a, b, c$ bilden die Kanten eines Körpers im dreidimensionalen Raum, eines \emph{Parallelipeds} oder \emph{Spats}.
+
+    Es entspricht also der Betrag der Determinante dem Volumen des durch die drei Spaltenvektoren aufgespannten Spats.
+\end{defi}
+
+\begin{bonus}{Determinante (Alternative)}
+    Seien $a, b, c \in \R^3$, $\phi$ der Winkel zwischen $a$ und $b$ sowie $\psi$ der Winkel zwischen den Vektoren $a\times b$ und $c$. Dann gilt:
+    $$
+        \det (a, b, c) = \norm{a} \norm{b} \norm{c} \sin \phi \cos \psi
+    $$
+\end{bonus}
+
+\begin{defi}{Eigenschaften der Determinante}
+    Die Determinante hat folgende Eigenschaften.
+    \begin{itemize}
+        \item[\textbf{D1}] $\det(a, b, c) = \det(c, a, b) = \det(b, c, a)$
+        \item[\textbf{D2}] $\det(a, b, c) = - \det(b, a, c)$
+        \item[\textbf{D3}] $\det(a, a, c) = 0$
+        \item[\textbf{D4}] Für $\alpha \in R$ gilt $\det(\alpha a, b, c) = \alpha \det(a, b, c)$
+        \item[\textbf{D5}] $\det(a,b, c + d) = \det(a, b, c) + \det(a, b, d)$
+        \item[\textbf{D6}] $\det A = \det A^T$
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{Lösbarkeit linearer Gleichungssysteme}
+    Notwendig und hinreichend dafür, dass das lineare Gleichungssystem $LG$ eine eindeutige Lösung besitzt, ist die Bedingung
+    $$
+        \det(a, b, c) \neq 0
+    $$
+\end{bonus}
+
+\newpage
+\section{Algebraische Strukturen}
+\subsection{Gruppen}
+
+\begin{defi}{Gruppe}
+    Sei $M$ eine Menge, und $\circ: M \times M \to M$ eine \emph{Verknüpfung}.
+    $(M, \circ)$ heißt Gruppe, wenn gilt:
+    \begin{itemize}
+        \item[\textbf{G1}] (Assoziativität): Die Verknüpfung ist assoziativ, d.h. es gilt:
+              $$
+                  \forall x, y, z \in M : (x \circ y) \circ z = x \circ (y \circ z)
+              $$
+        \item[\textbf{G2}] (Neutralelement:) Es existiert ein neutrales Element $e \in M$ so dass
+              $$
+                  \forall x \in M : x \circ e = x
+              $$
+        \item[\textbf{G3}] (Inverses Element:) $\forall x \in M \exists x'$ mit
+              $$
+                  x \circ x' = e
+              $$
+        \item Gilt für eine Gruppe $G = (M, \circ)$, dass $x \circ y = y\circ x, \forall x, y \in M$, dann heißt $G$ \emph{abelsche Gruppe} oder \emph{kommutative Gruppe}.
+    \end{itemize}
+
+    Auch muss implizit gelten:
+    \begin{itemize}
+        \item $x \circ y$ existiert $\forall x, y \in M$ und ist eindeutig festgelegt
+        \item $x \circ y \in M$
+    \end{itemize}
+    Ist dies der Fall, ist die Abbildung $\circ: M \times M \to M$ \emph{wohldefiniert}.
+\end{defi}
+
+\begin{defi}{Untergruppe}
+    Sei $G = (M, \circ)$ eine Gruppe und $M' \subseteq M$. Bildet $U = (M', \circ)$ eine Gruppe, so heißt $U$ \emph{Untergruppe} von $G$, Schreibweise $U \leq G$.
+
+    Für $G$ und $U$ wie oben gilt $U \leq G$ genau dann, wenn gilt:
+    \begin{enumerate}
+        \item $M'\neq \emptyset$
+        \item $\forall a, b \in M' : a\circ b \in M'$
+        \item $\forall a \in M': a^{-1} \in M$
+    \end{enumerate}
+\end{defi}
+
+\newpage
+\subsection{Körper}
+\begin{defi}{Körper}
+    Das Tripel $(\R, +, \cdot)$ hat folgende Eigenschaften:
+    \begin{enumerate}
+        \item $(\R, +)$ bildet eine abelsche Gruppe.
+        \item $(\R \setminus \{0\}, \cdot)$ bildet eine abelsche Gruppe.
+        \item Es gelten die \emph{Distributivgesetze}
+              $$
+                  \forall x, y, z \in \R : (x+y) \cdot z = (x\cdot z) + (x \cdot y) \text{ und } x \cdot (y + z) = (x \cdot y) + (x \cdot z)
+              $$
+              \emph{Jedes} Tripel $(M, \oplus, \odot)$, das die obigen drei Bedingungen erfüllt, wird \emph{Körper} genannt.
+    \end{enumerate}
+\end{defi}
+
+\newpage
+\subsection{Vektorräume}
+\begin{defi}{Vektorraum}
+    Sei $K$ ein beliebiger Körper.
+    Eine nicht-leere Menge $V$ zusammen mit den beiden Abbildungen
+    $$
+        \begin{aligned}
+                         & \oplus : V \times V \to V, \quad (x, y) \to x \oplus y \in V
+            \text{ und } & \odot : K \times V \to V, \quad (\lambda, x) \to \lambda \odot x \in V
+        \end{aligned}
+    $$
+    heißt \emph{Vektorraum über K} oder \emph{K-Vektorraum}, wenn folgende Axiome gelten:
+    \begin{itemize}
+        \item $(V, \oplus)$ ist eine kommutative Gruppe.
+        \item $\forall \lambda, \mu \in K$ und $x \in V$ gilt $\lambda \odot (\mu \odot x) = (\lambda\mu) \odot x$, wobei mit $\lambda\mu$ die Multiplikation aus $K$ gemeint ist.
+        \item $\forall x \in V$ gilt $1 \odot x = x$ ($1$ ist das neutrale Element der Multiplikation aus $K$)
+        \item $\forall \lambda \in K, x, y \in V$ gilt: $\lambda \odot (x \oplus y) = (\lambda x) \oplus (\lambda \odot y)$.
+        \item $\forall \lambda, \mu \in K, x \in V$ gilt $(\lambda + \mu) \odot x = (\lambda \odot x) \oplus (\lambda \odot x)$
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Untervektorraum}
+    Eine Teilmenge $U \subseteq V$ heißt \emph{Untervektorraum} oder \emph{Unterraum} von $V$, wenn $U \neq \emptyset$ und $\forall x, y \in U$ und alle $\lambda \in K$ gilt:
+    $$
+        \begin{aligned}
+             & x \oplus y \in U,      \\
+             & \lambda \odot x \in U.
+        \end{aligned}
+    $$
+\end{defi}
+
+\newpage
+\subsection{Lineare Unabhängigkeit, Basis, Dimension}
+
+Seien $v_1, \ldots, v_r \in V$ Vektoren eines $K$-Vektorraums $V$.
+
+\begin{defi}{Linearkombination}
+    Lässt sich $v\in V$ als Summe dieser Vektoren mit Vorfaktoren darstellen,
+    $$
+        v = \sum^r_{k=1} \lambda_kv_k
+    $$
+    heißt $v$ $Linearkombination$ von $v_1, \ldots, v_r$.
+\end{defi}
+
+\begin{defi}{Lineare Hülle}
+    Die Menge
+    $$
+        L(v_1, \ldots, v_r) := \left\{ \sum^r_{k=1} \lambda_kv_k \mid \lambda_i \in K \right\} \subseteq V
+    $$
+    aller Linearkombinationen heißt \emph{Lineare Hülle} von $v_1, \ldots, v_r$.
+\end{defi}
+
+\begin{defi}{Erzeugendensystem}
+    Sei $V$ ein $K$-Vektorraum und $(v_1, \ldots, v_n)$ ein $n$-Tupel von Vektoren in $V$.
+    Gilt $L(v_1, \ldots, v_n) = V$, nennt man $(v_1, \ldots, v_n)$ ein \emph{Erzeugendensystem} von $V$.
+
+    $V$ heißt \emph{endlich erzeugt}, wenn es endlich viele Vektoren $v_1, \ldots, v_r$ gibt, so dass  $L(v_1, \ldots, v_r) = V$, ansonsten \emph{nicht endlich erzeugt}.
+\end{defi}
+
+\begin{defi}{Lineare Unabhängigkeit}
+    Sei $V$ ein $K$-Vektorraum. Ein $r$-Tupel $(v_1, \ldots, v_r)$ von Vektoren in $V$ heißt \emph{linear unabhängig}, wenn aus $\lambda_1v_1 +\lambda_2v_2 + \ldots + \lambda_rv_r = 0$ stets folgt, dass $\lambda_1 = \lambda_2 = \ldots = \lambda_r = 0$ gilt.
+
+    Außerdem gilt:
+    \begin{itemize}
+        \item Keiner der Vektoren ist eine Linearkombination der übrigen.
+        \item Keiner der Vektoren ist der Nullvektor.
+    \end{itemize}
+
+    Tipp: Ein $r$-Tupel $(v_1, \ldots, v_r)$ von Vektoren in $V$ ist \emph{linear unabhängig} genau dann, wenn $\det(v_1, \ldots, v_r) \neq 0$.
+\end{defi}
+
+\begin{bonus}{Lineare Unabhängigkeit von Funktionen}
+    Wir bilden zu den Funktionen $f_1, \ldots, f_n$ für paarweise verschiedene $x_1, \ldots, x_n$ die $n$ Vektoren
+    $$
+        (f_1(x_1), \ldots, f_1(x_n))^T, \ldots, (f_n(x_1), \ldots, f_n(x_n))^T \in \mathbb{K}^n.
+    $$
+    Sind diese Vektoren linear unabhängig, dann sind die Funktionen $f_1, \ldots, f_n$ selbst linear unabhängig.
+
+    Hinweis: Die Rückrichtung gilt \textbf{nicht}!
+\end{bonus}
+
+\begin{defi}{Basis}
+    Sei $v \neq \{0\}$ ein endlich erzeugter $K$-Vektorraum und $v_1, \ldots, v_n \in V$. Das $n$-Tupel $B = (v_1, \ldots, v_n)$ heißt \emph{Basis} oder \emph{minimales Erzeugendensystem} von $V$, wenn $B$ linear unabhängig ist und wenn gilt $L(B) = V$.
+    Weiter sei $\emptyset$ die Basis des Nullvektorraums $\{0\}$.
+\end{defi}
+
+\begin{bonus}{Koordinaten eines Vektors}
+    Sei $(v_1, \ldots, v_n)$ eine Basis von $V$ und $v \in V$ mit
+    $$
+        v = \lambda_1v_1 + \ldots + \ldots_nv_n, \lambda_i, \ldots, \lambda_n \in K
+    $$
+    Das $n$-Tupel der obigen Vorfaktoren $(\lambda_1, \ldots, \lambda_n) \in K^n$ nennt man \emph{Koordinaten} des Vektors $v$ bzgl. der Basis $(v_1, \ldots, v_n)$.
+\end{bonus}
+
+\begin{defi}{Basisergänzungssatz}
+    Sei $V$ ein $K$-Vektorraum und seien
+    $$
+        v_1, \ldots, v_r, \quad w_1, \ldots w_s \in V
+    $$
+    Ist $(v_1, \ldots, v_r)$ linear unabhängig und ist
+    $$
+        L(v_1, \ldots, v_r, w_1, \ldots w_s) = V,
+    $$
+    dann kann man $(v_1, \ldots, v_r)$ durch evtl. Hinzunahme geeigneter Vektoren aus $\{w_1, \ldots w_s\}$ zu einer Basis von $V$ ergänzen.
+\end{defi}
+
+\begin{defi}{Austauschlemma}
+    Sind $(v_1, \ldots, v_n)$, $(w_1, \ldots w_n)$ Basen eines $K$-Vektorraums $V$, dann gibt es zu jedem $v_i$ ein $w_j$, so dass aus $(v_1, \ldots, v_n)$ wieder eine Basis entsteht, wenn man in ihr $v_i$ durch $w_j$ ersetzt.
+\end{defi}
+
+\begin{defi}{Dimension}
+    Besitzt ein Vektorraum $v \neq \{0\}$ eine Basis $(v_1, \ldots, v_n)$, so definieren wir die \emph{Dimension} von $V$ als $\dim(V) := n$.
+    Besitzt $V$ keine endliche Basis, dann setzt man $\dim(V) := \infty$. Weiter sei $\dim(\{0\}) := 0$.
+\end{defi}
+
+\newpage
+\subsection{Polynome}
+\begin{defi}{Polynom}
+    Ein \emph{Polynom} oder ganzrationale Funktion $p : \mathbb{K} \to \mathbb{K}$ ist eine Funktion der Gestalt
+    $$
+        p(x) = a_0 + a_1x + a_2x^x + \ldots + a_nx_n = \sum^n_{k=0} a_kx^k
+    $$.
+\end{defi}
+
+\begin{bonus}{Polynome als $\mathbb{K}$-Vektorraum}
+    Sei $+$ die Addition von Funktionen und $\cdot$ die Multiplikation einer Funktion mit einem Skalar. Dann bildet $(P_n, +, \cdot)$ einen $\mathbb{K}$-Vektorraum.
+\end{bonus}
+
+\begin{bonus}{Basis des Vektorraums $P_n$}
+    Die Funktionen $1, x, x^2, \ldots, x^n$ bilden eine Basis des Vektorraums $P_n$ und es gilt
+    $$
+        \dim(P_n) = n + 1.
+    $$
+    Diese Basis wird auch \emph{Monombasis} genannt.
+\end{bonus}
+
+\begin{defi}{Interpolationspolynom}
+    Gegeben seien die $n+1$-Punkte $(x_k, y_k), 0 \leq k \leq n$ mit \emph{paarweise verschiedenen} $x_k$.
+    Dann existiert genau ein $p_n \in P_n$ mit $y_k = p_n(x_k) \forall 0 \leq k \leq n$.
+    Dies ist das sogenannte \emph{Interpolationspolynom}.
+\end{defi}
+
+\begin{bonus}{Beispiel: Interpolationspolynom}
+    Wir betrachten die drei Punkte $(-2, 1)$, $(-1, -1)$ und $(1, 1)$.
+
+    Eine interpolierende Parabel $p_2$ wird durch diese Punkte festgelegt.
+
+    Die allgemeine Form des Polynoms ist $p_2(x) = ax^2 + bx + c$.
+    Einsetzen der drei Punkte ergibt die Gleichungen
+    $$
+        \begin{aligned}
+            (1, 1): \quad   & 1 = a + b + c   \\
+            (-1, -1): \quad & -1 = a - b + c  \\
+            (-2, 1): \quad  & 1 = 4a - 2b + c \\
+        \end{aligned}
+    $$
+    und führt damit zu einem linearen Gleichungssystem.
+
+    Man errechnet als Lösung $a = 1$, $b = 1$, $c = -1$ und erhält
+    $$
+        p_2(x) = x^2 + x -1.
+    $$\qed
+\end{bonus}
+
+\begin{bonus}{Beispiel: Lineare Unabhängigkeit von Polynomen}
+    Die Polynome
+    $$
+        p_1(x) = (1-x)^2 \qquad p_2(x) = (1-x)x \qquad p_3(x) = x^2
+    $$
+    sollen auf lineare Unabhängigkeit geprüft werden.
+    Wir berechnen zunächst die Koeffizientenvektoren.
+    $$
+        \begin{aligned}
+             & p_1(x) = (1-x)^2 &  & =1-2x+1x^2  &  & \implies a_{0_1} = 1, ~a_{1_1} = -2, ~a_{2_1} = 1 \\
+             & p_2(x) = (1-x)x  &  & =0+ 1x -x^2 &  & \implies a_{0_2} = 0, ~a_{1_2} = 1, ~a_{2_2} = -1 \\
+             & p_3(x) = x^2     &  &             &  & \implies a_{0_3} = 0, ~a_{1_3} = 0, ~a_{2_3} = 1
+        \end{aligned}
+    $$
+
+    $\det(a_0, a_1, a_2) \neq 0$ und damit sind die Polynome linear unabhängig.\qed
+\end{bonus}
+
+\subsection{Skalarprodukte, euklidische und unitäre Räume}
+\begin{defi}{Euklidische und unitäre Vektorräume}
+    Ein reeller Vektorraum gemeinsam mit einem Skalarprodukt heißt \emph{euklidischer Vektorraum}, ein komplexer Vektorraum mit einem Skalarprodukt heißt \emph{unitärer Vektorraum}.
+\end{defi}
+
+\begin{defi}{Orthogonale Projektion}
+    Sei $U$ ein endlich erzeugter Untervektorraum von $V$ und $a \in V$.
+    Ein Vektor $p_u(a) \in U$ heißt \emph{orthogonale Projektion} von $a$ auf $U$, wenn gilt:
+    $$
+        a - p_U(a) \perp u \quad \forall u \in U.
+    $$
+\end{defi}
+
+\begin{defi}{Orthogonales Komplement}
+    Für $M \subseteq V$ heißt
+    $$
+        M^\perp := \{v\in V \mid v \perp u \quad \forall u \in M\}
+    $$
+    das \emph{orthogonale Komplement} von $M$.
+\end{defi}
+
+\begin{defi}{Orthogonalsystem, Orthonormalsystem, Orthogonalbasis, Orthonormalbasis}
+    Sei $B = (v_1, \ldots, v_m)$ ein $m$-Tupel mit Vektoren in $V\setminus \{0\}$.
+    \begin{enumerate}
+        \item $B$ heißt \emph{Orthogonalsystem} in $V$, falls alle $v_i$ paarweise orthogonal sind.
+        \item Ein Orthogonalsystem, für das zusätzlich $\forall v_i \in B: \norm{v_i} = 1$ gilt, heißt \emph{Orthonormalsystem}.
+        \item Ein Orthogonalsystem, das eine Basis von $V$ bildet, heißt \emph{Orthogonalbasis} von $V$.
+        \item Ein Orthonormalsystem, das eine Basis von $V$ bildet, heißt \emph{Orthonormalbasis} von $V$.
+    \end{enumerate}
+\end{defi}
+
+\subsection{Das Verfahren von Gram-Schmidt}
+\begin{defi}{Gram-Schmidt-Verfahren}
+    Sei $V$ ein unitärer Vektorraum und $v_1, \ldots, v_m$ linear unabhängig.
+    Seien
+    $$
+        \begin{aligned}
+            w_1     & :={} \frac{v_1}{\norm{v_1}}                              \\
+            r_{k+1} & :={} v_{k+1} - \sum^k_{i=1} \scalarprod{v_{i+1}, w_i}w_i \\
+            w_{k+1} & :={} \frac{r_{k+1}}{\norm{r_{k+1}}}
+        \end{aligned}
+    $$
+    Dann bilden $(w_1, \ldots, w_m)$ eine Orthonormalbasis von $L(v_1, \ldots, v_m)$.
+\end{defi}
+
+\begin{bonus}{Beispiel: Gram-Schmidt-Verfahren (allgemein)}
+    Wir betrachten eine beliebige Basis $(v_1, v_2, v_3)$ von $\R^3$.
+    Wir gehen so vor:
+    \begin{enumerate}
+        \item Man wählt einfach $w_1 = \frac{1}{\norm{v_1}}v_1$, weil dann offenbar $\norm{w_1} = 1$ gilt.
+        \item Wir konstruieren einen Vektor $r_2$, der senkrecht auf $w_1$ steht.
+              Dazu projizieren wir $v_2$ auf den von $w_1$ erzeugen Unterraum $L(w_1)$ und setzen $r_2 := v_2 - p_{L(v_1)}(v_2)$.
+              Dann gilt nach Definition der orthogonalen Projektion $v_1 \perp r_2$.
+              Man erhält
+              $$
+                  r_2 = v_2 - \scalarprod{v_2, w_1}w_1.
+              $$
+              Normierung von $r_2$ liefert $w_2$.
+        \item Der Vektor $r_3 := v_3 - p_{L(v_1, v_2)}(v_3)$ steht nach Konstruktion senkrecht auf $L(v_1, v_2)$ und daher gilt insbesonere $r_3 \perp v_1$ und $r_3 \perp v_2$.
+              Weil $(w_1, w_2)$ eine Orthonormalbasis von $L(v_1, v_2)$ bilden, gilt:
+              $$
+                  r_3 = v_3 - \scalarprod{v_3, w_1}w_1 - \scalarprod{v_3, w_2}w_2
+              $$
+              Normierung von $r_3$ ergibt $w_3$.
+    \end{enumerate}
+\end{bonus}
+\end{document}
