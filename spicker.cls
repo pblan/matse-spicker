@@ -62,7 +62,7 @@
 
 % Show most recent revision number and date in date field
 \makeatletter
-\date{\small\filename@parse{\jobname}\IfFileExists{\filename@base.last-change}{\input{\filename@base.last-change}}{\today}}
+\date{\small Letzte Änderung: \filename@parse{\jobname}\IfFileExists{\filename@base.last-change}{\input{\filename@base.last-change}}{\today}}
 \makeatother
 
 \subject{\normalfont{}\texttt{\href{https://matse.paddel.xyz/spicker}{https://matse.paddel.xyz/spicker}}}
