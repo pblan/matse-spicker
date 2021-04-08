@@ -62,7 +62,7 @@
 
 % Show most recent revision number and date in date field
 \makeatletter
-\date{\small Letzte Änderung: \filename@parse{\jobname}\IfFileExists{\filename@base.last-change}{\input{\filename@base.last-change}}{\today}}
+\date{\small \IfLanguageName{ngerman}{Letzte Änderung:}{Last Change:} \filename@parse{\jobname}\IfFileExists{\filename@base.last-change}{\input{\filename@base.last-change}}{\today}}
 \makeatother
 
 \subject{\normalfont{}\texttt{\href{https://matse.paddel.xyz/spicker}{https://matse.paddel.xyz/spicker}}}
@@ -92,6 +92,7 @@
 \newcommand{\Rnonneg}{\mathbb{R}^+_0}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
 \newcommand{\bigo}{\mathcal{O}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -155,6 +156,11 @@
 
 \newenvironment{bonus}[1]{%
 \begin{tcolorbox}[colback=fhred!5!white, colframe=fhred!75!black, title={\sffamily Bonus: #1}]
+}{%
+\end{tcolorbox}}
+
+\newenvironment{example}[1]{%
+\begin{tcolorbox}[colback=fhred!5!white, colframe=fhred!75!black, title={\sffamily \IfLanguageName{ngerman}{Beispiel}{Example}: #1}]
 }{%
 \end{tcolorbox}}
 
