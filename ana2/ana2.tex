@@ -1,0 +1,539 @@
+\documentclass[german]{../spicker}
+
+\usepackage{amsmath}
+\usepackage{polynom}
+\usepackage{array}   % for \newcolumntype macro
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+
+\title{Analysis 2}
+\author{Patrick Gustav Blaneck}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\newcommand{\scalarprod}[1]{\left\langle #1 \right\rangle}
+\newcommand{\vektor}[1]{\begin{pmatrix*}[c] #1 \end{pmatrix*}}
+\renewcommand{\span}[1]{\operatorname{span}\left(#1\right)}
+
+\renewcommand{\d}{\,\mathrm{d}}
+
+\renewcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\cis}[1]{\left( \cos\left( #1 \right) + i \sin\left( #1 \right) \right)}
+\newcommand{\sgn}{\text{sgn}}
+\newcommand{\diff}{\mathrm{d}}
+\newcommand{\dx}{~\mathrm{d}x}
+\newcommand{\du}{~\mathrm{d}u}
+\newcommand{\dv}{~\mathrm{d}v}
+\newcommand{\dw}{~\mathrm{d}w}
+\newcommand{\dt}{~\mathrm{d}t}
+\newcommand{\dn}{~\mathrm{d}n}
+\newcommand{\dudx}{~\frac{\mathrm{d}u}{\mathrm{d}x}}
+\newcommand{\dudn}{~\frac{\mathrm{d}u}{\mathrm{d}n}}
+\newcommand{\dvdx}{~\frac{\mathrm{d}v}{\mathrm{d}x}}
+\newcommand{\dwdx}{~\frac{\mathrm{d}w}{\mathrm{d}x}}
+\newcommand{\dtdx}{~\frac{\mathrm{d}t}{\mathrm{d}x}}
+\newcommand{\ddx}{\frac{\mathrm{d}}{\mathrm{d}x}}
+\newcommand{\dFdx}{\frac{\mathrm{d}F}{\mathrm{d}x}}
+\newcommand{\dfdx}{\frac{\mathrm{d}f}{\mathrm{d}x}}
+\newcommand{\interval}[1]{\left[ #1 \right]}
+
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{P}{>{$}p<{$}} % math-mode version of "l" column type
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+%\setcounter{section}{1}
+
+\section{Funktionen mehrerer Veränderlicher}
+
+\begin{defi}{Metrik}
+    Metriken definieren Abstände im $\R^n$.
+
+    Eine Funktion $d$ auf einem Vektorraum $V$ mit
+    $$
+        d :  V \times V \to \R, d(\vec{x}, \vec{y})
+    $$
+    heißt \emph{Metrik}, falls gilt
+    \begin{itemize}
+        \item $d(\vec{x}, \vec{y}) = 0 \iff \vec{x} = \vec{y}$
+        \item $d(\vec{x}, \vec{y}) \leq d(\vec{x}, \vec{z}) + d(\vec{y}, \vec{z}), \forall \vec{x}, \vec{y}, \vec{z} \in V$
+              (Dreiecksungleichung)
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Metriken}
+    \begin{itemize}
+        \item Summen-Metrik: $$\sum_{k=1}^n \abs{x_k - y_k}$$
+        \item euklid. Metrik: $$\sqrt{\sum_{k=1}^n \left( x_k - y_k \right)^2}$$
+        \item Maximum-Metrik: $$\max_{k \in \interval{1,n}} \abs{x_k - y_k}$$
+    \end{itemize}
+\end{example}
+
+\begin{defi}{Metrischer Raum}
+    Ein Vektorraum und eine Metrik heißen zusammen \emph{metrischer Raum}.
+\end{defi}
+
+\begin{bonus}{Zusammenhang Metrik \& Norm}
+    Jeder Vektorraum mit einer Metrik $d$ ist normierbar (d.h. dort gibt es eine Norm), falls
+    $$
+        d(a\vec{x}, 0) = \abs{a} d(\vec{x}, 0) \quad \text{und} \quad d(\vec{x}, \vec{y}) = d(\vec{x} -\vec{y}, 0)
+    $$
+
+    Eine Norm wird dann definiert gemäß
+    $$
+        \norm{\vec{x}} := d(\vec{x}, 0)
+    $$
+\end{bonus}
+
+\subsection{Mengen im $\R^n$}
+
+\begin{defi}{$\varepsilon$-Umgebung im $\R^n$}
+    Sei $\norm{\cdot}$ eine Norm im $\R^n$, dann heißt
+    $$
+        U_\varepsilon(\vec{x_0}) := \left\{ \vec{x} \mid \norm{\vec{x} - \vec{x_0}} < \varepsilon \right\}
+    $$
+    die $\varepsilon$-Umgebung von $\vec{x_0}$ bzgl. der Norm $\norm{\cdot}$.
+
+    Sei $D$ eine Menge und $\norm{\cdot}$ eine Norm.
+    Dann
+    \begin{itemize}
+        \item \ldots heißt $\vec{x_0}$ \emph{innerer Punkt} von $D$, falls $\forall \varepsilon > 0 : U_\varepsilon(\vec{x_0}) \in D$.
+        \item \ldots heißt $D$ \emph{offene Menge}, falls alle Punkte von $D$ innere Punkte sind.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Abgeschlossene Mengen}
+    Sei $D$ eine Menge und $\norm{\cdot}$ eine Norm.
+    Dann
+    \begin{itemize}
+        \item \ldots heißt $\vec{x_0}$ \emph{Häufungspunkt} von $D$, falls $\forall \varepsilon > 0$ $U_\varepsilon(\vec{x_0})$ einen Punkt $\vec{x} \neq \vec{x_0}$ enthält.
+        \item \ldots heißt $D$ \emph{abgeschlossene Menge}, falls sie alle Häufungspunkte von $D$ enthält.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Beschränktheit von Mengen}
+    Eine Menge $D \subset \R^n$ heißt \emph{beschränkt}, falls es ein $M \in \R$ gibt mit
+    $$
+        \norm{\vec{x}} < M \quad \forall\vec{x} \in D
+    $$
+
+    Existiert eine solche Schranke nicht, so heißt die Menge \emph{unbeschränkt}.
+\end{defi}
+
+\subsection{Folgen im $\R^n$}
+
+\begin{defi}{Folge}
+    Seien $\vec{x_1}, \vec{x_2}, \ldots, \vec{x_m} \in \R^n$, dann heißt $(\vec{x_n})$ \emph{Folge} im $\R^n$.
+\end{defi}
+
+\begin{defi}{Konvergenz}
+    $(\vec{x_n})$ heißt \emph{konvergent} gegen den \emph{Grenzwert} $\vec{x}$, falls $\forall \varepsilon >0, \exists n_0(\varepsilon)$, so dass $\forall n > n_0(\varepsilon)$ gilt:
+    $$
+        \norm{\vec{x_n} - \vec{x}} < \varepsilon
+    $$
+\end{defi}
+
+\begin{defi}{Cauchy-Folge}
+    $(\vec{x_n})$ heißt \emph{Cauchy-Folge} gegen $\vec{x}$, falls $\forall \varepsilon >0, \exists n_0(\varepsilon)$, so dass $\forall n,m > n_0(\varepsilon)$ gilt:
+    $$
+        \norm{\vec{x_m} - \vec{x_n}} < \varepsilon
+    $$
+
+    Jede Cauchy-Folge ist konvergent.
+\end{defi}
+
+\begin{defi}{Beschränktheit von Folgen}
+    Eine Folge heißt \emph{beschränkt}, wenn die Menge aller Folgenglieder in jeder Komponente beschränkt ist.
+\end{defi}
+
+\begin{defi}{Häufungspunkt}
+    $\vec{x} \in \R^n$ heißt \emph{Häufungspunkt} von $(\vec{x_n})$, falls $\forall \varepsilon > 0$ unendlich viele $\vec{x_i}$ in der $\varepsilon$-Umgebung von $\vec{x}$ liegen.
+
+    Jede unendliche beschränkte Folge ist genau dann konvergent, wenn sie genau einen Häufungs\- punkt besitzt.
+\end{defi}
+
+\begin{defi}{Bolzano-Weierstrass für Folgen}
+    Jede unendliche beschränkte Folge besitzt mindestens einen Häufungspunkt.
+
+    Jede unendliche beschränkte Folge besitzt mindestens eine konvergente Teilfolge.
+\end{defi}
+
+\subsection{Differenzierbarkeit im $\R^n$}
+
+\begin{defi}{Grenzwert im $\R^n$}
+    Wir bezeichnen mit dem Grenzwert
+    $$
+        g = \lim_{\vec{x} \to \vec{x_n}} f(\vec{x})
+    $$
+    den \emph{Grenzwert} jeder gegen $\vec{x_0}$ konvergenten Folge $(\vec{x_n})$, falls dieser existiert und damit insbesondere eindeutig ist.
+\end{defi}
+
+\begin{defi}{Stetigkeit}
+    Sei $U \subset \R^n$ offene Menge, $f : U \to \R, \ \vec{x_0} = \vektor{x_1 & \ldots & x_n}^T \in U$,
+    $f$ heißt in $\vec{x_0}$ \emph{stetig}, wenn
+    $$
+        \lim_{\vec{x} \to \vec{x_0}} f(\vec{x}) = f(\vec{x_0}) = f\left(\lim_{\vec{x} \to \vec{x_0}} \vec{x}\right),
+    $$
+    wobei $\lim_{\vec{x} \to \vec{x_0}} f(\vec{x_0})$ Grenzwert jeder gegen $\vec{x_0}$ konvergenten Folge $(\vec{x_n})$ ist.
+
+    Formal:
+    $$
+        \lim_{\vec{x} \to \vec{x_0}} f(\vec{x}) := \lim_{n \to \infty} f(\vec{x_n})
+    $$
+
+    $f$ heißt \emph{stetig in U}, wenn die Funktion für jedes $\vec{x_0} = \vektor{x_1 & \ldots & x_n}^T \in U$ stetig ist.
+
+    Stetigkeit bedeutet somit insbesondere Stetigkeit in allen Komponenten.
+\end{defi}
+
+\begin{defi}{Gleichmäßige Stetigkeit}
+    Eine Funktion $f: D \subset \R^n \to \R$ heißt \emph{gleichmäßig stetig}, wenn es zu jedem $\varepsilon > 0$ ein $\delta = \delta(\varepsilon)$ (unabhängig von $\vec{x_0}$) gibt, so dass
+    $$
+        \abs{f(\vec{x}) - f(\vec{x_0})} < \epsilon, \ \forall \norm{\vec{x} - \vec{x_0}} < \delta
+    $$
+
+    Gleichmäßige Stetigkeit ist wegen der Unabhängigkeit von $\vec{x_0}$ insbesondere Stetigkeit im gesamten Definitionsbereich $D$.
+
+    Ist $f$ beschränkt und abgeschlossen, so ist $f$ gleichmäßig stetig.
+\end{defi}
+
+\begin{defi}{Lipschitz-Stetigkeit}
+    Eine Funktion $f : D \subset \R^n \to \R$ heißt \emph{Lipschitz-stetig}, wenn es eine Konstante $L$ gibt (unabhängig von $\vec{x_0}$), so dass
+    $$
+        \abs{f(\vec{x}) - f(\vec{x_0})} \leq L \norm{\vec{x} - \vec{x_0}}
+    $$
+
+    Ist in einer Norm $L < 1$, so heißt die Abbildung \emph{Kontraktion}.
+
+    Ist eine Funktion $f$ Lipschitz-stetige, so ist $f$ auf ihrem Definitionsbereich $D$ gleichmäßig stetig und in jedem Punkt stetig.
+\end{defi}
+
+\begin{bonus}{Nullstelle}
+    Ein Punkt $\vec{x_0} \in D$ heißt \emph{Nullstelle} einer Funktion $f$, falls $f(\vec{x_0}) = \vec{0}$.
+\end{bonus}
+
+\begin{defi}{Fixpunkt}
+    Ein Punkt $\vec{x^*}\in D$ heißt \emph{Fixpunkt} einer Funktion $\varphi$, falls $\varphi(\vec{x^*}) = \vec{x^*}$.
+\end{defi}
+
+\begin{defi}{Fixpunktsatz von Banach}
+    Sei $\varphi : D \subset \R^n \to \R^n$ mit
+    $$
+        \abs{\varphi(\vec{x}) - \varphi(\vec{y})} \leq L \norm{\vec{x} - \vec{y}} \quad \text{und} \quad L < 1,
+    $$
+    dann hat $\varphi$ \emph{genau einen Fixpunkt}.
+\end{defi}
+
+\subsubsection{Partielle Ableitungen}
+
+\begin{defi}{Partielle Ableitung}
+    Sei $U \subset \R^n$ offene Menge, $f : U \to \R, \ \vec{x_0} = \vektor{x_1 & \ldots & x_n}^T \in U$,
+    $f$ heißt in $\vec{x_0}$ \emph{partiell differenzierbar} nach $x_i$, wenn
+    $$
+        \frac{\partial f}{\partial x_i} = \lim_{h \to 0} \frac{f(x_1, \ldots, x_i + h, \ldots, x_n) - f(x_1, \ldots, x_n)}{h}
+    $$
+    existiert.
+    Der Wert $\frac{\partial f}{\partial x}$ heißt dann die \emph{partielle Ableitung} von $f$ nach $x_i$.
+
+    Eine Funktion heißt \emph{(partiell) differenzierbar}, wenn alle partiellen Ableitungen existieren.
+\end{defi}
+
+\begin{bonus}{Zusammenhang Differenzierbarkeit und Stetigkeit}
+    $f$ heißt \emph{stetig partiell differenzierbar}, wenn alle partiellen Ableitungen in $\vec{x_i}$ stetige Funktionen (und insbesondere beschränkt) sind.
+
+    Ist $f$ in $U$ partiell differenzierbar und in $\vec{x_0} \in U$ \emph{stetig partiell differenzierbar}, so ist $f$ in $\vec{x_0}$ stetig.
+\end{bonus}
+
+\begin{defi}{Gradient}
+    Sei $U \subset \R^n$ offene Menge, $F : U \to \R$ partiell differenzierbar, $\vec{x_0} = \vektor{x_1 & \ldots & x_n}^T \in U$, dann heißt
+    $$
+        \nabla f(x_1, \ldots, x_n) = \vektor{\frac{\partial f}{\partial x_1}(x_1, \ldots, x_n) \\ \vdots \\ \frac{\partial f}{\partial x_n}(x_1, \ldots, x_n)}
+    $$
+    der \emph{Gradient von f in} $\vec{x_0}$.
+\end{defi}
+
+\begin{bonus}{Rechenregeln für Gradienten}
+    Sei $U \subset \R^n$ offene Menge, $f, g : U \to \R$ differenzierbar.
+    Dann gilt:
+    $$
+        \begin{aligned}
+             & \nabla (f + g)    &  & = \nabla (f) + \nabla (g)                 \\
+             & \nabla (\alpha f) &  & = \alpha \cdot \nabla (f)                 \\
+             & \nabla (fg)       &  & = g \cdot \nabla (f) + f \cdot \nabla (g)
+        \end{aligned}
+    $$
+\end{bonus}
+
+\begin{defi}{Tangentialebene im $\R^3$}
+    Sei $z = f(x, y)$ eine stetig partiell differenzierbare Funktion in zwei Unbekannten und $z_0 = f(x_0, y_0)$ ein fester Punkt.
+
+    Dann ist die Tangentialebene im Punkt $(x_0, y_0, z_0)$ gegeben mit:
+    $$
+        T = \vektor{x_0 \\ y_0 \\ z_0} + \lambda \cdot \vec{v_1} + \mu \cdot \vec{v_2},
+    $$
+    wobei $\vec{v_1}$ und $\vec{v_2}$ verschiedene Tangentenvektoren sind.
+\end{defi}
+
+\begin{algo}{Tangentialebene im $\R^3$}
+    Betrachten wir die Tangenten entlang der Koordinatenachsen, so erhalten wir
+    $$
+        T = \vektor{x_0 \\ y_0 \\ z_0} + \lambda \vektor{1 \\ 0 \\ f_x(x_0, y_0)} + \mu \vektor{0 \\ 1 \\ f_y(x_0, y_0)}
+    $$
+    oder äquivalent
+    $$
+        T(x, y) = f(x_0, y_0) + f_x(x_0, y_0) (x-x_0) + f_y(x_0, y_0) (y-y_0)
+    $$
+\end{algo}
+
+\begin{bonus}{Tangentialebene im $\R^n$}
+    Die Tangentialebene im $\R^n$ einer Funktion $f$ in $\vec{x} \in \R^n$ an der Stelle $\vec{x_0} = \vektor{x_1 & \ldots & x_n}^T$ analog definiert durch
+    $$
+        T(\vec{x}) = f(\vec{x_0}) + \nabla f (\vec{x} - \vec{x_0})
+    $$
+\end{bonus}
+
+\begin{defi}{Richtungsableitung}
+    Die Ableitung in Richtung des Vektors $\vec{v} = \vektor{v_1, \ldots, v_n}^T$ mit $\norm{\vec{v}} = 1$ heißt \emph{Richtungsableitung} $D_{\vec{v}}(f)$ von $f$ in Richtung von $\vec{v}$.
+    Es ist
+    $$
+        \begin{aligned}
+            \frac{\partial f}{\partial v} := D_{\vec{v}}(f) = & \lim_{h\to 0} \frac{f(\vec{x} + h\vec{v}) - f(\vec{x})}{h}                      \\
+            =                                                 & \lim_{h\to 0} \frac{f(x_1 + hv_1, \ldots, x_n + hv_n) - f(x_1, \ldots, x_n)}{h}
+        \end{aligned}
+    $$
+\end{defi}
+
+\begin{algo}{Richtungsableitung}
+    Sei $\vec{v} \in \R^n$ mit $\norm{\vec{v}} = 1$. Dann ist die Richtungsableitung von $f$ im Punkt $\vec{x_0}$ in Richtung $\vec{v}$ gegeben mit
+    $$
+        \frac{\partial f}{\partial v} = D_{\vec{v}}(f) = \nabla (f(\vec{x_0})) \cdot \vec{v}
+    $$
+\end{algo}
+
+\begin{algo}{Extremster Anstieg}
+    Insgesamt gilt, falls wir nur die Richtung (ohne Normierung) betrachten:
+    $$
+        \vec{v} = \frac{\nabla f}{\norm{ \nabla f }} \quad \text{ist die Richtung des steilsten Anstiegs von} \ f
+    $$
+    $$
+        \vec{v} = -\frac{\nabla f}{\norm{ \nabla f }} \quad \text{ist die Richtung des steilsten Abstiegs von} \ f
+    $$
+\end{algo}
+
+\subsubsection{Das vollständige Differential}
+
+\begin{defi}{Vollständiges Differential}
+    Unter dem \emph{vollständigen Differential} der Funktion $z = f(x, y)$ im Punkt $(x_0, y_0)$ versteht man den Ausdruck
+    $$
+        \d z = f_x(x_0, y_0) \d x + f_y(x_0, y_0) \d y
+    $$
+\end{defi}
+
+\begin{algo}{Absoluter Fehler}
+    Es gilt für $z = f(x_1, \ldots, x_n)$ der \emph{absolute Fehler}:
+    $$
+        \varDelta z_{\max} \leq \sum_{i=1}^n \abs{f_{x_i}} \cdot \abs{\varDelta x_i}
+    $$
+\end{algo}
+
+\begin{algo}{Relativer Fehler}
+    Es gilt für $z = f(x, y) = c \cdot x^a \cdot y^b$ anhand der möglichen relativen Eingabefehler $\frac{\varDelta x}{x}$ und $\frac{\varDelta y}{y}$ der \emph{relative Fehler}:
+    $$
+        \frac{\varDelta z}{z} \leq a \cdot \abs{\frac{\varDelta x}{x}} + b \cdot \abs{\frac{\varDelta y}{y}}
+    $$
+\end{algo}
+
+\begin{defi}{Kurve}
+    Seien $x(t)$ und $y(t)$ in $t$ stetige Funktionen.
+    Die Menge
+    $$
+        \left\{ (x, y) \mid x = x(t), \ y=y(t), \ t\in \R \right\}
+    $$
+    heißt \emph{Kurve}.
+    Die Darstellung $t\to \R^2$
+    $$
+        \vec{x}(t) = \vektor{x(t) \\ y(t)}
+    $$
+    heißt \emph{Parameterdarstellung der Kurve}.
+\end{defi}
+
+\begin{defi}{Kettenregel für Funktionen mit einem Parameter}
+    Sei $z = f(\vec{x}) = f(\vec{x}(t))$ und $\vec{x}(t)$ stetig in jeder Komponente $x_i$. Dann gilt:
+    $$
+        \frac{\d z}{\d t} = \sum_{i=1}^n \frac{\partial z}{\partial x_i} \cdot \frac{\d x_i}{\d t}
+    $$
+\end{defi}
+
+\begin{defi}{Kettenregel für Funktionen mit zwei Parametern}
+    Sei $z = f(\vec{x}) = f(\vec{x}(u,v))$ und $\vec{x}(u,v)$ stetig in jeder Komponente $x_i$. Dann gilt:
+    $$
+        \frac{\partial z}{\partial u} = \sum_{i=1}^n \frac{\partial z}{\partial x_i} \cdot \frac{\d x_i}{\d u}
+    $$
+    $$
+        \frac{\partial z}{\partial v} = \sum_{i=1}^n \frac{\partial z}{\partial x_i} \cdot \frac{\d x_i}{\d v}
+    $$
+\end{defi}
+
+\subsubsection{Partielle Ableitungen höherer Ordnung}
+
+\begin{defi}{Satz von Schwarz}
+    Sind die partiellen Ableitungen $k$-ter Ordnung einer Funktion stetige Funktionen, so darf die Reihenfolge der Differentiation beliebig vertauscht werden.
+\end{defi}
+
+\begin{defi}{Divergenz}
+    Wir bezeichnen die \emph{Divergenz} einer Funktion $f$ mit
+    $$
+        \operatorname{div} f := \nabla \cdot f = \vektor{\frac{\partial}{\partial x_1} \\ \vdots \\ \frac{\partial}{\partial x_n}} \vektor{f_1(x_1, \ldots, x_n) \\ \vdots \\ f_n(x_1, \ldots, x_n)} = \sum_{i=1}^n \frac{\partial f_i(x_1, \ldots, x_n)}{\partial x_i}
+    $$
+\end{defi}
+
+\begin{defi}{Rotation}
+    Wir bezeichnen die \emph{Rotation} einer Funktion $f$ mit
+    $$
+        \operatorname{rot} f := \nabla \times f = \vektor{\frac{\partial}{\partial x_1} \\ \vdots \\ \frac{\partial}{\partial x_n}} \times \vektor{f_1(x_1, \ldots, x_n) \\ \vdots \\ f_n(x_1, \ldots, x_n)}
+    $$
+\end{defi}
+
+\begin{bonus}{Quellen und Senken}
+    Die Punkte mit $\operatorname{div} f > 0$ heißen \emph{Quellen} des Vektorfeldes, die mit $\operatorname{div} f < 0$ heißen \emph{Senken}.
+
+    Gilt stets $\operatorname{div} f = 0$, so heißt die Funktion \emph{quellenfrei}.
+
+    Gilt $\operatorname{rot} f = 0$, so heißt die Funktion \emph{wirbelfrei}.
+\end{bonus}
+
+\begin{defi}{Jacobi-Matrix}
+    Die Matrix
+    $$
+        J = \vektor{\frac{\partial f_1}{x_1} & \ldots & \frac{\partial f_1}{x_n} \\ \vdots & \ddots & \vdots \\ \frac{\partial f_n}{x_1} & \ldots & \frac{\partial f_n}{x_n}}
+    $$
+    heißt \emph{Jacobi-Matrix} von $f$.
+\end{defi}
+
+\subsubsection{Taylorentwicklung für $f(x, y)$}
+
+\begin{defi}{Quadratische Approximation}
+    Für $f(x, y)$ ist die \emph{quadratische Approximation} gegeben mit
+    $$
+        \begin{aligned}
+            f(x, y) \quad = \quad & f(x_0, y_0) + f_x(x_0, y_0) (x-x_0) + f_y(x_0, y_0) (y-y_0)                                                    \\
+            + \quad               & \frac{f_{xx}(x_0, y_0) (x-x_0)^2}{2} + f_{xy}(x_0, y_0) (x-x_0) (y-y_0) + \frac{f_{yy}(x_0, y_0) (x-x_0)^2}{2}
+        \end{aligned}
+    $$
+\end{defi}
+
+\subsubsection{Extremwerte ohne Nebenbedingungen}
+
+\begin{algo}{Lokale Extrema ohne Nebenbedingungen im $\R^2$}
+    \begin{enumerate}
+        \item Berechne $f_x(x,y)$ und $f_y(x, y)$ und suche diejenigen Stellen $(x_0, y_0)$ mit
+              $$
+                  f_x(x_0, y_0) = f_y(x_0, y_0) = 0
+              $$
+              Diese Stellen sind die \emph{Kandidaten} für lokale Extrema.
+        \item Berechne für jeden Kandidaten $(x_0, y_0)$ die Werte $f_{xx}(x_0, y_0)$, $f_{xy}(x_0, y_0)$ und $f_{yy}(x_0, y_0)$ und daraus den Wert
+              $$
+                  d := f_{xx}(x_0, y_0) \cdot f_{yy}(x_0, y_0) - \left(f_{xy}(x_0, y_0)\right)^2
+              $$
+        \item Dann gilt:
+              \subitem $f_{xx}(x_0, y_0) > 0 \ \land \ d > 0 \implies$ \emph{lokales Minimum}
+              \subitem $f_{xx}(x_0, y_0) < 0 \ \land \ d > 0 \implies$ \emph{lokales Maximum}
+              \subitem $d < 0 \implies$ \emph{Sattelpunkt}
+              \subitem $d = 0 \implies$ höhere Ableitung entscheidet
+    \end{enumerate}
+\end{algo}
+
+\begin{defi}{Hesse-Matrix im $\R^2$}
+    Die \emph{Hesse-Matrix} im $\R^2$ ist definiert mit
+    $$
+        H = \vektor{f_{xx}(x_0, y_0) & f_{xy}(x_0, y_0) \\ f_{xy}(x_0, y_0) & f_{yy}(x_0, y_0)}
+    $$
+
+    Ist $H$ \emph{positiv definit}, so liegt ein Minimum vor, ist $H$ \emph{negativ definit} ein Maximum und bei \emph{indefinitem} $H$ ein Sattelpunkt.
+
+    Es gilt:
+    \begin{itemize}
+        \item $H$ ist positiv definit $\iff f_{xx}(x_0, y_0) < 0 \ \land \det H > 0$
+        \item $H$ ist negativ definit $\iff f_{xx}(x_0, y_0) > 0 \ \land \det H > 0$
+        \item $H$ indefinit $\iff \det H < 0$
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Hesse-Matrix im $\R^n$}
+    Die \emph{Hesse-Matrix} im $\R^n$ ist definiert mit
+    $$
+        H = \vektor{\frac{\partial^2 f}{\partial x_1^2} & \ldots & \frac{\partial^2 f}{\partial x_1 \partial x_n} \\ \vdots & \ddots & \vdots \\ \frac{\partial^2 f}{\partial x_n \partial x_1} & \ldots & \frac{\partial^2 f}{\partial x_n^2}}
+    $$
+
+    Ist $H$ \emph{positiv definit}, so liegt ein Minimum vor, ist $H$ \emph{negativ definit} ein Maximum und bei \emph{indefinitem} $H$ ein Sattelpunkt.
+
+    Es gilt:
+    \begin{itemize}
+        \item $H$ ist positiv definit $\iff$ alle \emph{Unterdeterminanten} (links oben beginnend) sind positiv
+        \item $H$ ist negativ definit $\iff$ alle \emph{Unterdeterminanten} (links oben beginnend) haben wechselndes Vorzeichen (beginnend mit negativem Vorzeichen)
+        \item $H$ indefinit $\iff$ sonst
+    \end{itemize}
+\end{defi}
+
+\subsubsection{Extremwerte mit Nebenbedingungen}
+
+\begin{defi}{Lagrange-Funktion}
+    Gegeben seien eine Funktion $f(x, y)$ und eine Nebenbedingung $g(x, y) = 0$.
+    Dann ist  die \emph{Lagrange-Funktion} gegeben mit
+    $$
+        L(x, y, \lambda) = f(x, y) + \lambda g(x, y)
+    $$
+
+    Es gilt damit:
+    $$
+        L_\lambda = g(x, y) \quad \land \quad g(x, y) = 0 \implies L(x,y,\lambda) = f(x, y)
+    $$
+\end{defi}
+
+\begin{algo}{Lokale Extrema mit Nebenbedingung im $\R^2$}
+    \begin{enumerate}
+        \item Berechne die Kandidaten wie in freien Optimierungen mit
+              $$
+                  \nabla (L) = \vec{0}
+              $$
+        \item Aufstellen der geränderten Hesse-Matrix für die drei Unbekannten mit
+              $$
+                  H = \vektor{L_{xx} & L_{xy} & g_x \\ L_{xy} & L_{yy} & g_y \\ g_x & g_y & 0}
+              $$
+        \item Dann gilt:
+              \subitem $\det H > 0 \implies$ \emph{Maximum}
+              \subitem $\det H < 0 \implies$ \emph{Minimum}
+              \subitem $\det H = 0 \implies$ keine Entscheidung möglich
+    \end{enumerate}
+\end{algo}
+
+\subsubsection{Parametrische Funktionen und Kurvenintegrale}
+
+\begin{defi}{Tangentenvektor}
+    Der \emph{Tangentenvektor} einer Kurve $\vec{x}(t)$ ist gegeben mit
+    $$
+        \vec{x'}(t) = \vektor{x_1'(t) \\ \vdots \\ x_n'(t)}
+    $$
+\end{defi}
+
+\begin{defi}{Tangente}
+    Die \emph{Tangente} einer Kurve $\vec{x}(t)$ ist gegeben mit
+    $$
+        T(t) = \vec{x}(t) + \lambda\vec{x'}(t)
+    $$
+\end{defi}
+
+\section{Mehrdimensionale Integration}
+\section{Wachstums- und Zerfallsprozesse}
+\section{Gewöhnliche Differentialgleichungen}
+
+\printindex
+\printindex[Beispiele]
+
+\end{document}

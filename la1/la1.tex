@@ -1,10 +1,12 @@
-\documentclass[german]{spicker}
+\documentclass[german]{../spicker}
 
 \usepackage{amsmath}
 \usepackage{polynom}
 
 \title{Lineare Algebra 1}
 \author{Patrick Gustav Blaneck}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
 
 \newcommand{\scalarprod}[1]{\left\langle #1 \right\rangle}
 \newcommand{\vektor}[1]{\begin{pmatrix*}[r] #1 \end{pmatrix*}}
@@ -233,7 +235,7 @@
     \end{enumerate}
 \end{algo}
 
-\begin{bonus}{Beispiel: Schnittmenge zwischen einer Gerade und einer Ebene}
+\begin{example}{Schnittmenge zwischen einer Gerade und einer Ebene}
     Gegeben seien $p = (1, -1, 2)^T$, $q = (1, 1, 1)^T$ und $n = (1, 2, 3)^T$.
     Gesucht wird der Schnittpunkt der Geraden $G$ durch $p$ in Richtung von $n$ mit der Ebene $E$ durch $q$ senkrecht zu $n$.
     Man verwendet bei der Gleichsetzung für $E$ eine Normal- und für $G$ eine Parameterform, z.B.
@@ -253,7 +255,7 @@
     $$
         s = p + \alpha n = \left(\frac{15}{14}, -\frac{12}{14}, \frac{31}{14}\right)^T.
     $$\qed
-\end{bonus}
+\end{example}
 
 \begin{bonus}{Lotfußpunkt}
     Sei $G$ eine Gerade mit Richtungsvektor $v$ und $q \notin G$.
@@ -554,7 +556,7 @@ Seien $v_1, \ldots, v_r \in V$ Vektoren eines $K$-Vektorraums $V$.
     Dies ist das sogenannte \emph{Interpolationspolynom}.
 \end{defi}
 
-\begin{bonus}{Beispiel: Interpolationspolynom}
+\begin{example}{Interpolationspolynom}
     Wir betrachten die drei Punkte $(-2, 1)$, $(-1, -1)$ und $(1, 1)$.
 
     Eine interpolierende Parabel $p_2$ wird durch diese Punkte festgelegt.
@@ -574,9 +576,9 @@ Seien $v_1, \ldots, v_r \in V$ Vektoren eines $K$-Vektorraums $V$.
     $$
         p_2(x) = x^2 + x -1.
     $$\qed
-\end{bonus}
+\end{example}
 
-\begin{bonus}{Beispiel: Lineare Unabhängigkeit von Polynomen}
+\begin{example}{Lineare Unabhängigkeit von Polynomen}
     Die Polynome
     $$
         p_1(x) = (1-x)^2 \qquad p_2(x) = (1-x)x \qquad p_3(x) = x^2
@@ -592,7 +594,7 @@ Seien $v_1, \ldots, v_r \in V$ Vektoren eines $K$-Vektorraums $V$.
     $$
 
     $\det(a_0, a_1, a_2) \neq 0$ und damit sind die Polynome linear unabhängig.\qed
-\end{bonus}
+\end{example}
 
 \subsection{Skalarprodukte, euklidische und unitäre Räume}
 \begin{defi}{Euklidische und unitäre Vektorräume}
@@ -639,7 +641,7 @@ Seien $v_1, \ldots, v_r \in V$ Vektoren eines $K$-Vektorraums $V$.
     Dann bilden $(w_1, \ldots, w_m)$ eine Orthonormalbasis von $L(v_1, \ldots, v_m)$.
 \end{defi}
 
-\begin{bonus}{Beispiel: Gram-Schmidt-Verfahren (allgemein)}
+\begin{example}{Gram-Schmidt-Verfahren (allgemein)}
     Wir betrachten eine beliebige Basis $(v_1, v_2, v_3)$ von $\R^3$.
     Wir gehen so vor:
     \begin{enumerate}
@@ -659,5 +661,9 @@ Seien $v_1, \ldots, v_r \in V$ Vektoren eines $K$-Vektorraums $V$.
               $$
               Normierung von $r_3$ ergibt $w_3$.
     \end{enumerate}
-\end{bonus}
+\end{example}
+
+
+\printindex
+\printindex[Beispiele]
 \end{document}

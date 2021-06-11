@@ -1,4 +1,4 @@
-\documentclass[german]{spicker}
+\documentclass[german]{../spicker}
 
 \usepackage{amsmath}
 \usepackage{polynom}
@@ -6,9 +6,11 @@
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepgfplotslibrary{fillbetween}
-
+\pgfplotsset{compat=1.17}
 \title{Analysis 1}
 \author{Patrick Gustav Blaneck, Felix Racz}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
 
 \newcommand{\scalarprod}[1]{\left\langle #1 \right\rangle}
 \newcommand{\vektor}[1]{\begin{pmatrix*}[r] #1 \end{pmatrix*}}
@@ -38,7 +40,6 @@
 \newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
 \newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
 \newcolumntype{P}{>{$}p<{$}} % math-mode version of "l" column type
-
 
 \begin{document}
 \maketitle
@@ -373,18 +374,20 @@
     $$
         (a+b)^n = \sum^n_{k=0} \binom{n}{k} a^k \cdot b^{n-k}
     $$
-=======
+\end{defi}
 \subsection{Folgen}
 
 \subsection{Reihen}
 \subsubsection{Wiederholung Summen}
 \begin{defi}{Rechenregeln}
-    \begin{align}
-        &\sum_{k=m}^n a_k = \sum_{k=m-l}^{n-l} a_{k+l} \\
-        &\sum_{k=m}^n a_k = \sum_{k=m}^c a_k + \sum_{k=c}^n a_k \\
-        &\sum_{k=m}^n a_k + \sum_{k=m}^n b_k = \sum_{k=m}^n a_k + b_k \\
-        &\sum_{k=m}^n c\cdot a_k = c\cdot\sum_{k=m}^n a_k
-    \end{align}
+    $$
+        \begin{aligned}
+             & \sum_{k=m}^n a_k = \sum_{k=m-l}^{n-l} a_{k+l}                \\
+             & \sum_{k=m}^n a_k = \sum_{k=m}^c a_k + \sum_{k=c}^n a_k       \\
+             & \sum_{k=m}^n a_k + \sum_{k=m}^n b_k = \sum_{k=m}^n a_k + b_k \\
+             & \sum_{k=m}^n c\cdot a_k = c\cdot\sum_{k=m}^n a_k
+        \end{aligned}
+    $$
     Die Regeln gelten auch für unendliche Reihen.
 \end{defi}
 
@@ -397,7 +400,7 @@
 
 \begin{defi}{Cauchy-Reihe}
     \[
-    \forall\varepsilon>0 \;\exists n_0(\varepsilon) \left| \sum_{k=m+1}^n a_k \right| < \varepsilon \;\forall n>m\geq _0
+        \forall\varepsilon>0 \;\exists n_0(\varepsilon) \left| \sum_{k=m+1}^n a_k \right| < \varepsilon \;\forall n>m\geq _0
     \]
     Eine Reihe \emph{konvergiert} genau dann, wenn die zugehörige Cauchy-Reihe konvergiert.
 \end{defi}
@@ -410,40 +413,42 @@
     Eine Teleskopsumme hat man dann, wenn sich die Terme einer Summe gegenseitig auflösen.
 \end{algo}
 
-\begin{bonus}{Beispiel Teleskopsumme}
+\begin{example}{Teleskopsumme}
     \[
         \sum_{k=1}^n \frac{1}{k} - \frac{1}{k+1} = \sum_{k=1}^n \frac{1}{k} - \sum_{k=2}^{n+1} \frac{1}{k} = \frac{1}{1} +\left( \sum_{k=2}^n \frac{1}{k} - \sum_{k=2}^n \frac{1}{k} \right) - \frac{1}{n+1} = 1-\frac{1}{n+1}
     \]
-\end{bonus}
+\end{example}
 \subsubsection{Konvergenz unendlicher Reihen}
 \begin{algo}{Majorantenkriterium}
     Man sucht eine zweite Folge $b_k$, sodass diese fast immer größer ist als die vorgegebene Folge ist.
     Konvergiert $\sum_{k=1}^{\infty} b_k$ dann konvergiert auch die ursprüngliche Reihe.
 \end{algo}
-\begin{bonus}{Beispiel Majorantenkriterium}
+\begin{example}{Majorantenkriterium}
     Konvergiert $\sum_{k=1}^{\infty} \frac{1}{k^2+1}$?
 
     Ja, da $\frac{1}{k^2+1} < \frac{1}{k^2}$ und wir wissen, dass $\sum_{k=1}^{\infty} \frac{1}{k^2}$ konvergiert.
     Wir haben also eine konvergente Majorante.
-\end{bonus}
+\end{example}
 \begin{algo}{Minorantenkriterium}
     Man sucht eine zweite Folge $b_k$, sodass diese fast immer kleiner ist als die vorgegebene Folge ist.
     Divergiert $\sum_{k=1}^{\infty} b_k$ dann divergiert auch die ursprüngliche Reihe.
 \end{algo}
-\begin{bonus}{Beispiel Majorantenkriterium}
+\begin{example}{Majorantenkriterium}
     Konvergiert $\sum_{k=1}^{\infty} \frac{1}{\ln(k)}$?
 
     Nein, da $\frac{1}{k} < \frac{1}{\ln(k)}$ ($k\geq3$) und wir wissen, dass $\sum_{k=1}^{\infty} \frac{1}{k}$ divergiert.
     Wir haben also eine divergente Minorante.
-\end{bonus}
+\end{example}
 \begin{algo}{Cauchy-Kondensatioskriterium}
     Die Konvergenz von folgenden Reihen ist äquivalent.
-    \begin{align}
-        \sum_{k=1}^{\infty} a_k \\
-        \sum_{k=1}^{\infty} 2^k \cdot a_{2^k}
-    \end{align}
+    $$
+        \begin{aligned}
+            \sum_{k=1}^{\infty} a_k \\
+            \sum_{k=1}^{\infty} 2^k \cdot a_{2^k}
+        \end{aligned}
+    $$
 \end{algo}
-\begin{bonus}{Beispiel Cauchy-Kondensatioskriterium}
+\begin{example}{Cauchy-Kondensatioskriterium}
     Konvergiert $\sum_{k=1}^{\infty} \frac{1}{k}$?
 
     Die Frage ist äquivalent dazu, ob
@@ -451,14 +456,14 @@
         \sum_{k=1}^{\infty} 2^k \cdot \frac{1}{2^k} = \sum_{k=1}^{\infty} 1
     \]
     konvergiert. Das tut sie offensichtlich nicht, also konvergiert auch $\sum_{k=1}^{\infty} \frac{1}{k}$ nicht.
-\end{bonus}
+\end{example}
 \begin{algo}{Wurzelkriterium}
     Sei $r = \lim_{n\to\infty} \sqrt[n]{|a_n|}$.
     Dann konvergiert $\sum_{k=1}^{\infty} a_k$ für $r<1$.
     Für $r>1$ divergiert die Reihe.
     Für $r=1$ liefert das Kriterium keine Aussage.
 \end{algo}
-\begin{bonus}{Beispiel Wurzelkriterium}
+\begin{example}{Wurzelkriterium}
     Konvergiert die Reihe $\sum_{k=1}^{\infty} \frac{1}{7^k}$?
 
     Es gilt
@@ -466,35 +471,35 @@
         r = \lim_{k\to\infty} \sqrt[k]{\frac{1}{7^k}} = \frac{1}{7} < 1
     \]
     Also konvergiert die Reihe.
-\end{bonus}
+\end{example}
 \begin{algo}{Quotientenkriterium}
     Sei $r = \lim_{n\to\infty} \sqrt[n]{\left| \frac{a_{n+1}}{1_n} \right|}$.
     Dann konvergiert $sum_{k=1}^{\infty} a_k$ für $r<1$.
     Für $r>1$ divergiert die Reihe.
     Für $r=1$ liefert das Kriterium keine Aussage.
 \end{algo}
-\begin{bonus}{Beispiel Quotientenkriterium}
+\begin{example}{Quotientenkriterium}
     Konvergert die Reihe $\sum_{k=1}^{\infty} \frac{x^k}{k!}$?
 
-    Wir berechnen dann 
+    Wir berechnen dann
     \[
         r = \lim_{n\to\infty} \left| \frac{\frac{x^{n+1}}{(n+1)!}}{\frac{x^n}{n!}} \right|
         = \lim_{n\to\infty} \left| \frac{x}{n+1} \right| = 0
     \]
     Die Reihe konvergiert also für alle $x$.
-\end{bonus}
+\end{example}
 \begin{algo}{Leibnizkriterium}
     Das Leibnizkriterium wird für alternierende Reihen genutzt.
     Sei $\sum_{k=1}^{\infty} (-1)^n \cdot a_n$ und $a_n$ eine beliebige Folge.
     Jetzt muss man nur drei Eigenschaften für $a_n$ zeigen. $a_n$ muss monoton fallend sein, $a_n$ muss immer größer als Null sein und $\lim_{n\to\infty} a_n =0$.
     Dann konvergiert die Reihe.
 \end{algo}
-\begin{bonus}{Beispiel Leibnizkriterium}
+\begin{example}{Leibnizkriterium}
     Konvergiert die Reihe $\sum_{k=2}^{\infty} (-1)^n \cdot \frac{1}{\ln(k)}$.
     Wir wissen, dass $\ln(k) > 0$ für $k>1$.
     Außerdem wissen wir, dass der natürliche Logarithmus monoton steigend ist, also ist $\frac{1}{\ln(k)}$ monoton fallend.
     Es gilt auch $\lim_{n\to\infty} = 0$. Also konvergiert die Reihe.
-\end{bonus}
+\end{example}
 
 \subsubsection{Potenzreihen}
 
@@ -502,7 +507,7 @@
     \[
         p(x) := \sum_{n=0}^{\infty} a_nx^n
     \]
->>>>>>> 3e3e9fed1673e73c82edc8fa6bc1a68054efc505
+    >>>>>>> 3e3e9fed1673e73c82edc8fa6bc1a68054efc505
 \end{defi}
 
 \section{Konvergenz von Folgen, Reihen und Funktionen}
@@ -714,11 +719,11 @@
     Eine Teleskopsumme hat man dann, wenn sich die Terme einer Summe gegenseitig auflösen.
 \end{algo}
 
-\begin{bonus}{Beispiel Teleskopsumme}
+\begin{example}{Teleskopsumme}
     \[
         \sum_{k=1}^n \frac{1}{k} - \frac{1}{k+1} = \sum_{k=1}^n \frac{1}{k} - \sum_{k=2}^{n+1} \frac{1}{k} = \frac{1}{1} +\left( \sum_{k=2}^n \frac{1}{k} - \sum_{k=2}^n \frac{1}{k} \right) - \frac{1}{n+1} = 1-\frac{1}{n+1}
     \]
-\end{bonus}
+\end{example}
 
 \begin{algo}{Majorantenkriterium}
     Man sucht eine zweite Folge $b_k$, sodass diese fast immer größer ist als die vorgegebene Folge ist.
@@ -726,24 +731,24 @@
     Konvergiert $\sum_{k=1}^{\infty} b_k$ dann konvergiert auch die ursprüngliche Reihe.
 \end{algo}
 
-\begin{bonus}{Beispiel Majorantenkriterium}
+\begin{example}{Majorantenkriterium}
     Konvergiert $\sum_{k=1}^{\infty} \frac{1}{k^2+1}$?
 
     Ja, da $\frac{1}{k^2+1} < \frac{1}{k^2}$ und wir wissen, dass $\sum_{k=1}^{\infty} \frac{1}{k^2}$ konvergiert.\\
     Wir haben also eine konvergente Majorante.
-\end{bonus}
+\end{example}
 
 \begin{algo}{Minorantenkriterium}
     Man sucht eine zweite Folge $b_k$, sodass diese fast immer kleiner ist als die vorgegebene Folge ist.
     Divergiert $\sum_{k=1}^{\infty} b_k$ dann divergiert auch die ursprüngliche Reihe.
 \end{algo}
 
-\begin{bonus}{Beispiel Majorantenkriterium}
+\begin{example}{Majorantenkriterium}
     Konvergiert $\sum_{k=1}^{\infty} \frac{1}{\ln(k)}$?
 
     Nein, da $\frac{1}{k} < \frac{1}{\ln(k)}$ ($k\geq3$) und wir wissen, dass $\sum_{k=1}^{\infty} \frac{1}{k}$ divergiert.\\
     Wir haben also eine divergente Minorante.
-\end{bonus}
+\end{example}
 
 \begin{algo}{Cauchy-Kondensatioskriterium}
     Die Konvergenz von folgenden Reihen ist äquivalent.
@@ -753,7 +758,7 @@
     $$
 \end{algo}
 
-\begin{bonus}{Beispiel Cauchy-Kondensatioskriterium}
+\begin{example}{Cauchy-Kondensatioskriterium}
     Konvergiert $\sum_{k=1}^{\infty} \frac{1}{k}$?
 
     Die Frage ist äquivalent dazu, ob
@@ -761,7 +766,7 @@
         \sum_{k=1}^{\infty} 2^k \cdot \frac{1}{2^k} = \sum_{k=1}^{\infty} 1
     \]
     konvergiert. Das tut sie offensichtlich nicht, also konvergiert auch $\sum_{k=1}^{\infty} \frac{1}{k}$ nicht.
-\end{bonus}
+\end{example}
 
 \begin{algo}{Wurzelkriterium}
     Sei $r = \lim_{n\to\infty} \sqrt[n]{|a_n|}$.
@@ -770,7 +775,7 @@
     Für $r=1$ liefert das Kriterium keine Aussage.
 \end{algo}
 
-\begin{bonus}{Beispiel Wurzelkriterium}
+\begin{example}{Wurzelkriterium}
     Konvergiert die Reihe $\sum_{k=1}^{\infty} \frac{1}{7^k}$?
 
     Es gilt
@@ -778,7 +783,7 @@
         r = \lim_{k\to\infty} \sqrt[k]{\frac{1}{7^k}} = \frac{1}{7} < 1
     \]
     Also konvergiert die Reihe.
-\end{bonus}
+\end{example}
 
 \begin{algo}{Quotientenkriterium}
     Sei $r = \lim_{n\to\infty} \left| \frac{a_{n+1}}{a_n} \right|$.
@@ -790,7 +795,7 @@
     Für $r=1$ liefert das Kriterium keine Aussage.
 \end{algo}
 
-\begin{bonus}{Beispiel Quotientenkriterium}
+\begin{example}{Quotientenkriterium}
     Konvergert die Reihe $\sum_{k=1}^{\infty} \frac{x^k}{k!}$?
 
     Wir berechnen dann
@@ -799,7 +804,7 @@
         = \lim_{n\to\infty} \left| \frac{x}{n+1} \right| = 0
     \]
     Die Reihe konvergiert also für alle $x$.
-\end{bonus}
+\end{example}
 
 \begin{algo}{Leibnizkriterium}
     Das Leibnizkriterium wird für alternierende Reihen genutzt.
@@ -816,12 +821,12 @@
     Dann konvergiert die Reihe.
 \end{algo}
 
-\begin{bonus}{Beispiel Leibnizkriterium}
+\begin{example}{Leibnizkriterium}
     Konvergiert die Reihe $\sum_{k=2}^{\infty} (-1)^n \cdot \frac{1}{\ln(k)}$.
     Wir wissen, dass $\ln(k) > 0$ für $k>1$.
     Außerdem wissen wir, dass der natürliche Logarithmus monoton steigend ist, also ist $\frac{1}{\ln(k)}$ monoton fallend.
     Es gilt auch $\lim_{n\to\infty} = 0$. Also konvergiert die Reihe.
-\end{bonus}
+\end{example}
 
 
 \subsection{Potenzreihen}
@@ -873,7 +878,7 @@
     $$
 \end{bonus}
 
-\begin{bonus}{Beispiel: Potenzreihe um Entwicklungspunkt bestimmen}
+\begin{example}{Potenzreihe um Entwicklungspunkt bestimmen}
     Wir wollen die Potenzreihe um $x_0 = 1$ der Reihe $$f(x) = \frac{3}{5+2x}$$ bestimmen.
     Zunächst ist:
     $$
@@ -886,7 +891,7 @@
                  & ={} \frac{3}{7}\cdot \sum^\infty_{n=0} \left(\frac{-2}{7}\right)^n \cdot (x-1)^n \text{ für } \abs{x-1} < \frac{7}{2}
         \end{aligned}
     $$
-\end{bonus}
+\end{example}
 
 \begin{defi}{Exponentialfunktion}
     Die Funktion
@@ -950,7 +955,7 @@
     $$
 \end{defi}
 
-\begin{bonus}{Beispiel: $\epsilon$-$\delta$-Kriterium}
+\begin{example}{$\epsilon$-$\delta$-Kriterium}
     Untersuche die Stetigkeit von $f(x) = \frac{1}{\sqrt{x}}, \quad x > 0$.
 
     $f(x)$ ist stetig in $x_0$, wenn
@@ -986,7 +991,7 @@
     $$
 
     Mit $\delta = \min\{\frac{x_0}{2}, \frac{x_0\sqrt{x_0}}{2}\epsilon\}$ ist $f(x)$ stetig.\qed
-\end{bonus}
+\end{example}
 
 \begin{defi}{Sandwich-Lemma für Funktionen}
     Gilt
@@ -1073,7 +1078,7 @@
     Ist eine Funktion Lipschitz-stetig, so ist sie auch gleichmäßig stetig.
 \end{defi}
 
-\begin{bonus}{Beispiel: Lipschitz-Stetigkeit}\
+\begin{example}{Lipschitz-Stetigkeit}\
     $$f(x) = \sqrt{2+3x}$$
 
     Ist die Funktion lokal Lipschitz-stetig im Punkt $x_0 = 1$?
@@ -1095,7 +1100,7 @@
         \end{aligned}
     $$
     Damit ist $f$ lokal Lipschitz-stetig im Punkt $x_0 = 1$ mit $L = \frac{3}{2\cdot \sqrt{5-3\delta}}$.\qed
-\end{bonus}
+\end{example}
 
 \begin{defi}{Zwischenwertsatz}
     Sei $f : [a, b] \to \R$ stetig mit $f(a) = c$ und $f(b) = d$, dann gilt
@@ -1110,7 +1115,7 @@
     Sei $f : [a, b] \to [c, d]$ stetig mit $[c, d] \subset [a, b]$ (\emph{selbstkontrahierend}), dann existiert ein \emph{Fixpunkt} $u = f(u)$.
 \end{defi}
 
-\begin{bonus}{Beispiel: Fixpunktberechnung (Teil 1)}
+\begin{example}{Fixpunktberechnung (Teil 1)}
     Gegeben ist die Funktion
     $$f: [0,\infty) \to [0, \infty), \quad f(x) = \frac{x+\frac{1}{2}}{x+1}$$
 
@@ -1143,9 +1148,9 @@
 
     Insgesamt sind also alle Bedingungen für den Fixpunktsatz erfüllt.\qed
 
-\end{bonus}
+\end{example}
 
-\begin{bonus}{Beispiel: Fixpunktberechnung (Teil 2)}
+\begin{example}{Fixpunktberechnung (Teil 2)}
     (b) Berechnen Sie den Fixpunkt von $f$.
     $$
         \begin{aligned}
@@ -1159,7 +1164,7 @@
     $$
 
     $x^* \in [0,\infty] \implies x^* = \sqrt{\frac{1}{2}}$\qed
-\end{bonus}
+\end{example}
 
 \section{Differentialrechnung}
 \subsection{Tangentengleichung}
@@ -1349,7 +1354,7 @@
     Dabei heißt $x_0$ Entwicklungspunkt der Potenzreihe und die Reihe konvergiert für $\abs{x-x_0} < r$ mit $r = \lim_{n\to\infty}\abs{\frac{a_n}{a_{n+1}}}$.
 \end{defi}
 
-\begin{bonus}{Beispiel: Taylorreihe}
+\begin{example}{Taylorreihe}
     \textbf{Bestimmen Sie das Taylorpolynom dritten Grades für die Funktion $g(x) = \ln(x\cdot e^{-2x})$ an der Stelle $x_0 = 1$.}
 
     Taylorpolynom $k$-ten Grades einer Funktion $f$:
@@ -1377,7 +1382,7 @@
         \frac{\mathrm{d}^2 g}{\mathrm{d} x^2} = \frac{-1}{x^2}, \quad
         \frac{\mathrm{d}^3 g}{\mathrm{d} x^3} = \frac{2}{x^3}
     $$
-\end{bonus}
+\end{example}
 
 \newpage
 \section{Integration}
@@ -1570,7 +1575,7 @@
     das \emph{Parameterintegral}.
 \end{defi}
 
-\begin{bonus}{Beispiel: Parameterintegral}
+\begin{example}{Parameterintegral}
     $$
         \begin{aligned}
             \lim_{x\to\infty} \left( \frac{1}{x} \cdot \int_0^x \frac{t+1}{t^2 + 2} \dt\right)
@@ -1579,7 +1584,7 @@
              & ={} 0
         \end{aligned}
     $$\qed
-\end{bonus}
+\end{example}
 
 \begin{defi}{Leibniz-Regel}
     Das Parameterintegral $F(x) = \int^{g_2(x)}_{g_1(x)} f(x, t) \dt$ ist differenzierbar und es ist
@@ -1588,7 +1593,7 @@
     $$
 \end{defi}
 
-\begin{bonus}{Beispiel: Leibniz-Regel}
+\begin{example}{Leibniz-Regel}
     $$F(x) = \int_{t=x}^{x^2} \frac{1}{t} \cdot \ln (1 + x\cdot t) \dt \quad (x>0)$$
     $$
         \begin{aligned}
@@ -1600,7 +1605,7 @@
              & ={} \frac{3\ln (1 + x^3) - 2\ln(1+x^2)}{x}                                                                                                                                                   \\
         \end{aligned}
     $$\qed
-\end{bonus}
+\end{example}
 
 \subsection{Uneigentliche Integrale}
 
@@ -1668,7 +1673,7 @@
     $$
 \end{defi}
 
-\begin{bonus}{Beispiel: Integralkriterium}
+\begin{example}{Integralkriterium}
     \[
         \sum^\infty_{n=1} \frac{1}{\sqrt[3]{n}} = \sum^\infty_{n=1} f(n)
     \]
@@ -1686,6 +1691,8 @@
         \end{aligned}
     $$
     Damit divergiert das Integral und die gegebene Summe divergiert ebenfalls.\qed
-\end{bonus}
+\end{example}
 
+\printindex
+\printindex[Beispiele]
 \end{document}
