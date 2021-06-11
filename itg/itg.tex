@@ -1,4 +1,4 @@
-\documentclass[german]{spicker}
+\documentclass[german]{../spicker}
 
 \usepackage{amsmath}
 
@@ -7,6 +7,8 @@
 
 \title{IT-Grundlagen}
 \author{Patrick Gustav Blaneck}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
 
 \newcommand{\scalarprod}[1]{\left\langle #1 \right\rangle}
 \newcommand{\vektor}[1]{\begin{pmatrix*}[r] #1 \end{pmatrix*}}
@@ -243,7 +245,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     \end{itemize}
 \end{defi}
 
-\begin{bonus}{Beispiel: Backus-Naur-Form}
+\begin{example}{Backus-Naur-Form}
     \begin{allintypewriter}
         \begin{tabular}{rl}
             Satz        & := Subjekt Verb Präposition Nomen Ende                       \\
@@ -256,7 +258,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
             Ende        & := \ditto .\ditto
         \end{tabular}
     \end{allintypewriter}
-\end{bonus}
+\end{example}
 
 \subsection{Programmiersprachen}
 
@@ -405,7 +407,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     und teils sehr komplexen Befehle \emph{nicht} möglich.
 \end{defi}
 
-\begin{bonus}{Beispiel: Pipelining}
+\begin{example}{Pipelining}
     5-Stage-Pipeline:
     \begin{itemize}
         \item Instruction Fetch (\textbf{IF}): Befehl lesen
@@ -433,7 +435,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
             \hline
         \end{tabular}
     \end{center}
-\end{bonus}
+\end{example}
 
 \begin{defi}{ROM}
     Der \emph{ROM} ist ein Festwertspeicher, der - prinzipiell - \emph{nur gelesen} werden kann und die Firmware des Computers gespeichert hat.
@@ -959,7 +961,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     $n$ Bits besteht, kann die Pagetable maximal $2^n$ Einträge enthalten.
 \end{defi}
 
-\begin{bonus}{Beispiel: Pagetable}
+\begin{example}{Pagetable}
     Die Länge einer Adresse sei 16 Bit, aufgeteilt in je 8 Bit für Offset und Seitennummer.
 
     Es sei außerdem folgende Seitentabelle gegeben:
@@ -995,7 +997,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     \end{center}
 
     \emph{Hinweis}: Ist eine Adresse ungültig, wurde die dazugehörige Page in den Hintergrundspeicher ausgelagert. In diesem Fall muss die physikalische Page in den RAM geladen und die Pagetable aktualisiert werden.
-\end{bonus}
+\end{example}
 
 \begin{bonus}{Paging on Demand}
     Das Vorgehen, aktuell
@@ -1024,7 +1026,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     Kontrollzustand bei der Verwendung einer Page wieder auf \glqq 0\grqq gesetzt wird.
 \end{algo}
 
-\begin{bonus}{Beispiel: Speicherverwaltung}
+\begin{example}{Speicherverwaltung}
     Seitenanforderungen: 1, 2, 3, 4, 1, 2, 5, 1, 2, 3, 4, 5
 
     \textbf{FIFO-Strategie:}
@@ -1066,7 +1068,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     \end{tabular}
 
     10 Einlagerungen
-\end{bonus}
+\end{example}
 
 \newpage
 \subsection{Dateisystemverwaltung}
@@ -1384,7 +1386,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     \end{itemize}
 \end{defi}
 
-\begin{bonus}{Beispiel: Cäsar Chiffre}
+\begin{example}{Cäsar Chiffre}
     Im einfachsten Fall beinhalten $\mathfrak{P}$ und $\mathfrak{S}$ dieselben Zeichen und sind nur gegeneinander
     um $k$ Zeichen verschoben. Diese Variante einer \emph{monoalphabetischen Substitutionschiffre} wird \emph{Cäsar Chiffre} genannt.
 
@@ -1405,9 +1407,9 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     Geheimtext dann entschlüsseln, indem er wiederum beide Alphabete untereinander
     schreibt und jedem Buchstaben aus dem Geheimtext den zugehörigen
     Buchstaben aus dem Klartextalphabet zuorndet, der dann genau darüber steht.
-\end{bonus}
+\end{example}
 
-\begin{bonus}{Beispiel: Vigenère Chiffre}
+\begin{example}{Vigenère Chiffre}
     Eine bekannte \emph{polyalphabetische Substitutionschiffre} ist die \emph{Vigenère Chiffre}.
     Sie funktioniert im Prinzip wie die Cäsar-Chiffre, verwendet also verschobene
     lateinische Alphabete zur Verschlüsselung. Wie viele Alphabete und wie
@@ -1431,7 +1433,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     enthält, als es Geheimtextalphabete gibt, fängt sie nach jeweils drei Zeichen
     wieder beim ersten Geheimtextalphabet an. Somit ergibt sich der Geheimtext
     $C =$ \texttt{LDGPRCEOGS}.
-\end{bonus}
+\end{example}
 
 \begin{defi}{Moderne Verschlüsselungsverfahren}
     Moderne Verschlüsselungsverfahren werden, im Gegensatz zu klassischen Verfahren,
@@ -1447,12 +1449,12 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
         \item Problem des Schlüsselaustauschs
         \item Vertraulichkeit, aber keine zur Sicherstellung von Authentifizierung und Integrität
         \item[$\to$] Blockchiffren
-              \subitem -  zu verschlüsselnde Daten in $m$ Blöcke derselben Größe aufgeteilt
-              \subitem -  einfachster Fall: jeder der zuvor erzeugten Blöcke $m_i$ mit Schlüssel $k$
-              \subitem zu verschlüsseltem Block $c_i$ derselben Größe übersetzt
+            \subitem -  zu verschlüsselnde Daten in $m$ Blöcke derselben Größe aufgeteilt
+            \subitem -  einfachster Fall: jeder der zuvor erzeugten Blöcke $m_i$ mit Schlüssel $k$
+            \subitem zu verschlüsseltem Block $c_i$ derselben Größe übersetzt
         \item[$\to$] Stromchiffren
-              \subitem -  Klartext wird bitweise anhand eines Schlüsselstroms verschlüsselt
-              \subitem - Schlüsselstrom und Geheimtext haben dieselbe Länge wie der Klartext
+            \subitem -  Klartext wird bitweise anhand eines Schlüsselstroms verschlüsselt
+            \subitem - Schlüsselstrom und Geheimtext haben dieselbe Länge wie der Klartext
     \end{itemize}
 
     \textbf{Asymmetrische Verfahren}:
@@ -1490,7 +1492,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     $$
 \end{algo}
 
-\begin{bonus}{Beispiel: RSA Verschlüsselung}
+\begin{example}{RSA Verschlüsselung}
     Damit Alice Bob eine Nachricht schreiben kann, muss Bob zunächst seinen \emph{public Key} zur Vefügung stellen.
 
     Zur Erzeugung seines Schlüsselpaars wählt Bob die Primzahlen $p=13$ und $q=17$.
@@ -1502,7 +1504,7 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     Dazu berechnet Sie $C = 42^5 \mod 221 = 9$ und schickt die verschlüsselte Nachricht anschließend an Bob.
 
     Bob kann nun mit seinem \emph{private Key} die erhaltene Nachricht entschlüsseln und erhält $M = 9^77 \mod 221 = 42$.
-\end{bonus}
+\end{example}
 
 \begin{defi}{Digitale Signatur}
     Um auch \emph{Authentifizierung}
@@ -1537,4 +1539,6 @@ In dieser Zusammenfassung werden Inhalte aus dem ITG-Skript von Bastian Küppers
     \end{itemize}
 \end{defi}
 
+\printindex
+\printindex[Beispiele]
 \end{document}

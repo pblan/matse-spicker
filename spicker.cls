@@ -95,6 +95,14 @@
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\bigo}{\mathcal{O}}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Diagrams
+
+\usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
+\pgfplotsset{compat=1.8}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Links and Metadata
 \usepackage[
@@ -115,6 +123,27 @@
 \makeatother
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Header
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+%\renewcommand{\subsectionmark}[1]{\markright{#1}{}}
+
+\fancyhf{}
+
+\fancyhead[L]{\leftmark}
+\fancyhead[R]{\rightmark} % 1. sectionname
+%\fancyfoot[C]{\thepage}
+\fancypagestyle{plain}{%
+    \fancyhf{}%
+    \renewcommand{\headrulewidth}{0pt}%
+}
+
+%\rhead{\thesubsection} %%%COMMENT THIS LINE%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Environments
 \usepackage{todonotes}
 
@@ -129,8 +158,17 @@
 
 \usepackage{tcolorbox}
 
+\usepackage{array}   % for \newcolumntype macro
+
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{P}{>{$}p<{$}} % math-mode version of "l" column type
+
 %%%%%%%%%%%%%%%%
 % Context Blocks
+
+\usepackage[]{imakeidx}
 
 \usepackage{iflang}
 \newcommand{\SpickerAlgorithm}{\IfLanguageName{ngerman}{Algorithmus}{Algorithm}}
@@ -139,27 +177,32 @@
 \tcbset{boxrule=0pt,toprule=1pt,parbox=false,on line}
 
 \newenvironment{algo}[1]{%
+\index{#1}%
 \setlist{nosep,leftmargin=*}%
 \begin{tcolorbox}[colback=fhblue!5!white, colframe=fhblue!75!black, title={\sffamily \SpickerAlgorithm: #1}]
 }{%
 \end{tcolorbox}}
 
 \newenvironment{theo}[1]{%
+\index{#1}%
 \begin{tcolorbox}[colback=fhpurple!5!white, colframe=fhpurple!75!black, title={\sffamily \SpickerTheorem: #1}]
 }{%
 \end{tcolorbox}}
 
 \newenvironment{defi}[1]{%
+\index{#1}%
 \begin{tcolorbox}[colback=fhmint!5!white, colframe=fhmint!75!black, title={\sffamily Definition: #1}]
 }{%
 \end{tcolorbox}}
 
 \newenvironment{bonus}[1]{%
+\index{#1}%
 \begin{tcolorbox}[colback=fhred!5!white, colframe=fhred!75!black, title={\sffamily Bonus: #1}]
 }{%
 \end{tcolorbox}}
 
 \newenvironment{example}[1]{%
+\index[Beispiele]{#1}%
 \begin{tcolorbox}[colback=fhred!5!white, colframe=fhred!75!black, title={\sffamily \IfLanguageName{ngerman}{Beispiel}{Example}: #1}]
 }{%
 \end{tcolorbox}}
@@ -192,3 +235,9 @@
 \begin{minipage}[t]{0.3166\textwidth}
 }{%
 \end{minipage}\bigbreak}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Citations 
+
+\usepackage[style=numeric, backend=bibtex]{biblatex}
