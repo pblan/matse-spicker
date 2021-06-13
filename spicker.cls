@@ -34,7 +34,7 @@
 \linespread{1.05} % more spacing
 \setkomafont{disposition}{\fontseries{sbc}\sffamily}
 
-\usepackage{enumitem}
+\usepackage[shortlabels]{enumitem}
 \setlist{nosep}
 
 \makeatletter
@@ -95,6 +95,7 @@
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\bigo}{\mathcal{O}}
 
+\newcommand{\Rnum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Diagrams
@@ -121,27 +122,6 @@
   }
 }
 \makeatother
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Header
-\usepackage{fancyhdr}
-
-\pagestyle{fancy}
-\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
-%\renewcommand{\subsectionmark}[1]{\markright{#1}{}}
-
-\fancyhf{}
-
-\fancyhead[L]{\leftmark}
-\fancyhead[R]{\rightmark} % 1. sectionname
-%\fancyfoot[C]{\thepage}
-\fancypagestyle{plain}{%
-    \fancyhf{}%
-    \renewcommand{\headrulewidth}{0pt}%
-}
-
-%\rhead{\thesubsection} %%%COMMENT THIS LINE%%%%%%%%%%%%%%%%%%%%%%
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Environments
