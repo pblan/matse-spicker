@@ -395,7 +395,7 @@
 \begin{algo}{Richtungsableitung}
     Sei $\vec{v} \in \R^n$ mit $\norm{\vec{v}} = 1$. Dann ist die Richtungsableitung von $f$ im Punkt $\vec{x_0}$ in Richtung $\vec{v}$ gegeben mit
     $$
-        \frac{\partial f}{\partial v} = D_{\vec{v}}(f) = \nabla (f(\vec{x_0})) \cdot \vec{v}
+        \frac{\partial f}{\partial v} = D_{\vec{v}}(f) = \scalarprod{\nabla (f(\vec{x_0})) , \vec{v}}
     $$
 \end{algo}
 
@@ -513,6 +513,22 @@
     $$
 \end{defi}
 
+\begin{defi}{Implizite Differentiation}
+    Seien $F(x, f(x)) = F(x, y)$ und $f(x) = y$ differenzierbar.
+    Gilt $F(x_0, y_0) = 0$, dann wird $y$ \emph{implizit differenziert} mit
+    $$
+        y' = -\frac{F_x(x_0, y_0)}{F_y(x_0, y_0)}
+    $$
+
+    Es gilt:
+    \begin{itemize}
+        \item Die implizite Differentiation kann insbesondere angewendet werden, wenn sich eine Funktion $F(x, y)=0$ nicht oder nicht einfach nach $y$ umstellen lässt.
+        \item Die Funktion muss ggf. auf die Form $F(x, y) = 0$ gebracht werden.
+        \item Es ist immer zu testen, ob der vorgegebene Punkt die Bedingung $F(x_0, y_0) = 0$ erfüllt.
+        \item Die Rechnung kann an einem beliebigen Punkt $(x_0, y_0)$ durchgeführt werden und somit auch eine Ableitungsfunktion berechnen.
+    \end{itemize}
+\end{defi}
+
 \subsubsection{Partielle Ableitungen höherer Ordnung}
 
 \begin{defi}{Satz von Schwarz}
@@ -556,7 +572,7 @@
     $$
         \begin{aligned}
             f(x, y) \quad = \quad & f(x_0, y_0) + f_x(x_0, y_0) (x-x_0) + f_y(x_0, y_0) (y-y_0)                                                    \\
-            + \quad               & \frac{f_{xx}(x_0, y_0) (x-x_0)^2}{2} + f_{xy}(x_0, y_0) (x-x_0) (y-y_0) + \frac{f_{yy}(x_0, y_0) (x-x_0)^2}{2}
+            + \quad               & \frac{f_{xx}(x_0, y_0) (x-x_0)^2}{2} + f_{xy}(x_0, y_0) (x-x_0) (y-y_0) + \frac{f_{yy}(x_0, y_0) (y-y_0)^2}{2}
         \end{aligned}
     $$
 \end{defi}
@@ -1596,7 +1612,7 @@
 \begin{algo}{Lösen von linearen homogenen Differentialgleichungen 2. Ordnung}
     Für eine Gleichung
     $$
-        \boxed{y'' + ay' + b = 0}
+        \boxed{y'' + ay' + by = 0}
     $$
     stelle man die charakteristische Gleichung auf, mit
     $$
@@ -1611,7 +1627,7 @@
               $$
         \item $D = 0$:
               $$
-                  y_h = \lambda_1 e^{\alpha x}
+                  y_h = (\lambda_1 + \lambda_2x)\cdot  e^{\alpha x}
               $$
         \item $D < 0$:
               $$
@@ -1658,16 +1674,13 @@
 \end{algo}
 
 \begin{example}{Lösen von linearen Differentialgleichungssystemen}
-    Gegeben sei das Differentialgleichungssystem
+    Lösen Sie folgendes Differentialgleichungssystem:
     $$
         \begin{aligned}
             y' & = y + 2z          \\
             z' & = 2y + z - 2e^{x}
         \end{aligned}
     $$
-    mit den Anfangswerten $y(0) = -3$ und $z(0) = 4$.
-
-    Bestimmen Sie die Lösung des Anfangswertproblems.
 
     \noindent\makebox[\linewidth]{\rule{\textwidth}{1pt}}
 
