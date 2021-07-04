@@ -76,6 +76,7 @@
 \usepackage{stmaryrd}
 \usepackage{braket}
 \usepackage{cool}
+\usepackage{siunitx}
 
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
@@ -186,6 +187,8 @@
 \begin{tcolorbox}[colback=fhred!5!white, colframe=fhred!75!black, title={\sffamily \IfLanguageName{ngerman}{Beispiel}{Example}: #1}]
 }{%
 \end{tcolorbox}}
+    
+\newcommand{\exampleseparator}{\noindent\rule{\textwidth}{0.2pt}}
 
 %%%%%%%%%%%%%%
 % Split Blocks
