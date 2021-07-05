@@ -27,6 +27,7 @@
 \usepackage{microtype}
 \usepackage{csquotes}
 \usepackage{booktabs}
+\usepackage{listings}
 
 \usepackage{lmodern} % upgrade default font
 \usepackage[sc]{mathpazo} % pretty font for text
@@ -153,7 +154,7 @@
 
 \usepackage{iflang}
 \newcommand{\SpickerAlgorithm}{\IfLanguageName{ngerman}{Algorithmus}{Algorithm}}
-\newcommand{\SpickerTheorem}{\IfLanguageName{ngerman}{Satz}{Theorem}}
+\newcommand{\SpickerCode}{\IfLanguageName{ngerman}{Code}{Code}}
 
 \tcbset{boxrule=0pt,toprule=1pt,parbox=false,on line}
 
@@ -164,9 +165,9 @@
 }{%
 \end{tcolorbox}}
 
-\newenvironment{theo}[1]{%
+\newenvironment{code}[1]{%
 \index{#1}%
-\begin{tcolorbox}[colback=fhpurple!5!white, colframe=fhpurple!75!black, title={\sffamily \SpickerTheorem: #1}]
+\begin{tcolorbox}[colback=fhpurple!5!white, colframe=fhpurple!75!black, title={\sffamily \SpickerCode: #1}]
 }{%
 \end{tcolorbox}}
 
