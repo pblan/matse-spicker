@@ -1,0 +1,26 @@
+\documentclass[german]{spicker}
+
+\addbibresource{db.bib}
+
+\title{Datenbanken}
+\author{Patrick Gustav Blaneck, Tim Wende}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{includes/grundlagen.tex}
+\include{includes/modellierung.tex}
+\include{includes/entity_relationship_modell.tex}
+\include{includes/relationales_modell.tex}
+\include{includes/relationale_algebra.tex}
+\include{includes/normalformen.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}
