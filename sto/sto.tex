@@ -1,0 +1,23 @@
+\documentclass[german]{spicker}
+
+\addbibresource{sto.bib}
+
+\title{Stochastik}
+\author{Patrick Gustav Blaneck}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{includes/wahrscheinlichkeitsrechnung.tex}
+\include{includes/beschreibende_statistik.tex}
+\include{includes/schliessende_statistik.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}
