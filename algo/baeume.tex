@@ -50,7 +50,7 @@
 
     Ein \emph{links-vollständiger Binärbaum} ist ein minimaler Binärbaum, in dem die Knoten auf dem untersten Level so weit wie möglich links stehen.
 
-    Alle Blätter eines \emph{vollständigen Binärbaums} haben den gleichen Level.
+    Alle Blätter eines \emph{vollständigen Binärbaums} haben den gleichen Level und dieser ist vollbesetzt.
 
     Ein vollständiger Binärbaum der Höhe $H$ hat
     $$
@@ -897,7 +897,7 @@
                   \item Element muss gesucht werden: $\bigo(\log n)$
                   \item nächstgrößeres Element muss gesucht werden: $\bigo(\log n)$
                   \item Elemente müssen verschoben werden: $\bigo(1)$
-                  \item Baum muss ausgeglichen werden: $\bigo(\log n)$
+                  \item Baum muss ausgeglichen werden: $\bigo(\log n)$\footnote{Im Worst-Case muss für jede Ebene eine Doppelrotation durchgeführt werden $\implies \bigo(\log n)$}
               \end{itemize}
         \item Prüfen/Auslesen
               \begin{itemize}
@@ -1233,7 +1233,8 @@
 \end{defi}
 
 \begin{algo}{Ausgleich zwischen Geschwisterknoten}
-    Voraussetzung: Knoten $q$ mit Underflow hat einen Geschwisterknoten $p$ mit $>d$ Schlüsseln.
+    Voraussetzung:
+    Knoten $q$ mit Underflow hat \emph{benachbarten} Geschwisterknoten $p$ mit $>d$ Schlüsseln.
 
     Annahme:
     \begin{itemize}
@@ -1311,7 +1312,8 @@
 \end{algo}
 
 \begin{algo}{Verschmelzen von Geschwisterknoten}
-    Voraussetzung: Knoten $q$ hat Geschwisterknoten mit $d$ Schlüsseln
+    Voraussetzung:
+    Knoten $q$ hat \emph{benachbarten} Geschwisterknoten mit $d$ Schlüsseln.
 
     Annahme:
     \begin{itemize}
@@ -1412,6 +1414,8 @@
         \item Für jeden Knoten gilt, dass jeder Pfad zu den Blättern die gleiche Anzahl an schwarzen Knoten hat. (Schwarz-Tiefe)
         \item Beide Kinder eines roten Knotens sind schwarz.
     \end{itemize}
+
+    Rot-Schwarz-Bäume sind eine gängige Alternative zu AVL-Bäumen.
 \end{defi}
 
 \begin{algo}{Einfügen in einen Rot-Schwarz-Baum}
@@ -1803,7 +1807,71 @@
         \item größtes Element befindet sich an der Wurzel (Max-Heap)
         \item entlang jedes Pfades von einem Knoten zur Wurzel sind Knoteninhalte aufsteigend sortiert
     \end{itemize}
+
+    Ein Heap lässt sich insbesondere als Array sehr leicht speichern.
+    Dabei gilt:
+    \begin{itemize}
+        \item \texttt{heap[0]} ist die Wurzel
+        \item \texttt{heap[(i-1)/2]} ist der Elterknoten des Knoten $i$
+        \item \texttt{heap[(2*i)+1]} ist das linke Kind des Knoten $i$
+        \item \texttt{heap[(2*i)+2]} ist das rechte Kind des Knoten $i$
+    \end{itemize}
+
+    Das enstpricht einem Level-Order-Baumdurchlauf.
 \end{defi}
+
+\begin{example}{Heap als Array}
+    \begin{center}
+        \begin{forest}
+            baseline,anchor=north,
+            for tree={circle, draw,
+                    minimum size=2em, % <-- added
+                    inner sep=1pt}
+                [
+                    90
+                        [
+                            45
+                                [
+                                    27
+                                        [
+                                            2
+                                        ]
+                                        [
+                                            3
+                                        ]
+                                ]
+                                [
+                                    36
+                                        [
+                                            19
+                                        ]
+                                        [26]
+                                ]
+                        ]
+                        [
+                            17
+                                [
+                                    7
+                                        [,empty node]
+                                        [,empty node]
+                                ]
+                                [
+                                    1
+                                        [,empty node]
+                                        [,empty node]
+                                ]
+                        ]
+                ]
+        \end{forest}
+    \end{center}
+
+    \vspace{1em}
+
+    Für den Heap oben gilt die Array-Darstellung:
+    \begin{center}
+        \texttt{[90,45,17,27,36,7,1,2,3,19,26]}
+    \end{center}
+\end{example}
 
 \begin{algo}{Einfügen in einem Heap}
     Das Einfügen eines Elements in den Heap erfolgt, indem das neue Element an das Ende des Heaps gesetzt wird.
@@ -1825,11 +1893,10 @@
         \item Up-Heapify (erfolgt beim Einfügen)
         \item Down-Heapify (erfolgt beim Löschen)
     \end{itemize}
-
 \end{defi}
 
 \begin{algo}{Up-Heapify (Einfügen)}
-    Einfügen der $90$ in \textcolor{red}{rot}.
+    Einfügen der $45$ in \textcolor{red}{rot}.
 
     \vspace{1em}
     \begin{center}
@@ -1844,7 +1911,7 @@
                 [
                 36
                 [
-                25
+                27
                     [
                         2
                         %[,empty node]
@@ -1895,7 +1962,7 @@
                 [
                 36,draw=blue
                 [
-                25
+                27
                     [
                         2
                         %[,empty node]
@@ -1948,7 +2015,7 @@
                 [
                 45,edge={teal,thick}, draw=teal
                 [
-                25
+                27
                     [
                         2
                         %[,empty node]
@@ -2006,7 +2073,7 @@
                 [
                 45
                     [
-                        25
+                        27
                             [
                                 2
                                 %[,empty node]
@@ -2057,7 +2124,7 @@
                             [
                                 45
                                     [
-                                        25
+                                        27
                                             [
                                                 2
                                                 %[,empty node]
@@ -2111,7 +2178,7 @@
                 [
                 45, edge={draw=red},draw=blue
                 [
-                25
+                27
                     [
                         2
                         %[,empty node]
@@ -2162,7 +2229,7 @@
                 [
                 26, draw=red, edge={draw=teal}
                 [
-                25
+                27
                     [
                         2
                         %[,empty node]
@@ -2215,7 +2282,7 @@
                 [
                 36, draw=teal, edge={draw=teal}
                 [
-                25
+                27
                     [
                         2
                         %[,empty node]

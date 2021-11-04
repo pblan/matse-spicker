@@ -1,13 +1,5 @@
 \section{Elementare Datenstrukturen}
 
-\begin{defi}{Homogene Datenstruktur}
-    In einer \emph{homogenen Datenstruktur} haben alle Komponenten den \emph{gleichen} Datentyp.
-\end{defi}
-
-\begin{defi}{Heterogene Datenstruktur}
-    In einer \emph{heterogenen Datenstruktur} haben die Komponenten \emph{unterschiedliche} Datentypen.
-\end{defi}
-
 % ADTs
 \begin{defi}{Abstrakte Datentypen (ADTs)}
     Anforderungen an die Definition eines Datentyps:
@@ -24,6 +16,14 @@
         \item \emph{Geheimnisprinzip:}
               \subitem Interne Realisierung eines ADT-Moduls bleibt verborgen.
     \end{itemize}
+\end{defi}
+
+\begin{defi}{Homogene Datenstruktur}
+    In einer \emph{homogenen Datenstruktur} haben alle Komponenten den \emph{gleichen} Datentyp.
+\end{defi}
+
+\begin{defi}{Heterogene Datenstruktur}
+    In einer \emph{heterogenen Datenstruktur} haben die Komponenten \emph{unterschiedliche} Datentypen.
 \end{defi}
 
 \begin{bonus}{ADTs in Java}
@@ -51,7 +51,7 @@
     \end{tabular}
 \end{bonus}
 
-\subsection{Felder und abstrakte Datenstrukturen}
+\subsection{Abstrakte Datentypen}
 
 \begin{defi}{Array}
     Ein \emph{Array} hat folgende spezielle Eigenschaften:
@@ -92,6 +92,12 @@
     \end{center}
 \end{defi}
 
+\begin{defi}{Liste}
+    Eine Liste besteht aus Elementen, die wie in einem Array linear angeordnet sind.
+    Auf die Elemente einer Liste muss nicht wahlfrei zugegriffen werden können\footnote{Eine Ausnahme stellt der Listenanfang dar.}.
+
+    Die Größe einer Liste ist nicht von Anfang an bekannt und sie kann beliebig verlängert bzw. verkürzt werden.
+\end{defi}
 
 \begin{defi}{Stack}
     \begin{itemize}
@@ -183,6 +189,154 @@
                 \draw[<-] ([yshift=-0.5em, xshift=-0.25em] 1.west) [out=180, in=0] to ([yshift=-0.5em, xshift=0.25em] 0.east);
             }
         \end{tikzpicture}
+    \end{center}
+\end{defi}
+
+\begin{bonus}{Prioritätswarteschlange}
+    Eine \emph{Prioritätswarteschlange} ist eine Warteschlange, deren Elemente einen Schlüssel (\emph{Priorität}) besitzen.
+
+    \textbf{Implementierung:}
+
+    In Java dient zur Implementierung die Klasse \texttt{PriorityQueue}, alternativ auch \texttt{TreeSet}.
+\end{bonus}
+
+% Mengen
+\begin{defi}{Menge}
+    Eine \emph{Menge (Set)} ist eine Sammlung von Elementen des gleichen Datentyps.
+    Innerhalb der Menge sind die Elemente ungeordnet.
+    Jedes Element kann nur einmal in der Menge vorkommen.
+
+    \textbf{Implementierung:}
+
+    In Java ist \emph{Set} ein Interface, das unter anderem folgende Klassen implementiert:
+    \begin{itemize}
+        \item \texttt{TreeSet}: Basiert auf der Datenstruktur Rot-Schwarz-Baum, implementiert Erweiterung \texttt{SortedMap}.
+        \item \texttt{HashSet}: Basiert auf der Datenstruktur Hashtabelle.
+    \end{itemize}
+\end{defi}
+
+% Assoziative Felder
+\begin{defi}{Assoziatives Feld}
+    Ein \emph{assoziatives Feld} ist eine Sonderform des Feldes:
+    \begin{itemize}
+        \item Verwendet keinen numerischen Index zur Adressierung eines Elements.
+        \item Verwendet zur Adressierung einen Schlüssel (z.B. \texttt{a["Meier"]}).
+    \end{itemize}
+
+    Assoziative Felder eignen sich dazu, Datenelemente in einer großen Datenmenge aufzufinden.
+    Jedes Datenelement wird durch einen \emph{eindeutigen Schlüssel} identifiziert.
+
+    \textbf{Implementierung:}
+
+    In Java entspricht ein \emph{assoziatives Feld} dem Interface \texttt{java.util.Map}, das folgende Klassen implementiert:
+    \begin{itemize}
+        \item \texttt{TreeMap}: Basiert auf der Datenstruktur Rot-Schwarz-Baum, implementiert Erweiterung \texttt{SortedMap}.
+        \item \texttt{HashMap}: Basiert auf der Datenstruktur Hashtabelle.
+    \end{itemize}
+\end{defi}
+
+\subsection{Datenstrukturen}
+% Listen
+\begin{defi}{Einfach verkettete Liste}
+    Im Vergleich zu einem Array kann eine \emph{Liste} schrumpfen und wachsen.
+
+    \begin{center}
+        \begin{tikzpicture}[
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+                \node [StackBlock, label=$0$] (0) {};
+                \node [StackBlock, label=\texttt{next}] (0p) {};
+                \node [StackBlock, label=$1$,xshift=2em] (1) {};
+                \node [StackBlock, label=\texttt{next}] (1p) {};
+                \node [StackBlock, label=$2$,xshift=2em] (2) {};
+                \node [StackBlock, label=\texttt{next}] (2p) {};
+                \node [StackBlock, label=$\ldots$,xshift=2em] (dots) {};
+                \node [StackBlock] (dotsp) {};
+                \node [StackBlock, label=$n$,xshift=2em] (n) {};
+                \node [StackBlock, label=\texttt{next}] (np) {};
+                \node [StackBlock, label=\texttt{null}, xshift=2em] (null) {};
+
+
+                \draw[->] (0p.center) [out=0, in=180] to (1.west);
+                \draw[->] (1p.center) [out=0, in=180] to (2.west);
+                \draw[->] (2p.center) [out=0, in=180] to (dots.west);
+                \draw[->] (dotsp.center) [out=0, in=180] to (n.west);
+                \draw[->] (np.center) [out=0, in=180] to (null.west);
+            }
+        \end{tikzpicture}
+    \end{center}
+
+    \textbf{Performance:}
+
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c}
+            Zugriff     & Suche       & Einf./Lösch. (Anfang) & Einf./Lösch. (Ende)                                                                                 & Einf./Lösch. (Mitte)   \\
+            \hline
+            $\Theta(n)$ & $\Theta(n)$ & $\Theta(1)$           & $\Theta(1)/\Theta(n)$\footnote{$\Theta(1)$, wenn das letzte Element bekannt ist, $\Theta(n)$ sonst} & Suchzeit + $\Theta(1)$ \\
+        \end{tabular}
+    \end{center}
+\end{defi}
+
+
+\begin{defi}{Doppelt verkettete Liste}
+    Im Vergleich zu einer einfach verketteten Liste besitzt die \emph{doppelt verkettete Liste} zusätzlich einen Verweis auf den Vorgänger.
+
+    \begin{center}
+        \begin{tikzpicture}[
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+                \node [StackBlock,label=\texttt{null}] (nulll) {};
+
+                \node [StackBlock,label={[label distance=-.35ex]above:\texttt{prev}}, xshift=2em] (0p) {};
+                \node [StackBlock,label=$0$] (0) {};
+                \node [StackBlock,label=\texttt{next}] (0n) {};
+                \node [StackBlock,label={[label distance=-.35ex]above:\texttt{prev}},xshift=2em] (1p) {};
+                \node [StackBlock,label=$1$] (1) {};
+                \node [StackBlock,label=\texttt{next}] (1n) {};
+                \node [StackBlock,xshift=2em] (dotsp) {};
+                \node [StackBlock,label=$\ldots$] (dots) {};
+                \node [StackBlock] (dotsn) {};
+                \node [StackBlock,label={[label distance=-.35ex]above:\texttt{prev}},xshift=2em] (np) {};
+                \node [StackBlock,label=$n$] (n) {};
+                \node [StackBlock,label=\texttt{next}] (nn) {};
+
+                \node [StackBlock,label=\texttt{null}, xshift=2em] (nullr) {};
+
+                %\draw[->] ([yshift=0.5em, xshift=0.25em] 5.east) [out=0, in=180] to ([yshift=0.5em, xshift=-0.25em] 6.west);
+
+                % next arrows
+                \draw[->] ([yshift=0.5em] 0n.center) [out=0, in=180] to ([yshift=0.5em] 1p.west);
+                \draw[->] ([yshift=0.5em] 1n.center) [out=0, in=180] to ([yshift=0.5em] dotsp.west);
+                \draw[->] ([yshift=0.5em] dotsn.center) [out=0, in=180] to ([yshift=0.5em] np.west);
+
+                \draw[->] (nn.center) [out=0, in=180] to (nullr.west);
+
+                % prev arrows
+                \draw[<-] ([yshift=-0.5em] 0n.east) [out=0, in=180] to ([yshift=-0.5em] 1p.center);
+                \draw[<-] ([yshift=-0.5em] 1n.east) [out=0, in=180] to ([yshift=-0.5em] dotsp.center);
+                \draw[<-] ([yshift=-0.5em] dotsn.east) [out=0, in=180] to ([yshift=-0.5em] np.center);
+
+                \draw[->] (0p.center) [out=180, in=0] to (nulll.east);
+            }
+        \end{tikzpicture}
+    \end{center}
+
+    \textbf{Performance:}
+
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c}
+            Zugriff     & Suche       & Einf./Lösch. (Anfang) & Einf./Lösch. (Ende) & Einf./Lösch. (Mitte)   \\
+            \hline
+            $\Theta(n)$ & $\Theta(n)$ & $\Theta(1)$           & $\Theta(1)$         & Suchzeit + $\Theta(1)$ \\
+        \end{tabular}
     \end{center}
 \end{defi}
 
@@ -324,153 +478,6 @@
     \end{center}
 
     Damit ist ein zirkuläres (dynamisches) Feld gut für eine \emph{Queue/Deque} geeignet!
-\end{defi}
-
-\begin{bonus}{Prioritätswarteschlange}
-    Eine \emph{Prioritätswarteschlange} ist eine Warteschlange, deren Elemente einen Schlüssel (\emph{Priorität}) besitzen.
-
-    \textbf{Implementierung:}
-
-    In Java dient zur Implementierung die Klasse \texttt{PriorityQueue}, alternativ auch \texttt{TreeSet}.
-\end{bonus}
-
-% Mengen
-\begin{defi}{Menge}
-    Eine \emph{Menge (Set)} ist eine Sammlung von Elementen des gleichen Datentyps.
-    Innerhalb der Menge sind die Elemente ungeordnet.
-    Jedes Element kann nur einmal in der Menge vorkommen.
-
-    \textbf{Implementierung:}
-
-    In Java ist \emph{Set} ein Interface, das unter anderem folgende Klassen implementiert:
-    \begin{itemize}
-        \item \texttt{TreeSet}: Basiert auf der Datenstruktur Rot-Schwarz-Baum, implementiert Erweiterung \texttt{SortedMap}.
-        \item \texttt{HashSet}: Basiert auf der Datenstruktur Hashtabelle.
-    \end{itemize}
-\end{defi}
-
-% Listen
-\begin{defi}{Liste}
-    Im Vergleich zu einem Array kann eine \emph{Liste} schrumpfen und wachsen.
-
-    \begin{center}
-        \begin{tikzpicture}[
-                %  -{Stealth[length = 2.5pt]},
-                start chain,
-                node distance = 0pt,
-                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
-            ]
-            { start chain = going right
-                \node [StackBlock, label=$0$] (0) {};
-                \node [StackBlock, label=\texttt{next}] (0p) {};
-                \node [StackBlock, label=$1$,xshift=2em] (1) {};
-                \node [StackBlock, label=\texttt{next}] (1p) {};
-                \node [StackBlock, label=$2$,xshift=2em] (2) {};
-                \node [StackBlock, label=\texttt{next}] (2p) {};
-                \node [StackBlock, label=$\ldots$,xshift=2em] (dots) {};
-                \node [StackBlock] (dotsp) {};
-                \node [StackBlock, label=$n$,xshift=2em] (n) {};
-                \node [StackBlock, label=\texttt{next}] (np) {};
-                \node [StackBlock, label=\texttt{null}, xshift=2em] (null) {};
-
-
-                \draw[->] (0p.center) [out=0, in=180] to (1.west);
-                \draw[->] (1p.center) [out=0, in=180] to (2.west);
-                \draw[->] (2p.center) [out=0, in=180] to (dots.west);
-                \draw[->] (dotsp.center) [out=0, in=180] to (n.west);
-                \draw[->] (np.center) [out=0, in=180] to (null.west);
-            }
-        \end{tikzpicture}
-    \end{center}
-
-    \textbf{Performance:}
-
-    \begin{center}
-        \begin{tabular}{c|c|c|c|c}
-            Zugriff     & Suche       & Einf./Lösch. (Anfang) & Einf./Lösch. (Ende)                                                                                 & Einf./Lösch. (Mitte)   \\
-            \hline
-            $\Theta(n)$ & $\Theta(n)$ & $\Theta(1)$           & $\Theta(1)/\Theta(n)$\footnote{$\Theta(1)$, wenn das letzte Element bekannt ist, $\Theta(n)$ sonst} & Suchzeit + $\Theta(1)$ \\
-        \end{tabular}
-    \end{center}
-\end{defi}
-
-
-\begin{defi}{Doppelt verkettete Liste}
-    Im Vergleich zu einer einfach verketteten Liste besitzt die \emph{doppelt verkettete Liste} zusätzlich einen Verweis auf den Vorgänger.
-
-    \begin{center}
-        \begin{tikzpicture}[
-                %  -{Stealth[length = 2.5pt]},
-                start chain,
-                node distance = 0pt,
-                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
-            ]
-            { start chain = going right
-                \node [StackBlock,label=\texttt{null}] (nulll) {};
-
-                \node [StackBlock,label={[label distance=-.35ex]above:\texttt{prev}}, xshift=2em] (0p) {};
-                \node [StackBlock,label=$0$] (0) {};
-                \node [StackBlock,label=\texttt{next}] (0n) {};
-                \node [StackBlock,label={[label distance=-.35ex]above:\texttt{prev}},xshift=2em] (1p) {};
-                \node [StackBlock,label=$1$] (1) {};
-                \node [StackBlock,label=\texttt{next}] (1n) {};
-                \node [StackBlock,xshift=2em] (dotsp) {};
-                \node [StackBlock,label=$\ldots$] (dots) {};
-                \node [StackBlock] (dotsn) {};
-                \node [StackBlock,label={[label distance=-.35ex]above:\texttt{prev}},xshift=2em] (np) {};
-                \node [StackBlock,label=$n$] (n) {};
-                \node [StackBlock,label=\texttt{next}] (nn) {};
-
-                \node [StackBlock,label=\texttt{null}, xshift=2em] (nullr) {};
-
-                %\draw[->] ([yshift=0.5em, xshift=0.25em] 5.east) [out=0, in=180] to ([yshift=0.5em, xshift=-0.25em] 6.west);
-
-                % next arrows
-                \draw[->] ([yshift=0.5em] 0n.center) [out=0, in=180] to ([yshift=0.5em] 1p.west);
-                \draw[->] ([yshift=0.5em] 1n.center) [out=0, in=180] to ([yshift=0.5em] dotsp.west);
-                \draw[->] ([yshift=0.5em] dotsn.center) [out=0, in=180] to ([yshift=0.5em] np.west);
-
-                \draw[->] (nn.center) [out=0, in=180] to (nullr.west);
-
-                % prev arrows
-                \draw[<-] ([yshift=-0.5em] 0n.east) [out=0, in=180] to ([yshift=-0.5em] 1p.center);
-                \draw[<-] ([yshift=-0.5em] 1n.east) [out=0, in=180] to ([yshift=-0.5em] dotsp.center);
-                \draw[<-] ([yshift=-0.5em] dotsn.east) [out=0, in=180] to ([yshift=-0.5em] np.center);
-
-                \draw[->] (0p.center) [out=180, in=0] to (nulll.east);
-            }
-        \end{tikzpicture}
-    \end{center}
-
-    \textbf{Performance:}
-
-    \begin{center}
-        \begin{tabular}{c|c|c|c|c}
-            Zugriff     & Suche       & Einf./Lösch. (Anfang) & Einf./Lösch. (Ende) & Einf./Lösch. (Mitte)   \\
-            \hline
-            $\Theta(n)$ & $\Theta(n)$ & $\Theta(1)$           & $\Theta(1)$         & Suchzeit + $\Theta(1)$ \\
-        \end{tabular}
-    \end{center}
-\end{defi}
-
-% Assoziative Felder
-\begin{defi}{Assoziatives Feld}
-    Ein \emph{assoziatives Feld} ist eine Sonderform des Feldes:
-    \begin{itemize}
-        \item Verwendet keinen numerischen Index zur Adressierung eines Elements.
-        \item Verwendet zur Adressierung einen Schlüssel (z.B. \texttt{a["Meier"]}).
-    \end{itemize}
-
-    Assoziative Felder eignen sich dazu, Datenelemente in einer großen Datenmenge aufzufinden.
-    Jedes Datenelement wird durch einen \emph{eindeutigen Schlüssel} identifiziert.
-
-    \textbf{Implementierung:}
-
-    In Java entspricht ein \emph{assoziatives Feld} dem Interface \texttt{java.util.Map}, das folgende Klassen implementiert:
-    \begin{itemize}
-        \item \texttt{TreeMap}: Basiert auf der Datenstruktur Rot-Schwarz-Baum, implementiert Erweiterung \texttt{SortedMap}.
-        \item \texttt{HashMap}: Basiert auf der Datenstruktur Hashtabelle.
-    \end{itemize}
 \end{defi}
 
 % Verkettete Listen
@@ -636,8 +643,8 @@
                   \item Suchen einer alternativen Position innerhalb des Feldes
                         \begin{enumerate}
                             \item Lineares Sondieren (Verschiebung um konstantes Intervall)
-                            \item Doppeltes Hashing (Intervall wird quadriert)
-                            \item Quadratisches Sondieren (Nutzen einer weiteren Hashfunktion)
+                            \item Doppeltes Hashing (Nutzen einer weiteren Hashfunktion)
+                            \item Quadratisches Sondieren (Intervall wird quadriert)
                         \end{enumerate}
               \end{itemize}
     \end{itemize}

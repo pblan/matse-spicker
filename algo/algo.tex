@@ -7,7 +7,7 @@
 \usepackage{forest}
 \usepackage{color, colortbl}
 
-\usetikzlibrary{tikzmark,calc,arrows.meta,chains,decorations.pathreplacing,scopes,shapes.misc,shapes.multipart}
+\usetikzlibrary{tikzmark,bbox,calc,automata,arrows.meta,chains,decorations.pathreplacing,scopes,shapes.misc,shapes.multipart}
 
 \definecolor{javared}{rgb}{0.6,0,0} % for strings
 \definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
@@ -39,11 +39,30 @@ showstringspaces=false}
     current/.style = {
         fill = teal!50,
         },
+    marked/.style = {
+        fill = teal!25,
+        },
     visited/.style = {
         fill = teal!30,
         %text=white,
         opacity = 0.5,
     },
+    new/.style = {
+        red,
+    },
+    index small/.style = {
+        minimum width=1.5em,
+        minimum height=0.5em,
+        fill = gray!25,
+    },
+    index/.style = {
+        minimum width=2em,
+        minimum height=0.5em,
+        fill = gray!25,
+    },
+    every state/.style = {
+        minimum size=2em
+    }
 }
 
 \forestset{%
@@ -141,146 +160,9 @@ node contents={ \nodepart{one}    $#1$
 
 \include{graphen.tex}
 
-\section{Formale Sprachen}
-% Textsuche
+\include{formale_sprachen.tex}
 
-% Reguläre Ausdrücke
-
-% PCRE
-
-% Kleene
-
-\section{Sortierverfahren}
-
-\begin{defi}{Heapsort}
-    Der Heap ist Grundlage für das Sortierverfahren \emph{Heapsort}.
-
-    \begin{itemize}
-        \item Zu Beginn: Unsortiertes Feld
-        \item Phase 1:
-              \begin{itemize}
-                  \item Alle Elemente werden nacheinander in einen Heap eingefügt
-                  \item Resultat ist ein Heap, der in ein Feld eingebettet ist
-              \end{itemize}
-        \item Phase 2:
-              \begin{itemize}
-                  \item Die Elemente werden in absteigender Reihenfolge entfernt (Wurzel!)
-                  \item Heap schrumpft immer weiter
-              \end{itemize}
-    \end{itemize}
-
-    \begin{center}
-        \begin{tikzpicture}
-            [
-                start chain,
-                node distance = 0pt,
-                HeapBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain, fill=teal!30},
-                SortedBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain, fill=blue!30},
-            ]
-
-            { start chain = going right
-                \node [HeapBlock, label=above:\texttt{root}] (1) {$0$};
-                \node [HeapBlock] (2) {$1$};
-                \node [HeapBlock] (3) {$2$};
-                \node [HeapBlock] (dots) {$\ldots$};
-                \node [HeapBlock] (n2) {$n-2$};
-                \node [HeapBlock] (n1) {$n-1$};
-                \node [HeapBlock] (n) {$n$};
-
-                \draw[->, blue] ([yshift=1em] 1.north east) to[bend left=30] ([yshift=.5em] n.north);
-
-                \draw [decorate,decoration={brace,amplitude=5pt,mirror,raise=.5em}]
-                (1.south west) -- (n.south east) node[midway,yshift=-2em]{Heap};
-                %\draw[->] (val.south) [out=-30, in=-150] to (4.south);
-            }
-        \end{tikzpicture}
-        \hspace{4em}
-        \begin{tikzpicture}
-            [
-                start chain,
-                node distance = 0pt,
-                HeapBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain, fill=teal!30},
-                SortedBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain, fill=blue!30},
-            ]
-
-            { start chain = going right
-                \node [HeapBlock, label=above:\texttt{root}] (1) {$0$};
-                \node [HeapBlock] (2) {$1$};
-                \node [HeapBlock] (3) {$2$};
-                \node [HeapBlock] (dots) {$\ldots$};
-                \node [HeapBlock] (n2) {$n-2$};
-                \node [HeapBlock] (n1) {$n-1$};
-                \node [SortedBlock] (n) {$n$};
-
-                \draw[->, blue] ([yshift=1em] 1.north east) to[bend left=30] ([yshift=.5em] n1.north);
-
-                \draw [decorate,decoration={brace,amplitude=5pt,mirror,raise=.5em}]
-                (1.south west) -- (n1.south east) node[midway,yshift=-2em]{Heap};
-
-                \draw [decorate,decoration={brace,amplitude=5pt,mirror,raise=.5em}]
-                (n.south west) -- (n.south east) node[midway,yshift=-2em]{sortiertes Array};
-                %\draw[->] (val.south) [out=-30, in=-150] to (4.south);
-            }
-        \end{tikzpicture}
-
-        \begin{tikzpicture}
-            [
-                start chain,
-                node distance = 0pt,
-                HeapBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain, fill=teal!30},
-                SortedBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain, fill=blue!30},
-            ]
-
-            { start chain = going right
-                \node [HeapBlock, label=above:\texttt{root}] (1) {$0$};
-                \node [HeapBlock] (2) {$1$};
-                \node [HeapBlock] (3) {$2$};
-                \node [HeapBlock] (dots) {$\ldots$};
-                \node [HeapBlock] (n2) {$n-2$};
-                \node [SortedBlock] (n1) {$n-1$};
-                \node [SortedBlock] (n) {$n$};
-                \node [xshift=2em, on chain] (dots2) {$\ldots$};
-
-                \draw[->, blue] ([yshift=1em] 1.north east) to[bend left=30] ([yshift=.5em] n2.north);
-
-                \draw [decorate,decoration={brace,amplitude=5pt,mirror,raise=.5em}]
-                (1.south west) -- (n2.south east) node[midway,yshift=-2em]{Heap};
-
-                \draw [decorate,decoration={brace,amplitude=5pt,mirror,raise=.5em}]
-                (n1.south west) -- (n.south east) node[midway,yshift=-2em]{sortiertes Array};
-                %\draw[->] (val.south) [out=-30, in=-150] to (4.south);
-            }
-        \end{tikzpicture}
-        \hspace{1em}
-        \begin{tikzpicture}
-            [
-                start chain,
-                node distance = 0pt,
-                HeapBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain, fill=teal!30},
-                SortedBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain, fill=blue!30},
-            ]
-
-            { start chain = going right
-                \node [SortedBlock] (1) {$0$};
-                \node [SortedBlock] (2) {$1$};
-                \node [SortedBlock] (3) {$2$};
-                \node [SortedBlock] (dots) {$\ldots$};
-                \node [SortedBlock] (n2) {$n-2$};
-                \node [SortedBlock] (n1) {$n-1$};
-                \node [SortedBlock] (n) {$n$};
-
-                %\draw[->, blue] ([yshift=1em] 1.north) to[bend left=30] ([yshift=.5em] n2.north);
-
-                %\draw [decorate,decoration={brace,amplitude=5pt,mirror,raise=.5em}]
-                %(1.south west) -- (n2.south east) node[midway,yshift=-2em]{Heap};
-
-                \draw [decorate,decoration={brace,amplitude=5pt,mirror,raise=.5em}]
-                (1.south west) -- (n.south east) node[midway,yshift=-2em]{sortiertes Array};
-                %\draw[->] (val.south) [out=-30, in=-150] to (4.south);
-            }
-        \end{tikzpicture}
-    \end{center}
-\end{defi}
+\include{sortierverfahren.tex}
 
 \printindex
 \printindex[Beispiele]

@@ -506,10 +506,10 @@
 \begin{defi}{Kettenregel für Funktionen mit zwei Parametern}
     Sei $z = f(\vec{x}) = f(\vec{x}(u,v))$ und $\vec{x}(u,v)$ stetig in jeder Komponente $x_i$. Dann gilt:
     $$
-        \frac{\partial z}{\partial u} = \sum_{i=1}^n \frac{\partial z}{\partial x_i} \cdot \frac{\d x_i}{\d u}
+        \frac{\partial z}{\partial u} = \sum_{i=1}^n \frac{\partial z}{\partial x_i} \cdot \frac{\partial x_i}{\partial u}
     $$
     $$
-        \frac{\partial z}{\partial v} = \sum_{i=1}^n \frac{\partial z}{\partial x_i} \cdot \frac{\d x_i}{\d v}
+        \frac{\partial z}{\partial v} = \sum_{i=1}^n \frac{\partial z}{\partial x_i} \cdot \frac{\partial x_i}{\partial v}
     $$
 \end{defi}
 
@@ -560,7 +560,7 @@
 \begin{defi}{Jacobi-Matrix}
     Die Matrix
     $$
-        J = \vektor{\frac{\partial f_1}{x_1} & \ldots & \frac{\partial f_1}{x_n} \\ \vdots & \ddots & \vdots \\ \frac{\partial f_n}{x_1} & \ldots & \frac{\partial f_n}{x_n}}
+        J = \vektor{\frac{\partial f_1}{\partial x_1} & \ldots & \frac{\partial f_1}{\partial x_n} \\ \vdots & \ddots & \vdots \\ \frac{\partial f_n}{\partial x_1} & \ldots & \frac{\partial f_n}{\partial x_n}}
     $$
     heißt \emph{Jacobi-Matrix} von $f$.
 \end{defi}
@@ -608,8 +608,8 @@
 
     Es gilt:
     \begin{itemize}
-        \item $H$ ist positiv definit $\iff f_{xx}(x_0, y_0) < 0 \ \land \det H > 0$
-        \item $H$ ist negativ definit $\iff f_{xx}(x_0, y_0) > 0 \ \land \det H > 0$
+        \item $H$ ist positiv definit $\iff f_{xx}(x_0, y_0) > 0 \ \land \det H > 0$
+        \item $H$ ist negativ definit $\iff f_{xx}(x_0, y_0) < 0 \ \land \det H > 0$
         \item $H$ indefinit $\iff \det H < 0$
     \end{itemize}
 \end{defi}
@@ -790,7 +790,7 @@
     \begin{itemize}
         \item Im $\R^2$:
               $$
-                  \frac{\partial f_1}{\partial y} = \frac{\partial f_2}{x}
+                  \frac{\partial f_1}{\partial y} = \frac{\partial f_2}{\partial x}
               $$
         \item Im $\R^3$:
               $$
@@ -1216,10 +1216,10 @@
               \end{enumerate}
         \item Differentialgleichung vom Typ
               $$
-                  \boxed{y' = f\left(\frac{x}{y}\right)}
+                  \boxed{y' = f\left(\frac{y}{x}\right)}
               $$
               \begin{enumerate}
-                  \item Substituiere $z = \frac{x}{y}$
+                  \item Substituiere $z = \frac{y}{x}$
                   \item Es ergibt sich (Produktregel!)
                         $$
                             y = z \cdot x \quad \implies \quad y' = z + z' \cdot x
@@ -1458,7 +1458,7 @@
     $$
     mit
     $$
-        p_x = q_y \ \text{\emph{(Integrabilitätsbedingung)}}
+        p_y = q_x \ \text{\emph{(Integrabilitätsbedingung)}}
     $$
     heißt \emph{exakte Differentialgleichung}.
 \end{defi}

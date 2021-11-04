@@ -135,7 +135,7 @@
     Zwei Knoten heißen \emph{adjazent (benachbart)}, wenn sie eine Kante verbindet.
 \end{defi}
 
-\begin{bonus}{Speicherung von Graphen}
+\begin{defi}{Speicherung von Graphen}
     \begin{itemize}
         \item Kantenorientiert
               \begin{itemize}
@@ -156,7 +156,93 @@
                         $$
               \end{itemize}
     \end{itemize}
-\end{bonus}
+\end{defi}
+
+\begin{example}{Kantenliste}
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle] (1) {1};
+            \node[draw, circle, below left=of 1] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Für eine Kantenliste gilt:
+    \begin{itemize}
+        \item Position \texttt{0}: Anzahl der Knoten
+        \item Position \texttt{1}: Anzahl der Kanten
+        \item Danach für jede Kante \texttt{c = (i, j)}:
+              \begin{itemize}
+                  \item Startknoten \texttt{i}
+                  \item Endknoten \texttt{j}
+              \end{itemize}
+    \end{itemize}
+
+    Für den Graphen $G$ oben gilt die Kantenliste:
+
+    \centering
+
+    \texttt{[6,11,1,2,1,3,3,1,4,1,3,4,3,6,5,3,5,5,6,5,6,2,6,4]}
+
+\end{example}
+
+\begin{example}{Knotenliste}
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle] (1) {1};
+            \node[draw, circle, below left=of 1] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Für eine Knoten gilt:
+    \begin{itemize}
+        \item Position \texttt{0}: Anzahl der Knoten
+        \item Position \texttt{1}: Anzahl der Kanten
+        \item Danach für jeden Knoten \texttt{i}:
+              \begin{itemize}
+                  \item Ausgangsgrad des Knotens \texttt{i} (Anzahl der ausgehenden Kanten)
+                  \item Alle Knoten \texttt{j} für die gilt $(i, j) \in E$
+              \end{itemize}
+    \end{itemize}
+
+    Für den Graphen $G$ oben gilt die Knotenliste:
+
+    \centering
+
+    \texttt{[6,11,2,2,3,0,3,1,4,6,1,1,2,3,5,3,2,4,5]}
+
+\end{example}
 
 \begin{example}{Adjazenzmatrix}
     \begin{center}
@@ -672,6 +758,7 @@
                                         [
                                             19
                                         ]
+                                        [, draw=none, edge={draw=none}]
                                 ]
                         ]
                         [
@@ -1096,6 +1183,10 @@
               \begin{itemize}
                   \item Floyd-Warshall-Algorithmus
               \end{itemize}
+        \item One-Pair
+              \begin{itemize}
+                  \item A*-Algorithmus
+              \end{itemize}
     \end{itemize}
 \end{defi}
 
@@ -1155,13 +1246,13 @@
                                    & B           & C           & D          & E          & F           & G           & H           & B      & C      & D      & E      & F      & G      & H      \\
             \hline
             A                      & 12          &             & 4          & \textbf{2} & 30          &             &             & A      &        & A      & A      & A      &        &        \\
-            E                      & 10          & 10          & \textbf{3} & \textbf{2} & 30          &             &             & A      & E      & E      & A      & A      &        &        \\
-            D                      & \textbf{10} & 10          & \textbf{3} & \textbf{2} & 30          &             &             & A      & E      & E      & A      & A      &        &        \\
-            B                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & 30          &             &             & A      & E      & E      & A      & A      &        &        \\
-            C                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & 22          &             & A      & E      & E      & A      & C      & C      &        \\
-            F                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & \textbf{22} &             & A      & E      & E      & A      & C      & C      &        \\
-            G                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & \textbf{22} & \textbf{27} & A      & E      & E      & A      & C      & C      & G      \\
-            H                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & \textbf{22} & \textbf{27} & A      & E      & E      & A      & C      & C      & G      \\
+            E                      & 10          & 10          & \textbf{3} & \textbf{2} & 30          &             &             & E      & E      & E      & A      & A      &        &        \\
+            D                      & \textbf{10} & 10          & \textbf{3} & \textbf{2} & 30          &             &             & E      & E      & E      & A      & A      &        &        \\
+            B                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & 30          &             &             & E      & E      & E      & A      & A      &        &        \\
+            C                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & 22          &             & E      & E      & E      & A      & C      & C      &        \\
+            F                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & \textbf{22} &             & E      & E      & E      & A      & C      & C      &        \\
+            G                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & \textbf{22} & \textbf{27} & E      & E      & E      & A      & C      & C      & G      \\
+            H                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & \textbf{22} & \textbf{27} & E      & E      & E      & A      & C      & C      & G      \\
             \hline
         \end{tabular}
     \end{center}
@@ -1262,6 +1353,8 @@
                   A_k[i][j] = \min \{ A_{k-1}[i][j] , A_{k-1}[i][k] + A_{k-1}[k][j] \}
               $$
     \end{itemize}
+
+    Der Floyd-Algorithmus ist ein wichtiges Beispiel für dynamische Programmierung.
 \end{algo}
 
 \begin{code}{Floyd-Algorithmus}
@@ -1523,3 +1616,25 @@
         \end{tabular}
     \end{center}
 \end{example}
+
+\begin{algo}{Warshall-Algorithmus}
+    Gegeben: Graph $G = (V, E)$, egal ob gerichtet oder nicht.
+
+    Aufgabenstellung: Prüfe für alle geordneten Paare $(v_i, v_j)$, ob ein Weg von $v_i$ nach $v_j$ existiert.
+
+    Ziel: Berechne Adjazenzmatrix $A$ zu \emph{transitivem Abschluss} von $G$:
+    \begin{center}
+        $A[i][j] = $ \texttt{true} $\iff$ es existiert ein nicht-trivialer Weg (Länge $>0$) von $v_i$ nach $v_j$
+    \end{center}
+
+    Iterationsformel zur Aktualisierung von $A[i][j]$:
+    $$
+        A_k[i][j] = A_{k-1}[i][j] \lor (A_{k-1}[i][k] \land A_{k-1}[k][j])
+    $$
+
+    Der Algorithmus funktioniert also analog zum Floyd-Algorithmus.
+\end{algo}
+
+\begin{code}{Warshall-Algorithmus}
+    \lstinputlisting{warshall.java}
+\end{code}
