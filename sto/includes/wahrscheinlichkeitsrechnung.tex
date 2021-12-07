@@ -1,14 +1,410 @@
 \section{Wahrscheinlichkeitsrechnung}
-
 \subsection{Einführung in die Kombinatorik}
+
+\begin{bonus}{Urnenmodell}
+    Ein \emph{Urnenmodell} ist ein Gedankenexperiment, das in der Wahrscheinlichkeitstheorie und in der Statistik verwendet wird, um verschiedene Zufallsexperimente auf einheitliche und anschauliche Weise zu modellieren.
+
+    Dazu wird ein fiktives Gefäß, Urne genannt, mit einer bestimmten Anzahl an Kugeln gefüllt, die anschließend zufällig gezogen werden.
+    Damit ist gemeint, dass bei jedem Zug alle in der Urne befindlichen Kugeln die gleiche Wahrscheinlichkeit haben, ausgewählt zu werden.
+    Dadurch kann die Bestimmung interessierender Wahrscheinlichkeiten auf die Lösung kombinatorischer Abzählprobleme zurückgeführt werden.
+\end{bonus}
+
+\begin{defi}{Permutation}
+    Eine Anordnung von $n$ verschiedenen Elementen in einer bestimmten Reihenfolge heißt eine \emph{Permutation} der $n$ Elemente.
+
+    Für eine $n$-elementige Menge gilt für die Anzahl $P$ der Permutationen:
+    \[
+        P(n) = n \cdot (n-1) \cdot (n-1) \cdot \ldots \cdot 1 = n!
+    \]
+
+    Befinden sich unter den $n$ Elementen jeweils $n_1, n_2, \ldots, n_k$ gleiche, dann gilt:
+    \[
+        P(n ; n_1 ; n_2 ; \ldots, n_k) = \frac{n!}{n_1! \cdot n_2! \cdot \ldots \cdot n_k} \quad \text{mit} \ \sum_{i=1}^{k} n_i = n \quad k \leq n
+    \]
+\end{defi}
+
+\begin{defi}{Kombination}
+    Eine \emph{Kombination} oder ungeordnete Stichprobe ist in der Kombinatorik eine Auswahl von Objekten aus einer gegebenen Grundmenge, die (im Gegensatz zur Permutation) nicht alle Objekte der Grundmenge enthalten muss und bei der (im Gegensatz zur Permutation und Variation) die Reihenfolge unberücksichtigt bleibt.
+
+    Darf jedes Objekt nur einmal auftreten, spricht man von einer \emph{Kombination ohne Wiederholung}.
+
+    Um alle \emph{Kombinationen $k$-ter Ordnung ohne Wiederholung} zu erhalten, müssen alle Permutationen der $n$ Kugeln betrachtet werden, wobei ein Vertauschen der Kugeln auf Plätzen mit demselben Merkmal (wird gezogen $\to k$ bzw. wird nicht gezogen $\to n-k$) keine neue Kombination ergibt:
+    \[
+        C(n;k) = P(n;k;n-k) = \frac{n!}{k! \cdot (n-k)!} = \binom{n}{k}
+    \]
+
+    Können Objekte mehrfach ausgewählt werden, so spricht man von einer \emph{Kombination mit Wiederholung}.
+
+    Um alle \emph{Kombinationen $k$-ter Ordnung mit Wiederholung} zu erhalten, gilt:
+    \footnote{Zum Verständnis empfehle ich dieses Video: \href{https://youtu.be/ZcSSI6VY1kM}{COMBINATIONS with REPETITION - DISCRETE MATHEMATICS}}
+    \[
+        C_W(n;k) = P(n+k-1;k;n-1) = \frac{(n+k-1)!}{k! \cdot (n-1)!} = \binom{n+k-1}{k}
+    \]
+\end{defi}
+
+\begin{defi}{Variation}
+    Eine \emph{Variation} oder geordnete Stichprobe ist eine Auswahl von $k$ Objekten aus einer Menge von $n$ Objekten, wobei die Reihenfolge der Auswahl eine Rolle spielt.
+
+    Bei einer \emph{Variation ohne Wiederholung} sollen $k$ Objekten (mit $k \leq n$) auf $k$ verfügbare Plätze platziert werden, wobei jedes Objekt nur höchstens einen Platz einnehmen darf.
+    Es gibt für den ersten Platz $n$ mögliche Objekte, für den zweiten Platz $n - 1$ Objekte usw. bis zum $k$-ten Platz, für den es noch $n - k + 1$ mögliche Objekte gibt.
+    Insgesamt gilt also:
+    \[
+        V(n;k) = k! \cdot C(n;k) = \frac{n!}{(n-k)!}
+    \]
+
+    Bei einer Variation mit Wiederholung werden aus $n$ Objekten $k$ Objekte unter Beachtung der Reihenfolge ausgewählt, wobei Objekte auch mehrfach ausgewählt werden können.
+    Nachdem jedes der $n$ Objekte auf jedem der $k$ Plätze der Auswahl erscheinen kann, gilt demzufolge:
+    \[
+        V_W(n;k) = n^k
+    \]
+\end{defi}
+
+\begin{bonus}{Kombinatoriktabelle}
+    TO DO
+\end{bonus}
 
 \subsection{Grundbegriffe}
 
+\begin{defi}{Zufallsexperiment}
+    Damit ein Experiment ein \emph{Zufallsexperiment} ist, muss es folgende Eigenschaften aufweisen:
+    \begin{itemize}
+        \item Es gibt einen genau festgelegten Plan zur Durchführung.
+        \item Alle möglichen Ergebnisse des Experiments sind vorab bekannt.
+        \item Das Ergebnis jedes einzelnen Experiments kann nicht vorhergesagt werden (Zufälligkeit).
+    \end{itemize}
+    Ein Zufallsexperiment kann einmalig und unwiederholbar sein oder auch Serien von Durch- führungen mit gleichwertigen und von Durchführung zu Durchführung voneinander unabhängigen Versuchen ermöglichen.
+
+    Weiter kann ein Zufallsexperiment \emph{einstufig} oder \emph{mehrstufig} sein.
+\end{defi}
+
+\begin{defi}{Ergebnismenge}
+    Die Menge aller möglichen Ergebnisse eines Zufallsexperiments bezeichnen wir als \emph{Ergebnismenge} $\Omega$.
+\end{defi}
+
+\begin{defi}{Ereignis}
+    Interessieren wir uns nicht für alle möglichen Ergebnisse des Zufallsexperiments, sondern nur für bestimmte, z.B. \enquote{Würfeln einer geraden Zahl}, so sprechen wir von einem \emph{Ereignis} $\omega$.
+
+    \emph{Spezialfall}: Einelementige Teilmengen von $\Omega$ sind \emph{Elementarereignisse}
+    \[
+        \omega \subseteq \Omega \ \text{mit} \ \abs{\omega} = 1
+    \]
+
+    Ein Ereignis ist $A$ ist entweder:
+    \begin{itemize}
+        \item Das \emph{unmögliche} Ereignis ($A$ enthält kein Element von $\Omega$)
+        \item Ein \emph{Elementarereignis} ($A$ enthält genau ein Element von $\Omega$)
+        \item Eine \emph{Zusammenfassung} mehrerer Elementarereignisse ($A$ enthält mehrere Elemente von $\Omega$)
+        \item Das \emph{sichere} Ereignis ($A$ enthält alle Elemente von $\Omega$ bzw. $A = \Omega$)
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Ereignisraum}
+    Die Menge aller Ereignisse, die sich aus der Ergebnismenge bilden lässt, heißt \emph{Ereignisraum}.
+\end{defi}
+
+\begin{bonus}{Zusammengesetzte Ereignisse}
+    Da Ereignisse Teilmengen der Ergebnismenge sind, lassen sie sich auch wie Mengen verknüpfen.
+    Wir erhalten dadurch zusammengesetzte Ereignisse:
+    \begin{enumerate}
+        \item \emph{Vereinigung}:
+              \[
+                  A \cup B = \{ \omega \mid \omega \in A \lor \omega \in B \}
+              \]
+        \item \emph{Durchschnitt} bzw. \emph{Schnittmenge}:
+              \[
+                  A \cap B = \{ \omega \mid \omega \in A \land \omega \in B \}
+              \]
+        \item \emph{Gegenereignis} bzw. \emph{Komplement}:
+              \[
+                  \conj{A} = \{ \omega \mid \omega \notin A \}
+              \]
+        \item \emph{Differenz}:
+              \[
+                  A \setminus B = \{ \omega \mid \omega \in A \land \omega \notin B \}
+              \]
+        \item \emph{Disjunkte Ereignisse}:
+              \[
+                  A \cap B = \emptyset \quad \iff \quad A \ \text{und} \ B \ \text{sind disjunkt}
+              \]
+    \end{enumerate}
+
+    Analog zur Mengenalgebra gelten hier natürlich auch die Regeln von de Morgan\footnote{Siehe: \href{https://de.wikipedia.org/wiki/De-morgansche_Gesetze}{De-morgansche Gesetze}}.
+\end{bonus}
+
 \subsection{Wahrscheinlichkeit}
+
+\begin{defi}{Laplace-Experiment}
+    Es gibt eine Reihe von Zufallsexperimenten, bei denen keines der Elementarereignisse gegenüber einem anderen bevorzugt ist, d.h. bei ausreichend häufiger Wiederholung des Experimentes tritt jedes Elementarereignis mit nahezu gleicher Häufigkeit auf.
+    Ein derartiges Experiment bezeichnen wir als \emph{Laplace-Experiment}.
+
+    Einem Elementarereignis $\omega_i$ aus einer Ergebnismenge $\Omega$ mit $m$ möglichen Elementarereignissen wird definitionsgemäß die positive Zahl
+    \[
+        P(\{ \omega_i \}) = p(\omega_i) = \frac{1}{m} = \frac{1}{\abs{\Omega}}
+    \]
+    als \emph{Wahrscheinlichkeit} zugeordnet. Damit gilt für ein Ereignis $A$ direkt:
+    \[
+        P(A) = \sum_{\omega_i \in A} P(\{ \omega_i \}) = p(\omega_i) = \frac{\abs{A}}{m} = \frac{\abs{A}}{\abs{\Omega}}
+    \]
+
+    Das gilt allerdings nur, wenn:
+    \begin{itemize}
+        \item Die Ergebnismenge $\Omega$ endlich ist.
+        \item Alle Elementarereignisse gleichwahrscheinlich sind.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Absolute Häufigkeit}
+    Die \emph{absolute Häufigkeit} ist das Ergebnis einer einfachen Zählung von Objekten oder Ereignissen (besser Elementarereignissen).
+    Sie gibt an, wie viele Elemente mit dem gleichen interessierenden Merkmal gezählt wurden.
+\end{defi}
+
+\begin{defi}{Relative Häufigkeit}
+    Die \emph{relative Häufigkeit} gibt den Anteil der Elemente einer Menge wieder, bei denen eine bestimmte Merkmalsausprägung vorliegt.
+    Sie wird berechnet, indem die absolute Häufigkeit eines Merkmals in einer zugrundeliegenden Menge durch die Anzahl der Objekte in dieser Menge geteilt wird.
+    Die relative Häufigkeit ist also eine Bruchzahl und hat einen Wert zwischen 0 und 1.
+\end{defi}
+
+\begin{defi}{Wahrscheinlichkeitsaxiome}
+    Seien $A, B, E$ Ereignisse.
+    Es gilt allgemein:
+    \begin{itemize}
+        \item $P(\emptyset) = 0$
+        \item $P(\conj{E}) = 1 - P(E)$
+        \item $0 \leq P(E) \leq 1$
+        \item $A \subseteq B \implies P(A) \leq P(B)$
+        \item $P(A \cup B) = P(A) + P(B) - P(A \cap B) \leq P(A) + P(B)$
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Ereignisalgebra}
+    Es sei $\Omega$ eine nichtleere Menge.
+    Eine Ereignisalgebra über $\Omega$ ist eine nichtleere Menge $S$ von Teilmengen von $\Omega$, für die gilt:
+    \begin{itemize}
+        \item Für jedes $E \in S$ ist $\conj{E} \in S$.
+        \item Für jede Folge $E_1, E_2, \ldots \in S$ ist $\bigcup_{E_i \in \Omega} E_i \in S$.
+    \end{itemize}
+
+    Folgerungen:
+    \begin{itemize}
+        \item Für jede Folge $E_1, E_2, \ldots \in S$ ist $\bigcap_{E_i \in \Omega} E_i \in S$.
+        \item $\emptyset \in S$ und $\Omega \in S$.
+        \item Für jede nichtleere Menge $\Omega$ ist die Potenzmenge $\Pot(\Omega)$ eine Ereignisalgebra über $\Omega$.
+    \end{itemize}
+
+    Ist $\Omega$ endlich oder abzählbar unendlich, wählt man als Ereignisalgebra stets die Potenzmenge.
+\end{defi}
+
+\begin{bonus}{Kolmogoroff-Axiome}
+    Es sei $\Omega$ eine Ergebnismenge und $S$ eine Ereignisalgebra über $\Omega$.
+    Eine Zuordnungsvorschrift $P: S \to \R$ heißt \emph{Wahrscheinlichkeitsmaß}, wenn gilt:
+    \begin{enumerate}
+        \item $\forall E \in S: 0 \leq P(E) \leq 1$.
+        \item $P(\Omega) = 1$
+        \item Falls $E_1, E_2, \ldots$ disjunkte Ereignisse sind, gilt
+              \[
+                  P \left( \bigcup_{i} E_i \right) = \sum_{i} P(E_i) \quad \text{\enquote{$\sigma$-Additivität}}
+              \]
+    \end{enumerate}
+
+    Das Tripel $(\Omega, S, P)$ mit $\Omega$ als Ergebnismenge, $S$ als Ereignisalgebra und $P$ als Wahrscheinlichkeitsmaß bezeichnet man als \emph{Wahrscheinlichkeitsraum}.
+\end{bonus}
+
+\begin{defi}{Bedingte Wahrscheinlichkeit}
+    In vielen Anwendungen ist das Eintreten eines Ereignisses $A$ nicht unabhängig davon, ob vorher ein anderes Ereignis $B$ eingetreten ist oder nicht.
+    Man spricht dann von einer \emph{bedingten Wahrscheinlichkeit} und schreibt $P(A \mid B)$.
+    Es gilt:
+    \[
+        P(A \mid B) = \frac{P(A \cap B)}{P(B)}
+    \]
+
+    Generell gilt $P(A \mid B) \neq P(B \mid A)$, aber:
+    \begin{alignat*}{1}
+                       & P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B \cap A)}{P(B)} = \frac{P(B \cap A)}{P(A)} \cdot \frac{P(A)}{P(B)} \\
+        \implies \quad & P(A \mid B) = P(B \mid A) \cdot \frac{P(A)}{P(B)}
+    \end{alignat*}
+
+    Alle Axiome für eine Wahrscheinlichkeit werden von der bedingten Wahrscheinlichkeit erfüllt.
+    Damit gilt auch:
+    \begin{itemize}
+        \item $E_1 \subseteq E_2 \implies P(E_1 \mid B) \leq P(E_2 \mid B)$
+        \item $P(\conj{A} \mid B) = 1 - P(A \mid B)$
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Multiplikationssatz}
+    Löst man die Definition der bedingten Wahrscheinlichkeit auf nach der Wahrscheinlichkeit für das gleichzeitige Eintreten zweier Ereignisse $A$ und $B$, so ergibt sich der \emph{Multiplikationssatz} der Wahrscheinlichkeitsrechnung:
+    \[
+        P(A \cap B) = P(A \mid B) \cdot P(B) = P(B \mid A) \cdot P(A)
+    \]
+    bzw.
+    \[
+        P(A \cap B \cap C) = P(A) \cdot P(B \mid A) \cdot P(C \mid A \cap B)
+    \]
+\end{defi}
+
+\begin{defi}{Stochastische Unabhängigkeit}
+    In einigen Anwendungen ist die Wahrscheinlichkeit für das Eintreten des Ereignisses $A$ unabhängig davon, ob $B$ eingetreten ist oder nicht:
+    \[
+        P(A \mid B) = P(A \mid \conj{B}) = P(A)
+    \]
+    Aus dem Multiplikationssatz ergibt sich damit als Definition für die \emph{stochastische Unabhängigkeit} zweier Ereignisse $A$ und $B$:
+    \[
+        P(A \cap B) = P(A) \cdot P(B)
+    \]
+\end{defi}
+
+\begin{bonus}{Vierfeldertafel}
+    \begin{center}
+        \begin{tabular}{C|CC|C}
+                                & B                  & \conj{B}                  & \text{Zeilensumme} \\
+            \hline
+            A                   & P(A \cap B)        & P(A \cap \conj{B})        & P(A)               \\
+            \conj{A}            & P(\conj{A} \cap B) & P(\conj{A} \cap \conj{B}) & P(\conj{A})        \\
+            \hline
+            \text{Spaltensumme} & P(B)               & P(\conj{B})               & 1
+        \end{tabular}
+    \end{center}
+
+    Bei vollständiger Unabhängigkeit der Ereignisse $A$ und $B$ voneinander gilt:
+
+    \begin{center}
+        \begin{tabular}{C|CC|C}
+                                & B                      & \conj{B}                      & \text{Zeilensumme} \\
+            \hline
+            A                   & P(A) \cdot P(B)        & P(A) \cdot P(\conj{B})        & P(A)               \\
+            \conj{A}            & P(\conj{A}) \cdot P(B) & P(\conj{A}) \cdot P(\conj{B}) & P(\conj{A})        \\
+            \hline
+            \text{Spaltensumme} & P(B)                   & P(\conj{B})                   & 1
+        \end{tabular}
+    \end{center}
+\end{bonus}
+
+\begin{bonus}{Zusammenhangskoeffizient}
+    Der \emph{Zusammenhangskoeffizient} bzw. das \emph{Assoziationsmaß} $Q \in [-1 ; 1]$ sei definiert als:
+    \[
+        Q = \frac{P(A \cap B) \cdot P(\conj{A} \cap \conj{B}) - P(A \cap \conj{B}) \cdot P(\conj{A} \cap B)}{P(A \cap B) \cdot P(\conj{A} \cap \conj{B}) + P(A \cap \conj{B}) \cdot P(\conj{A} \cap B)}
+    \]
+\end{bonus}
+
+\begin{defi}{Mehrstufiges Zufallsexperiment}
+    Kompliziertere Zufallsprozesse bestehen häufig aus mehreren nacheinander ablaufenden Zufallsexperimenten bzw. einem \emph{mehrstufigen Zufallsexperiment}.
+
+    Ein wichtiges Hilfsmittel dabei sind \emph{Ereignisbäume}.
+\end{defi}
+
+\begin{example}{Ereignisbaum}
+    TO DO
+\end{example}
+
+\begin{defi}{Totale Wahrscheinlichkeit}
+    Sind nur bedingte Wahrscheinlichkeiten und die Wahrscheinlichkeiten des bedingenden Ereignisses bekannt, ergibt sich die totale Wahrscheinlichkeit von $B$ aus:
+    \[
+        P(B) = \sum_{i=1}^n P(A_i) \cdot P(B \mid A_i)
+    \]
+
+    TO DO (Graph, siehe Folie 67)
+\end{defi}
+
+\begin{defi}{Bayes'sche Formel}
+    Für den Zusammenhang zwischen $P(A \mid B)$ und $P(B \mid A)$ ergibt sihc direkt aus der Definition und dem Multiplikationssatz die \emph{Bayes'sche Formel} bzw. der \emph{Satz von Bayes}:
+    \[
+        P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B \cap A)}{P(B)} = \frac{P(B \mid A) \cdot P(A)}{P(B)} = \frac{P(B \mid A) \cdot P(A)}{\sum_{i=1}^n P(A_i) \cdot P(B \mid A_i)}
+    \]
+
+    Die Wahrscheinlichkeit, dass $B$ über einen bestimmten Pfad eintritt, ergibt sich als Verhältnis der Wahrscheinlichkeit für diesen Pfad zur totalen Wahrscheinlichkeit von $B$.
+\end{defi}
 
 \subsection{Wahrscheinlichkeitsverteilung einer Zufallsvariablen}
 
+\begin{defi}{Zufallsvariable}
+
+\end{defi}
+
+\begin{defi}{Verteilungsfunktion}
+
+\end{defi}
+
+\begin{defi}{Wahrscheinlichkeitsfunktion}
+
+\end{defi}
+
+\begin{defi}{Dichtefunktion}
+
+\end{defi}
+
+\begin{defi}{Transformierte Zufallsvariable}
+
+\end{defi}
+
+\begin{algo}{Transformation der Verteilungsfunktion}
+
+\end{algo}
+
+\begin{algo}{Transformation der Dichtefunktion}
+
+\end{algo}
+
+\begin{defi}{Erwartungswert}
+
+\end{defi}
+
+\begin{defi}{Quantile}
+
+\end{defi}
+
+\begin{defi}{Varianz}
+
+\end{defi}
+
+\begin{defi}{Tschebyscheff-Ungleichung}
+
+\end{defi}
+
 \subsection{Spezielle Wahrscheinlichkeitsverteilungen}
+
+\begin{defi}{Gleichverteilung}
+
+\end{defi}
+
+\begin{defi}{Bernoulli-Experiment}
+
+\end{defi}
+
+\begin{defi}{Binomialverteilung}
+
+\end{defi}
+
+\begin{defi}{Hypergeometrische Verteilung}
+
+\end{defi}
+
+\begin{defi}{Poisson-Verteilung}
+
+\end{defi}
+
+\begin{defi}{Gaußsche Normalverteilung}
+
+\end{defi}
+
+\begin{defi}{Standardnormalverteilung}
+
+\end{defi}
+
+\begin{bonus}{Geometrische Verteilung}
+
+\end{bonus}
+
+\begin{bonus}{Negative Binomialverteilung}
+
+\end{bonus}
+
+\begin{bonus}{Pascal-Verteilung}
+
+\end{bonus}
+
+\begin{defi}{Approximation von Verteilungen}
+
+\end{defi}
 
 \subsection{Mehrdimensionale Zufallsvariablen}
 
