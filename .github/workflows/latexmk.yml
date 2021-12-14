@@ -24,16 +24,15 @@ jobs:
     steps:
       - name: Download spicker.cls
         run: |
-          curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls
+          curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls && ls
       - name: Github Action for LaTeX
         uses: xu-cheng/latex-action@v2
         env:
           TEXINPUTS: ".:./custom_template//:"
         with:
-          pre_compile: "tlmgr update --self && tlmgr update --all"    
+          #pre_compile: "tlmgr update --self && tlmgr update --all"    
+          #post_compile: "latexmk -c"
+          latexmk_shell_escape: true
           root_file: |
             helloworld.tex
-            # la2/la2.tex  
-          post_compile: "latexmk -c"
-          latexmk_shell_escape: true
-          
+            # la2/la2.tex
