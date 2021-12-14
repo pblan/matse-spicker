@@ -37,3 +37,4 @@ jobs:
           latexmk_shell_escape: true
           root_file: |
             helloworld.tex
+            sto/sto.tex
