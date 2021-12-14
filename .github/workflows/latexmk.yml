@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: latexmk
 
 # Controls when the workflow will run
 on:
@@ -22,6 +22,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v1
       - name: Download spicker.cls
         run: |
           curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls && ls
