@@ -53,6 +53,6 @@ jobs:
           #pre_compile: "tlmgr update --self && tlmgr update --all"    
           #post_compile: "latexmk -c"
           latexmk_shell_escape: true
-          root_file: |
-            sto/sto.tex
           working_directory: sto
+          root_file: |
+            sto.tex
