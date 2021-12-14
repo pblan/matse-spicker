@@ -13,14 +13,10 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  helloworld:
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v1
@@ -38,4 +34,25 @@ jobs:
           latexmk_shell_escape: true
           root_file: |
             helloworld.tex
+
+  sto:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v1
+      - name: Download MATSE-Spicker class
+        run: |
+          curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls
+          curl -OL  https://raw.githubusercontent.com/pblan/latex-docker/main/local/mymacros.sty
+      - name: Github Action for LaTeX
+        uses: xu-cheng/latex-action@v2
+        env:
+          TEXINPUTS: ".:./custom_template//:"
+        with:
+          #pre_compile: "tlmgr update --self && tlmgr update --all"    
+          #post_compile: "latexmk -c"
+          latexmk_shell_escape: true
+          root_file: |
             sto/sto.tex
+          working_directory: sto
