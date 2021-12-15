@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: sto
 
 # Controls when the workflow will run
@@ -18,30 +16,19 @@ on:
   workflow_dispatch:
 
 jobs:
-  helloworld:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v1
-      - name: Github Action for LaTeX
-        uses: xu-cheng/latex-action@v2
-        with:
-          root_file: |
-            helloworld.tex
-
-  sto:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Set up Git repository
-        uses: actions/checkout@v1
+        
       - name: Download MATSE-Spicker class
         run: |
           curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls
           curl -OL  https://raw.githubusercontent.com/pblan/latex-docker/main/local/mymacros.sty
           mv spicker.cls sto/spicker.cls
           mv mymacros.sty sto/mymacros.sty
+          
       - name: Compiling LaTeX
         uses: xu-cheng/latex-action@v2
         #env:
@@ -53,8 +40,9 @@ jobs:
           working_directory: sto
           root_file: |
             sto.tex
+            
       - name: Uploading artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: PDF
+          name: sto
           path: sto/sto.pdf
