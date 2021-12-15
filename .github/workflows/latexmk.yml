@@ -34,10 +34,11 @@ jobs:
         uses: actions/checkout@v1
       - name: Download MATSE-Spicker class
         run: |
+          curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls
+          curl -OL  https://raw.githubusercontent.com/pblan/latex-docker/main/local/mymacros.sty
           mkdir custom_template
-          curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls --output custom_template/spicker.cls
-          curl -OL  https://raw.githubusercontent.com/pblan/latex-docker/main/local/mymacros.sty --output custom_template/mymacros.sty
-          ls custom_template
+          mv spicker.cls custom_template/spicker.cls
+          mv mymacros.sty custom_template/mymacros.sty
       - name: Compiling LaTeX
         uses: xu-cheng/latex-action@v2
         env:
