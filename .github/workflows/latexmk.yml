@@ -37,7 +37,8 @@ jobs:
           mkdir custom_template
           curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls --output custom_template/spicker.cls
           curl -OL  https://raw.githubusercontent.com/pblan/latex-docker/main/local/mymacros.sty --output custom_template/mymacros.sty
-      - name: Github Action for LaTeX
+          ls custom_template
+      - name: Compiling LaTeX
         uses: xu-cheng/latex-action@v2
         env:
           TEXINPUTS: ".:./custom_template//:"
