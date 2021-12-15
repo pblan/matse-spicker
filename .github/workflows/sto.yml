@@ -1,14 +1,18 @@
 # This is a basic workflow to help you get started with Actions
 
-name: latexmk
+name: sto
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
     branches: [ main ]
+    paths:
+      - sto/**
   pull_request:
     branches: [ main ]
+    paths:
+      - sto/**
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -49,3 +53,8 @@ jobs:
           working_directory: sto
           root_file: |
             sto.tex
+      - name: Uploading artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: PDF
+          path: sto/sto.pdf
