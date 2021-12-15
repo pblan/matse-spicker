@@ -36,13 +36,12 @@ jobs:
         run: |
           curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls
           curl -OL  https://raw.githubusercontent.com/pblan/latex-docker/main/local/mymacros.sty
-          mkdir custom_template
-          mv spicker.cls custom_template/spicker.cls
-          mv mymacros.sty custom_template/mymacros.sty
+          mv spicker.cls sto/spicker.cls
+          mv mymacros.sty sto/mymacros.sty
       - name: Compiling LaTeX
         uses: xu-cheng/latex-action@v2
-        env:
-          TEXINPUTS: ".:./custom_template//:"
+        #env:
+        #  TEXINPUTS: ".:./custom_template//:"
         with:
           #pre_compile: "tlmgr update --self && tlmgr update --all"    
           #post_compile: "latexmk -c"
