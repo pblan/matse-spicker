@@ -1,2 +1,3 @@
 # matse-spicker
-[![sto](https://github.com/pblan/matse-spicker/actions/workflows/sto.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/sto.yml)
+[![Stochastik](https://github.com/pblan/matse-spicker/actions/workflows/sto.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/sto.yml)
+[![Softwaretechnik](https://github.com/pblan/matse-spicker/actions/workflows/swt.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/swt.yml)
