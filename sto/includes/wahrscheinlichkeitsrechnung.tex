@@ -317,31 +317,147 @@
 \subsection{Wahrscheinlichkeitsverteilung einer Zufallsvariablen}
 
 \begin{defi}{Zufallsvariable}
+    Eine \emph{Zufallsvariable} $X$ ordnet jedem Elementarereignis aus der Ergebnismenge eindeutig eine reelle Zahl zu, bildet also die Ergebnismenge auf die Menge der reellen Zahlen ab:
+    \[
+        X: \Omega \to \R
+    \]
+    $X$ ist somit eine reellwertige Funktion mit
+    \begin{itemize}
+        \item Definitionsbereich: $D = \Omega$
+        \item Wertebereich: $W_X = \{ X \mid X = X(\omega) \land \omega \in \Omega \}$
+    \end{itemize}
 
+    $X$ heißt \emph{diskret}, wenn $W_X$ endlich viele oder abzählbar unendlich viele reelle Werte enthält.
+
+    $X$ heißt \emph{stetig}, wenn $W_X$ überabzählbar unendlich viele reelle Werte enthält.
 \end{defi}
 
 \begin{defi}{Verteilungsfunktion}
+    $X$ sei eine Zufallsvariable.
+    Die Funktion ($F_X: \R \to [0;1]$)
+    \[
+        \forall x \in \R: F_X(x) := P(\{ \omega \in \Omega \mid X(\omega) \leq x \}) := P(X \leq x)
+    \]
+    heißt \emph{Verteilungsfunktion} der Zufallsvariablen $X$.
 
+    Anschaulich:
+    $F_X(x)$ (oft nur $F(x)$) ist die Wahrscheinlichkeit dafür, dass die Zufallsvariable $X$ einen Wert $\leq x$ annimmt (höchstens $x$).
+
+    Verteilungsfunktionen besitzen folgende Eigenschaften:
+    \begin{enumerate}
+        \item $F(x)$ ist eine monoton wachsende Funktion mit $0 \leq F(x) \leq 1$.
+        \item $\lim_{x \to -\infty} F(x) = 0$ (unmögliches Ereignis)
+        \item $\lim_{x \to \infty} F(x) = 1$ (sicheres Ereignis)
+        \item $P(a < X \leq b) = F(b) - F(a)$
+    \end{enumerate}
 \end{defi}
 
-\begin{defi}{Wahrscheinlichkeitsfunktion}
+\begin{defi}{Wahrscheinlichkeitsverteilung einer diskreten Zufallsvariablen}
+    Bei einer diskreten Zufallsvariablen $X$ gehört zu jedem Wert $x_i$, den sie annehmen kann, eine bestimmte Wahrscheinlichkeit:
+    \[
+        P(X = x_i) = p_i
+    \]
+    Damit ist die \emph{Wahrscheinlichkeitsfunktion} einer diskreten Verteilung gegeben mit
+    \[
+        f(x) =
+        \begin{cases}
+            p_i & \text{für} \ x = x_i \\
+            0   & \text{sonst}
+        \end{cases}
+    \]
 
+    Die zugehörige Verteilungsfunktion ist dann
+    \[
+        F(x) = P(X \leq x) = \sum_{x_i \leq x} f(x_i)
+    \]
+
+    Anschaulich:
+    $f(x)$ ist die Wahrscheinlichkeit dafür, dass die Zufallsvariable $X$ den Wert $x$ annimmt (genau $x$).
+
+    Die Wahrscheinlichkeitsfunktion $f(x)$ und die Verteilungsfunktion $F(x)$ besitzen folgende Eigenschaften:
+    \begin{enumerate}
+        \item $f(x_i) \geq 0$
+        \item $f(x)$ ist normiert, d.h. es gilt:
+              \[
+                  \sum_{i=1}^{\infty} f(x_i) = 1
+              \]
+        \item $F(x)$ ist eine monoton wachsende Funktion mit $0 \leq F(x) \leq 1$.
+        \item $F(a < X \leq b) = F(b) - F(a)$
+    \end{enumerate}
 \end{defi}
 
-\begin{defi}{Dichtefunktion}
+\begin{defi}{Wahrscheinlichkeitsverteilung einer stetigen Zufallsvariablen}
+    Die Wahrscheinlichkeitsverteilung einer stetigen Zufallsvariablen $X$ lässt sich durch die \emph{Dichtefunktion} $f(x)$ oder durch die zugehörige Verteilungsfunktion
+    \[
+        F(x) = P(X \leq x) = \int_{-\infty}^{x} f(u) \diff u
+    \]
+    vollständig beschreiben.
 
+    Die Dichtefunktion $f(x)$ und die Verteilungsfunktion $F(x)$ besitzen folgende Eigenschaften:
+    \begin{enumerate}
+        \item $f(x_i) \geq 0$
+        \item $f(x)$ ist normiert, d.h. es gilt:
+              \[
+                  \int_{-\infty}^{\infty} f(x) \diff x = 1
+              \]
+        \item $F(x)$ ist eine monoton wachsende Stammfunktion der Dichtefunktion $f(x)$, d.h. es gilt
+              \[
+                  \frac{\diff F(x)}{\diff x} = f(x)
+              \]
+        \item $F(a \leq X \leq b) = \int_a^b f(x) \diff x = F(b) - F(a)$
+    \end{enumerate}
 \end{defi}
 
 \begin{defi}{Transformierte Zufallsvariable}
+    Wenn eine reelle Zufallsvariable $X$ auf dem Ergebnisraum $\Omega$ und eine Funktion $g : \R \to \R$ gegeben ist, dann ist auch $Y = g(X)$ eine Zufallsvariable auf demselben Ergebnisraum.
 
+    $g(X)$ wird auch als \emph{Transformation der Zufallsvariablen} $X$ unter $g$ bezeichnet.
+
+    Die Verteilungsfunktion von $Y$ lautet dann
+    \[
+        F_Y(y) = P(g(X) \leq y)
+    \]
+
+    Beispiele:
+    \begin{itemize}
+        \item Lineare Transformation:
+              \[
+                  g_1(X) = aX + b
+              \]
+        \item Betragsfunktion bzw. Gleichrichter:
+              \[
+                  g_2(X) = \abs{X}
+              \]
+        \item Energiefunktion:
+              \[
+                  g_3(X) = aX^2
+              \]
+    \end{itemize}
 \end{defi}
 
 \begin{algo}{Transformation der Verteilungsfunktion}
+    Sei $g$ streng monoton wachsend auf dem Wertebereich von $X$.
+    Dann gilt für die Verteilungsfunktion:
+    \[
+        F_Y(y) = P(\{ \omega \in \Omega \mid Y(\omega) \leq y \}) = P(\{ \omega \in \Omega \mid X(\omega) \leq g^{-1}(y) \}) = F_X(g^{-1}(y))
+    \]
 
+    Für eine lineare Transformation gilt damit:
+    \[
+        Y = g(X) = aX + b \quad \implies \quad F_Y(y) = F_X(g^{-1}(y)) = F_X\left( \frac{y-b}{a} \right)
+    \]
 \end{algo}
 
 \begin{algo}{Transformation der Dichtefunktion}
 
+    Falls $F_Y(y)$ geschlossen darstellbar ist, gilt für die Dichtefunktion:
+    \[
+        f_Y(y) = \frac{\diff F_Y(y)}{\diff y} = f_X(x) \cdot \frac{1}{g'(x)} = \frac{f_X(g^{-1}(y))}{g'(g^{-1}(y))}
+    \]
+    Für eine lineare Transformation gilt damit:
+    \[
+        F_Y(y) = F_X\left( \frac{y-b}{a} \right) \quad \implies \quad f_Y(y) = \frac{\diff}{\diff y} F_X \left( \frac{y-b}{a} \right) = f_X \left( \frac{y-b}{a} \right) \cdot \frac{1}{a}
+    \]
 \end{algo}
 
 \begin{defi}{Erwartungswert}
