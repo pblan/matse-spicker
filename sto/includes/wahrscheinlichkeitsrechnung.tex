@@ -461,66 +461,341 @@
 \end{algo}
 
 \begin{defi}{Erwartungswert}
+    Der wichtigste Lageparameter einer Verteilung ist der \emph{Erwartungswert}. 
+    Der Erwartungswert einer Zufallsvariablen beschreibt die Zahl, die die Zufallsvariable im Mittel annimmt.
 
+    Für eine diskrete Zufallsvariable $X$ gilt: 
+    \[ 
+        \Mean(X) := \sum_i x_i \cdot P(X = x_i) \quad \text{bzw.} \quad \Mean(X) := \sum_i X(\omega_i) \cdot P(\{ \omega_i \}), \, \omega_i \in \Omega
+    \]
+
+    Für eine stetige Zufallsvariable $X$ gilt: (Schwerpunkt der Dichtefunktion)
+    \[
+        \Mean(X) = \int_{-\infty}^{\infty} x \cdot f(x) \diff x 
+    \]
+
+    Sehr oft wird statt $\Mean(X)$ auch $\mu$ oder $\mu_X$ geschrieben.
+\end{defi}
+
+\begin{algo}{Transformation des Erwartungswertes auf eine neue Zufallsvariable}
+    Bei einer Transformation von einer Zufallsvariable $X$ auf eine neue Zufallsvariable $Y = g(X)$ gilt: 
+    \[ 
+        \Mean(Y) = \int_{-\infty}^{\infty} y \cdot f_Y(y) \diff y = \int_{-\infty}^{\infty} g(x) \cdot f_X(x) \diff x
+    \]
+
+    Speziell bei der linearen Transformation gilt: 
+    \[ 
+        \Mean(aX + b) = a \Mean(X) + b
+    \]
+\end{algo}
+
+\begin{defi}{Median}
+    Der \emph{Median} $\tilde{x}$ ist der Wert, der die Verteilung \enquote{halbiert}.
+
+    Bei stetigen Zufallsvariablen existiert der Median immer und es gilt: 
+    \[ 
+        P(X \leq \tilde{x}) = F_X(\tilde{x}) = \int_{-\infty}^{\tilde{x}} f_X(x) \diff x = \frac{1}{2}
+    \]
+
+    Bei diskreten Zufallsvariablen gibt es nur wenige Ausnahmen, bei denen ein $x$-Wert existiert mit genau $F(x) = \frac{1}{2}$.
+    Daher gilt folgende Definition: 
+    \[ 
+        P(X < \tilde{x}) \leq \frac{1}{2} \quad \land \quad P(X \leq \tilde{x}) \geq \frac{1}{2}
+    \]
 \end{defi}
 
 \begin{defi}{Quantile}
+    Ein \emph{Quantil} ist ein Lagemaß. 
+    Ein bestimmter Anteil der Werte (einer Zufallsstichprobe) ist kleiner als das Quantil, der Rest ist größer. 
+    Das 25\%-Quantil, bzw. das untere Quartil, beispielsweise ist der Wert, für den gilt, dass 25\% aller Werte $\leq$ sind als dieser Wert. 
 
+    Bei stetigen Zufallsvariablen gilt: 
+    \[ 
+        P(X \leq x_\alpha) = F_X(x_\alpha) = \int_{-\infty}^{x_\alpha} f_X(x) \diff x = \alpha 
+    \]
+
+    Bei diskreten Zufallsvariablen gilt: 
+    \[ 
+        P(X < x_\alpha) \leq \alpha \quad \land \quad P(X \leq x_\alpha) \geq \alpha
+    \]
+
+    Relevant sind insbesondere das \emph{untere Quartil} ($\alpha = \nicefrac{1}{4}$), das \emph{obere Quartil} ($\alpha = \nicefrac{3}{4}$) und der Median ($\alpha = \nicefrac{1}{2}$).
+
+    Der \emph{Quartilabstand} $x_{\nicefrac{3}{4}} - x_{\nicefrac{1}{4}}$ ist ein Streuungsmaß, denn im Intervall zwischen unterem und oberem Quartil liegen die \enquote{inneren} 50\% der Verteilung.
 \end{defi}
 
 \begin{defi}{Varianz}
+    Die \emph{Varianz} ist ein wichtiges Maß für die Streuung der Wahrscheinlichkeitsdichte um ihren Schwerpunkt. 
+    Mathematisch wird sie definiert als die mittlere quadratische Abweichung einer reellen Zufallsvariablen von ihrem Erwartungswert.
 
+    Bei diskreten Zufallsvariablen gilt: 
+    \[
+        \sigma^2 = \Var(X) = \sum_i (x_i - \mu)^2 \cdot P(X = x_i)
+    \]
+
+    Bei stetigen Zufallsvariablen gilt: 
+    \[
+        \sigma^2 = \Var(X) = \int_{-\infty}^{\infty} (x - \mu)^2 \cdot f(x) \diff x 
+    \]
 \end{defi}
 
-\begin{defi}{Tschebyscheff-Ungleichung}
+\begin{defi}{Standardabweichung}
+    Die \emph{Stamdardabweichung} ist ein weiteres Streuungsmaß und wird definiert als die Quadratwurzel der Varianz: 
+    \[
+        \sigma = \sqrt{\Var(X)}
+    \]
+\end{defi}
 
+\begin{algo}{Verschiebungssatz}
+    Sei der Erwartungswert einer Zufallsvariable $X$ gegeben mit $\Mean(X) = \mu$.
+    Dann gilt mit dem \emph{Verschiebungssatz} für ein beliebiges $a \in \R$: 
+    \[ 
+        \Mean((X-a)^2) = \Var(X) + (\mu - a)^2
+    \]
+
+    Für $a = 0$ erhalten wir eine alternative Formel zur Berechnung der Varianz: 
+    \[ 
+        \Var(X) = \Mean(X^2) -\Mean(X)^2 = \Mean(X^2) - \mu^2
+    \]
+\end{algo}
+
+\begin{defi}{Tschebyscheffsche Ungleichung}
+    Mithilfe der \emph{Tschebyscheffschen Ungleichung} lässt sich unter Verwendung der existierenden ersten beiden Momente (Erwartungswert und Varianz) die Wahrscheinlichkeit dafür abschätzen, dass die Zufallsvariable $X$ Werte in bestimmten Intervallen der reellen Zahlengeraden annimmt, ohne jedoch die Verteilung von $X$ zu kennen. 
+    
+    Sie lautet für eine Zufallsvariable $X$ mit Erwartungswert $\mu$ und Varianz $\sigma^2$:
+
+    \[
+        P(\abs{X - \mu} \geq \epsilon) \leq \frac{\sigma^2}{\epsilon^2}
+    \]
+
+    Sie setzt keine besondere Verteilungsform voraus. 
+
+    Ein Nachteil der Tschebyscheffschen Ungleichung ist, dass sie nur eine grobe Abschätzung liefert. 
 \end{defi}
 
 \subsection{Spezielle Wahrscheinlichkeitsverteilungen}
 
 \begin{defi}{Gleichverteilung}
+    Eine \emph{Gleichverteilung} beschreibt eine Wahrscheinlichkeitsverteilung mit bestimmten Eigenschaften. 
 
+    Im diskreten Fall tritt jedes mögliche Ergebnis mit der gleichen Wahrscheinlichkeit ein, im stetigen Fall ist die Dichte konstant. 
+    
+    Für eine im Intervall $[a,b]$ stetige gleichverteilte Zufallsvariable $X$ gilt also:
+    \[
+        f(x) = 
+        \begin{cases}
+            \frac{1}{b-a}   & \text{für} \ x \in [a;b] \\ 
+            0               & \text{sonst}
+        \end{cases}
+    \]
+    \[
+        F(x) = 
+        \begin{cases}
+            0 & \text{für} \ x \leq a \\ 
+            \frac{x-a}{b-a} & \text{für} \ a < x \leq b \\ 
+            1 & \text{für} \ x > b
+        \end{cases}
+    \]
+
+    Der Grundgedanke einer Gleichverteilung ist, dass es keine Präferenz gibt. 
 \end{defi}
 
 \begin{defi}{Bernoulli-Experiment}
+    Bei einem \emph{Bernoulli-Experiment} gibt es stets nur zwei Ausgänge, Treffer oder Niete. 
+    Zudem muss die Wahrscheinlichkeit für einen Treffer, $p$, und somit auch die für eine Niete, $1-p$, bei jedem der Experimente dieselbe sein. 
 
+    Bei einem \emph{Bernoulli-Experiment vom Umfang $n$} wird ein Bernoulli-Experiment $n$-fach ausgeführt mit der Voraussetzung, dass die Ergebnisse der einzelnen Studen voneinander unabhängig sind.
 \end{defi}
 
 \begin{defi}{Binomialverteilung}
+    Ein Bernoulli-Experiment mit den beiden sich gegenseitig ausschließenden Ergebnissen $A$ und $\conj{A}$ werde $n$-mal nacheinander ausgeführt (Bernoulli-Experiment mit Umfang $n$).
 
+    Dann genügt die diskrete Zufallsvariable
+    \[ 
+        X = \text{Anzahl der Versuche, in denen das Ereignis $A$ eintritt}
+    \]
+    der \emph{Binomialverteilung} mit der Wahrscheinlichkeitsfunktion 
+    \[ 
+        f(x) = P(X = x) = \binom{n}{x} \cdot p^x \cdot q^{n-x} \qquad x \in [0,n]
+    \]
+    und der zugehörigen Verteilungsfunktion 
+    \[ 
+        F(x) = P(X \leq x) = \sum_{k \leq x} \binom{n}{k} \cdot p^k \cdot q^{n-k} \qquad x \geq 0
+    \]
+    (für $x < 0$ ist $F(x) = 0$) $n$ und $p$ sind dabei die Parameter der Binomialverteilung.
+
+    Die Maßzahlen dieser Verteilung lauten: 
+    \begin{itemize}
+        \item Erwartungswert: $\mu = np$
+        \item Varianz: $\sigma^2 = npq = np(1-p)$
+        \item Standardabweichung: $\sigma = \sqrt{npq} = \sqrt{np(1-p)}$
+    \end{itemize}
+
+    Man schreibt auch $X \sim B(n,p)$.
 \end{defi}
+
+\begin{example}{Binomialverteilung}
+    \begin{center}
+        \includegraphics[width=.7\linewidth]{includes/figures/example_binomialverteilung_bar}
+    \end{center}
+\end{example}
 
 \begin{defi}{Hypergeometrische Verteilung}
+    Die \emph{hypergeometrische Verteilung} beschreibt die Wahrscheinlichkeit dafür, dass bei $N$ gegebenen Elementen (Grundgesamtheit des Umfangs $N$), von denen $M$ die gewünschte Eigenschaft besitzen, beim Herausgreifen von $n$ Probestücken (Stichprobe des Umfangs $n$) genau $x$ Treffer erzielt werden, d. h. die Wahrscheinlichkeit für $X = x$ Erfolge in $n$ Versuchen. 
 
+    Dabei ist die Wahrscheinlichkeitsfunktion 
+    \[ 
+        f(x) = P(X = x) = \frac{\binom{M}{x} \binom{N-M}{n-x}}{\binom{N}{n}} \qquad x \in [0,n]
+    \]
+
+    und die zugehörige Verteilungsfunktion
+    \[
+        F(x) = P(X \leq x) = \sum_{k\leq x} \frac{\binom{M}{k} \binom{N-M}{n-k}}{\binom{N}{n}} \qquad x \geq 0
+    \]
+    (für $x < 0$ ist $F(x) = 0$) $N$, $M$ und $n$ sind dabei die Parameter der hypergeometrischen Verteilung. 
+
+    Die Maßzahlen dieser Verteilung lauten: 
+    \begin{itemize}
+        \item Erwartungswert: $\mu = n \cdot \frac{M}{N}$
+        \item Varianz: $\sigma^2 = n \cdot \frac{M}{N} \cdot \left( 1 - \frac{M}{N}\right) \cdot \frac{N-n}{N-1} = \frac{nM(N-M)(N-n)}{N^2(N-1)}$ 
+    \end{itemize}
+
+    Man schreibt auch $X \sim H(N,M,n)$.
 \end{defi}
+
+\begin{example}{Hypergeometrische Verteilung}
+    \begin{center}
+        \includegraphics[width=.7\linewidth]{includes/figures/example_hypergeom_verteilung_bar}
+    \end{center}
+\end{example}
 
 \begin{defi}{Poisson-Verteilung}
+    Die \emph{Poisson-Verteilung} ist eine Wahrscheinlichkeitsverteilung, mit der die Anzahl von Ereignissen modelliert werden kann, die bei konstanter mittlerer Rate unabhängig voneinander in einem festen Zeitintervall oder räumlichen Gebiet eintreten. 
 
+    Die Wahrscheinlichkeitsfunktion einer diskreten poisson-verteilten Zufallsvariablen $X$ ist gegeben mit 
+    \[
+        f(x) = P(X = x) = \frac{\mu^x}{x!} \cdot e^{-\mu} \qquad x \in [0,\infty]
+    \]  
+    und die zugehörige Verteilungsfunktion mit 
+    \[ 
+        F(x) = P(X \leq x) = e^{-\mu} \cdot \sum_{k \leq x} \frac{\mu^k}{k!} \qquad x \geq 0
+    \]
+    (für $x < 0$ ist $F(x) = 0$) $\mu$ ist dabei der Parameter der Poisson-Verteilung.
+
+    Die Maßzahlen dieser Verteilung lauten: 
+    \begin{itemize}
+        \item Erwartungswert: $\mu$
+        \item Varianz: $\sigma^2 = \mu$
+        \item Standardabweichung: $\sigma = \sqrt{\mu}$
+    \end{itemize}
+
+    Man schreibt auch $X \sim \Poi(\mu)$.
 \end{defi}
 
-\begin{defi}{Gaußsche Normalverteilung}
+\begin{example}{Poisson-Verteilung}
+    \begin{center}
+        \includegraphics[width=.7\linewidth]{includes/figures/example_poisson_verteilung_bar}
+    \end{center}
+\end{example}
 
+\begin{defi}{Lokaler Grenzwertsatz von de Moivre-Laplace}
+    Nach dem \emph{lokalen Grenzwertsatz von de Moivre-Laplace} konvergiert die Binomialverteilung für den Stichprobenumfang $n \to \infty$ und Wahrscheinlichkeiten $0 < p < 1$ gegen die Normalverteilung. 
+    Bei großem Stichprobenumpfang kann daher die Normalverteilung als Näherung der Binomialverteilung verwendet werden. 
+
+    Also gilt ($\sigma^2 = p(1-p)$): 
+    \[
+        B(k \mid p, n) = \binom{n}{k} \cdot p^k \cdot (1-p)^{n-k} \approx \frac{1}{2\pi n \sigma^2} \cdot \exp \left( -\frac{n}{2\sigma^2} \left( \frac{k}{n} - p \right)^2 \right) 
+    \]
 \end{defi}
+
+\begin{defi}{Normalverteilung}
+    Die \emph{Normalverteilung} ist eine der wichtigsten stetigen Wahrscheinlichkeitsverteilungen.
+
+    %Die besondere Bedeutung der Normalverteilung beruht unter anderem auf dem zentralen Grenzwertsatz, dem zufolge Verteilungen, die durch additive Überlagerung einer großen Zahl von unabhängigen Einflüssen entstehen, annähernd normalverteilt sind.
+
+    Eine stetige Zufallsvariable $X$ hat eine Normalverteilung mit Erwartungswert $\mu \neq \pm \infty$ und Varianz $\sigma^2 > 0$, oft geschrieben als $X \sim \mathcal{N} \left(\mu ,\sigma^{2}\right)$, wenn $X$ die folgende Wahrscheinlichkeitsdichte hat:
+    
+    \[
+        f(x) = P(X = x) = \frac{1}{\sqrt{2\pi n \sigma^2}} \cdot \exp \left( - \frac{(x-\mu)^2}{2\sigma^2} \right) \qquad x \in \R
+    \]
+
+    Die zugehörige Verteilungsfunktion ist dann gegeben mit 
+    \[ 
+        F(x) = P(X \leq x) = \frac{1}{\sigma\sqrt{2\pi}} \int_{-\infty}^x e^{\left( \frac{t-\mu}{\sigma} \right)^2} \diff t
+    \]
+
+    Wichtige Eigenschaften der Normalverteilung sind: 
+    \begin{itemize}
+        \item $f(x)$ ist symmetrisch um $x = \mu$
+        \item $f(x)$ hat ein Maximum der Höhe $\nicefrac{1}{\sigma\sqrt{2\pi}}$ bei $x = \mu$
+        \item $f(x)$ hat Wendepunkte bei $x = \mu \pm \sigma$
+        \item $F(x)$ ist nicht geschlossen lösbar!
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Normalverteilung}
+    \begin{center}
+        \includegraphics[width=.7\linewidth]{includes/figures/example_normalverteilung}
+    \end{center}
+\end{example}
 
 \begin{defi}{Standardnormalverteilung}
+    Die \emph{Standardnormalverteilung} ist eine spezielle Variante der Normalverteilung.
+    Dabei gilt $\mu = 0$, $\sigma^2 = 1$, bzw. $X \sim \mathcal{N}(0,1)$. 
 
+    Wichtige Eigenschaften der Standardnormalverteilung sind: 
+    \begin{itemize}
+        \item Jede Normalverteilung lässt sich auf die Standardnormalverteilung transformieren.
+        \item Die Verteilungsfunktion $\Phi(x)$ der Standardnormalverteilung ist tabelliert.
+    \end{itemize}
 \end{defi}
+
+\begin{algo}{Transformation auf standardisierte Variable}
+    Sei $X \sim \mathcal{N}(\mu,\sigma^2)$. 
+    Dann gilt: 
+    \[
+        P(X \leq x) = F(x) = \Phi \left( \frac{x-\mu}{\sigma} \right) = \Phi (u)
+    \]
+    wobei $u = \frac{x-\mu}{\sigma}$ eine standardisierte Variable ist.
+
+    Dabei gilt:
+    \begin{itemize}
+        \item $P(X \geq x) = 1 - \Phi(u)$
+        \item $P(a \leq X \leq b) = \Phi \left( \frac{a - \mu}{\sigma} \right) - \Phi \left( \frac{a - \mu}{\sigma} \right)$
+        \item $\Phi(-u) = 1 - \Phi(u)$
+    \end{itemize}
+\end{algo}
 
 \begin{bonus}{Geometrische Verteilung}
+    Die \emph{geometrische Verteilung} beschreibt das \enquote{Warten auf den ersten Erfolg}. 
 
+    Dabei besitzt eine diskrete Zufallsvariable $X$ eine geometrische Verteilung mit Parameter $0 < p < 1$, falls ihre Verteilung gegeben ist durch 
+    \[
+        f(x) = P(X = x) = (1-p)^xp \qquad x \in \N_0
+    \]
+
+    $X$ beschreibt dann die Anzahl der \enquote{Nieten} vor dem ersten \enquote{Treffer}, der mit der Wahrscheinlichkeit $p$ eintritt.
+
+    Die Maßzahlen dieser Verteilung lauten: 
+    \begin{itemize}
+        \item Erwartungswert: $\mu = \frac{1-p}{p}$
+        \item Varianz: $\sigma^2 = \frac{1-p}{p^2}$
+    \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Negative Binomialverteilung}
+\begin{example}{Geometrische Verteilung}
+    \begin{center}
+        \includegraphics[width=.7\linewidth]{includes/figures/example_geom_verteilung_bar}
+    \end{center}
+\end{example}
+
+\begin{algo}{Approximation von Verteilungen}
+
+\end{algo}
+
+\begin{bonus}{Zusammenfassung von Verteilungsfunktionen}
 
 \end{bonus}
-
-\begin{bonus}{Pascal-Verteilung}
-
-\end{bonus}
-
-\begin{defi}{Approximation von Verteilungen}
-
-\end{defi}
 
 \subsection{Mehrdimensionale Zufallsvariablen}
 
