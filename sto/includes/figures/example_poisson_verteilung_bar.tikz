@@ -1,0 +1,18 @@
+% Säulendiagramm
+\begin{tikzpicture}
+    \begin{axis}[
+            xlabel=$x$,
+            ylabel=$f(x)$,
+            ymajorgrids,
+            ytick distance={0.1},
+            xtick distance={10},
+            ycomb,
+            samples at={0,...,50},
+            mark options={mark=-,scale=1},
+            clip=false,
+            enlarge x limits={abs=1cm}, % The distance between the center of the first bar and the left edge
+        ]
+        \addplot {poisson(x,10)}; \addlegendentry{$\Poi(10)$}
+        \addplot {poisson(x,30)}; \addlegendentry{$\Poi(30)$}
+    \end{axis}
+\end{tikzpicture}
