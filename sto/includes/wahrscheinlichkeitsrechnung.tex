@@ -791,14 +791,375 @@
 
 \begin{algo}{Approximation von Verteilungen}
 
+    \begin{center}
+        \begin{tabularx}{\linewidth}{|>{\hsize=.6\hsize}X|X|X|>{\hsize=1.4\hsize}X|}
+        \hline
+        & \multicolumn{3}{l|}{Approximation durch eine $\ldots$} \\ \cline{2-4}
+        & Binomialverteilung & Poisson-Verteilung & Normalverteilung \\ 
+        \hline
+        Binomial-verteilung & & \makecell[c]{ \textbf{Bedingungen:} \\ $np \leq 10$ \\ $n \geq 1500p$ \\ \\ \textbf{Dann gilt:} \\ $\approx \Poi(np)$ } & \makecell[c]{ \textbf{Bedingungen:} \\ $np(1-p) > 9$ \\ \\ \textbf{Dann gilt:} \\ $\approx \mathcal{N}(np, np(1-p))$ } \\ 
+        \hline
+        Hypergeo-metrische Verteilung & \makecell[c]{ \textbf{Bedingungen:} \\ $0.1 < \frac{M}{N} < 0.9$ \\ $n < 0.05N$, $n > 10$ \\ \\ \textbf{Dann gilt:} \\ $\approx B(n,\frac{M}{N})$} & \makecell[c]{ \textbf{Bedingungen:} \\ $0.1 \not< \frac{M}{N} \not< 0.9$ \\ $n < 0.05N$, $n > 30$ \\ \\ \textbf{Dann gilt:} \\ $\approx \Poi(n \frac{M}{N})$ } & \makecell[c]{ \textbf{Bedingungen:} \\ $0.1 < \frac{M}{N} < 0.9$ \\ $n < 0.05N$, $n > 30$ \\ \\ \textbf{Dann gilt:} \\ $\approx \mathcal{N}(n \frac{M}{N},n \frac{M}{N}(1-\frac{M}{N}) \frac{N-n}{N-1})$ } \\ 
+        \hline
+        Poisson-Verteilung & & & \makecell[c]{ \textbf{Bedingungen:} \\ $\mu > 9$ \\ \\ \textbf{Dann gilt:} \\ $\approx \mathcal{N} (\mu, \sqrt{\mu})$} \\ 
+        \hline
+        \end{tabularx}
+    \end{center}
+
+    \vspace{1em}
+    \emph{Achtung}:
+
+    Diskrete Verteilungen nehmen nur einzelne Werte an, stetige Verteilungen haben positive Wahrscheinlichkeit nur für Intervalle - Wenn wir also die diskrete Verteilung durch eine Stetige approximieren wollen, müssen wir aus dem einzelnen Wert $a$ ein Intervall machen.
+
+    Weil diskrete Verteilungen oft Werte aus den ganzen Zahlen annehmen, teilt man die Intervalle zwischen den einzelnen Zahlen einfach gerecht auf.
+
+    So wird aus $a$ das Intervall $[a-0.5,a+0.5]$ und wir betrachten bei der Approximation 
+    \[ 
+        P(a-0.5 \leq X \leq a+0.5) \ \text{statt} \ P(a)
+    \] 
 \end{algo}
 
 \begin{bonus}{Zusammenfassung von Verteilungsfunktionen}
+
+\begin{center}
+    \begin{tabularx}{\linewidth}{|>{\hsize=.15\hsize}X|>{\hsize=.15\hsize}X|>{\hsize=.35\hsize}X|>{\hsize=.1\hsize}X|>{\hsize=.3\hsize}X|}
+        \hline
+        Verteilung & Parameter & Wahrscheinlichkeits- bzw. Dichtefunktion & Art & Kennzahlen \\ 
+        \hline 
+        Binomial-verteilung $B(n,p)$ & \makecell[l]{$n \in \N$ \\ $0 < p < 1$} & \[ f(x) = \binom{n}{x}p^x(1-p)^{n-x} \] & diskret & \makecell[l]{$\mu = np$ \\ $\sigma^2 = np(1-p)$} \\
+        \hline 
+        Hypergeo-metrische Verteilung $H(N,M,n)$ & \makecell[l]{$N \in \N$ \\ $M \in [0,N]$ \\ $n \in [0,N]$} & \[ f(x) = \frac{\binom{M}{x} \binom{N-M}{n-x}}{\binom{N}{n}} \] & diskret & \makecell[l]{$\mu = n\frac{M}{N}$ \\ $\sigma^2 = n\frac{M}{N}\left( 1 - \frac{M}{N} \right) \frac{N-n}{N-1}$} \\ 
+        \hline 
+        Poisson-Verteilung $\Poi(\mu)$ & $\mu > 0$ & \[ f(x) = \frac{\mu^x}{x!} \cdot e^{-\mu} \] & diskret & \makecell[l]{$\mu = \mu$ \\ $\sigma^2 = \mu$} \\ 
+        \hline
+        (Gaußsche) Normal-verteilung $\mathcal{N} (\mu, \sigma^2)$ & \makecell[l]{$\mu \in \R$ \\ $\sigma^2 > 0$} & \[ f(x) = \frac{1}{\sqrt{2\pi} \cdot \sigma} \cdot e^{-\frac{1}{2}\left( \frac{x-\mu}{\sigma} \right)^2} \] & stetig & \makecell[l]{$\mu = \mu$ \\ $\sigma^2 = \sigma^2$} \\ 
+        \hline
+        Standard-normal-verteilung $\mathcal{N} (0,1)$ & \makecell[l]{$\mu = 0$ \\ $\sigma^2 = 1$} & \[ \phi(u) = \frac{1}{\sqrt{2\pi}} \cdot e^{-\frac{1}{2} u^2} \] & stetig & \makecell[l]{$\mu = 0$ \\ $\sigma^2 = 1$} \\ 
+        \hline
+    \end{tabularx}
+\end{center}
 
 \end{bonus}
 
 \subsection{Mehrdimensionale Zufallsvariablen}
 
+\begin{defi}{Wahrscheinlichkeitsfunktion einer zweidimensionalen Verteilung}
+    Die \emph{Wahrscheinlichkeitsfunktion einer zweidimensionalen Verteilung} ist eine Funktion von zwei unabhängigen Variablen: 
+    \[ 
+        f(x,y) = P(X = x, Y = y)
+    \]
+\end{defi}
+
+\begin{defi}{Randverteilung}
+    Die beiden eindimensionalen Wahrscheinlichkeitsfunktiontn $f_1(x)$ und $f_2(y)$ der Zufallsvariablen $X$ und $Y$ werden als \emph{Randverteilungen} der zweidimensionalen Verteilung $(X,Y)$ bezeichnet.
+
+    Es gilt: 
+    \[ 
+        f_1(x) = \sum_{y} f(x,y) 
+    \] 
+    \[ 
+        f_2(y) = \sum_{x} f(x,y) 
+    \] 
+\end{defi}
+
+\begin{example}{Zweidimensionale Zufallsvariable}
+    Wir betrachten einen gleichzeitigen Wurf einer Münze und eines Würfels. 
+    Dabei seien die Zufallsvariablen $X$ und $Y$ wie folgt:
+    \[ 
+        X = \text{\enquote{Anzahl Wappen bei der Münze}} \in \{ 0,1 \}
+    \]
+    \[ 
+        Y = \text{\enquote{Augenzahl beim Würfeln}} \in \{ 1,2,3,4,5,6 \}
+    \]
+
+    Dann gibt es für die zweidimensionale Zufallsvariable $(X,Y)$ offensichtlich 12 Elementareignisse:
+    
+    \begin{center}
+        \begin{tabular}{|C|C|C|C|C|C|C|}
+            \hline
+            $\diagbox{X}{Y}$ & 1 & 2 & 3 & 4 & 5 & 6  \\ 
+            \hline 
+            0 & (0,1) & (0,2)  & (0,3)  & (0,4)  & (0,5)  & (0,6) \\   
+            \hline 
+            1 & (1,1) & (1,2)  & (1,3)  & (1,4)  & (1,5)  & (1,6) \\   
+            \hline 
+        \end{tabular}
+    \end{center}
+
+    und es gilt die zweidimensionale Wahrscheinlichkeitsfunktion (Verteilungstabelle):
+
+    \begin{center}
+        \begin{tabular}{|C|C|C|C|C|C|C||C|}
+            \hline
+            $\diagbox{X}{Y}$ & 1 & 2 & 3 & 4 & 5 & 6 & f_1(x)  \\ 
+            \hline 
+            0 & \nicefrac{1}{12} & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12} & \nicefrac{1}{2} \\   
+            \hline 
+            1 & \nicefrac{1}{12} & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12} & \nicefrac{1}{2} \\      
+            \hline 
+            \hline 
+            f_2(y) & \nicefrac{1}{6} & \nicefrac{1}{6} & \nicefrac{1}{6} & \nicefrac{1}{6} & \nicefrac{1}{6} & \nicefrac{1}{6} & 1 \\ 
+            \hline 
+        \end{tabular}
+    \end{center}
+\end{example}
+
+\begin{defi}{Verteilungsfunktion einer zweidimensionalen Verteilung}
+    Die Wahrscheinlichkeitsfunktion einer zweidimensionalen Verteilung $(X,Y)$ lässt sich vollständig durch die Verteilungsfunktion darstellen. 
+
+    Für die \emph{Verteilungsfunktion} 
+    \[
+        F(x,y) = P(X \leq x, Y \leq y) 
+    \]
+    
+    gelten folgende Eigenschaften:
+    \begin{itemize}
+        \item $\lim_{x\to \infty, y\to \infty} F(x,y) = 1$ 
+        \item $\lim_{x \to -\infty} F(x,y) = \lim_{y \to -\infty} F(x,y) = 0$
+        \item $P(a < x \leq b, c < Y \leq d) = F(b,d) - F(a,d) - F(b,c) + F(a,c)$
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Diskrete zweidimensionale Verteilung}
+    $(X,Y)$ heißt \emph{diskret}, wenn beide Komponenten diskrete Zufallsvariablen sind. 
+
+    TO DO
+\end{defi}
+
+\begin{defi}{Stetige zweidimensionale Verteilung}
+    $(X,Y)$ heißt \emph{stetig}, wenn beide Komponenten stetige Zufallsvariablen sind. 
+
+    TO DO
+\end{defi}
+
+\begin{defi}{Stochastisch unabhängige Zufallsvariable}
+    Die Zufallsvariablen $X$ und $Y$ mit den Verteilungsfunktionen $F_1(x)$ und $F_2(y)$ und der gemeinsamen Verteilungsfunktion $F(x,y)$ heißen \emph{stochastisch unabhängig}, wenn die Bedingung
+    \[
+        F(x,y) = F_1(x) \cdot F_2(y)
+    \]
+    für alle $(x,y)$ erfüllt ist.
+
+    Es gilt: 
+    \begin{itemize}
+        \item Ist die Bedingung nicht erfüllt, sind die Zufallsvariablen stochastisch abhängig. 
+        \item Ist die Bedingung erfüllt, sind die beiden Ereignisse $X = x$ und $Y = y$ stochastisch unabhängig. 
+        \item Sind $X$ und $Y$ stochastisch unabhängige Zufallsvariablen, so gilt $f(x,y) = f_1(x) \cdot f_2(y)$ 
+        \item Sinngemäße Erweiterung auf $n$ Zufallsvariablen 
+    \end{itemize}
+\end{defi}
+
+\begin{algo}{Summen von Zufallsgrößen}
+    Die neue Zufallsvariable wird als Summe von anderen Zufallsvariablen definiert: 
+    \[
+        Z := X_1 + X_2 + \ldots + X_n
+    \]
+
+    Den Zahlenwerten $x_1 := X_1(\omega)$, $\ldots$, $x_n := X_n(\omega)$ eines Zufallsversuches mit Resultat $\omega$ wird die Zahl $z := x_1 + \ldots + x_n$ als Ergebnis $Z(\omega)$ der neuen Zufallsgröße $Z$ zugeordnet.
+
+    Sei $Z = X + Y$. 
+
+    Dann gilt im diskreten Fall 
+    \[
+        P(Z = z) = \sum_i P(X = x_i, Y = z - x_i)
+    \]
+    und im stetigen Fall
+    \[ 
+        f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(x,z-x) \diff x
+    \]
+
+    Sind $X$ und $Y$ stohastisch unabhängig, dann gilt insbesondere 
+    \[ 
+        f_Z(z) = \int_{-\infty}^{\infty} f_X(x) \cdot f_Y(z-x) \diff x
+    \]
+    Das wird auch als \enquote{Faltung} bezeichnet.
+\end{algo}
+
+\begin{algo}{Produkt und Quotient zweier stetiger Zufallsgrößen}
+    Sei $Z = XY$.
+    Dann gilt:
+    \[ 
+        f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(\nicefrac{z}{y}, y) \cdot \frac{1}{\abs{y}} \diff y 
+    \]
+
+    Sei $Z = \nicefrac{X}{Z}$.
+    Dann gilt:
+    \[ 
+        f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(zy,y) \cdot \abs{y} \diff y 
+    \]
+\end{algo}
+
+\begin{algo}{Erwartungswert und Varianz für die Summe von Zufallsgrößen}
+    $X$ und $Y$ seien als Funktionen auf $\Omega$ explizit bekannt:
+    \[
+        \implies (X+Y)(\omega) = X(\omega) + Y(\omega) \quad \land \quad (X \cdot Y)(\omega) = X(\omega) \cdot Y(\omega)
+    \]
+
+    Dann gilt für den Erwartungswert: 
+    \[
+        \forall \alpha \in \R: \Mean(\alpha X + b) = \alpha\Mean(X) + b 
+    \]
+    \[ 
+        \Mean(\alpha X + \beta Y) = \alpha\Mean(X) + \beta\Mean(Y)
+    \]
+
+    Und für die Varianz:
+    \[
+        \forall \alpha \in \R: \Var(\alpha X + b) = \alpha^2 \Var(X)
+    \]
+    \[
+        \Var(\alpha X + \beta Y) = \alpha^2 X + \beta^2 Y + 2\alpha\beta\Cov(X, Y) 
+    \]
+
+    Falls $X$ und $Y$ stochastisch unabhängige Zufallsvariablen sind, gilt: 
+    \[
+        \Mean(X \cdot Y) = \Mean(X) \cdot \Mean(Y) \implies \Cov(X, Y) = 0 \implies \Var(\alpha X + \beta Y) = \alpha^2 \Var(X) + \beta^2 \Var(Y)
+    \]
+\end{algo}
+
 \subsection{Kovarianz und Korrelation}
 
+\begin{defi}{Kovarianz}
+        Die \emph{Kovarianz} ein Zusammenhangsmaß für einen monotonen Zusammenhang zweier Zufallsvariablen mit gemeinsamer Wahrscheinlichkeitsverteilung. 
+        Der Wert dieser Kennzahl macht tendenzielle Aussagen darüber, ob hohe Werte der einen Zufallsvariablen eher mit hohen oder eher mit niedrigen Werten der anderen Zufallsvariablen einhergehen.
+
+        Die Kovarianz ist definiert als: 
+        \[
+            \Cov(X, Y) = \Mean \left( (X - \Mean(X)) \cdot (Y - \Mean(Y)) \right)
+        \]
+
+        Es gilt: 
+        \[
+            \Cov(X, Y) = \Mean(XY) - \Mean(X)\Mean(Y)
+        \]
+
+        Eigenschaften der Kovarianz: 
+        \begin{enumerate}
+            \item $\Cov(X, Y) = \Cov(Y, X)$
+            \item $\Cov(X, X) = \Var(X)$
+            \item $\Cov(\alpha X + \beta, \gamma Y + \delta) = \alpha\gamma \cdot \Cov(X, Y)$
+            \item $X$, $Y$ stochastisch unabhängig $\implies \Cov(X, Y) = 0$
+            \item 
+            \[
+                \Cov \left( \sum_{i=1}^{m} \alpha_i X_i, \sum_{j=1}^{n} \beta_j Y_j \right) = \sum_{i=1}^{m} \sum_{j=1}^{n} \alpha_i \beta_j \Cov(X_i, Y_j)
+            \]
+        \end{enumerate}
+
+        Zwei Zufallsvariablen $X$, $Y$ heißen \emph{unkorelliert}, falls $\Cov(X, Y) = 0$ ist.
+
+        Im Allgemeinen darf aus der Unkorreliertheit zweier Zufallsvariablen nicht auf deren stochastische Unabhängigkeit geschlossen werden!
+\end{defi}  
+
+\begin{defi}{Korrelationskoeffizient}
+    Der \emph{Person'sche Korrelationskoeffizient} ist ein Maß für den Grad des linearen Zusammenhangs zwischen zwei Zufallsvariablen. 
+    Er kann Werte zwischen $-1$ und $+1$ annehmen. 
+    Bei einem Wert von $+1$ (bzw. $-1$) besteht ein vollständig positiver (bzw. negativer) linearer Zusammenhang zwischen den betrachteten Merkmalen. 
+    Wenn der Korrelationskoeffizient den Wert $0$ aufweist, hängen die beiden Merkmale überhaupt nicht linear voneinander ab. 
+    Allerdings können diese ungeachtet dessen in nichtlinearer Weise voneinander abhängen. 
+    Damit ist der Korrelationskoeffizient kein geeignetes Maß für die (reine) stochastische Abhängigkeit von Merkmalen.
+
+    Der Pearson'sche Korrelationskoeffizient ist definiert durch
+    \[
+        \rho_{X,Y} := \frac{\Cov(X, Y)}{\sigma_X \cdot \sigma_Y}
+    \]
+
+    Von einer vorhandenen Korrelation zweier Zufallsvariablen darf aber nicht auf einen kausalen Zusammenhang gechlossen werden!
+\end{defi}
+
 \subsection{Gesetze der großen Zahlen und Grenzwertsätze}
+
+\begin{defi}{Schwaches Gesetz großer Zahlen}
+    Betrachte eine $n$-malige Wiederholung eines Zufallsexperimentes mit Messung der Zufallsvariablen (des Merkmals) $X$.
+    Wir erhalten $n$ stochastisch unabhängige Ergebnisse. 
+    
+    $X_i$ sei die Realisierung der Zufallsvariablen im $i$-ten Versuch.
+
+    $X_i$ ist dann eine Zufallsvariable mit der \emph{gleichen Verteilung} wie $X$, insbesondere aber auch mit \emph{gleichem Erwartungswert} und \emph{gleicher Varianz}.
+
+    \[
+        \conj{X}_{(n)} = \frac{1}{n} \sum_{i=1}^{n} X_i
+    \] 
+
+    ist dann auch eine Zufallsvariable mit 
+
+    \[ 
+        \implies \Mean(\conj{X}_{(n)}) = \frac{1}{n} \sum_{i=1}^{n} \Mean(X_i) = \frac{1}{n} \cdot n \cdot \Mean(X) = \Mean(X) 
+    \] 
+    und 
+    \[ 
+        \implies \Var(\conj{X}_{(n)}) = \frac{1}{n^2} \sum_{i=1}^{n} \Var(X_i) = \frac{1}{n^2} \cdot n \cdot \Var(X) = \frac{1}{n} \Var(X)
+    \]
+
+    Nach Tschebyscheff gilt dann: 
+    \[
+        P(\abs{\conj{X}_{(n)} - \mu} \geq \epsilon) \leq \frac{\Var(\conj{X}_{(n)})}{\epsilon^2} = \frac{\Var(X)}{n} \cdot \frac{1}{\epsilon} = \frac{1}{n} \cdot \frac{\sigma^2}{\epsilon^2}
+    \]
+
+    Mit 
+    \[
+        \lim_{n\to\infty} \frac{1}{n} \cdot \frac{\sigma^2}{\epsilon^2} = 0 \quad \text{und} \quad \conj{X}_{(n)} = \frac{1}{n}\sum_{i-1}^{n} X_i
+    \]
+    erhalten wir dann das \emph{Schwache Gesetz großer Zahlen}
+    \[
+        \lim_{n\to\infty} P \left( \abs{\frac{1}{n} \sum_{i=1}^n X_i - \mu} \geq \epsilon \right) = 0
+    \]
+
+    Dieses besagt \enquote{stochastische Konvergenz}: 
+    Die Wahrscheinlichkeit, dass ein Mittelwert um mehr als ein beliebiges, festes $\epsilon > 0$ von $\mu$ abweicht, geht für wachsendes $n$ gegen Null.
+
+    Es wird aber nicht ausgeschlossen, dass auch für unbeschränkt wachsende $n$ gelegentlich noch größere Abweichungen als $\epsilon$ auftreten.
+    Die Wahrscheinlichkeit für solche \enquote{Ausreißer} geht mit wachsendem $n$ aber gegen Null.
+\end{defi}
+
+\begin{defi}{Starkes Gesetz großer Zahlen}
+    Bei gleichen Voraussetzungen wie in der Herleitung für das schwache Gesetz großer Zahlen gilt auch das \emph{Starke Gesetz großer Zahlen}: 
+    \[ 
+        P \left( \lim_{n\to\infty} \abs{\frac{1}{n} \sum_{i-1}^n X_i - \mu} = 0 \right) = 1
+    \] 
+
+    Bei unbeschränkt oftmaliger Wiederholung der Messung einer Zufallsgröße konvergiert das Stichprobenmittel gegen den Erwartungswert von $X$.
+
+    Das Starke Gesetz großer Zahlen kann ebenfalls \enquote{Ausreißer} nicht mit Sicherheit ausschließen.
+\end{defi}
+
+\begin{defi}{Zentraler Grenzwertsatz}
+    Die unabhängigen Zufallsgrößen $X_1$, $X_2$, $\ldots$ sollen die gleiche Verteilung haben mit 
+    \[
+        \Mean(X_1) = \Mean(X_2) = \ldots = \mu    
+        \quad \text{und} \quad 
+        \Var(X_1) = \Var(X_2) = \ldots = \sigma^2
+    \]
+
+    Betrachte die Summe 
+    \[ 
+        S_n := \sum_{i=1}^n X_i
+    \] 
+
+    Dann gilt offensichtlich 
+    \[ 
+        \Mean(S_n) = \sum_{i=1}^n \Mean(X_i) = n \cdot \mu
+        \quad \text{und} \quad 
+        \Var(S_n) = \sum_{i=1}^n \Var(X_i) = n \cdot \sigma^2
+    \] 
+
+    Betrachte nun die \enquote{standardisierte Version} von $S_n$ als neue Zufallsgröße:
+    \[
+        S_n^* = \frac{S_n - \Mean(S_n)}{\sqrt{\Var(S_n)}} = \frac{\sum_{i=1}^n X_i - n \cdot \mu}{\sqrt{n} \cdot \sigma} = \frac{1}{\sqrt{n}} \cdot \sum_{i=1}^n \frac{X_i - \mu}{\sigma}
+    \]
+
+    Dann gilt der \emph{Zentrale Grenzwertsatz} nach Lindeberg und Lévy, welcher besagt:
+
+    Für die Standardisierung 
+    \[ 
+        S_n^* = \frac{S_n - \Mean(S_n)}{\sqrt{\Var(S_n)}} 
+    \] 
+    der Summe 
+    \[ 
+        S_n = \sum_{i=1}^n X_i
+    \] 
+    gilt die Grenzwertbeziehung 
+    \[ 
+        \lim_{n\to\infty} P(S_n^* \leq s) = \frac{1}{\sqrt{2\pi}} \cdot \int_{-\infty}^s e^{\frac{x^2}{2}} \diff x \qquad \forall s \in \R
+    \] 
+
+    Der zentrale Grenzwertsatz liefert also die Begründung für das Phänomen, dass sich bei der additiven Überlagerung vieler kleiner unabhängiger Zufallseffekte zu einem Gesamteffekt zumindest approximativ eine Normalverteilung ergibt.
+\end{defi}
