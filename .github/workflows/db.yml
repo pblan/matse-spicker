@@ -26,8 +26,8 @@ jobs:
         run: |
           curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls
           curl -OL  https://raw.githubusercontent.com/pblan/latex-docker/main/local/mymacros.sty
-          mv spicker.cls swt/spicker.cls
-          mv mymacros.sty swt/mymacros.sty
+          mv spicker.cls db/spicker.cls
+          mv mymacros.sty db/mymacros.sty
           
       - name: Compiling LaTeX
         uses: xu-cheng/latex-action@v2
