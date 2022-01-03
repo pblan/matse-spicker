@@ -75,7 +75,7 @@
 \end{defi}
 
 \begin{defi}{Transaktion}
-    Eine \emph{Transaktion} ist ein Bündel von Aktionen, die in der Datenbank durchgeführt werden, um diese von einem konsistenten Zustand wieder in einen konsistenten (widerspruchsfreien) Zustand zu überführen.
+    Eine \emph{Transaktion} ist ein Bündel von Aktionen, die in der Datenbank durchgeführt werden, um diese von einem inkonsistenten Zustand wieder in einen konsistenten (widerspruchsfreien) Zustand zu überführen.
 
     Dazwischen sind die Daten zum Teil zwangsläufig inkonsistent.
 
@@ -83,3 +83,74 @@
     Innerhalb einer Transaktion werden entweder alle Aktionen oder keine durchgeführt.
     Nur ein Teil der Aktionen würde zu einem inkonsistenten Datenbankzustand führen.
 \end{defi}
+
+\begin{defi}{Relation}
+    Im Zusammenhang mit relationalen Datenbanken ist es üblich, eine \emph{Relation} durch eine Tabelle zu beschreiben.
+    In Tabellenform entsprechen die Attribute den Spaltenköpfen, die Attributwerte den in den Spalten vorhandenen Einträgen.
+    Ein Tupel entspricht einer Zeile einer Tabelle.
+\end{defi}
+
+\begin{defi}{Mehrbenutzungsbetrieb}
+    Ein Datenbanksystem erlaubt mehreren Benutzern gleichzeitig den Zugriff auf eine Datenbank.
+    Die Beantwortung unterschiedlicher Fragestellung (der diversen Benutzer) mit den gleichen (Basis-) Daten ist ein zentraler Aspekt eines Informationssystems.
+
+    Eine solche Mehrfachnutzung erhöht auch die Wirtschaftlichkeit eines Systems.
+\end{defi}
+
+\begin{defi}{Datenansicht}
+    Typischerweise hat eine Datenbank mehrere Benutzer, und jeder benötigt, je nach Zugangsrechten und Bedürfnissen, eine individuelle Ansicht der Daten (Inhalt und Form).
+    Eine solche \emph{Datensicht} kann aus einer Teilmenge der gespeicherten Daten oder aus daraus abgeleiteten (nicht explizit gespeicherten) Daten bestehen.
+\end{defi}
+
+\begin{defi}{Persistenz}
+    \emph{Persistenz} meint, dass in einem DBMS einzelne Daten solange aufbewahrt werden müssen, bis sie explizit gelöscht werden.
+
+    Die Lebensdauer von Daten muss also von den Benutzern direkt oder indirekt bestimmbar sein und darf nicht von irgendwelchen Systemgegebenheiten abhängen.
+    Ebensowenig dürfen einmal in die Datenbank aufgenommene Daten verloren gehen.
+
+    Änderungen, die eine Transaktion in einer Datenbank vornimmt, sind dauerhaft. Wenn die Transaktion abgeschlossen ist, kann auch ein darauf folgender Systemabsturz die Daten nicht mehr gefährden.
+\end{defi}
+
+\begin{defi}{Komponenten eines DBMS}
+    \begin{itemize}
+        \item \emph{Data Manipulation Language (DML)}:
+              \begin{itemize}
+                  \item Überführt Anfrage in ausführbare Form, primär zur Manipulation von Daten
+              \end{itemize}
+        \item \emph{Data Definition Language (DDL) Compiler}:
+              \begin{itemize}
+                  \item Wie DML, nur für Datenstrukturen
+              \end{itemize}
+        \item \emph{Anfragebearbeitung}:
+              \begin{itemize}
+                  \item Erstellen eines Ablaufplans für eine Abfrage
+                  \item inkl. logischer und physischer Optimierung
+              \end{itemize}
+        \item \emph{Datenbankmanager}:
+              \begin{itemize}
+                  \item Kern des DBMS, Ausführung der Anfragen
+              \end{itemize}
+        \item \emph{Schemaverwaltung}:
+              \begin{itemize}
+                  \item Verwaltung der Metadaten
+                  \item \enquote{Typsystem} des DBMS
+              \end{itemize}
+        \item \emph{Mehrbenutzungsynchronisation, Fehlerbehandlung}:
+              \begin{itemize}
+                  \item Transaktionsverwaltung
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Storage Engine}
+    Als \emph{Storage Engine} eines Datenbankmanagementsystems wird jene Komponente bezeichnet, welche für das physische Abspeichern und Lesen der Daten zuständig ist.
+
+    Häufig stellen Datenbankmanagementsysteme mehrere austauschbare Storage Engines mit unterschiedlichen Eigenschaften zur Verfügung, z.B. transaktionssichere und nicht-transaktions-sichere Storage Engines oder In-Memory Storage Engines. Das bringt den Vorteil, dass Applikationen von Fall zu Fall abgestimmt auf die Anforderungen der Anwendung die jeweiligen Stärken der einzelnen Storage Engines nutzen, dabei aber trotzdem das einheitliche Interface des Datenbankmanagementsystems verwenden können.
+\end{defi}
+
+\begin{example}{MySQL Architektur}
+    Aus der \href{https://dev.mysql.com/doc/refman/8.0/en/pluggable-storage-overview.html#mysql-architecture-diagram}{MySQL-Dokumentation:}
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/mysql-architecture.png}
+    \end{center}
+\end{example}
