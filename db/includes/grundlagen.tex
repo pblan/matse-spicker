@@ -1,1 +1,85 @@
 \section{Grundlagen}
+
+\begin{defi}{Anforderungen an Datenbanken}
+    \begin{itemize}
+        \item Widerspruchsfreie, dauerhafte, effiziente und schnelle Speicherung von Daten jeder Art
+        \item Bedarfsgerechte und optimierte Bereitstellung von Daten
+        \item Datensicherheit und Datenschutz
+        \item Mehrbenutzungsbetrieb
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Datenbanksystem}
+    Ein \emph{Datenbanksystem (DBS)} besteht aus dem Datenbankmanagementsystem (DBMS) und der Datenbank.
+\end{defi}
+
+\begin{defi}{Datenbankmanagementsystem}
+    Ein \emph{Datenbankmanagementsystem (DBMS)} ist eine Software zur sicheren, konsistenten und persistenten Speicherung großer Datenmengen, mit dem Ziel mehreren Benutzern (gleichzeitig) effizienten, zuverlässigen, sicheren und bequemen Zugriff auf diese Daten zu ermöglichen.
+
+    Es besteht aus Komponenten zur Abfrage, Verwaltung und Administration der Daten bzw. Datenbank.
+\end{defi}
+
+\begin{bonus}{DBMS Typen}
+    Je nach Art der Daten und des Anwendungsfalls eignen sich unterschiedliche Typen von DBS, genauer DBMS, unterschiedlich gut.
+    Da sind beispielsweise
+    \begin{itemize}
+        \item \emph{relationale DBMS}, die Objekten gleicher Struktur (Attribute) in Tabellen verwalten.
+              \begin{itemize}
+                  \item am verbreitetsten
+                  \item SQL als Abfragesprache
+                  \item vergleichsweise einfache und effiziente Behandlung von Objekten gleichen Aufbaus in Tabellen
+                  \item in der Praxis sind viele Daten strukturiert und typisiert
+              \end{itemize}
+        \item \emph{hierarchische oder objektorientierte DBMS}, die Objekten mit Eltern-Kind- oder Vererbungsbeziehungen besitzen und einzelne Strukturen gemeinsam haben.
+        \item \emph{dokumentenorientierte DBMS}, die Objekte ohne vergleichbare Strukturen verwalten.
+    \end{itemize}
+\end{bonus}
+
+\begin{bonus}{Datum}
+    \emph{Daten} sind zunächst Folgen von Zeichen (Zahlen, Buchstaben, Symbole) oder auch strukturierte Objekte.
+    Sie folgen einer bestimmten Syntax.
+\end{bonus}
+
+\begin{bonus}{Information}
+    Aus Daten entstehen \emph{Informationen}, wenn die Bedeutung bekannt ist.
+
+    Durch die Hinzunahme von Semantik, ggf. weiteren Daten, kann das ursprüngliche Datum interpretiert bzw. verstanden werden.
+\end{bonus}
+
+\begin{bonus}{Wissen}
+    \emph{Wissen} entsteht durch systematische Verknüpfung von Daten, Informationen und (subjektiver) Erfahrung (Pragmatik).
+\end{bonus}
+
+\begin{defi}{Redundanz}
+    Der Begriff der \emph{Redundanz} beschreibt diejenigen Informationen oder Daten, die in einer Informationsquelle (hier: Datenbank) mehrfach vorhanden sind.
+    Eine Informationseinheit ist dann redundant, wenn sie ohne Informationsverlust weggelassen werden kann.
+
+    Redundante Daten ermöglichen inkonsistente Daten (z.B. unterschiedliche Groß- und Kleinschreibung) und belegen Speicher.
+\end{defi}
+
+\begin{defi}{Konsistenz}
+    Ein Datenbankzustand wird als \emph{konsistent} bezeichnet, wenn die gespeicherten Daten alle Anforderungen der Datenintegrität, die sich aus der Anwendung ergeben, erfüllen.
+    Auf fehlerhafte Daten kann mit einer Fehlermeldung und dem Zurückweisen dieser Daten reagiert werden oder, falls möglich, auch mit einer automatischen Korrektur.
+
+    Das Gegenteil einer konsistenten Datenbasis ist eine inkonsistente.
+\end{defi}
+
+\begin{defi}{Datenintegrität}
+    \emph{Datenintegrität} ist ein Begriff für die Qualität und Zuverlässigkeit von Daten eines Datenbanksystems.
+    Im weiteren Sinne zählt zur Integrität auch der Schutz der Datenbank vor unberechtigtem Zugriff (Vertraulichkeit) und Veränderungen.
+
+    Daten widerspiegeln Sachverhalte der realen Welt.
+    Logischerweise wird verlangt, dass sie dies korrekt tun.
+    Ein DBMS soll Unterstützung bieten bei der Aufgabe, nur korrekte und widerspruchsfreie (konsistente) Daten in die Datenbank gelangen zu lassen.
+    Außerdem wird mit korrekten Transaktionen die Konsistenz auch während des Systembetriebs aufrechterhalten.
+\end{defi}
+
+\begin{defi}{Transaktion}
+    Eine \emph{Transaktion} ist ein Bündel von Aktionen, die in der Datenbank durchgeführt werden, um diese von einem konsistenten Zustand wieder in einen konsistenten (widerspruchsfreien) Zustand zu überführen.
+
+    Dazwischen sind die Daten zum Teil zwangsläufig inkonsistent.
+
+    Eine Transaktion ist atomar, d.h. nicht weiter zerlegbar.
+    Innerhalb einer Transaktion werden entweder alle Aktionen oder keine durchgeführt.
+    Nur ein Teil der Aktionen würde zu einem inkonsistenten Datenbankzustand führen.
+\end{defi}
