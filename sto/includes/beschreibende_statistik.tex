@@ -1,7 +1,182 @@
 \section{Beschreibende Statistik}
 
+\begin{bonus}{Aufgabe der beschreibenden Statistik}
+    Die \emph{Aufgabe der beschreibenden Statistik} besteht darin, große und unübersichtliche Datenmengen so aufzuarbeiten, dass wenige aussagekräftige Kenngrößen und/oder Grafiken entstehen, in denen die gesamte Datenmenge \enquote{fokussiert} ist. 
+\end{bonus}
+
 \subsection{Merkmale und weitere wichtige Begriffe}
+
+\begin{defi}{Beobachtungsmenge}
+    Die \emph{Beobachtungsmenge} bzw. \emph{statistische Masse} bezeichnet diejenige Menge aller Objekte, über die eine Aussage getroffen werden soll, also die Menge aller statistischen Einheiten (auch Merkmalsträger, Untersuchungseinheit, Erhebungseinheit, Beobachtungseinheit) mit übereinstimmenden Identifikationskriterien (sachlich, räumlich und zeitlich).
+\end{defi}
+
+\begin{defi}{Beobachtungseinheit}
+    Die \emph{Beobachtungseinheit} bzw. \emph{statistische Einheit} ist Träger der Informationen für die statistische Untersuchung. 
+    
+    Statistische Einheiten können natürliche Einheiten (Personen, Tiere, Pflanzen, Werkstücke), aber auch künstliche Einheiten, zum Beispiel sozio-ökonomische Einheiten (Familien, Haushalte, Unternehmen) oder Ereignisse, sein.
+\end{defi}
+
+\begin{defi}{Statistische Variable}
+    Eine \emph{statistische Variable} oder ein \emph{statistisches Merkmal} ordnet einer Beobachtungseinheit (Untersuchungseinheit) eine Ausprägung oder einen Wert zu. 
+
+    Eine statistische Variable liegt vor, wenn sich Ausprägungen bestimmter Merkmale durch eine Zahl oder durch Zahlenintervalle (Werte der Variablen) ausdrücken lassen und zu diesen Werten empirisch messbare Häufigkeiten gehören. 
+
+    Offensichtlich müssen verschiedene Typen von Merkmalen unterschieden werden:
+    \begin{itemize}
+        \item \emph{Qualitative Merkmale}: 
+            Die Werte brauchen keine physikalische Einheit. 
+            \begin{itemize}
+                \item \emph{Qualitativ-nominale Merkmale}:
+                Merkmalsausprägungen sind nur dem Namen nach unterscheidbar, drücken aber keinerlei Wertung oder Intensität aus (z.B. Familienstand, Studienrichtung)
+                \item \emph{Qualitativ-ordinale Merkmale}: 
+                Merkmalsausprägungen können zusätzlich noch in eine inhaltlich sinnvolle Rangordnung gebracht werden, aber keine definierte Skala (z.B. Interesse am Vorlesungsgegenstand)
+            \end{itemize}
+        \item \emph{Quantitative Merkmale}: 
+            auch \enquote{metrische} oder \enquote{kardinale} Merkmale
+            \begin{itemize}
+                \item \emph{Quantitativ-diskrete Merkmale}: 
+                Merkmale, die nur bestimmte, auf der Zahlengerade getrennt liegende Werte annehmen können (z.B. Anzahl Geschwister, Anzahl Fachsemmester)
+                \item \emph{Quantitativ-stetige Merkmale}: 
+                Werden durch Messung gewonnen und können jeden Wert innerhalb eines sinnvollen Intervalles annehmen (z.B. Körpergröße, -gewicht, Weglänge)
+            \end{itemize}
+    \end{itemize}
+\end{defi}
 
 \subsection{Darstellung der Beobachtungsergebnisse}
 
+\begin{defi}{Absolute Häufigkeit}
+    Der Begriff \emph{absolute Häufigkeit} ist gleichbedeutend mit dem umgangssprachlichen Begriff Anzahl. 
+
+    Die absolute Häufigkeit ist das Ergebnis einer einfachen Zählung von Objekten oder Ereignissen (besser Elementarereignissen). Sie gibt an, wie viele Elemente mit dem gleichen interessierenden Merkmal gezählt wurden. 
+
+    Für die absolute Häufigkeit $n_i$ des Merkmalswertes $a_i$ bei $n$ beobachteten Merkmalswerten gilt also: 
+    \[
+        0 \leq n_i \leq n \quad \land \quad \sum_i n_i = n    
+    \]
+\end{defi}
+
+\begin{defi}{Relative Häufigkeit}
+    Die \emph{relative Häufigkeit} gibt den Anteil der Elemente einer Menge wieder, bei denen eine bestimmte Merkmalsausprägung vorliegt. 
+    Sie wird berechnet, indem die absolute Häufigkeit eines Merkmals in einer zugrundeliegenden Menge durch die Anzahl der Objekte in dieser Menge geteilt wird.
+
+    Für die relative Häufigkeit $h_i$ des Merkmalswertes $a_i$ bei $n$ beobachteten Merkmalswerten gilt also:
+    \[ 
+        h_i := \frac{n_i}{n} \quad \land \quad 0 \leq h_i \leq 1 \quad \land \quad \sum_i h_i = 1
+    \] 
+\end{defi}
+
+\begin{defi}{Summenhäufigkeit}
+    Die \emph{Summenhäufigkeit} oder \emph{kumulierte Häufigkeit} gibt an, bei welcher Anzahl der Merkmalsträger in einer empirischen Untersuchung die Merkmalsausprägung kleiner ist als eine bestimmte Schranke. 
+    Die kumulierte Häufigkeit wird berechnet als Summe der Häufigkeiten der Merkmalsausprägungen von der kleinsten Ausprägung bis hin zu der jeweils betrachteten Schranke. 
+
+    Für die absolute Summenhäufigkeit $\Fabs(x)$ gilt also: 
+    \[
+        \Fabs(x) := \sum_{i: a_i \leq x} n_i \qquad x \in \R    
+    \] 
+
+    Für die relative Summenhäufigkeit $\Frel(x)$ gilt also: 
+    \[
+        \Frel(x) := \sum_{i: a_i \leq x} h_i = \frac{\Fabs}{n} \qquad x \in \R    
+    \] 
+\end{defi}
+
+\begin{defi}{Empirische Verteilungsfunktion}
+    Eine \emph{empirische Verteilungsfunktion} oder \emph{Summenhäufigkeitsfunktion} ist in der beschreibenden Statistik und der Stochastik eine Funktion, die jeder reellen Zahl $x$ den Anteil der Stichprobenwerte, die kleiner oder gleich $x$ sind, zuordnet. 
+\end{defi}
+
+\begin{example}{Empirische Verteilungsfunktion}
+
+\end{example}
+
+\begin{defi}{Klasseneinteilung}
+    \emph{Klasseneinteilung} oder Klassierung bezeichnet in der Statistik die Einteilung von Merkmalswerten oder statistischen Reihen in getrennte Gruppen, Klassen oder Größenklassen. 
+
+    Klassen sind disjunkte, d. h. nicht überlappende, aneinandergrenzende Intervalle von Merkmalswerten, die durch eine untere und eine obere Klassengrenze begrenzt und eindeutig festgelegt sind.
+
+    Da es bei statistischen Untersuchungen oft nicht möglich oder sinnvoll ist, alle einzelnen (verschiedenen) Merkmalsausprägungen oder Realisierungen der untersuchten Zufallsvariablen zu erheben oder zu verarbeiten, kann durch eine Klassierung eine bessere Übersicht über die Daten erreicht werden. 
+    Das trifft insbesondere auf stetige Merkmale zu. 
+
+    Für den Gewinn an Übersichtlichkeit zahlt man mit einem Informationsverlust, denn über die Verteilung der Werte innerhalb einer Klasse ist dann nichts mehr bekannt. 
+
+    Sei das Intervall $[a,b]$ gegeben.
+    Dann definiert man eine Einteilung des Intervalls in disjunkte Klassen $A_1, \ldots, A_k$, wobei gilt
+    \[ 
+        A_i = \left( a_{i-1}, a_i \right] \qquad a = a_0 < a_1 < \ldots < a_k = b
+    \]
+    Im Allgemeinen sind die Klassen äquidistant. 
+    Man definiert
+    \[ 
+        \alpha_i = \frac{a_i + a_{i-1}}{2}
+    \] 
+    als Klassenmitten.
+\end{defi}
+
+\begin{defi}{Absolute Klassenhäufigkeit}
+
+\end{defi}
+
+\begin{defi}{Relative Klassenhäufigkeit}
+
+\end{defi}
+
+\begin{defi}{Relative Häufigkeitsdichte}
+
+\end{defi}
+
+\begin{defi}{Histogramm}
+
+\end{defi}
+
 \subsection{Statistische Maßzahlen}
+
+\begin{defi}{Arithmetisches Mittel}
+
+\end{defi}
+
+\begin{defi}{Median}
+
+\end{defi}
+
+\begin{defi}{Median}
+
+\end{defi}
+
+\begin{defi}{Modalwert}
+
+\end{defi}
+
+\begin{defi}{Quantil (empirisch)}
+
+\end{defi}
+
+\begin{defi}{Spannweite}
+
+\end{defi}
+
+\begin{defi}{Boxplot}
+
+\end{defi}
+
+\begin{defi}{Empirische Varianz}
+
+\end{defi}
+
+\begin{defi}{Variationskoeffizient}
+
+\end{defi}
+
+\begin{defi}{Empirische Kovarianz}
+
+\end{defi}
+
+\begin{algo}{Lineare Regression}
+
+\end{algo}
+
+\begin{defi}{Korrelationskoeffizient (empirisch)}
+
+\end{defi}
+
+\begin{defi}{Bestimmtheitsmaß}
+
+\end{defi}
