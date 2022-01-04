@@ -1,16 +1,19 @@
 login:
-```sql
+```bash
 mysql -u root -p
 ```
 
-select database:
-```sql
-use pokemon;
+create .sql file:
+```bash
+mysqldump -u root -p pokemon > ./pokemon.sql
 ```
 
-create .sql file:
+import .sql file:
 ```sql
-mysqldump -u root -p pokemon > D:\Arbeit\MATSE\spicker\matse-spicker\db\sql\pokemon.sql
+source .\pokemon.sql
+```
+```bash
+mysql -u root -p pokemon < ./pokemon.sql
 ```
 
 Effektivitaetsmatrix:
