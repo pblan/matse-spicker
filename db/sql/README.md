@@ -16,6 +16,16 @@ source .\pokemon.sql
 mysql -u root -p pokemon < ./pokemon.sql
 ```
 
+select all pokemon attacks:
+```sql
+select p.name as pokemon, l.level as level, a.name as attacke, a.typ as typ, l.methode as methode from (select * from lernt where pokemon = (select id from pokemon where name = "Glumanda")) as l join pokemon as p on l.pokemon = p.id join attacke as a on l.attacke = a.id order by l.level;
+```
+
+select all tms:
+```sql
+select a.name as attacke, i.bezeichnung as item, at.Spiel as spiel from attacke_tm as at join attacke as a on at.attacke = a.id join item as i on at.item = i.id;
+```
+
 Effektivitaetsmatrix:
 ```
         | Normal  | Feuer   | Wasser  | Pflanze | Elektro | Eis     | Kampf   | Gift    | Boden   | Flug    | Psycho  | Kaefer  | Gestein | Geist   | Drache  | Unlicht | Stahl   | Fee     |
