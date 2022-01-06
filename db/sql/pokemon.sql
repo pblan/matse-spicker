@@ -23,17 +23,17 @@ DROP TABLE IF EXISTS `attacke`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `attacke` (
-  `ID` int(4) NOT NULL,
-  `Name` varchar(255) NOT NULL,
-  `Typ` varchar(255) NOT NULL,
-  `Schadensklasse` varchar(255) DEFAULT NULL,
-  `Staerke` int(3) DEFAULT NULL,
-  `Genauigkeit` int(3) DEFAULT NULL,
-  `AP` int(2) NOT NULL,
-  `Generation` int(1) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `Typ` (`Typ`),
-  CONSTRAINT `attacke_ibfk_1` FOREIGN KEY (`Typ`) REFERENCES `typ` (`Bezeichnung`)
+  `id` int(4) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `typ` varchar(255) NOT NULL,
+  `schadensklasse` varchar(255) DEFAULT NULL,
+  `staerke` int(3) DEFAULT NULL,
+  `genauigkeit` int(3) DEFAULT NULL,
+  `ap` int(2) NOT NULL,
+  `generation` int(1) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `typ` (`typ`),
+  CONSTRAINT `attacke_ibfk_1` FOREIGN KEY (`typ`) REFERENCES `typ` (`bezeichnung`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -55,13 +55,13 @@ DROP TABLE IF EXISTS `attacke_tm`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `attacke_tm` (
-  `Attacke` int(4) NOT NULL,
-  `Item` int(4) NOT NULL,
-  `Spiel` varchar(255) NOT NULL,
-  PRIMARY KEY (`Attacke`,`Item`,`Spiel`),
-  KEY `Item` (`Item`),
-  CONSTRAINT `attacke_tm_ibfk_1` FOREIGN KEY (`Attacke`) REFERENCES `attacke` (`ID`),
-  CONSTRAINT `attacke_tm_ibfk_2` FOREIGN KEY (`Item`) REFERENCES `item` (`ID`)
+  `attacke` int(4) NOT NULL,
+  `item` int(4) NOT NULL,
+  `version` varchar(255) NOT NULL,
+  PRIMARY KEY (`attacke`,`item`,`version`),
+  KEY `item` (`item`),
+  CONSTRAINT `attacke_tm_ibfk_1` FOREIGN KEY (`attacke`) REFERENCES `attacke` (`id`),
+  CONSTRAINT `attacke_tm_ibfk_2` FOREIGN KEY (`item`) REFERENCES `item` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -83,13 +83,13 @@ DROP TABLE IF EXISTS `effektivitaet`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `effektivitaet` (
-  `Multiplikator` double NOT NULL DEFAULT 1,
-  `Angreifend` varchar(255) NOT NULL,
-  `Verteidigend` varchar(255) NOT NULL,
-  PRIMARY KEY (`Angreifend`,`Verteidigend`),
-  KEY `Verteidigend` (`Verteidigend`),
-  CONSTRAINT `effektivitaet_ibfk_1` FOREIGN KEY (`Angreifend`) REFERENCES `typ` (`Bezeichnung`),
-  CONSTRAINT `effektivitaet_ibfk_2` FOREIGN KEY (`Verteidigend`) REFERENCES `typ` (`Bezeichnung`)
+  `multiplikator` double NOT NULL DEFAULT 1,
+  `angreifend` varchar(255) NOT NULL,
+  `verteidigend` varchar(255) NOT NULL,
+  PRIMARY KEY (`angreifend`,`verteidigend`),
+  KEY `verteidigend` (`verteidigend`),
+  CONSTRAINT `effektivitaet_ibfk_1` FOREIGN KEY (`angreifend`) REFERENCES `typ` (`bezeichnung`),
+  CONSTRAINT `effektivitaet_ibfk_2` FOREIGN KEY (`verteidigend`) REFERENCES `typ` (`bezeichnung`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -111,20 +111,20 @@ DROP TABLE IF EXISTS `entwicklung`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `entwicklung` (
-  `Von` int(3) NOT NULL,
-  `Zu` int(3) NOT NULL,
-  `Level` int(3) DEFAULT NULL,
-  `Item` int(4) DEFAULT NULL,
-  `Time_of_Day` varchar(255) DEFAULT NULL,
-  `Trade_Species` int(3) DEFAULT NULL,
-  PRIMARY KEY (`Von`,`Zu`),
-  KEY `Item` (`Item`),
-  KEY `Zu` (`Zu`),
-  KEY `Trade_Species` (`Trade_Species`),
-  CONSTRAINT `entwicklung_ibfk_1` FOREIGN KEY (`Item`) REFERENCES `item` (`ID`),
-  CONSTRAINT `entwicklung_ibfk_2` FOREIGN KEY (`Von`) REFERENCES `pokemon` (`ID`),
-  CONSTRAINT `entwicklung_ibfk_3` FOREIGN KEY (`Zu`) REFERENCES `pokemon` (`ID`),
-  CONSTRAINT `entwicklung_ibfk_4` FOREIGN KEY (`Trade_Species`) REFERENCES `pokemon` (`ID`)
+  `von` int(3) NOT NULL,
+  `zu` int(3) NOT NULL,
+  `level` int(3) DEFAULT NULL,
+  `item` int(4) DEFAULT NULL,
+  `time_of_day` varchar(255) DEFAULT NULL,
+  `trade_species` int(3) DEFAULT NULL,
+  PRIMARY KEY (`von`,`zu`),
+  KEY `item` (`item`),
+  KEY `zu` (`zu`),
+  KEY `trade_species` (`trade_species`),
+  CONSTRAINT `entwicklung_ibfk_1` FOREIGN KEY (`item`) REFERENCES `item` (`id`),
+  CONSTRAINT `entwicklung_ibfk_2` FOREIGN KEY (`von`) REFERENCES `pokemon` (`id`),
+  CONSTRAINT `entwicklung_ibfk_3` FOREIGN KEY (`zu`) REFERENCES `pokemon` (`id`),
+  CONSTRAINT `entwicklung_ibfk_4` FOREIGN KEY (`trade_species`) REFERENCES `pokemon` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -146,9 +146,9 @@ DROP TABLE IF EXISTS `item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item` (
-  `ID` int(4) NOT NULL,
-  `Bezeichnung` varchar(255) NOT NULL,
-  PRIMARY KEY (`ID`)
+  `id` int(4) NOT NULL,
+  `bezeichnung` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -170,14 +170,14 @@ DROP TABLE IF EXISTS `lernt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lernt` (
-  `Pokemon` int(3) NOT NULL,
-  `Attacke` int(4) NOT NULL,
-  `Level` int(3) DEFAULT NULL,
-  `Methode` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`Pokemon`,`Attacke`),
-  KEY `Attacke` (`Attacke`),
-  CONSTRAINT `lernt_ibfk_1` FOREIGN KEY (`Pokemon`) REFERENCES `pokemon` (`ID`),
-  CONSTRAINT `lernt_ibfk_2` FOREIGN KEY (`Attacke`) REFERENCES `attacke` (`ID`)
+  `pokemon` int(3) NOT NULL,
+  `attacke` int(4) NOT NULL,
+  `level` int(3) DEFAULT NULL,
+  `methode` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`pokemon`,`attacke`),
+  KEY `attacke` (`attacke`),
+  CONSTRAINT `lernt_ibfk_1` FOREIGN KEY (`pokemon`) REFERENCES `pokemon` (`id`),
+  CONSTRAINT `lernt_ibfk_2` FOREIGN KEY (`attacke`) REFERENCES `attacke` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -200,18 +200,18 @@ DROP TABLE IF EXISTS `pokemon`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pokemon` (
-  `ID` int(3) NOT NULL,
-  `Name` varchar(255) NOT NULL,
-  `Groesse` float NOT NULL,
-  `Gewicht` float NOT NULL,
-  `Generation` int(1) NOT NULL,
-  `Primaer_Typ` varchar(255) DEFAULT NULL,
-  `Sekundaer_Typ` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `Primaer_Typ` (`Primaer_Typ`),
-  KEY `Sekundaer_Typ` (`Sekundaer_Typ`),
-  CONSTRAINT `pokemon_ibfk_1` FOREIGN KEY (`Primaer_Typ`) REFERENCES `typ` (`Bezeichnung`),
-  CONSTRAINT `pokemon_ibfk_2` FOREIGN KEY (`Sekundaer_Typ`) REFERENCES `typ` (`Bezeichnung`)
+  `id` int(3) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `groesse` float NOT NULL,
+  `gewicht` float NOT NULL,
+  `generation` int(1) NOT NULL,
+  `primaer_typ` varchar(255) DEFAULT NULL,
+  `sekundaer_typ` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `primaer_typ` (`primaer_typ`),
+  KEY `sekundaer_typ` (`sekundaer_typ`),
+  CONSTRAINT `pokemon_ibfk_1` FOREIGN KEY (`primaer_typ`) REFERENCES `typ` (`bezeichnung`),
+  CONSTRAINT `pokemon_ibfk_2` FOREIGN KEY (`sekundaer_typ`) REFERENCES `typ` (`bezeichnung`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -233,8 +233,8 @@ DROP TABLE IF EXISTS `typ`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `typ` (
-  `Bezeichnung` varchar(255) NOT NULL,
-  PRIMARY KEY (`Bezeichnung`)
+  `bezeichnung` varchar(255) NOT NULL,
+  PRIMARY KEY (`bezeichnung`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -256,9 +256,9 @@ DROP TABLE IF EXISTS `version`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `version` (
-  `Spiel` varchar(255) NOT NULL,
-  `Generation` int(11) NOT NULL,
-  PRIMARY KEY (`Spiel`,`Generation`)
+  `bezeichnung` varchar(255) NOT NULL,
+  `generation` int(11) NOT NULL,
+  PRIMARY KEY (`bezeichnung`,`generation`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
