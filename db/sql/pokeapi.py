@@ -82,6 +82,14 @@ def translate_learn_method(learn_method):
     else:
         return "Null"
 
+def translate_time_of_day(time_of_day):
+    if time_of_day == "day":
+        return "Tag"
+    elif time_of_day == "night":
+        return "Nacht"
+    else:
+        return "Null"
+
 def call(url):
     response = requests.get(url)
     if response.status_code != 200:
@@ -144,10 +152,10 @@ def print_evolution(evolutions, species):
             evolved_species = evolution["species"]["url"].split("/")[-2] if (evolution["species"] is not None) else "Null"
             min_level = evolution["evolution_details"][0]["min_level"] if (evolution["evolution_details"][0]["min_level"] is not None) else "Null"
             item_id = evolution["evolution_details"][0]["item"]["url"].split("/")[-2] if (evolution["evolution_details"][0]["item"] is not None) else "Null"
-            time_of_day = f'"{evolution["evolution_details"][0]["time_of_day"]}"' if (evolution["evolution_details"][0]["time_of_day"] != "") else "Null"
-            trade_species = evolution["evolution_details"][0]["trade_species"]["url"].split("/")[-2] if (evolution["evolution_details"][0]["trade_species"] is not None) else "Null"
+            time_of_day = f'"{translate_time_of_day(evolution["evolution_details"][0]["time_of_day"])}"' if (evolution["evolution_details"][0]["time_of_day"] != "") else "Null"
+            held_item = evolution["evolution_details"][0]["held_item"]["url"].split("/")[-2] if (evolution["evolution_details"][0]["held_item"] is not None) else "Null"
 
-            print(f'({species}, {evolved_species}, {min_level}, {item_id}, {time_of_day}, {trade_species}),')
+            print(f'({species}, {evolved_species}, {min_level}, {item_id}, {held_item}, {time_of_day}),')
             print_evolution(evolution["evolves_to"], evolution["species"]["url"].split("/")[-2])
 
 
@@ -272,11 +280,11 @@ def print_version(version):
 def main():
     #get_pokemon(898)
     #get_pokemon_list()
-    #get_evolution_list()
+    get_evolution_list()
     #get_item_list()
     #get_move_list()
     #get_pokemon_learns_moves_list()
-    get_version_list()
+    #get_version_list()
     #get_machine_list()
     
 
