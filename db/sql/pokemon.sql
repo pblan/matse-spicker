@@ -7,13 +7,44 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb3 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `arenaleiter`
+--
+
+DROP TABLE IF EXISTS `arenaleiter`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `arenaleiter` (
+  `Name` varchar(255) NOT NULL,
+  `Generation` int(11) NOT NULL,
+  `Standort` varchar(255) DEFAULT NULL,
+  `Typ` varchar(255) DEFAULT NULL,
+  `Orden` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`Name`),
+  KEY `Generation` (`Generation`),
+  KEY `Typ` (`Typ`),
+  CONSTRAINT `arenaleiter_ibfk_1` FOREIGN KEY (`Generation`) REFERENCES `generation` (`ID`),
+  CONSTRAINT `arenaleiter_ibfk_2` FOREIGN KEY (`Typ`) REFERENCES `typ` (`Bezeichnung`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `arenaleiter`
+--
+
+LOCK TABLES `arenaleiter` WRITE;
+/*!40000 ALTER TABLE `arenaleiter` DISABLE KEYS */;
+INSERT INTO `arenaleiter` VALUES ('Adam',4,'Fleetburg','Stahl','Minenorden'),('Aloe',5,'Septerna City','Normal','Grundorden'),('Amaro',6,'Tempera City','Pflanze','Blattorden'),('Artie',5,'Stratos City','Käfer','Käferorden'),('Astrid',6,'Fluxia City','Psycho','Psiorden'),('Ben',3,'Moosbach City','Psycho','Mentalorden'),('Benny',5,'Orion City','Pflanze','Triorden'),('Benson',5,'Abidaya City','Wasser','Wellenorden'),('Betys',8,'Fairballey','Fee','Feenorden'),('Bianka',2,'Dukatia City','Normal','Basisorden'),('Blau',1,'Vertania City',NULL,'Erdorden'),('Cheren',5,'Eventura City','Normal','Grundorden'),('Citro',6,'Illumina City','Elektro','Ampereorden'),('Colin',5,'Orion City','Wasser','Triorden'),('Connie',6,'Yantara City','Kampf','Rauforden'),('Erika',1,'Prismania City','Pflanze','Farborden'),('Falk',2,'Viola City','Flug','Flügelorden'),('Felizia',3,'Metarost City','Gestein','Steinorden'),('Flavia',3,'Bad Lavastadt','Feuer','Hitzeorden'),('Frida',4,'Blizzach','Eis','Firnorden'),('Galantho',6,'Fractalia City','Eis','Eisbergorden'),('Géraldine',5,'Panaero City','Flug','Jetorden'),('Giovanni',1,'Vertania City','Boden','Erdorden'),('Hartwig',2,'Anemonia City','Kampf','Faustorden'),('Hilda',4,'Schleiede','Kampf','Bergorden'),('Janina',1,'Fuchsania City','Gift','Seelenorden'),('Jasmin',2,'Oliviana City','Stahl','Stahlorden'),('Jens',2,'Teak City','Geist','Phantomorden'),('Juan',3,'Xeneroville','Wasser','Schauerorden'),('Kabu',8,'Engine City','Feuer','Feuerorden'),('Kai',2,'Azalea City','Käfer','Insektorden'),('Kamilla',5,'Rayono City','Elektro','Voltorden'),('Kamillo',3,'Faustauhaven','Kampf','Knöchelorden'),('Kate',8,'Keelton','Wasser','Wasserorden'),('Koga',1,'Fuchsania City','Gift','Seelenorden'),('Lamina',4,'Herzhofen','Geist','Reliktorden'),('Lilia',5,'Twindrake City','Drache','Legendenorden'),('Lino',6,'Relievera City','Gestein','Wallorden'),('Lysander',5,'Twindrake City','Drache','Legendenorden'),('Mac',8,'Circhester','Gestein','Gesteinsorden'),('Maik',5,'Orion City','Feuer','Triorden'),('Major Bob',1,'Orania City','Elektro','Donnerorden'),('Marinus',4,'Weideburg','Wasser','Fennorden'),('Mary',8,'Spikeford','Unlicht','Unlichtorden'),('Mastrich',8,NULL,'Kampf',NULL),('Mel',8,'Circhester','Eis','Eisorden'),('Mica',5,'Vapydro City','Gift','Giftorden'),('Misty',1,'Azuria City','Wasser','Quellorden'),('Nezz',8,'Spikeford','Unlicht','Unlichtorden'),('Nio',8,'Passbeck','Geist','Geisterorden'),('Norbert',2,'Mahagonia City','Eis','Eisorden'),('Norman',3,'Blütenburg City','Normal','Balanceorden'),('Papella',8,'Fairballey','Fee','Feenorden'),('Peony',8,NULL,'Stahl',NULL),('Pyro',1,'Zinnoberinsel','Feuer','Vulkanorden'),('Rocko',1,'Marmoria City','Gestein','Felsorden'),('Roy',8,'Claw City','Drache','Drachenorden'),('Sabrina',1,'Saffronia City','Psycho','Sumpforden'),('Saida',8,'Passbeck','Kampf','Kampforden'),('Sandra',2,'Ebenholz City','Drache','Drachenorden'),('Sandro',5,'Nevaio City','Eis','Eiszapfenorden'),('Saverio',8,NULL,'Psycho',NULL),('Silvana',4,'Ewigenau','Pflanze','Waldorden'),('Sophora',8,NULL,'Gift',NULL),('Svenja',3,'Moosbach City','Psycho','Mentalorden'),('Turner',5,'Marea City','Boden','Seismoorden'),('Valerie',6,'Romantia City','Fee','Feenorden'),('Veit',4,'Erzelingen','Gestein','Kohleorden'),('Viola',6,'Nouvaria City','Käfer','Krabbelorden'),('Volkner',4,'Sonnewik','Elektro','Lichtorden'),('Walter',3,'Malvenfroh City','Elektro','Dynamoorden'),('Wassili',3,'Xeneroville','Wasser','Schauerorden'),('Wibke',3,'Baumhausen City','Flug','Federorden'),('Yarro',8,'Turffield','Pflanze','Pflanzenorden');
+/*!40000 ALTER TABLE `arenaleiter` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `attacke`
@@ -23,7 +54,6 @@ DROP TABLE IF EXISTS `attacke`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `attacke` (
-<<<<<<< HEAD
   `ID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Typ` varchar(255) NOT NULL,
@@ -34,20 +64,9 @@ CREATE TABLE `attacke` (
   `Generation` int(11) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `Typ` (`Typ`),
-  CONSTRAINT `attacke_ibfk_1` FOREIGN KEY (`Typ`) REFERENCES `typ` (`Bezeichnung`)
-=======
-  `id` int(4) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `typ` varchar(255) NOT NULL,
-  `schadensklasse` varchar(255) DEFAULT NULL,
-  `staerke` int(3) DEFAULT NULL,
-  `genauigkeit` int(3) DEFAULT NULL,
-  `ap` int(2) NOT NULL,
-  `generation` int(1) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `typ` (`typ`),
-  CONSTRAINT `attacke_ibfk_1` FOREIGN KEY (`typ`) REFERENCES `typ` (`bezeichnung`)
->>>>>>> f531eaf68bf574b898a97ed27c4379c8ac156073
+  KEY `Generation` (`Generation`),
+  CONSTRAINT `attacke_ibfk_1` FOREIGN KEY (`Typ`) REFERENCES `typ` (`Bezeichnung`),
+  CONSTRAINT `attacke_ibfk_2` FOREIGN KEY (`Generation`) REFERENCES `generation` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -69,7 +88,6 @@ DROP TABLE IF EXISTS `attacke_tm`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `attacke_tm` (
-<<<<<<< HEAD
   `Attacke` int(11) NOT NULL,
   `Item` int(11) NOT NULL,
   `Spiel` varchar(255) NOT NULL,
@@ -78,16 +96,7 @@ CREATE TABLE `attacke_tm` (
   KEY `attacke_tm_ibfk_3` (`Spiel`),
   CONSTRAINT `attacke_tm_ibfk_1` FOREIGN KEY (`Attacke`) REFERENCES `attacke` (`ID`),
   CONSTRAINT `attacke_tm_ibfk_2` FOREIGN KEY (`Item`) REFERENCES `item` (`ID`),
-  CONSTRAINT `attacke_tm_ibfk_3` FOREIGN KEY (`Spiel`) REFERENCES `version` (`Spiel`)
-=======
-  `attacke` int(4) NOT NULL,
-  `item` int(4) NOT NULL,
-  `version` varchar(255) NOT NULL,
-  PRIMARY KEY (`attacke`,`item`,`version`),
-  KEY `item` (`item`),
-  CONSTRAINT `attacke_tm_ibfk_1` FOREIGN KEY (`attacke`) REFERENCES `attacke` (`id`),
-  CONSTRAINT `attacke_tm_ibfk_2` FOREIGN KEY (`item`) REFERENCES `item` (`id`)
->>>>>>> f531eaf68bf574b898a97ed27c4379c8ac156073
+  CONSTRAINT `attacke_tm_ibfk_3` FOREIGN KEY (`Spiel`) REFERENCES `version` (`Bezeichnung`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -109,13 +118,13 @@ DROP TABLE IF EXISTS `effektivitaet`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `effektivitaet` (
-  `multiplikator` double NOT NULL DEFAULT 1,
-  `angreifend` varchar(255) NOT NULL,
-  `verteidigend` varchar(255) NOT NULL,
-  PRIMARY KEY (`angreifend`,`verteidigend`),
-  KEY `verteidigend` (`verteidigend`),
-  CONSTRAINT `effektivitaet_ibfk_1` FOREIGN KEY (`angreifend`) REFERENCES `typ` (`bezeichnung`),
-  CONSTRAINT `effektivitaet_ibfk_2` FOREIGN KEY (`verteidigend`) REFERENCES `typ` (`bezeichnung`)
+  `Multiplikator` double NOT NULL DEFAULT 1,
+  `Angreifend` varchar(255) NOT NULL,
+  `Verteidigend` varchar(255) NOT NULL,
+  PRIMARY KEY (`Angreifend`,`Verteidigend`),
+  KEY `Verteidigend` (`Verteidigend`),
+  CONSTRAINT `effektivitaet_ibfk_1` FOREIGN KEY (`Angreifend`) REFERENCES `typ` (`Bezeichnung`),
+  CONSTRAINT `effektivitaet_ibfk_2` FOREIGN KEY (`Verteidigend`) REFERENCES `typ` (`Bezeichnung`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -137,7 +146,6 @@ DROP TABLE IF EXISTS `entwicklung`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `entwicklung` (
-<<<<<<< HEAD
   `Von` int(11) NOT NULL,
   `Zu` int(11) NOT NULL,
   `Level` int(11) DEFAULT NULL,
@@ -152,22 +160,6 @@ CREATE TABLE `entwicklung` (
   CONSTRAINT `entwicklung_ibfk_2` FOREIGN KEY (`GetragenesItem`) REFERENCES `item` (`ID`),
   CONSTRAINT `entwicklung_ibfk_3` FOREIGN KEY (`Von`) REFERENCES `pokemon` (`ID`),
   CONSTRAINT `entwicklung_ibfk_4` FOREIGN KEY (`Zu`) REFERENCES `pokemon` (`ID`)
-=======
-  `von` int(3) NOT NULL,
-  `zu` int(3) NOT NULL,
-  `level` int(3) DEFAULT NULL,
-  `item` int(4) DEFAULT NULL,
-  `time_of_day` varchar(255) DEFAULT NULL,
-  `trade_species` int(3) DEFAULT NULL,
-  PRIMARY KEY (`von`,`zu`),
-  KEY `item` (`item`),
-  KEY `zu` (`zu`),
-  KEY `trade_species` (`trade_species`),
-  CONSTRAINT `entwicklung_ibfk_1` FOREIGN KEY (`item`) REFERENCES `item` (`id`),
-  CONSTRAINT `entwicklung_ibfk_2` FOREIGN KEY (`von`) REFERENCES `pokemon` (`id`),
-  CONSTRAINT `entwicklung_ibfk_3` FOREIGN KEY (`zu`) REFERENCES `pokemon` (`id`),
-  CONSTRAINT `entwicklung_ibfk_4` FOREIGN KEY (`trade_species`) REFERENCES `pokemon` (`id`)
->>>>>>> f531eaf68bf574b898a97ed27c4379c8ac156073
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -182,6 +174,30 @@ INSERT INTO `entwicklung` VALUES (1,2,16,NULL,NULL,NULL),(2,3,32,NULL,NULL,NULL)
 UNLOCK TABLES;
 
 --
+-- Table structure for table `generation`
+--
+
+DROP TABLE IF EXISTS `generation`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `generation` (
+  `ID` int(11) NOT NULL,
+  `Region` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `generation`
+--
+
+LOCK TABLES `generation` WRITE;
+/*!40000 ALTER TABLE `generation` DISABLE KEYS */;
+INSERT INTO `generation` VALUES (1,'Kanto'),(2,'Johto'),(3,'Hoenn'),(4,'Sinnoh'),(5,'Einall'),(6,'Kalos'),(7,'Alola'),(8,'Galar');
+/*!40000 ALTER TABLE `generation` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `item`
 --
 
@@ -189,15 +205,9 @@ DROP TABLE IF EXISTS `item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item` (
-<<<<<<< HEAD
   `ID` int(11) NOT NULL,
   `Bezeichnung` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-=======
-  `id` int(4) NOT NULL,
-  `bezeichnung` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
->>>>>>> f531eaf68bf574b898a97ed27c4379c8ac156073
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -219,7 +229,6 @@ DROP TABLE IF EXISTS `lernt`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lernt` (
-<<<<<<< HEAD
   `Pokemon` int(11) NOT NULL,
   `Attacke` int(11) NOT NULL,
   `Level` int(11) DEFAULT NULL,
@@ -228,16 +237,6 @@ CREATE TABLE `lernt` (
   KEY `Attacke` (`Attacke`),
   CONSTRAINT `lernt_ibfk_1` FOREIGN KEY (`Pokemon`) REFERENCES `pokemon` (`ID`),
   CONSTRAINT `lernt_ibfk_2` FOREIGN KEY (`Attacke`) REFERENCES `attacke` (`ID`)
-=======
-  `pokemon` int(3) NOT NULL,
-  `attacke` int(4) NOT NULL,
-  `level` int(3) DEFAULT NULL,
-  `methode` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`pokemon`,`attacke`),
-  KEY `attacke` (`attacke`),
-  CONSTRAINT `lernt_ibfk_1` FOREIGN KEY (`pokemon`) REFERENCES `pokemon` (`id`),
-  CONSTRAINT `lernt_ibfk_2` FOREIGN KEY (`attacke`) REFERENCES `attacke` (`id`)
->>>>>>> f531eaf68bf574b898a97ed27c4379c8ac156073
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -260,33 +259,20 @@ DROP TABLE IF EXISTS `pokemon`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pokemon` (
-<<<<<<< HEAD
   `ID` int(11) NOT NULL,
   `Name` varchar(255) NOT NULL,
   `Groesse` float NOT NULL,
   `Gewicht` float NOT NULL,
   `Generation` int(11) NOT NULL,
-  `Primaer_Typ` varchar(255) DEFAULT NULL,
-  `Sekundaer_Typ` varchar(255) DEFAULT NULL,
+  `PrimaerTyp` varchar(255) DEFAULT NULL,
+  `SekundaerTyp` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `Primaer_Typ` (`Primaer_Typ`),
-  KEY `Sekundaer_Typ` (`Sekundaer_Typ`),
-  CONSTRAINT `pokemon_ibfk_2` FOREIGN KEY (`Primaer_Typ`) REFERENCES `typ` (`Bezeichnung`),
-  CONSTRAINT `pokemon_ibfk_3` FOREIGN KEY (`Sekundaer_Typ`) REFERENCES `typ` (`Bezeichnung`)
-=======
-  `id` int(3) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `groesse` float NOT NULL,
-  `gewicht` float NOT NULL,
-  `generation` int(1) NOT NULL,
-  `primaer_typ` varchar(255) DEFAULT NULL,
-  `sekundaer_typ` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `primaer_typ` (`primaer_typ`),
-  KEY `sekundaer_typ` (`sekundaer_typ`),
-  CONSTRAINT `pokemon_ibfk_1` FOREIGN KEY (`primaer_typ`) REFERENCES `typ` (`bezeichnung`),
-  CONSTRAINT `pokemon_ibfk_2` FOREIGN KEY (`sekundaer_typ`) REFERENCES `typ` (`bezeichnung`)
->>>>>>> f531eaf68bf574b898a97ed27c4379c8ac156073
+  KEY `PrimaerTyp` (`PrimaerTyp`),
+  KEY `SekundaerTyp` (`SekundaerTyp`),
+  KEY `Generation` (`Generation`),
+  CONSTRAINT `pokemon_ibfk_1` FOREIGN KEY (`PrimaerTyp`) REFERENCES `typ` (`Bezeichnung`),
+  CONSTRAINT `pokemon_ibfk_2` FOREIGN KEY (`SekundaerTyp`) REFERENCES `typ` (`Bezeichnung`),
+  CONSTRAINT `pokemon_ibfk_3` FOREIGN KEY (`Generation`) REFERENCES `generation` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -308,8 +294,8 @@ DROP TABLE IF EXISTS `typ`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `typ` (
-  `bezeichnung` varchar(255) NOT NULL,
-  PRIMARY KEY (`bezeichnung`)
+  `Bezeichnung` varchar(255) NOT NULL,
+  PRIMARY KEY (`Bezeichnung`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -331,9 +317,11 @@ DROP TABLE IF EXISTS `version`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `version` (
-  `bezeichnung` varchar(255) NOT NULL,
-  `generation` int(11) NOT NULL,
-  PRIMARY KEY (`bezeichnung`,`generation`)
+  `Bezeichnung` varchar(255) NOT NULL,
+  `Generation` int(11) NOT NULL,
+  PRIMARY KEY (`Bezeichnung`,`Generation`),
+  KEY `Generation` (`Generation`),
+  CONSTRAINT `version_ibfk_1` FOREIGN KEY (`Generation`) REFERENCES `generation` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -356,4 +344,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-08 11:22:45
+-- Dump completed on 2022-01-08 18:30:44
