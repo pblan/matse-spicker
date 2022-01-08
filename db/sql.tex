@@ -1,0 +1,30 @@
+\documentclass[german]{spicker}
+
+\addbibresource{sql.bib}
+
+\title{Datenbanken, SQL}
+\author{Tim Wende}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{includes/selektion_projektion.tex}
+\include{includes/join.tex}
+\include{includes/group_functions.tex}
+\include{includes/subselects.tex}
+\include{includes/schemas_tabellen.tex}
+\include{includes/zeit_datumsfunktionen}
+\include{includes/views.tex}
+\include{includes/transaktionen.tex}
+\include{includes/daten_anlegen_veraendern_loeschen.tex}
+\include{includes/trigger_stored_procedures.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}

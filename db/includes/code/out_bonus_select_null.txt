@@ -1,0 +1,10 @@
++-----+--------------+------------+--------------+
+| ID  | Name         | PrimaerTyp | SekundaerTyp |
++-----+--------------+------------+--------------+
+|   4 | Glumanda     | Feuer      | NULL         |
+|   5 | Glutexo      | Feuer      | NULL         |
+|   7 | Schiggy      | Wasser     | NULL         |
+...
+| 897 | Phantoross   | Geist      | NULL         |
++-----+--------------+------------+--------------+
+456 rows in set (0.000 sec)

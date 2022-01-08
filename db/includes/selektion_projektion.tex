@@ -1,0 +1,123 @@
+\section{Selektion, Projektion}
+
+\begin{code}{USE}
+    \texttt{USE} legt ein Default-Schema fest.
+    So kann bei Tabellen in SQL-Ausdrücken die explizite Angabe des Schemas entfallen.
+
+    Möchte man also z.B. die Datenbank \texttt{db\_pokemon} auswählen, so nutzt man:
+
+    \begin{minted}{mysql}
+USE db_pokemon;
+    \end{minted}
+\end{code}
+
+\begin{defi}{Projektion}
+    Eine \emph{Projektion} wählt Spalten durch Angabe von Attributen der Tabelle.
+\end{defi}
+
+\begin{defi}{Selektion}
+    Eine \emph{Selektion} filtert Zeilen durch Angabe eines Kriteriums, welches je Zeile erfüllt sein muss.
+\end{defi}
+
+\begin{code}{SELECT}
+    \texttt{SELECT} gibt alle Datensätze einer Tabelle aus.
+
+    Möchte man sich z.B. alle Pokémon (aus der Tabelle \texttt{pokemon}) anzeigen lassen, so nutzt man:
+
+    \mint{mysql}|SELECT * FROM pokemon;|
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_code_select_all.txt}
+
+    Möchte man eine Projektion auf die Ergebnisse der Abfrage anwenden, sich also nur bestimmte Spalten anzeigen lassen, kann man dies im \texttt{SELECT} spezifizieren:
+
+    \mint{mysql}|SELECT ID, Name, PrimaerTyp, SekundaerTyp FROM pokemon;|
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_code_select_projektion.txt}
+
+    Die Reihenfolge der Datensätzer ist hierbei nicht vorgegeben.
+\end{code}
+
+\begin{code}{WHERE}
+    Möchte man eine Selektion auf die Ergebnisse der Abfrage anwenden, also für jedes Element eine Bedingung vorraussetzen, nutzt man \texttt{WHERE}:
+
+    \mint{mysql}|SELECT * FROM pokemon WHERE PrimaerTyp = 'Feuer';|
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_code_select_where.txt}
+\end{code}
+
+\begin{bonus}{Alias}
+    Um komplexere Ausdrücke zu kürzen oder Zweideutigkeiten aufzulösen, kann man Tabellen mit einem \emph{Alias} versehen.
+
+    Beispielsweise wäre im folgenden Befehl die Tabelle \texttt{pokemon} unter \texttt{p} erreichbar:
+
+    \mint{mysql}|SELECT p.* FROM pokemon AS p;|
+
+    Das Schlüsselwort \texttt{AS} ist optional, d.h folgende Abfrage ist äquivalent:
+    
+    \mint{mysql}|SELECT p.* FROM pokemon p;|
+\end{bonus}
+
+\subsection{Funktionen}
+
+\begin{bonus}{CONCAT}
+    \texttt{CONCAT} nutzt man um verschiedene Strings zu kombinieren:
+
+    \begin{minted}{mysql}
+SELECT
+    ID, Name,
+    CONCAT('[', PrimaerTyp, ', ', SekundaerTyp, ']') AS 'Typ'
+FROM pokemon
+    WHERE SekundaerTyp IS NOT NULL;
+    \end{minted}
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_concat.txt}
+\end{bonus}
+
+\begin{bonus}{ROUND}
+    \texttt{ROUND} nutzt man um numerische Werte zu runden.
+
+    In folgendem Beispiel wird das Gewicht eines Pokémon auf ganzzahlige Werte gerundet:
+
+    \begin{minted}{mysql}
+SELECT
+    ID, Name, Gewicht,
+    ROUND(Gewicht, 0)
+FROM pokemon;
+    \end{minted}
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_round.txt}
+\end{bonus}
+
+\subsection{Operatoren}
+
+\begin{bonus}{NULL}
+    \texttt{IS NULL}/ \texttt{IS NOT NULL} wird genutzt, um mit \texttt{NULL}-Einträgen zu arbeiten.
+
+    In folgendem Befehl werden beispielsweise Pokémon mit exakt einem Typen zurückgegeben:
+
+    \begin{minted}{mysql}
+SELECT
+    ID, Name, PrimaerTyp, SekundaerTyp
+FROM pokemon
+    WHERE SekundaerTyp IS NULL;
+    \end{minted}
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_null.txt}
+
+    \texttt{COALESCE} gibt den ersten nicht-\texttt{NULL} Eintrag zurück
+
+    In diesem Beispiel wird aus der Tabelle \emph{Entwicklung} jede \texttt{NULL}-Tageszeit zu dem String \texttt{Immer}:
+
+    \begin{minted}{mysql}
+SELECT
+    Von, Zu,
+    COALESCE(Tageszeit, 'Immer') AS Entwicklungszeitraum
+FROM entwicklung;
+    \end{minted}
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_coalesce.txt}
+\end{bonus}
+
+\begin{code}{Bedingungen}
+    
+\end{code}

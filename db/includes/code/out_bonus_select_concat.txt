@@ -1,0 +1,10 @@
++-----+-------------+--------------------+
+| ID  | Name        | Typ                |
++-----+-------------+--------------------+
+|   1 | Bisasam     | [Pflanze, Gift]    |
+|   2 | Bisaknosp   | [Pflanze, Gift]    |
+|   3 | Bisaflor    | [Pflanze, Gift]    |
+...
+| 898 | Coronospa   | [Psycho, Pflanze]  |
++-----+-------------+--------------------+
+442 rows in set (0.000 sec)
