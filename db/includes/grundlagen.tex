@@ -1,6 +1,6 @@
 \section{Grundlagen}
 
-\begin{defi}{Anforderungen an Datenbanken}
+\begin{defi}{Anforderungen an Datenbanksysteme}
     \begin{itemize}
         \item Widerspruchsfreie, dauerhafte, effiziente und schnelle Speicherung von Daten jeder Art
         \item Bedarfsgerechte und optimierte Bereitstellung von Daten
@@ -25,12 +25,12 @@
     \begin{itemize}
         \item \emph{relationale DBMS}, die Objekten gleicher Struktur (Attribute) in Tabellen verwalten.
               \begin{itemize}
-                  \item am verbreitetsten
+                  \item meist genutzt
                   \item SQL als Abfragesprache
                   \item vergleichsweise einfache und effiziente Behandlung von Objekten gleichen Aufbaus in Tabellen
                   \item in der Praxis sind viele Daten strukturiert und typisiert
               \end{itemize}
-        \item \emph{hierarchische oder objektorientierte DBMS}, die Objekten mit Eltern-Kind- oder Vererbungsbeziehungen besitzen und einzelne Strukturen gemeinsam haben.
+        \item \emph{hierarchische oder objektorientierte DBMS}, die Objekte mit Eltern-Kind- oder Vererbungsbeziehungen besitzen und einzelne Strukturen gemeinsam haben.
         \item \emph{dokumentenorientierte DBMS}, die Objekte ohne vergleichbare Strukturen verwalten.
     \end{itemize}
 \end{bonus}
@@ -68,7 +68,7 @@
     \emph{Datenintegrität} ist ein Begriff für die Qualität und Zuverlässigkeit von Daten eines Datenbanksystems.
     Im weiteren Sinne zählt zur Integrität auch der Schutz der Datenbank vor unberechtigtem Zugriff (Vertraulichkeit) und Veränderungen.
 
-    Daten widerspiegeln Sachverhalte der realen Welt.
+    Daten spiegeln Sachverhalte der realen Welt wider.
     Logischerweise wird verlangt, dass sie dies korrekt tun.
     Ein DBMS soll Unterstützung bieten bei der Aufgabe, nur korrekte und widerspruchsfreie (konsistente) Daten in die Datenbank gelangen zu lassen.
     Außerdem wird mit korrekten Transaktionen die Konsistenz auch während des Systembetriebs aufrechterhalten.

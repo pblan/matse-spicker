@@ -36,13 +36,35 @@
     \end{itemize}
 \end{defi}
 
+\subsection{Entity-Relationship-Modell}
+
 \begin{defi}{Entity-Relationship-Modell}
     Das \emph{Entity-Relationship-Modell} (kurz \emph{ER-Modell}) dient dazu, im Rahmen der semantischen Datenmodellierung den in einem gegebenen Kontext (z. B. einem Projekt zur Erstellung eines Informationssystems) relevanten Ausschnitt der realen Welt zu bestimmen und darzustellen.
 
     Grundlage der Entity-Relationship-Modelle ist die Typisierung von Objekten, ihrer Beziehungen untereinander und der über sie zu führenden Informationen („Attribute“).
 \end{defi}
 
+\subsubsection{Chen-Notation}
+
+\begin{defi}{Chen-Notation}
+    Die \emph{Chen-Notation} ist eine grafische Notation für Entity-Relationship-Modelle.
+
+    Angegeben in der grafischen Darstellung werden die:
+    \begin{itemize}
+        \item Entitätstypen bzw. Klassen
+        \item Kardinalitäten
+        \item Beziehungstypen
+    \end{itemize}
+
+    Im Folgenden beziehen wir uns bis auf weiteres auf die Chen-Notation.
+\end{defi}
+
 \begin{defi}{Entität}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \begin{center}
+            \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_entity.pdf}
+        \end{center}
+    \end{wrapfigure}
     Eine \emph{Entität (\enquote{Entity})} $e$ beschreibt ein individuell identifizierbares Objekt der Wirklichkeit.
     Sie ist damit vergleichbar mit einer Objektinstanz und entspricht einem einzelnen Datensatz in einer Datenbank, z.B. das Pokémon \emph{Glumanda} oder die Attacke \emph{Flammenwurf}.
 \end{defi}
@@ -55,10 +77,15 @@
 \end{defi}
 
 \begin{defi}{Attribut}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \begin{center}
+            \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_attribute.pdf}
+        \end{center}
+    \end{wrapfigure}
     Eine \emph{Attribut (\enquote{Attribute})} definiert, was über eine Entität (im Kontext) von Interesse ist.
     Eine Entität $e$ ist durch die Werte ihrer Attribute charakterisiert und ein Entitätstyp $E$ durch die Attribute selber.
 
-    Jedem Attribut $A$ ist ein Datentyp $T$ und damit implizit oder auch explizit ein Wertebereich $D$ (\enquote{Domain}) zugeordnet, der festlegt, welche Attributwerte zulässig sind \footnote{Wir schreiben: $A \in D$ oder $A:D$ bzw. $A:T$.} , z.B. \emph{Größe} und \emph{Gewicht} des Pokémon Glumanda vom Typ \texttt{float}, die \emph{Stärke} und \emph{Genauigkeit} der Attacke Flammenwurf vom Typ \texttt{int}.
+    Jedem Attribut $A$ ist ein Datentyp $T$ und damit implizit oder auch explizit ein Wertebereich $D$ (\enquote{Domain}) zugeordnet, der festlegt, welche Attributwerte zulässig sind\footnote{Wir schreiben: $A \in D$ oder $A:D$ bzw. $A:T$.}, z.B. \emph{Größe} und \emph{Gewicht} des Pokémon Glumanda vom Typ \texttt{float}, die \emph{Stärke} und \emph{Genauigkeit} der Attacke Flammenwurf vom Typ \texttt{int}.
 
     Besonders ist der Nullwert \texttt{NULL}.
     Das ist ein spezieller Attributwert, dessen Bedeutung variiert, d.h. z.B. ist der Wert unbekannt oder noch nicht festgelegt oder nicht möglich.
@@ -71,11 +98,15 @@
 \end{defi}
 
 \begin{defi}{Zusammengesetztes Attribut}
+    \begin{wrapfigure}{r}{0.35\textwidth}
+        \begin{center}
+            %\includegraphics[width=0.4\textwidth]{includes/figures/definition_entity_relationship_model_attribute_combined.pdf}
+            \includegraphics[width=0.3\textwidth]{includes/figures/definition_entity_relationship_model_attribute_combined_alt.pdf}
+        \end{center}
+    \end{wrapfigure}
     \emph{Zusammengesetzte Attribute} haben selbst Attribute, z.B.
     \begin{center}
-        \texttt{NAME: [Vorname: char(30), Nachname: char(30)]}
-
-        \texttt{ANSCHRIFT: [Straße: char(30), Ort: char(30), PLZ: char(5)]}
+        \texttt{Typ: [Primärtyp: char(30), Sekundärtyp: char(30)]}
     \end{center}
 
     Die Domain für ein zusammengesetztes Attribut $A$ mit Unterattributen $A_1, \ldots, A_n$ ist dann gegeben mit:
@@ -85,11 +116,14 @@
 \end{defi}
 
 \begin{defi}{Mehrwertiges Attribut}
-    Ein \emph{mehrwertiges Attribut} kann mehrere Ausprägungen  (Werte) haben, z.B.
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \begin{center}
+            \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_attribute_multivalue.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Ein \emph{mehrwertiges Attribut} kann mehrere Ausprägungen bzw. Werte haben, z.B.
     \begin{center}
-        \texttt{AUTOFARBE: \{char(20)\}}
-
-        \texttt{TELEFONNR: \{char(30)\}}
+        \texttt{Attacke: \{char(255)\}}
     \end{center}
 
     Die Domain für ein mehrwertiges Attribut ist dann gegeben mit
@@ -99,7 +133,12 @@
 \end{defi}
 
 \begin{defi}{Schlüsselkandidat}
-    Ein \emph{Schlüsselkandidat}, oder kurz Schlüssel (\enquote{key}), ist ein einwertiges Attribut oder eine Attributkombination, die jede Entität eindeutig identi!ziert.
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \begin{center}
+            \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_attribute_primary.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Ein \emph{Schlüsselkandidat}, oder kurz Schlüssel (\enquote{key}), ist ein einwertiges Attribut oder eine Attributkombination, die jede Entität eindeutig identifiziert.
 
     Es ist möglich, dass mehrere Schlüsselkandidaten existieren.
 
@@ -112,51 +151,64 @@
     \end{center}
     z.B.:
     \begin{center}
-        \texttt{Buch: <[InvNr, Titel, Verlag, \{Autor: [Vorname, Nachname]\}], \{InvNr\}>}
+        \texttt{Pokemon: <[ID, Name, Typ: [Primärtyp, Sekundärtyp], \{Attacke: Name\}], \{ID\}>}
     \end{center}
 \end{defi}
 
-\begin{defi}{Beziehung}
-    Eine \emph{Beziehung (\enquote{Relationship})} erzeugt eine Verknüpfung bzw. einen Zusammenhang zwischen zwei oder mehreren Entitäten.
+\begin{defi}{Relation}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \begin{center}
+            \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_relation.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Eine \emph{Relation (\enquote{Relationship})} erzeugt eine Verknüpfung bzw. einen Zusammenhang zwischen zwei oder mehreren Entitäten.
 
     Eine Relationship-Menge $R$ entspricht einer mathematischer Relation zwischen $n$ Entity-Mengen $E_i$:
     \[
-        R \subseteq E_1 \times \ldots E_n \qquad (\text{häufig} \ n \in \{2, 3\})
+        R \subseteq E_1 \times \ldots \times E_n \qquad (\text{häufig} \ n \in \{2, 3\})
     \]
     Eine Relation gibt an, ob eine Entität $e_1 \in E_1$ zu einer anderen Entität $e_2 \in E_2$ in Beziehung steht oder nicht, d.h.
     \[
-        (e_1, e_2) \in \R \quad \text{bzw.} \quad (e_1, e_2) \notin \R
+        (e_1, e_2) \in R \quad \text{bzw.} \quad (e_1, e_2) \notin R
     \]
 
     z.B. gilt also:
     \[
-        \text{Pokémon Pikachu \emph{lernt} die Attacke Donner} \ \iff \ (\text{Pikachu}, \text{Donner}) \in \text{lernt}
+        \text{Pokémon Pikachu \emph{lernt} die Attacke Donner} \ \iff \ (\text{Pikachu}, \, \text{Donner}) \in \text{lernt}
     \]
+    \[
+        \text{Pokémon Pikachu \emph{lernt} die Attacke Glut \emph{nicht}} \ \iff \ (\text{Pikachu}, \, \text{Glut}) \notin \text{lernt}
+    \]
+
+    Relationen können genau wie Entitäten Attribute besitzen.
+
+    Sei $A = [A_1 : D_1, \ldots, A_m : D_m]$ ein Tupel mit $m$ Attributen $A = A_1, \ldots, A_m$ und $E_1, \ldots, E_n$ eine Menge von Entitätstypen.
+    Dann ist
+    \[
+        R \subseteq E_1 \times \ldots \times E_n \times D_1 \times \ldots \times D_m
+    \]
+    eine mit $A$ attributierte Relation.
+
+    Relationen können genauso gut auch reflexiv sein.
+    Das kann im Diagramm mit Pfeilen verdeutlicht werden.
 \end{defi}
 
-\begin{defi}{Kardinalität}
+\begin{defi}{Kardinalität (Chen-Notation)}
+    \begin{wrapfigure}{r}{0.45\textwidth}
+        \begin{center}
+            \includegraphics[width=0.4\textwidth]{includes/figures/definition_entity_relationship_model_cardinality.pdf}
+        \end{center}
+    \end{wrapfigure}
     Die \emph{Kardinalität} gibt an, zu wie vielen Elementen ein Element in Beziehung steht.
 
-    Es gibt grundsätzlich folgende Abbildungsbeziehungen zwischen Entity-Mengen in der Chen-Notation:
+    Es gibt grundsätzlich folgende Abbildungsbeziehungen zwischen Entity-Mengen in der Chen-Notation:\footnote{In der Chen-Notation können $1$, $n$ und $m$ auch $0$ meinen!}
     \begin{itemize}
         \item \emph{1:1} (One-to-One)
-        \item \emph{n:1} (Many-to-One)
-        \item \emph{1:n} (One-to-Many)
-        \item \emph{n:m} (Many-to-Many)
+        \item \emph{1:n} (One-to-Many) bzw. \emph{n:1} (Many-to-One)
+        \item \emph{m:n} (Many-to-Many)
     \end{itemize}
 
     Die Kardinalität ergibt sich im Wesentlichen aus den Anforderungen und bestimmt ganz maßgeblich den Datenbankentwurf.
-\end{defi}
-
-\begin{defi}{Chen-Notation}
-    Die \emph{Chen-Notation} ist eine grafische Notation für Entity-Relationship-Modelle.
-
-    Angegeben in der grafischen Darstellung werden die:
-    \begin{itemize}
-        \item Entitätstypen bzw. Klassen
-        \item Kardinalitäten
-        \item Beziehungstypen
-    \end{itemize}
 \end{defi}
 
 \begin{example}{1:1 Relation (Chen-Notation)}
@@ -179,6 +231,7 @@
 
 \begin{example}{n:1 Relation (Chen-Notation)}
     In Pokémon ist jede \emph{Attacke} von genau einem \emph{Typ}.
+
     Natürlich können aber mehrere \emph{Attacken} auch vom gleichen \emph{Typ} sein.
 
     Damit gilt:
@@ -187,9 +240,10 @@
     \end{center}
 \end{example}
 
-\begin{example}{n:m Relation (Chen-Notation)}
+\begin{example}{m:n Relation (Chen-Notation)}
     In Pokémon kann jedes \emph{Pokémon} einige \emph{Attacken} lernen.
-    Die gleiche \emph{Attacke} kann aber gleichzeitig von mehreren \emph{Pokémon} erlernt werden.
+
+    Die selbe \emph{Attacke} kann aber gleichzeitig von mehreren \emph{Pokémon} erlernt werden.
 
     Damit gilt:
     \begin{center}
@@ -197,10 +251,206 @@
     \end{center}
 \end{example}
 
-\begin{example}{Entity-Relationship-Modell}
-
+\begin{example}{Entity-Relationship-Modell (Chen-Notation)}
+    \begin{center}
+        \includegraphics[width=\linewidth]{includes/figures/example_entity_relationship_modell_full.pdf}
+    \end{center}
 \end{example}
 
-\begin{example}{}
+\begin{defi}{Existenzabhängiger Entitätstyp}
+    \begin{wrapfigure}{r}{0.65\textwidth}
+        \begin{center}
+            \includegraphics[width=0.6\textwidth]{includes/figures/definition_entity_relationship_model_entity_weak.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Die Grundidee von \emph{existenzabhängigen Entitätstypen} ist, dass sie nur in Verbindung mit anderen Entitäten existieren\footnote{vergleichbar mit der UML-Komposition}.
 
+    Ein existenzabhängiger Entitätstyp hat keinen eigenen Schlüsselkandidaten, sondern wird über die Beziehung zur übergeordneten Entität identifiziert, z.B. über eine Kombination von Attributen.
+\end{defi}
+
+\begin{example}{Existenzabhängiger Entitätstyp}
+    In Pokémon verleiht im Laufe des Spiels jede \emph{Arena} genau einen \emph{Orden}.
+
+    Wir können das bisherige Beispiel insoweit verbessern, dass wir erkennen, dass ein spezieller Orden nicht ohne die jeweilige Arena existieren kann, bzw. wenn eine Arena aus der Datenbank gelöscht wird, der Orden ebenfalls gelöscht wird.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_entity_weak.pdf}
+    \end{center}
+\end{example}
+
+\subsubsection{Min-Max-Notation}
+
+\begin{defi}{Min-Max-Notation}
+    \begin{wrapfigure}{r}{0.65\textwidth}
+        \begin{center}
+            \includegraphics[width=0.6\textwidth]{includes/figures/definition_entity_relationship_min_max.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Ein Nachteil der Chen-Notation ist, dass die Angaben der Kardinalität sehr ungenau sind.
+
+    Als Verbesserung wird die \emph{Min-Max-Notation} vorgeschlagen.
+    In der Min-Max-Notation wird angegeben, wieviele Relationen minimal bzw. maximal möglich sein sollen.
+
+    Für jeden an einer Relation beteiligten Entitätstypen $E_k$ wird angegeben, wie oft eine Entität minimal und maximal in der Relation enthalten sein darf.\footnote{
+        Die Min-Max-Notation unterscheidet sich grundlegend von den anderen Notationsformen im Hinblick auf die Bestimmung der Kardinalität und die Position, an der die Häufigkeitsangabe im ER-Diagramm vorgenommen wird.
+
+        Bei allen anderen Notationen wird die Kardinalität eines Beziehungstyps dadurch bestimmt, dass für eine Entität des einen Entitätstyps nach der Anzahl der möglichen beteiligten Entitäten des anderen Entitätstyps gefragt wird.
+
+        Bei der Min-Max-Notation hingegen ist die Kardinalität anders definiert.
+        Hierbei wird für jeden der an einem Beziehungstyp beteiligten Entitätstyp nach der kleinst- und größtmöglichen Anzahl der Beziehungen gefragt, an denen eine Entität des jeweiligen Entitätstyps beteiligt ist.
+
+        Das jeweilige Min-Max-Ergebnis wird bei dem Entitätstyp notiert, für den die Frage gestellt wurde.
+    }
+
+    Sei $R \subseteq E_1 \times \ldots \times E_n$ und die Projektion auf das $k$-te Element bzw. die Anzahl eines Wertes an $k$-ter Stelle definiert durch
+    \[
+        \proj_k(e_1, \ldots, e_k, \ldots, e_n) = e_k
+    \]
+    \[
+        \cnt_k(e) = \abs{ \{ r \in R \mid \proj_k(r) = e \} }
+    \]
+    dann muss für alle $k$ gelten:
+    \[
+        \forall e_k \in E_k : {\min}_k \leq \cnt_k(e_k) \leq {\max}_k
+    \]
+\end{defi}
+
+\begin{example}{1:1 Relation (Min-Max-Notation)}
+    In Pokémon verleiht im Laufe des Spiels jede \emph{Arena} genau einen \emph{Orden}.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_min_max_one_to_one.pdf}
+    \end{center}
+\end{example}
+
+\begin{example}{1:n Relation (Min-Max-Notation)}
+    In Pokémon hat jede \emph{Arena} mindestens einen, manchmal aber auch mehrere \emph{Arenaleiter}.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_min_max_one_to_many.pdf}
+    \end{center}
+\end{example}
+
+\begin{example}{n:1 Relation (Min-Max-Notation)}
+    In Pokémon ist jede \emph{Attacke} von genau einem \emph{Typ}.
+
+    Natürlich können aber mehrere \emph{Attacken} auch vom gleichen \emph{Typ} sein.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_min_max_many_to_one.pdf}
+    \end{center}
+\end{example}
+
+\begin{example}{m:n Relation (Min-Max-Notation)}
+    In Pokémon kann jedes \emph{Pokémon} einige \emph{Attacken} lernen.
+
+    Die selbe \emph{Attacke} kann aber gleichzeitig von mehreren \emph{Pokémon} erlernt werden.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_min_max_many_to_many.pdf}
+    \end{center}
+\end{example}
+
+\subsubsection{UML-Notation}
+
+\begin{defi}{UML-Notation}
+    Die \emph{UML-Notation} ist eine Notation zur objektorientierten Modellierung.
+
+    Bei den Kardinalitäten wird sich bezüglich der Reihenfolge bei der Chen-, bezüglich der Angaben bei der Min-Max-Notation bedient.
+\end{defi}
+
+\begin{defi}{Entität (UML)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \begin{center}
+            \includegraphics[width=0.2\textwidth]{includes/figures/definition_uml_entity.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Eine \emph{Entität} wird in der UML-Notation als Klasse dargestellt.
+    Diese Klasse ist ein Rechteck mit drei Sektionen für
+    \begin{itemize}
+        \item den Klassennamen,
+        \item Attribute (optional) und
+        \item Methoden (optional).
+    \end{itemize}
+    Hierbei werden häufig nur die relevanten Details gezeigt.
+
+    Die Notation ist wie folgt:
+    \begin{center}
+        \texttt{Sichtbarkeit: Name(Parameter): Rückgabetyp {Eigenschaften}}
+    \end{center}
+
+    Dabei gilt:
+    \begin{itemize}
+        \item Sichtbarkeiten:
+              \begin{itemize}
+                  \item \texttt{+}: public
+                  \item \texttt{-}: private
+                  \item \texttt{\#}: protected
+              \end{itemize}
+        \item Unterstrichene Attribute/Operationen stehen für Klassenattribute/Operationen
+        \item Eigenschaften können Bedingungen (constraints) sein
+        \item Schlüsselattribute z.B. als Kommentar / Eigenschaft
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Relation (UML)}
+    \begin{wrapfigure}{r}{0.65\textwidth}
+        \begin{center}
+            \includegraphics[width=0.6\textwidth]{includes/figures/definition_uml_relation.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Für jeden an einer Relation beteiligten Entitätstyp $E_k$ wird angegeben, wie oft eine Entität minimal und maximal in $E_k$ enthalten sein darf, wenn der andere Eintrag ($n=2$) bzw. die anderen Einträge ($n>2$) fest gewählt ist, bzw. sind.
+
+    Wir haben hier die gleiche Sichtweise wie bei der Chen-Notation, nur mit Angabe der minimalen und maximalen Elemente in der Entitätenmenge.
+
+    Dadurch ist eine Angabe der Fälle
+    \begin{itemize}
+        \item \emph{optional}, wenn Kardinalität $= 0$, bzw.
+        \item \emph{verpflichtend}, sonst.
+    \end{itemize}
+\end{defi}
+
+\begin{example}{1:1 Relation (UML-Notation)}
+    In Pokémon verleiht im Laufe des Spiels jede \emph{Arena} genau einen \emph{Orden}.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_uml_one_to_one.pdf}
+    \end{center}
+\end{example}
+
+\begin{example}{1:n Relation (UML-Notation)}
+    In Pokémon hat jede \emph{Arena} mindestens einen, manchmal aber auch mehrere \emph{Arenaleiter}.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_uml_one_to_many.pdf}
+    \end{center}
+\end{example}
+
+\begin{example}{n:1 Relation (UML-Notation)}
+    In Pokémon ist jede \emph{Attacke} von genau einem \emph{Typ}.
+
+    Natürlich können aber mehrere \emph{Attacken} auch vom gleichen \emph{Typ} sein.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_uml_many_to_one.pdf}
+    \end{center}
+\end{example}
+
+\begin{example}{m:n Relation (UML-Notation)}
+    In Pokémon kann jedes \emph{Pokémon} einige \emph{Attacken} lernen.
+
+    Die selbe \emph{Attacke} kann aber gleichzeitig von mehreren \emph{Pokémon} erlernt werden.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_uml_many_to_many.pdf}
+    \end{center}
 \end{example}
