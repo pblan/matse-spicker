@@ -59,7 +59,7 @@
     Im Folgenden beziehen wir uns bis auf weiteres auf die Chen-Notation.
 \end{defi}
 
-\begin{defi}{Entität}
+\begin{defi}{Entität (Chen-Notation)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_entity.pdf}
@@ -76,7 +76,7 @@
     Ein Entitätstyp ist vergleichbar mit einer Klassenbeschreibung und entspricht damit häufig einer Tabelle in einer relationalen Datenbank, hierbei sind die Spalten die Attribute.
 \end{defi}
 
-\begin{defi}{Attribut}
+\begin{defi}{Attribut (Chen-Notation)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_attribute.pdf}
@@ -97,7 +97,7 @@
     $W(D)$ bezeichnet alle real existierenden Werte der Domain $D$ in einer Datenbank.
 \end{defi}
 
-\begin{defi}{Zusammengesetztes Attribut}
+\begin{defi}{Zusammengesetztes Attribut (Chen-Notation)}
     \begin{wrapfigure}{r}{0.35\textwidth}
         \begin{center}
             %\includegraphics[width=0.4\textwidth]{includes/figures/definition_entity_relationship_model_attribute_combined.pdf}
@@ -115,7 +115,7 @@
     \]
 \end{defi}
 
-\begin{defi}{Mehrwertiges Attribut}
+\begin{defi}{Mehrwertiges Attribut (Chen-Notation)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_attribute_multivalue.pdf}
@@ -132,7 +132,7 @@
     \]
 \end{defi}
 
-\begin{defi}{Schlüsselkandidat}
+\begin{defi}{Schlüsselkandidat (Chen-Notation)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_attribute_primary.pdf}
@@ -155,7 +155,7 @@
     \end{center}
 \end{defi}
 
-\begin{defi}{Relation}
+\begin{defi}{Relation (Chen-Notation)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_relation.pdf}
@@ -369,7 +369,7 @@
     Bei den Kardinalitäten wird sich bezüglich der Reihenfolge bei der Chen-, bezüglich der Angaben bei der Min-Max-Notation bedient.
 \end{defi}
 
-\begin{defi}{Entität (UML)}
+\begin{defi}{Entität (UML-Notation)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_uml_entity.pdf}
@@ -403,7 +403,7 @@
     \end{itemize}
 \end{defi}
 
-\begin{defi}{Relation (UML)}
+\begin{defi}{Relation (UML-Notation)}
     \begin{wrapfigure}{r}{0.65\textwidth}
         \begin{center}
             \includegraphics[width=0.6\textwidth]{includes/figures/definition_uml_relation.pdf}
@@ -577,3 +577,146 @@
 \begin{bonus}{m:n Relation (RDBMS)}
     Die einzige Möglichkeit der Umsetzung sind zwei Tabellen für die Entitätstypen und eine eigene Tabelle für die Realisierung der Relation mit zwei Fremdschlüsseln.
 \end{bonus}
+
+\subsection{Relationales Modell}
+
+\begin{defi}{Entitätstyp (Relationales Modell)}
+    \begin{wrapfigure}{r}{0.425\textwidth}
+        \begin{center}
+            \includegraphics[width=0.375\textwidth]{includes/figures/definition_relational_modell_entity.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Ein wie bisher definierter Entitätstyp $E$ mit
+    \[
+        E: \{ A_1:D_1, \ldots, A_n:D_n \}
+    \]
+    wird im relationalen Modell zu einer \emph{Tabelle} $E$ mit:
+    \begin{itemize}
+        \item \emph{atomaren}\footnote{weder zusammengesetzt noch mehrwertig} Attributen $A_k$ als \emph{Spalten} mit Datentyp $D_k$
+        \item Schlüsselattributen als \emph{primary keys}
+    \end{itemize}
+
+    Die Reihenfolge der Zeilen und Spalten ist nicht relevant.
+
+    Enthaltene Informationen werden nur durch Datenwerte ausgedrückt.
+\end{defi}
+
+\begin{defi}{Schlüsselattribute}
+    \begin{wrapfigure}{r}{0.5\textwidth}
+        \begin{center}
+            \includegraphics[width=0.45\textwidth]{includes/figures/definition_relational_modell_keys.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Jede Zeile bzw. Entität in der Tabelle $E$ beschreibt ein eindeutiges Objekt.
+
+    Technisch sind Tabellen ohne Schlüsselattribut und Einträge, die in allen Werten identisch sind, denkbar, aber erst die Verwendung eindeutiger \emph{Schlüsselattribute} garantiert die Identifikation unterschiedlicher Objekte, selbst bei gleichen Werten der restlichen Attribute.
+
+    Schlüsselattribute werden im relationalen Modell zu \emph{primary keys}.
+\end{defi}
+
+\begin{defi}{Zusammengesetzte Attribute (Relationales Modell)}
+    \begin{wrapfigure}{r}{0.35\textwidth}
+        \begin{center}
+            \includegraphics[width=0.3\textwidth]{includes/figures/definition_relational_modell_attribute_combined.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Bei einem zusammengesetzten Attribut $A$ mit
+    \[
+        A: [A_1 : D_1, \ldots, A_n:D_n]: D_1 \times \ldots \times D_n
+    \]
+    liegen die Informationen in den $A_k$, d.h. $A$ an sich enthält selbst keine Informationen.
+
+    Deswegen kann das Modell in eine der zwei Möglichkeiten mit nur atomaren Attributen überführt werden:
+    \begin{enumerate}
+        \item \enquote{Umhängen} der Attribute $A_k$ direkt an den Entitätstypen
+        \item Zusammenfassen der $A_k$ zu einem neuen gemeinsamen Attribut $A'$ (z.B. durch Stringkonkatenation)
+    \end{enumerate}
+
+    \vspace{6em}
+\end{defi}
+
+\begin{defi}{Mehrwertige Attribute (Relationales Modell)}
+    \begin{wrapfigure}{r}{0.35\textwidth}
+        \begin{center}
+            \includegraphics[width=0.3\textwidth]{includes/figures/definition_relational_modell_attribute_multiple.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Bei einem mehrwertigen Attribut $A$ werden die verschiedenen Ausprägungen von $A$ üblicher-weise in eine $1:n$-Relation mit einem weiteren Entitätstyp $E_A$ abgebildet.
+
+    Eine allgemeinere Rolle von $E_A$ und eine entsprechende $m:n$-Relation ist auch denkbar.
+
+    Schlüsselattribute von $E$ können so auch zu Schlüsselattributen von $E_A$ werden.
+    Das hängt von der genauen Umsetzung der Relation ab.
+
+    \vspace{6em}
+\end{defi}
+
+\begin{defi}{m:n Relation (Relationales Modell)}
+    \begin{wrapfigure}{r}{0.575\textwidth}
+        \begin{center}
+            \includegraphics[width=0.525\textwidth]{includes/figures/definition_relational_modell_relation_many_to_many.pdf}
+        \end{center}
+    \end{wrapfigure}
+    $n:m$-Relationen werden im relationalen Modell immer in einer eigenen Tabelle $R$ realisiert.
+
+    Diese Tabelle $R$ enthält alle Schlüsselattribute der $E_k$, die vereint Schlüsselattribute von $R$ sind (\enquote{Fremdschlüssel}).
+    Es ist aber auch möglich, ein künstliches Schlüsselattribut (meist \texttt{ID}) zu verwenden.
+
+    Sollte $R$ attributiert sein, dann finden sich diese Attribute ebenfalls in $R$.
+
+    \vspace{6em}
+\end{defi}
+
+\begin{defi}{1:n Relation (Relationales Modell)}
+    \begin{wrapfigure}{r}{0.575\textwidth}
+        \begin{center}
+            \includegraphics[width=0.525\textwidth]{includes/figures/definition_relational_modell_relation_one_to_many.pdf}
+        \end{center}
+    \end{wrapfigure}
+    Da wir bei einer $1:n$-Relation eine partielle Funktion
+    \[
+        f: E_2 \to E_1
+    \]
+    haben, kann das Schlüsselattribut von $E_1$ als \enquote{Fremdschlüssel} in $E_2$ als weiteres Attribut eingebettet werden.
+    Dort ist es kein Schlüssel von $E_2$, es referenziert nur die assoziierte Entität in $E_1$.\footnote{Der Fremdschlüssel kann nur in $E_2$, da man umgekehrt ein mehrwertiges Attribut in $E_1$ führen müsste, was im Widerspruch zur Atomarität stünde.}
+
+    Sollte $E_1$ mehrere Schlüsselattribute haben, die den Primärschlüssel bilden, müssen selbstverständlich alle in $E_2$ vorkommen.
+\end{defi}
+
+\begin{defi}{1:1 Relation (Relationales Modell)}
+    Bei einer $1:1$-Relation $R$ hat man jede der bisher benannten Möglichkeiten:
+    \begin{enumerate}
+        \item je eine Tabelle $E_1$ bzw. $E_2$ mit
+              \begin{enumerate}
+                  \item Fremdschlüssel in $E_1$
+                  \item Fremdschlüssel in $E_2$
+                  \item Fremdschlüssel in beiden Tabellen
+              \end{enumerate}
+        \item eine Tabelle $E'$ mit allen Attributen (Spalten) aus $E_1$ und $E_2$
+        \item eine Tabelle für $R$ (analog zu $m:n$-Relation)
+    \end{enumerate}
+
+    Welche der Möglichkeiten am geeignetsten ist, ist am Ende von den Anforderungen und der Verwendung der Relation in der Praxis abhängig.
+    Diese sind jeweils:
+
+    \begin{enumerate}
+        \item Daten aus $E_1$ und $E_2$ häufig gemeinsam benötigt und man sucht ein $e_2$ zu einem $e_1$, oder umgekehrt
+        \item hebt zwar Trennung der modellierten Aspekte evtl. auf, kann aber sehr effizient sein
+        \item zwar komplexer, aber stabil gegenüber Änderungen zu einer $1:n$- bzw. $m:n$-Relation
+    \end{enumerate}
+
+    \underline{Variante 1}
+    \begin{center}
+        \includegraphics[width=0.525\textwidth]{includes/figures/definition_relational_modell_relation_one_to_one_1.pdf}
+    \end{center}
+
+    \underline{Variante 2}
+    \begin{center}
+        \includegraphics[width=0.6\textwidth]{includes/figures/definition_relational_modell_relation_one_to_one_2.pdf}
+    \end{center}
+
+    \underline{Variante 3}
+    \begin{center}
+        \includegraphics[width=0.675\textwidth]{includes/figures/definition_relational_modell_relation_one_to_one_3.pdf}
+    \end{center}
+\end{defi}
