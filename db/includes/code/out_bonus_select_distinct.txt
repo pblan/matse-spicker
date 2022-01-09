@@ -1,0 +1,10 @@
++------------+--------------+
+| PrimaerTyp | SekundaerTyp |
++------------+--------------+
+| Pflanze    | Gift         |
+| Feuer      | NULL         |
+| Feuer      | Flug         |
+...
+| Unlicht    | Pflanze      |
++------------+--------------+
+175 rows in set (0.000 sec)

@@ -21,6 +21,7 @@ USE db_pokemon;
 
 \begin{code}{SELECT}
     \texttt{SELECT} gibt alle Datensätze einer Tabelle aus.
+    Alternativ kann man durch das Angeben von festen Werten eine Pseudo Tabelle erstellen.
 
     Möchte man sich z.B. alle Pokémon (aus der Tabelle \texttt{pokemon}) anzeigen lassen, so nutzt man:
 
@@ -38,7 +39,9 @@ USE db_pokemon;
 \end{code}
 
 \begin{code}{WHERE}
-    Möchte man eine Selektion auf die Ergebnisse der Abfrage anwenden, also für jedes Element eine Bedingung vorraussetzen, nutzt man \texttt{WHERE}:
+    Möchte man eine Selektion auf die Ergebnisse der Abfrage anwenden, also für jedes Element eine Bedingung vorraussetzen, nutzt man \texttt{WHERE}.
+
+    Beispielsweise werden im folgendem Befehl alle Pokémon mit dem Typ Feuer ausgegeben:
 
     \mint{mysql}|SELECT * FROM pokemon WHERE PrimaerTyp = 'Feuer';|
 
@@ -55,6 +58,30 @@ USE db_pokemon;
     Das Schlüsselwort \texttt{AS} ist optional, d.h folgende Abfrage ist äquivalent:
     
     \mint{mysql}|SELECT p.* FROM pokemon p;|
+\end{bonus}
+
+\begin{bonus}{ORDER BY}
+    \texttt{ORDER BY} sortiert die Ergebnismenge nach Kriterien auf- (\texttt{ASC}) oder absteigend (\texttt{DESC}).
+    
+    Sollten mehrere Kriterien angegeben sein, so wird die Menge nach dem ersten gegebenen Kriterium sortiert.
+    Wenn nach diesem Schritt mehrere Einträge dieses Kriterium erfüllen, wird diese Untermenge nach dem zweiten Kriterium sortiert.
+
+    \texttt{NULL} ist immer der erste Eintrag.
+    
+    Wenn man sich also alle Pokémon nach Namen sortiert ausgeben möchte, so erhält man:
+
+    \begin{minted}{mysql}
+SELECT * FROM pokemon ORDER BY Name;
+SELECT * FROM pokemon ORDER BY Name ASC;
+    \end{minted}
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_order_by_name.txt}
+
+    Wenn man alternativ alle Pokémon erst nach PrimärTyp (\texttt{ASC}), dann nach SekundärTyp (\texttt{DESC}) sortiert ausgeben möchte, erhält man:
+
+    \mint{mysql}|SELECT * FROM pokemon ORDER BY PrimaerTyp ASC, SekundaerTyp DESC;|
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_order_by_typ.txt}
 \end{bonus}
 
 \subsection{Funktionen}
@@ -88,9 +115,30 @@ FROM pokemon;
     \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_round.txt}
 \end{bonus}
 
+\begin{bonus}{COUNT}
+    \texttt{COUNT} zählt alle nicht-\texttt{NULL} Datensätze.
+    Sollte \texttt{*} angegeben werden, beachtet er alle Entitäten, welche mindestens ein nicht-\texttt{NULL} Attribut besitzen.
+
+    Dudurch, dass \texttt{ID} und \texttt{PrimaerTyp} nicht \texttt{NULL} sein können, erhält man mit folgenden äquivalenten Befehlen die Anzahl aller Pokémon:
+
+    \begin{minted}{mysql}
+SELECT COUNT(*) FROM pokemon;
+SELECT COUNT(ID) FROM pokemon;
+SELECT COUNT(PrimaerTyp) FROM pokemon;
+    \end{minted}
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_count_all.txt}
+
+    Da manche Pokémon \texttt{NULL} als Sekundaertyp festgelegt haben, werden diese nicht berücksichtigt und wir erhalten:
+
+    \mint{mysql}|SELECT COUNT(SekundaerTyp) FROM pokemon;|
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_count.txt}
+\end{bonus}
+
 \subsection{Operatoren}
 
-\begin{bonus}{NULL}
+\begin{bonus}{IS NULL}
     \texttt{IS NULL}/ \texttt{IS NOT NULL} wird genutzt, um mit \texttt{NULL}-Einträgen zu arbeiten.
 
     In folgendem Befehl werden beispielsweise Pokémon mit exakt einem Typen zurückgegeben:
@@ -103,8 +151,18 @@ FROM pokemon
     \end{minted}
 
     \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_null.txt}
+\end{bonus}
 
+\begin{bonus}{COALESCE}
     \texttt{COALESCE} gibt den ersten nicht-\texttt{NULL} Eintrag zurück
+    Dementsprechend sind folgende SQL-Befehle äquivalent:
+
+    \begin{minted}{mysql}
+SELECT 'Ausgabe' AS 'Beispiel';
+SELECT COALESCE(NULL, NULL, ..., Null, 'Ausgabe') AS 'Beispiel';
+    \end{minted}
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_coalesce_ausgabe.txt}
 
     In diesem Beispiel wird aus der Tabelle \emph{Entwicklung} jede \texttt{NULL}-Tageszeit zu dem String \texttt{Immer}:
 
@@ -116,8 +174,112 @@ FROM entwicklung;
     \end{minted}
 
     \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_coalesce.txt}
+
+    Achtung: Ausdrücke sind \texttt{NULL}, wenn einer der Operanden \texttt{NULL} ist.
 \end{bonus}
 
 \begin{code}{Bedingungen}
-    
+    \emph{Bedingungen} werden von Selektionen sowie \texttt{IF}-Abfragen genutzt:
+
+    \begin{minted}{mysql}
+SELECT * FROM <Tabelle> WHERE <Bedingung>;
+SELECT IF(<Bedingung>, TRUE-Wert, FALSE-Wert);
+    \end{minted}
+
+    Verschiedene Bedingungen lassen sich mit \texttt{AND} und \texttt{OR} verbinden, sowie mit \texttt{NOT} negieren.
+
+    Operatoren, welche für die meisten Datentypen definiert sind:
+
+    \begin{itemize}
+        \item \texttt{=} überprüft auf exakte Gleichheit
+        \item \texttt{IN} überprüft, ob der Wert in einer angegebenen Liste zu finden ist
+    \end{itemize}
+
+    Explizit für String Werte ist definiert:
+
+    \begin{itemize}
+        \item \texttt{LIKE}: Benutzt reguläre Ausdrücke zum Vergleichen:
+            \begin{itemize}
+                \item \texttt{\%} lässt beliebig viele beliebige Zeichen zu
+                \item \texttt{\_} lässt exakt ein beliebiges Zeichen zu.
+            \end{itemize}
+    \end{itemize}
+
+    Des Weiteren kann man für numerische Werte folgende Operatoren nutzen:
+
+    \begin{itemize}
+        \item \texttt{$<$, $<=$, $>$, $>=$}
+        \item \texttt{BETWEEN X AND Y} überprüft, ob der Wert zwischen den angegebenen Grenzen (inklusive) liegt.
+    \end{itemize}
 \end{code}
+
+\begin{bonus}{DISTINCT}
+    \texttt{DISTINCT} berücksichtigt keine doppelten Daten.
+
+    Wenn man sich jede vorhandene Kombination an Typen anzeigen lassen möchte, so erhält man in folgender Abfrage doppelte Werte:
+
+    \mint{mysql}|SELECT PrimaerTyp, SekundaerTyp FROM pokemon;|
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_distinct_all.txt}
+
+    Diese entfallen, wenn man das Schlüsselwort \texttt{DISTINCT} ergänzt:
+
+    \mint{mysql}|SELECT DISTINCT PrimaerTyp, SekundaerTyp FROM pokemon;|
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_distinct.txt}
+    
+    Man achte auf die Anzahl der Entitäten der Abfrage.
+\end{bonus}
+
+\subsection{Beispiele}
+
+\begin{example}{SELECT}
+    Ermitteln Sie, wieviele verschiedene Typkombinationen in der Tabelle \emph{pokemon} vorhanden sind und geben Sie sie aus.
+
+    \exampleseparator
+
+    \begin{minted}{mysql}
+SELECT
+    COUNT(
+        DISTINCT PrimaerTyp,
+        COALESCE(SekundaerTyp, 'NULL')
+    )
+FROM pokemon;
+    \end{minted}
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_select_typ.txt}
+\end{example}
+
+\begin{example}{SELECT}
+    Ermitteln Sie den BMI\footnote{$\text{BMI} = \frac{\text{Gewicht}}{\text{Größe}^2}$} aller Pokèmon, welche mehr als 50kg wiegen.
+    Runden Sie das Ergebnis auf 2 Nachkommastellen.
+
+    \exampleseparator
+
+    \begin{minted}{mysql}
+SELECT
+    ID, Name, Gewicht, Groesse,
+    ROUND(Gewicht / (Groesse * Groesse), 2) AS BMI
+FROM pokemon
+    WHERE Gewicht > 50
+    ORDER BY BMI DESC;
+    \end{minted}
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_select_bmi.txt}
+\end{example}
+
+\begin{example}{SELECT}
+    Wieviele Pokémonnamen beginnen mit einem \texttt{P}?
+    Und wieviele enthalten ein \texttt{P}?
+    Ermitteln Sie die jeweilige Anzahl.
+
+    \exampleseparator
+
+    \mint{mysql}|SELECT COUNT(*) FROM pokemon WHERE Name LIKE 'P%';|
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_select_count_p_start.txt}
+
+    \mint{mysql}|SELECT COUNT(*) FROM pokemon WHERE Name LIKE '%P%';|
+
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_select_count_p_in.txt}
+\end{example}

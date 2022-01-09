@@ -1,0 +1,10 @@
++------------+--------------+
+| PrimaerTyp | SekundaerTyp |
++------------+--------------+
+| Pflanze    | Gift         |
+| Pflanze    | Gift         |
+| Pflanze    | Gift         |
+...
+| Psycho     | Pflanze      |
++------------+--------------+
+898 rows in set (0.000 sec)
