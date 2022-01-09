@@ -1,0 +1,14 @@
++-------------+-------------+
+| Bezeichnung | Bezeichnung |
++-------------+-------------+
+| Boden       | Boden       |
+| Drache      | Boden       |
+| Eis         | Boden       |
+...
+| Boden       | Drache      |
+| Drache      | Drache      |
+| Eis         | Drache      |
+...
+| Wasser      | Wasser      |
++-------------+-------------+
+324 rows in set (0.000 sec)

@@ -1,0 +1,10 @@
++-----+-------------+------------+--------------+-------+-----+--------------+
+| ID  | Name        | PrimaerTyp | SekundaerTyp | Level | ID  | Name         |
++-----+-------------+------------+--------------+-------+-----+--------------+
+|   1 | Bisasam     | Pflanze    | Gift         |    16 |   2 | Bisaknosp    |
+|   2 | Bisaknosp   | Pflanze    | Gift         |    32 |   3 | Bisaflor     |
+|   4 | Glumanda    | Feuer      | NULL         |    16 |   5 | Glutexo      |
+...
+| 891 | Dakuma      | Kampf      | NULL         |  NULL | 892 | Wulaosu      |
++-----+-------------+------------+--------------+-------+-----+--------------+
+429 rows in set (0.000 sec)

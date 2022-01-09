@@ -26,13 +26,13 @@ USE db_pokemon;
 
     \mint{mysql}|SELECT * FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_code_select_all.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_all.txt}
 
     Möchte man eine \emph{Projektion} auf die Ergebnisse der Abfrage anwenden, sich also nur bestimmte Spalten anzeigen lassen, kann man dies im \texttt{SELECT} spezifizieren\footnote{Der \texttt{*} dient als Platzhalter für alle Attribute}:
 
     \mint{mysql}|SELECT ID, Name, PrimaerTyp, SekundaerTyp FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_code_select_projektion.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_projektion.txt}
 
     Die Reihenfolge der Datensätzer ist hierbei nicht vorgegeben.
 \end{sql}
@@ -44,7 +44,7 @@ USE db_pokemon;
 
     \mint{mysql}|SELECT * FROM pokemon WHERE PrimaerTyp = 'Feuer';|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_code_select_where.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_where.txt}
 \end{sql}
 
 \begin{sql}{AS}
@@ -74,13 +74,13 @@ SELECT * FROM pokemon ORDER BY Name;
 SELECT * FROM pokemon ORDER BY Name ASC;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_order_by_name.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_order_by_name.txt}
 
     Wenn man alternativ alle Pokémon erst nach Primärtyp (\texttt{ASC}), dann nach Sekundärtyp (\texttt{DESC}) sortiert ausgeben möchte, erhält man:
 
     \mint{mysql}|SELECT * FROM pokemon ORDER BY PrimaerTyp ASC, SekundaerTyp DESC;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_order_by_typ.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_order_by_typ.txt}
 \end{sql}
 
 \subsection{Funktionen}
@@ -98,7 +98,7 @@ FROM pokemon
     WHERE SekundaerTyp IS NOT NULL;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_concat.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_concat.txt}
 \end{sql}
 
 \begin{sql}{ROUND}
@@ -114,7 +114,7 @@ SELECT
 FROM pokemon;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_round.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_round.txt}
 \end{sql}
 
 \begin{sql}{COUNT}
@@ -129,13 +129,13 @@ SELECT COUNT(ID) FROM pokemon;
 SELECT COUNT(PrimaerTyp) FROM pokemon;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_count_all.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_count_all.txt}
 
     Möchten wir nun alle Pokémon mit einem Sekundärtypen zählen, so erhalten wir: 
 
     \mint{mysql}|SELECT COUNT(SekundaerTyp) FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_count.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_count.txt}
 \end{sql}
 
 \subsection{Operatoren}
@@ -152,7 +152,7 @@ FROM pokemon
     WHERE SekundaerTyp IS NULL;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_null.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_null.txt}
 \end{sql}
 
 \begin{sql}{COALESCE}
@@ -164,7 +164,7 @@ SELECT 'Ausgabe' AS 'Beispiel';
 SELECT COALESCE(NULL, NULL, ..., NULL, 'Ausgabe') AS 'Beispiel';
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_coalesce_ausgabe.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_coalesce_ausgabe.txt}
 
     In diesem Beispiel wird aus der Tabelle \texttt{entwicklung} jede \texttt{NULL}-Tageszeit mit dem String \texttt{Immer} ersetzt:
 
@@ -175,7 +175,7 @@ SELECT
 FROM entwicklung;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_coalesce.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_coalesce.txt}
 \end{sql}
 
 \begin{sql}{Bedingungen}
@@ -222,13 +222,13 @@ SELECT IF(<Bedingung>, <Wert wenn TRUE>, <Wert wenn FALSE>);
 
     \mint{mysql}|SELECT PrimaerTyp, SekundaerTyp FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_distinct_all.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_distinct_all.txt}
 
     Diese entfallen, wenn man das Schlüsselwort \texttt{DISTINCT} ergänzt:
 
     \mint{mysql}|SELECT DISTINCT PrimaerTyp, SekundaerTyp FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_bonus_select_distinct.txt}
+    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_distinct.txt}
 \end{sql}
 
 \subsection{Beispiele}

@@ -1,0 +1,10 @@
++-----+--------------+------------+--------------+
+| ID  | Name         | PrimaerTyp | SekundaerTyp |
++-----+--------------+------------+--------------+
+|   3 | Bisaflor     | Pflanze    | Gift         |
+|   6 | Glurak       | Feuer      | Flug         |
+|   9 | Turtok       | Wasser     | NULL         |
+...
+| 898 | Coronospa    | Psycho     | Pflanze      |
++-----+--------------+------------+--------------+
+491 rows in set (0.000 sec)
