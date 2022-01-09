@@ -211,6 +211,8 @@
     Die Kardinalität ergibt sich im Wesentlichen aus den Anforderungen und bestimmt ganz maßgeblich den Datenbankentwurf.
 \end{defi}
 
+\newpage
+
 \begin{example}{1:1 Relation (Chen-Notation)}
     In Pokémon verleiht im Laufe des Spiels jede \emph{Arena} genau einen \emph{Orden}.
 
@@ -316,6 +318,8 @@
     \]
 \end{defi}
 
+\newpage
+
 \begin{example}{1:1 Relation (Min-Max-Notation)}
     In Pokémon verleiht im Laufe des Spiels jede \emph{Arena} genau einen \emph{Orden}.
 
@@ -356,6 +360,7 @@
     \end{center}
 \end{example}
 
+\newpage
 \subsubsection{UML-Notation}
 
 \begin{defi}{UML-Notation}
@@ -413,7 +418,11 @@
         \item \emph{optional}, wenn Kardinalität $= 0$, bzw.
         \item \emph{verpflichtend}, sonst.
     \end{itemize}
+
+    Attributierte Relationen werden in der UML-Notation in einer assoziierten Klasse zusammengefasst.
 \end{defi}
+
+\newpage
 
 \begin{example}{1:1 Relation (UML-Notation)}
     In Pokémon verleiht im Laufe des Spiels jede \emph{Arena} genau einen \emph{Orden}.
@@ -454,3 +463,117 @@
         \includegraphics[width=0.7\linewidth]{includes/figures/example_entity_relationship_modell_uml_many_to_many.pdf}
     \end{center}
 \end{example}
+
+\begin{example}{UML-Relation mit Attributen}
+    In Pokémon kann sich ein \emph{Pokémon} in teils mehrere \emph{Pokémon} entwickeln.
+
+    Dabei sind verschiedene \emph{Bedingungen} zu erfüllen um diese Entwicklung zu erreichen.
+
+    Damit gilt:
+    \begin{center}
+        \includegraphics[width=0.7\linewidth]{includes/figures/example_uml_relation_associated.pdf}
+    \end{center}
+\end{example}
+
+\begin{defi}{Vollständige und unvollständige UML-Relation}
+    Eine UML-Relation heißt \emph{vollständig}, wenn alle Entitäten teilnehmen, \emph{unvollständig} sonst.
+
+    In diesem Kontext werden oft Kurzformen genutzt:
+    \begin{itemize}
+        \item 0..* $\to$ *
+        \item 1..1 $\to$ 1
+        \item 1 als Default
+    \end{itemize}
+
+    Damit gilt:
+    \begin{center}
+        \begin{tabular}{cc}
+            \underline{unvollständig}                                                                                   & \underline{vollständig}                                                                                   \\
+            \includegraphics[width=0.4\textwidth]{includes/figures/definition_incomplete_uml_relation_one_to_one.pdf}   & \includegraphics[width=0.4\textwidth]{includes/figures/definition_complete_uml_relation_one_to_one.pdf}   \\
+            \includegraphics[width=0.4\textwidth]{includes/figures/definition_incomplete_uml_relation_many_to_one.pdf}  & \includegraphics[width=0.4\textwidth]{includes/figures/definition_complete_uml_relation_many_to_one.pdf}  \\
+            \includegraphics[width=0.4\textwidth]{includes/figures/definition_incomplete_uml_relation_many_to_many.pdf} & \includegraphics[width=0.4\textwidth]{includes/figures/definition_complete_uml_relation_many_to_many.pdf} \\
+        \end{tabular}
+    \end{center}
+\end{defi}
+
+\subsection{Generalisierung, Spezialisierung}
+
+\begin{defi}{Generalisierungstyp}
+    Der \emph{Generalisierungstyp} enthält die Attribute (Spalten), die alle spezialisierten Entitäten gemeinsam haben.
+
+    Jede Entitätsmenge einer Generalisation verlangt eine eigenständige Tabelle, wobei der Primärschlüssel der übergeordneten Tabelle auch Primärschlüssel der untergeordneten Tabelle wird.
+
+\end{defi}
+
+\begin{defi}{Spezialisierungstyp}
+    Die \emph{Spezialisierungstypen} enthalten die speziell für sie zutreffenden Attribute, wobei
+    \begin{itemize}
+        \item die Spezialisierung disjunkt oder überlappend sein kann und
+        \item die Eigenschaften der Generalisierung erbt.
+    \end{itemize}
+
+    In einer spezialisierten Tabelle existieren keine Tupel, welche in der generalisierten Tabelle nicht vorkommen.
+    Eine Spezialisierung wird durch Vererbung realisiert.
+
+    Man beachte bei den Diagrammen:
+    \begin{itemize}
+        \item zeigt der Pfeil der Spezialisierung in Richtung \emph{der Generalisierung}, so ist sie \emph{nicht disjunkt}.
+              \subitem \emph{Eselsbrücke}: Pfeile treffen sich $\to$ es existiert Schnittmenge $\to$ nicht disjunkt.
+        \item zeigt der Pfeil der Spezialisierung in Richtung \emph{der Spezialisierung}, so ist sie \emph{disjunkt}.
+              \subitem \emph{Eselsbrücke}: Pfeile treffen sich nie $\to$ es existiert keine Schnittmenge $\to$ disjunkt.
+    \end{itemize}
+
+    \begin{center}
+        \begin{tabular}{ccc}
+            \underline{nicht disjunkt} & \underline{disjunkt}                                              \\
+            \\
+            \includegraphics[width=0.3\textwidth]{includes/figures/definition_specialization_not_disjunct.pdf}
+                                       & \quad                &
+            \includegraphics[width=0.3\textwidth]{includes/figures/definition_specialization_disjunct.pdf} \\
+        \end{tabular}
+    \end{center}
+
+\end{defi}
+
+\begin{example}{Spezialisierung}
+    In Pokémon existieren \emph{keine} Pokémon mit der Typkombination Feuer und Pflanze.
+
+    Damit gilt:
+    \begin{center}
+        \begin{tabular}{ccc}
+            \includegraphics[width=0.4\linewidth]{includes/figures/example_specialization_er_diagram_disjunct.pdf}
+             & \hspace{2em} &
+            \includegraphics[width=0.4\linewidth]{includes/figures/example_specialization_venn_diagram_disjunct.pdf}
+        \end{tabular}
+    \end{center}
+
+    Allerdings existieren Pokémon mit der Typkombination Wasser und Pflanze.
+
+    Damit gilt:
+    \begin{center}
+        \begin{tabular}{ccc}
+            \includegraphics[width=0.4\linewidth]{includes/figures/example_specialization_er_diagram_not_disjunct.pdf}
+             & \hspace{2em} &
+            \includegraphics[width=0.4\linewidth]{includes/figures/example_specialization_venn_diagram_not_disjunct.pdf}
+        \end{tabular}
+    \end{center}
+\end{example}
+
+\subsection{Umsetzung von Relationen in RDBMS}
+
+\begin{bonus}{1:1 Relation (RDBMS)}
+    Eine Möglichkeit der Umsetzung ist über eine Fremdschlüsselbeziehung in einer der beiden Tabellen.
+
+    Eine andere wäre über eine eigene Relationen-Tabelle.
+    Hier darf aber dann jede Entität nur einmal vorkommen.
+\end{bonus}
+
+\begin{bonus}{n:1 Relation (RDBMS)}
+    Eine Möglichkeit der Umsetzung sind zwei Tabellen für die Entitätstypen und die Realisierung der Relation als Fremdschlüssel in der Tabelle mit der $n$-Kardinalität.
+
+    Eine andere Möglichkeit der Umsetzung sind zwei Tabellen für die Entitätstypen und eine eigene Tabelle für die Realisierung der Relation mit zwei Fremdschlüsseln.
+\end{bonus}
+
+\begin{bonus}{m:n Relation (RDBMS)}
+    Die einzige Möglichkeit der Umsetzung sind zwei Tabellen für die Entitätstypen und eine eigene Tabelle für die Realisierung der Relation mit zwei Fremdschlüsseln.
+\end{bonus}
