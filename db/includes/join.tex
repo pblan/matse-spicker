@@ -7,7 +7,19 @@
 
     \mint{mysql}|SELECT * FROM typ AS typ1, typ AS typ2;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_definition_join_kartesisches_produkt.txt}
+    \begin{tabular}{I|TT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{typ1.Bezeichnung} & \multicolumn{1}{T}{typ2.Bezeichnung} \\\hline
+        1 & Boden & Boden \\
+        2 & Drache & Boden \\
+        3 & Eis & Boden \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots} \\
+        19 & Boden & Drache \\
+        20 & Drache & Drache \\
+        21 & Eis & Drache \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots} \\
+        324 & Wasser & Wasser \\
+    \end{tabular}
 
     Wenn eine Relation verschiedener Tabellen über einen Fremdschlüssel realisiert ist, kann man Entitäten aus diesen Tabellen zueinander zuordnen.
     So wird nicht nur der Fremdschlüssel angezeigt, sondern alle zugehörigen Attribute.
@@ -23,7 +35,19 @@ SELECT * FROM
 WHERE NOT typ1.Bezeichnung = typ2.Bezeichnung;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_definition_join_kartesisches_produkt_where.txt}
+    \begin{tabular}{I|TT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{typ1.Bezeichnung} & \multicolumn{1}{T}{typ2.Bezeichnung} \\\hline
+        1 & Drache & Boden \\
+        2 & Eis & Boden \\
+        3 & Elektro & Boden \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots} \\
+        18 & Boden & Drache \\
+        19 & Eis & Drache \\
+        20 & Elektro & Drache \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots} \\
+        306 & Unlicht & Wasser
+    \end{tabular}
 \end{defi}
 
 \begin{sql}{JOIN}
@@ -74,7 +98,15 @@ FROM pokemon JOIN entwicklung
 ON pokemon.ID = entwicklung.Von;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_definition_join_inner.txt}
+    \begin{tabular}{I|ITII}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} \\\hline
+        1 & 1 & Bisasam & 1 & 2 \\
+        2 & 2 & Bisaknosp & 2 & 3 \\
+        3 & 4 & Glumanda & 4 & 5 \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
+        429 & 891 & Dakuma & 891 & 892 \\
+    \end{tabular}
 \end{sql}
 
 \begin{defi}{SELF JOIN}
@@ -109,7 +141,15 @@ FROM pokemon LEFT OUTER JOIN entwicklung
 ON pokemon.id = entwicklung.von;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_join_left_outer.txt}
+    \begin{tabular}{I|ITII}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} \\\hline
+        1 & 1 & Bisasam & 1 & 2 \\
+        2 & 2 & Bisaknosp & 2 & 3 \\
+        3 & 3 & Bisaflor & NULL & NULL \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
+        920 & 898 & Coronospa & NULL & NULL \\
+    \end{tabular}
 \end{sql}
 
 \begin{sql}{RIGHT OUTER JOIN}
@@ -196,7 +236,15 @@ JOIN pokemon AS zu ON entwicklung.Zu = zu.ID;
             \end{minted}
     \end{enumerate}
     
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_join_inner.txt}
+    \begin{tabular}{I|ITTTIIT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{Level} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline
+        1 & 1 & Bisasam & Pflanze & Gift & 16 & 2 & Bisaknosp \\
+        2 & 2 & Bisaknosp & Pflanze & Gift & 32 & 3 & Bisaflor \\
+        3 & 4 & Glumanda & Feuer & NULL & 16 & 5 & Glutexo \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        429 & 891 & Dakuma & Kampf & NULL & NULL & 892 & Wulaosu \\
+    \end{tabular}
 \end{example}
 
 \begin{example}{JOIN}
@@ -214,7 +262,15 @@ LEFT OUTER JOIN entwicklung ON von.ID = entwicklung.Von
 LEFT OUTER JOIN pokemon AS zu ON entwicklung.Zu = zu.ID;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_join_outer.txt}
+    \begin{tabular}{I|ITTTIIT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{Level} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline
+        1 & 1 & Bisasam & Pflanze & Gift & 16 & 2 & Bisaknosp \\
+        2 & 2 & Bisaknosp & Pflanze & Gift & 32 & 3 & Bisaflor \\
+        3 & 3 & Bisaflor & Pflanze & Gift & NULL & NULL & NULL \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        5 & 898 & Coronospa & Psycho & Pflanze & NULL & NULL & NULL \\
+    \end{tabular}
 \end{example}
 
 \begin{example}{JOIN}
@@ -230,7 +286,15 @@ LEFT OUTER JOIN entwicklung ON pokemon.ID = entwicklung.Von
 WHERE entwicklung.Von IS NULL;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_join_is_null.txt}
+    \begin{tabular}{I|ITTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 3 & Bisaflor & Pflanze & Gift \\
+        2 & 6 & Glurak & Feuer & Flug \\
+        3 & 9 & Turtok & Wasser & NULL \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
+        491 & 898 & Coronospa & Psycho & Pflanze \\
+    \end{tabular}
 \end{example}
 
 \begin{example}{JOIN}
@@ -248,5 +312,16 @@ JOIN pokemon AS von ON entwicklung.Von = von.ID
 WHERE von.Name = 'Evoli';
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_join_evoli.txt}
+    \begin{tabular}{I|TTTTTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline
+        1 & 134 & Aquana & Wasser & NULL & 133 & Evoli \\
+        2 & 135 & Blitza & Elektro & NULL & 133 & Evoli \\
+        3 & 136 & Flamara & Feuer & NULL & 133 & Evoli \\
+        4 & 196 & Psiana & Psycho & NULL & 133 & Evoli \\
+        5 & 197 & Nachtara & Unlicht & NULL & 133 & Evoli \\
+        6 & 470 & Folipurba & Pflanze & NULL & 133 & Evoli \\
+        7 & 471 & Glaziola & Eis & NULL & 133 & Evoli \\
+        8 & 700 & Feelinara & Fee & NULL & 133 & Evoli \\
+    \end{tabular}
 \end{example}

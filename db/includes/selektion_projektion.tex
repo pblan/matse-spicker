@@ -26,13 +26,29 @@ USE db_pokemon;
 
     \mint{mysql}|SELECT * FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_all.txt}
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 1 & Bisasam & 0.7 & 6.9 & 1 & Pflanze & Gift \\
+        2 & 2 & Bisaknosp & 1 & 13 & 1 & Pflanze & Gift \\
+        3 & 3 & Bisaflor & 2 & 100 & 1 & Pflanze & Gift \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        898 & 898 & Coronospa & 1.1 & 7.7 & 8 & Psycho & Pflanze \\
+    \end{tabular}
 
     Möchte man eine \emph{Projektion} auf die Ergebnisse der Abfrage anwenden, sich also nur bestimmte Spalten anzeigen lassen, kann man dies im \texttt{SELECT} spezifizieren\footnote{Der \texttt{*} dient als Platzhalter für alle Attribute}:
 
     \mint{mysql}|SELECT ID, Name, PrimaerTyp, SekundaerTyp FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_projektion.txt}
+    \begin{tabular}{I|ITTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 1 & Bisasam & Pflanze & Gift \\
+        2 & 2 & Bisaknosp & Pflanze & Gift \\
+        3 & 3 & Bisaflor & Pflanze & Gift \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
+        898 & 898 & Coronospa & Psycho & Pflanze \\
+    \end{tabular}
 
     Die Reihenfolge der Datensätzer ist hierbei nicht vorgegeben.
 \end{sql}
@@ -42,9 +58,17 @@ USE db_pokemon;
 
     Beispielsweise werden im folgendem Befehl alle Pokémon mit dem Typ Feuer ausgegeben:
 
-    \mint{mysql}|SELECT * FROM pokemon WHERE PrimaerTyp = 'Feuer';|
+    \mint{mysql}|SELECT * FROM pokemon WHERE PrimaerTyp = 'Feuer' OR SekundaerTyp = 'Feuer';|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_where.txt}
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 4 & Glumanda & 0.6 & 8.5 & 1 & Feuer & NULL \\
+        2 & 5 & Glutexo & 1.1 & 19 & 1 & Feuer & NULL \\
+        3 & 6 & Glurak & 1.7 & 90.5 & 1 & Feuer & Flug \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        71 & 851 & Infernopod & 3 & 120 & 8 & Feuer & Kaefer \\
+    \end{tabular}
 \end{sql}
 
 \begin{sql}{AS}
@@ -74,13 +98,29 @@ SELECT * FROM pokemon ORDER BY Name;
 SELECT * FROM pokemon ORDER BY Name ASC;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_order_by_name.txt}
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 367 & Aalabyss & 1.7 & 27 & 3 & Wasser & NULL \\
+        2 & 63 & Abra & 0.9 & 19.5 & 1 & Psycho & NULL \\
+        3 & 359 & Absol & 1.2 & 47 & 3 & Unlicht & NULL \\       
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        898 & 579 & Zytomega & 1 & 20.1 & 5 & Psycho & NULL \\
+    \end{tabular}
 
     Wenn man alternativ alle Pokémon erst nach Primärtyp (\texttt{ASC}), dann nach Sekundärtyp (\texttt{DESC}) sortiert ausgeben möchte, erhält man:
 
     \mint{mysql}|SELECT * FROM pokemon ORDER BY PrimaerTyp ASC, SekundaerTyp DESC;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_order_by_typ.txt}
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 367 & Aalabyss & 1.7 & 27 & 3 & Wasser & NULL \\
+        2 & 63 & Abra & 0.9 & 19.5 & 1 & Psycho & NULL \\
+        3 & 359 & Absol & 1.2 & 47 & 3 & Unlicht & NULL \\       
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        898 & 579 & Zytomega & 1 & 20.1 & 5 & Psycho & NULL \\
+    \end{tabular}
 \end{sql}
 
 \subsection{Funktionen}
@@ -98,7 +138,15 @@ FROM pokemon
     WHERE SekundaerTyp IS NOT NULL;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_concat.txt}
+    \begin{tabular}{I|ITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Typ} \\\hline
+        1 & 1 & Bisasam & [Pflanze, Gift] \\
+        2 & 2 & Bisaknosp & [Pflanze, Gift] \\
+        3 & 3 & Bisaflor & [Pflanze, Gift] \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{3}{c}{\dots} \\
+        242 & 898 & Coronospa & [Psycho, Pflanze] \\
+    \end{tabular}
 \end{sql}
 
 \begin{sql}{ROUND}
@@ -114,7 +162,15 @@ SELECT
 FROM pokemon;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_round.txt}
+    \begin{tabular}{I|ITII}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{ROUND(Gewicht, 0)} \\\hline
+        1 & 1 & Bisasam & 6.9 & 7 \\
+        2 & 2 & Bisaknosp & 13 & 13 \\
+        3 & 3 & Bisaflor & 100 & 100 \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
+        898 & 898 & Coronospa & 7.7 & 8 \\
+    \end{tabular}
 \end{sql}
 
 \begin{sql}{COUNT}
@@ -129,13 +185,21 @@ SELECT COUNT(ID) FROM pokemon;
 SELECT COUNT(PrimaerTyp) FROM pokemon;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_count_all.txt}
+    \begin{tabular}{I|I}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{COUNT(*)} \\\hline
+        1 & 898 \\
+    \end{tabular}
 
     Möchten wir nun alle Pokémon mit einem Sekundärtypen zählen, so erhalten wir: 
 
     \mint{mysql}|SELECT COUNT(SekundaerTyp) FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_count.txt}
+    \begin{tabular}{I|I}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{COUNT(SekundaerTyp)} \\\hline
+        1 & 442 \\
+    \end{tabular}
 \end{sql}
 
 \subsection{Operatoren}
@@ -152,7 +216,15 @@ FROM pokemon
     WHERE SekundaerTyp IS NULL;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_null.txt}
+    \begin{tabular}{I|ITTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 4 & Glumanda & Feuer & NULL \\
+        2 & 5 & Glutexo & Feuer & NULL \\
+        3 & 7 & Schiggy & Wasser & NULL \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
+        5 & 897 & Phantoross & Geist & NULL \\
+    \end{tabular}
 \end{sql}
 
 \begin{sql}{COALESCE}
@@ -164,7 +236,11 @@ SELECT 'Ausgabe' AS 'Beispiel';
 SELECT COALESCE(NULL, NULL, ..., NULL, 'Ausgabe') AS 'Beispiel';
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_coalesce_ausgabe.txt}
+    \begin{tabular}{I|T}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{Beispiel} \\\hline
+        1 & Ausgabe \\
+    \end{tabular}
 
     In diesem Beispiel wird aus der Tabelle \texttt{entwicklung} jede \texttt{NULL}-Tageszeit mit dem String \texttt{Immer} ersetzt:
 
@@ -175,7 +251,19 @@ SELECT
 FROM entwicklung;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_coalesce.txt}
+    \begin{tabular}{I|IITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} & \multicolumn{1}{T}{Tageszeit} & \multicolumn{1}{T}{Entwicklungszeitraum} \\\hline
+        1 & 1 & 2 & NULL & Immer \\
+        2 & 2 & 3 & NULL & Immer \\
+        3 & 4 & 5 & NULL & Immer \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
+        85 & 133 & 136 & NULL & Immer \\
+        86 & 133 & 196 & Tag & Tag \\
+        87 & 133 & 197 & Nacht & Nacht \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
+        429 & 891 & 892 & NULL & Immer \\
+    \end{tabular}
 \end{sql}
 
 \begin{sql}{Bedingungen}
@@ -222,13 +310,29 @@ SELECT IF(<Bedingung>, <Wert wenn TRUE>, <Wert wenn FALSE>);
 
     \mint{mysql}|SELECT PrimaerTyp, SekundaerTyp FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_distinct_all.txt}
+    \begin{tabular}{I|TT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & Pflanze & Gift \\
+        2 & Pflanze & Gift \\
+        3 & Pflanze & Gift \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots} \\
+        898 & Psycho & Pflanze \\
+    \end{tabular}
 
     Diese entfallen, wenn man das Schlüsselwort \texttt{DISTINCT} ergänzt:
 
     \mint{mysql}|SELECT DISTINCT PrimaerTyp, SekundaerTyp FROM pokemon;|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_sql_select_distinct.txt}
+    \begin{tabular}{I|TT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & Pflanze & Gift \\
+        2 & Feuer & NULL \\
+        3 & Feuer & Flug \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots} \\
+        175 & Unlicht & Pflanze \\
+    \end{tabular}
 \end{sql}
 
 \subsection{Beispiele}
@@ -247,7 +351,11 @@ SELECT
 FROM pokemon;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_select_typ.txt}
+    \begin{tabular}{I|I}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{COUNT(DISTINCT PrimaerTyp, COALESCE(SekundaerTyp, 'NULL'))} \\\hline
+        1 & 175 \\
+    \end{tabular}
 \end{example}
 
 \begin{example}{SELECT}
@@ -266,7 +374,17 @@ FROM pokemon
     ORDER BY BMI DESC;
     \end{minted}
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_select_bmi.txt}
+    \begin{tabular}{I|ITIII}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{BMI} \\\hline
+        1 & 790 & Cosmovum & 999.9 & 0.1 & 99990.00 \\
+        2 & 304 & Stollunior & 60 & 0.4 & 375.00 \\
+        3 & 366 & Perlu & 52.5 & 0.4 & 328.12 \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{5}{c}{\dots} \\
+        40 & 143 & Relaxo & 460 & 2.1 & 104.31 \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{5}{c}{\dots} \\
+        288 & 321 & Wailord & 398 & 14.5 & 1.89 \\
+    \end{tabular}
 \end{example}
 
 \begin{example}{SELECT}
@@ -280,9 +398,17 @@ FROM pokemon
 
     \mint{mysql}|SELECT COUNT(*) FROM pokemon WHERE Name LIKE 'P%';|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_select_count_p_start.txt}
+    \begin{tabular}{I|I}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{COUNT(*)} \\\hline
+        1 & 73 \\
+    \end{tabular}
 
     \mint{mysql}|SELECT COUNT(*) FROM pokemon WHERE Name LIKE '%P%';|
 
-    \lstinputlisting[style=BashOutputStyle]{includes/code/out_example_select_count_p_in.txt}
+    \begin{tabular}{I|I}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{COUNT(*)} \\\hline
+        1 & 195 \\
+    \end{tabular}
 \end{example}
