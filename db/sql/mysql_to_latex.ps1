@@ -8,7 +8,7 @@ function print($sql, $id) {
     Write-Host "\\\hline"
     $i = 0
     $lasti = $i
-    foreach ($row in $sql[3..($sql.Length - 3)]){
+    foreach ($row in $sql[3..($sql.Length - 2)]){
         $i += 1
         if (!$row.StartsWith(">")){
             continue
@@ -28,4 +28,24 @@ function print($sql, $id) {
     Write-Host "\end{tabular}"
 }
 
-print (Get-Content .\out_example_join_evoli.txt) $true
+print "+---------+--------+
+| Typ     | Anzahl |
++---------+--------+
+>| Normal  |    188 |
+>| Psycho  |     69 |
+>| Pflanze |     52 |
+| Kampf   |     51 |
+| Unlicht |     47 |
+| Elektro |     43 |
+| Wasser  |     42 |
+| Feuer   |     40 |
+| Stahl   |     32 |
+| K�fer   |     32 |
+| Gift    |     31 |
+| Geist   |     30 |
+| Flug    |     30 |
+| Fee     |     30 |
+| Boden   |     29 |
+| Eis     |     29 |
+>| Drache  |     27 |
++---------+--------+" $true

@@ -1,1 +1,86 @@
 \section{Group Functions}
+
+\begin{sql}{GROUP BY}
+    \texttt{GROUP BY} teilt die Gesamtmenge in Teilmengen bzw. Gruppierungen auf.
+    
+    Auf diese Teilmengen können ausschließlich Methoden speziell für Datensätze, wie beispielsweise \texttt{COUNT}, aufgerufen.
+    Attributwerte, welche sich innerhalb einer Teilmenge unterscheiden, können nicht direkt aufgerufen werden.\footnote{
+        Da es in der Tabelle \texttt{attacke} Attacken mit dem selben \texttt{Namen} gibt, welche sich insbesondere durch ihre \texttt{Schadensklasse} unterscheiden, kann man, wenn man nach dem \texttt{Namen} gruppiert, die jeweilige \texttt{Schadensklasse} nicht aufrufen.
+        Je nach DBMS ist es trotzdem möglich die gleichbleibenden Attribute \texttt{Name}, \texttt{Typ}, \texttt{Stärke}, \texttt{Genauigkeit}, \texttt{AP} und \texttt{Generation} zu verwenden.
+    }
+\end{sql}
+
+\begin{sql}{HAVING}
+    \texttt{HAVING} filtert die mit \texttt{GROUP BY} gruppierten Teilmengen.
+    
+    Dabei werden Bedingungen auf das Ergebnis der Abfrage angewandt.
+
+    Gibt man sich beispielsweise alle Typen aus, welche mindestens von 25 Attacken genutzt werden, so erhält man:
+    
+    \begin{minted}{mysql}
+SELECT
+    Typ, Count(*) AS Anzahl
+FROM attacke
+GROUP BY Typ
+HAVING Anzahl >= 25
+ORDER BY Anzahl DESC;
+    \end{minted}
+
+    \begin{tabular}{I|TT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{Typ} & \multicolumn{1}{T}{Anzahl} \\\hline
+        1 & Normal & 188 \\
+        2 & Psycho & 69 \\
+        3 & Pflanze & 52 \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots} \\
+        17 & Drache & 27 \\
+    \end{tabular}
+\end{sql}
+
+\subsection{Funktionen}
+
+\begin{sql}{MIN, MAX}
+    \texttt{MIN} gibt den alphanumerisch ersten Eintrag eines Datensatzes zurück.
+
+    \texttt{MAX} hingegen gibt den alphanumerisch letzten Eintrag eines Datensatzes zurück.
+\end{sql}
+
+\begin{sql}{AVG}
+    \texttt{AVG} gibt den durchschnittlichen Zahlwert eines Datensatzes zurück.
+\end{sql}
+
+\begin{example}{GROUP BY}
+    \begin{minted}{mysql}
+SELECT
+    typ,
+    MIN(Staerke),
+    MAX(Staerke),
+    AVG(Staerke)
+FROM attacke
+GROUP BY typ;
+    \end{minted}
+
+    \begin{tabular}{I|TTTTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{typ} & \multicolumn{1}{T}{COUNT(*)} & \multicolumn{1}{T}{MIN(Staerke)} & \multicolumn{1}{T}{MAX(Staerke)} & \multicolumn{1}{T}{AVG(Staerke)} \\\hline
+        1 & Boden & 29 & 10 & 120 & 68.2500 \\
+        2 & Drache & 27 & 10 & 185 & 91.1364 \\
+        3 & Eis & 29 & 10 & 140 & 71.5909 \\
+        4 & Elektro & 43 & 10 & 210 & 88.3871 \\
+        5 & Fee & 30 & 10 & 190 & 89.2857 \\
+        6 & Feuer & 40 & 35 & 180 & 96.2857 \\
+        7 & Flug & 30 & 10 & 140 & 75.4348 \\
+        8 & Geist & 30 & 10 & 200 & 90.7500 \\
+        9 & Gestein & 23 & 10 & 190 & 80.6250 \\
+        10 & Gift & 31 & 10 & 120 & 63.5294 \\
+        11 & Käfer & 32 & 10 & 120 & 63.8095 \\
+        12 & Kampf & 51 & 10 & 150 & 75.9459 \\
+        13 & Normal & 188 & 10 & 250 & 72.5467 \\
+        14 & Pflanze & 52 & 10 & 150 & 77.5758 \\
+        15 & Psycho & 69 & 10 & 200 & 91.7308 \\
+        16 & Stahl & 32 & 10 & 200 & 86.4286 \\
+        17 & Unlicht & 47 & 10 & 180 & 72.2222 \\
+        18 & Wasser & 42 & 10 & 195 & 77.5000 \\
+    \end{tabular}
+    %\setcounter{rownum}{0}
+\end{example}
