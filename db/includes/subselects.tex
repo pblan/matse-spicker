@@ -1,1 +1,216 @@
 \section{Subselects}
+
+\begin{defi}{Unterabfrage}
+    \emph{Unterabfragen} bzw. Subselects sind verschachtelte Abfragen.
+    Dabei stellen die inneren Abfragen Daten bereit, welche von den Äußeren genutzt werden.
+    
+    Unterabfragen werden genutzt, wenn die zu vergleichenden Werte sich dynamisch verändern oder noch unbekannt sind.
+
+    Unterabfragen lassen sich in verschiedene Kategorien aufteilen:
+
+    \begin{itemize}
+        \item Einzeilige bzw. mehrzeilige Unterabfragen
+        \item Korrelierte bzw. unkorrelierte Unterabfragen
+        \item Skalare bzw. nicht skalare Unterabfragen
+    \end{itemize}
+
+    Wenn man von Unterabfragen spricht, so meint man meist nicht korrelierte, skalare Unterabfragen, da diese die simpelste Implementierung sind.
+\end{defi}
+
+\begin{example}{Unterabfrage}
+    So könnte man z.B. alle \texttt{ID}s von Pokémon, welche sich aus Glumanda entwickeln, folgendermaßen herausfinden:
+
+    Zuerst müssen wir die ID von Glumanda herausfinden:
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        -- ID von 'Glumanda' herausfinden
+        SELECT ID
+        FROM pokemon
+        WHERE Name = 'Glumanda';
+    \end{lstlisting}
+
+    \begin{tabular}{I|I}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} \\\hline
+        1 & 4 \\
+    \end{tabular}
+
+    Diese nutzen wir nun manuell um alle Entwicklungen herauszufinden:
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        -- ID von 'Glumanda' nutzen um alle Entwicklungen herauszufinden
+        SELECT *
+        FROM entwicklung
+        WHERE Von = 4;
+    \end{lstlisting}
+
+    \begin{tabular}{I|IIIITTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} & \multicolumn{1}{T}{Level} & \multicolumn{1}{T}{Item} & \multicolumn{1}{T}{GetragenesItem} & \multicolumn{1}{T}{Tageszeit} \\\hline
+        1 & 4 & 5 & 16 & NULL & NULL & NULL \\
+    \end{tabular}
+
+    Diese beiden Abfragen lassen sich nun zu einer Abfrage zusammenfassen:
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        -- ID von 'Glumanda' nutzen um alle Entwicklungen herauszufinden
+        SELECT *
+        FROM entwicklung
+        WHERE Von = (
+            -- ID von 'Glumanda' herausfinden
+            SELECT ID
+            FROM pokemon
+            WHERE Name = 'Glumanda'
+        );
+    \end{lstlisting}
+\end{example}
+
+\begin{defi}{Mehrzeilige Unterfrage}
+    In \emph{mehrzeiligen Unterabfragen} geben die inneren Abfragen mehrere Entitäten zurück.
+    
+    So kann man z.B. nicht auf exakte Gleichheit überprüfen, sondern muss Mengenoperationen (wie z.B. \texttt{IN}) nutzen.
+\end{defi}
+
+\begin{example}{Unterabfrage (mehrzeilig)}
+    Das Resultat des ersten Beispiels nutzen wir nun um den Namen der Entwicklung herauszufinden:
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM pokemon
+        WHERE ID = (
+            -- Eine Entitaet
+            SELECT Zu
+            FROM entwicklung
+            WHERE Von = (
+                SELECT ID
+                FROM pokemon
+                WHERE Name = 'Glumanda'
+            )
+        );
+    \end{lstlisting}
+
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 5 & Glutexo & 1.1 & 19 & 1 & Feuer & NULL \\
+    \end{tabular}
+
+    Sollten wir nun alternativ die Entwicklungen von Evoli anzeigen lassen, können wir die Bedingung \texttt{=} nicht benutzen, da die Abfrage aus \texttt{entwicklung} eine Menge an Entitäten zurück gibt.
+    Dementsprechend muss man das bekannte \texttt{IN} verwenden.
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM pokemon
+        WHERE ID IN (
+            -- Eine Menge an Entitaeten
+            SELECT Zu
+            FROM entwicklung
+            WHERE Von = (
+                SELECT ID
+                FROM pokemon
+                WHERE Name = 'Evoli'
+            )
+        );
+    \end{lstlisting}
+
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 134 & Aquana & 1 & 29 & 1 & Wasser & NULL \\
+        2 & 135 & Blitza & 0.8 & 24.5 & 1 & Elektro & NULL \\
+        3 & 136 & Flamara & 0.9 & 25 & 1 & Feuer & NULL \\
+        4 & 196 & Psiana & 0.9 & 26.5 & 2 & Psycho & NULL \\
+        5 & 197 & Nachtara & 1 & 27 & 2 & Unlicht & NULL \\
+        6 & 470 & Folipurba & 1 & 25.5 & 4 & Pflanze & NULL \\
+        7 & 471 & Glaziola & 0.8 & 25.9 & 4 & Eis & NULL \\
+        8 & 700 & Feelinara & 1 & 23.5 & 6 & Fee & NULL \\
+    \end{tabular}
+\end{example}
+
+\begin{defi}{Korrelierte Unterabfrage}
+    In \emph{korrelierten Unterabfragen} (\enquote{Correlated Subselects}) verweist die innere Abfragen auf die Äußere.\footnote{Dies ist vergleichbar mit einer Variable, welche in einem inneren Scope erneut genutzt wird.}
+
+    Da die Bedingung für jede Entität neu überprüft werden muss, benötigen korrelierte Unterabfragen mehr Rechenleistung, dementsprechend haben diese eine längere Laufzeit.
+\end{defi}
+
+\begin{example}{Unterabfrage (korreliert)}
+    In folgender Abfrage wird jede Attacke ausgegeben, welche eine höhere Stärke besitzt, als der Durchschnitt aller Attacken mit dem selben Typ.
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            ID,
+            Name,
+            Staerke,
+            Typ
+        FROM attacke AS aeussereAttacke
+        WHERE Staerke > (
+            SELECT AVG(Staerke)
+            FROM attacke AS innereAttacke
+            -- attacke.Typ unterscheidet sich potentiell fuer jede Entitaet
+            WHERE aeussereAttacke.Typ = innereAttacke.Typ
+        );
+    \end{lstlisting}
+
+    \begin{tabular}{I|TTTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Staerke} & \multicolumn{1}{T}{Typ} \\\hline
+        1 & 5 & Megahieb & 80 & Normal \\
+        2 & 8 & Eishieb & 75 & Eis \\
+        3 & 13 & Klingensturm & 80 & Normal \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
+        230 & 825 & Astralfragmente & 120 & Geist \\
+    \end{tabular}
+\end{example}
+
+\begin{defi}{Nicht skalare Unterabfrage}
+    In \emph{nicht skalaren Unterabfragen} werden mehrere Attribute der Entitäten in der Unterabfrage genutzt.
+    So müssen mehrere Tupel auf Gleichheit überprüft werden.
+    
+    Sollte eine Unterabfrage nicht einzeilig sein, so ist diese automatisch nicht skalar.
+    Dementsprechend ist eine Unterabfrage ausschließlich dann skalar, wenn man exakt eine Entität mit exakt einem Attribut erhält.
+\end{defi}
+
+\begin{example}{Unterabfrage (nicht skalar)}
+    Möchte man sich beispielsweise alle Pokémon ausgeben, welche exakt die selbe Typkombination wie Bisasam haben, so nutzt man:
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM pokemon
+        WHERE
+            (PrimaerTyp, SekundaerTyp) = (
+                -- Entspricht einem Tupel aus 2 Typen
+                SELECT
+                    PrimaerTyp,
+                    SekundaerTyp
+                FROM pokemon
+                WHERE Name = 'Bisasam'
+            )
+            AND Name <> 'Bisasam';
+    \end{lstlisting}
+
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 2 & Bisaknosp & 1 & 13 & 1 & Pflanze & Gift \\
+        2 & 3 & Bisaflor & 2 & 100 & 1 & Pflanze & Gift \\
+        3 & 43 & Myrapla & 0.5 & 5.4 & 1 & Pflanze & Gift \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        13 & 591 & Hutsassa & 0.6 & 10.5 & 5 & Pflanze & Gift \\
+    \end{tabular}
+\end{example}
+
+\begin{sql}{ANY}
+    \begin{itemize}
+        \item \texttt{< ANY} gibt Einträge zurück, welche kleiner als ein beliebiges Element\footnote{d.h. kleiner als das Maximum} einer Menge sind.
+        \item \texttt{> ANY} gibt Einträge zurück, welche größer als ein beliebiges Element\footnote{d.h. größter als das Minimum} einer Menge sind.
+        \item \texttt{= ANY} gibt Einträge zurück, welche mit einem Werte einer Menge übereinstimmen.
+            Diese Bedingung entspricht dem Keyword \texttt{IN}.
+    \end{itemize}
+\end{sql} 
+
+\begin{sql}{ALL}
+    \begin{itemize}
+        \item \texttt{< ALL} gibt Einträge zurück, welche kleiner als alle Elemente\footnote{d.h. kleiner als das Minimum} einer Menge sind.
+        \item \texttt{> ALL} gibt Einträge zurück, welche größer als alle Elemente\footnote{d.h. größter als das Maximum} einer Menge sind.
+    \end{itemize}
+\end{sql}

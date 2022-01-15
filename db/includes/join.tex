@@ -4,8 +4,13 @@
     Wenn man alle Entitäten einer Tabelle mit jeder Entität aus einer anderen Tabelle kombinieren möchte, benötigt man das \emph{kartesische Produkt}.
 
     Möchte man jede mögliche Typkombination\footnote{Sollte man das kartesische Produkt einer Tabelle mit sich selbst bilden, benötigt man Aliase für die Tabellen} erhalten, nutzt man \texttt{SELECT} zwei mal auf \texttt{Typ}:
-
-    \mint{mysql}|SELECT * FROM typ AS typ1, typ AS typ2;|
+    
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM
+            typ AS typ1,
+            typ AS typ2;
+    \end{lstlisting}
 
     \begin{tabular}{I|TT}
         \rowcolor{gray!35}
@@ -28,12 +33,13 @@
 
     In unserem Beispiel kann kein Pokemon zwei mal den selben Typen besitzen:
 
-    \begin{minted}{mysql}
-SELECT * FROM
-    typ AS typ1,
-    typ AS typ2
-WHERE NOT typ1.Bezeichnung = typ2.Bezeichnung;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM
+            typ AS typ1,
+            typ AS typ2
+        WHERE NOT typ1.Bezeichnung = typ2.Bezeichnung;
+    \end{lstlisting}
 
     \begin{tabular}{I|TT}
         \rowcolor{gray!35}
@@ -56,13 +62,12 @@ WHERE NOT typ1.Bezeichnung = typ2.Bezeichnung;
         Bei \texttt{JOIN} muss das DBMS nicht alle Kombinationen ermitteln, nur um diese dann zu filtern.
     }
 
-    \begin{minted}{mysql}
-SELECT * FROM
-    typ AS typ1
-JOIN
-    typ AS typ2
-ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM typ AS typ1
+        JOIN typ AS typ2
+            ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
+    \end{lstlisting}
 \end{sql}
 
 \begin{sql}{CROSS JOIN}
@@ -70,11 +75,25 @@ ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
 
     Dementsprechend sind die folgenden Abfragen erneut äquivalent:
 
-    \begin{minted}{mysql}
-SELECT * FROM typ AS typ1 CROSS JOIN typ AS typ2;
-SELECT * FROM typ AS typ1 JOIN typ as typ2 ON TRUE;
-SELECT * FROM typ AS typ1, typ AS typ2;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM typ AS typ1
+        CROSS JOIN typ AS typ2;
+    \end{lstlisting}
+        
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM typ AS typ1
+        JOIN typ as typ2
+            ON TRUE;
+    \end{lstlisting}
+    
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM
+            typ AS typ1,
+            typ AS typ2;
+    \end{lstlisting}
 \end{sql}
 
 \begin{sql}{INNER JOIN}
@@ -82,21 +101,32 @@ SELECT * FROM typ AS typ1, typ AS typ2;
 
     Dementsprechend sind folgende abfragen äquivalent:
 
-    \begin{minted}{mysql}
-SELECT * FROM typ AS typ1 JOIN typ AS typ2
-    ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
-SELECT * FROM typ AS typ1 INNER JOIN typ AS typ2
-    ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM typ AS typ1
+        JOIN typ AS typ2
+            ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
+    \end{lstlisting}
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM typ AS typ1
+        !INNER! JOIN typ AS typ2
+            ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
+    \end{lstlisting}
 
     Wenn man sich beispielsweise alle Pokémon samt ihrer Entwicklung anzeigen lassen möchte, so erhält man:
 
-    \begin{minted}{mysql}
-SELECT
-    pokemon.ID, pokemon.Name, entwicklung.Von, entwicklung.Zu
-FROM pokemon JOIN entwicklung
-ON pokemon.ID = entwicklung.Von;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        JOIN entwicklung
+            ON pokemon.ID = entwicklung.Von;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITII}
         \rowcolor{gray!35}
@@ -134,12 +164,16 @@ ON pokemon.ID = entwicklung.Von;
 
     Nun werden alle Pokémon dargestellt, ggf. mit \texttt{NULL}-Attributen bei Entwicklung:
 
-    \begin{minted}{mysql}
-SELECT
-    pokemon.ID, pokemon.Name, entwicklung.Von, entwicklung.Zu
-FROM pokemon LEFT OUTER JOIN entwicklung
-ON pokemon.id = entwicklung.von;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        LEFT OUTER JOIN entwicklung
+            ON pokemon.id = entwicklung.von;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITII}
         \rowcolor{gray!35}
@@ -159,12 +193,16 @@ ON pokemon.id = entwicklung.von;
 
     So würde unser Beispiel aus \texttt{LEFT OUTER JOIN} folgendermaßen aussehen:
 
-    \begin{minted}{mysql}
-SELECT
-    pokemon.ID, pokemon.Name, entwicklung.Von, entwicklung.Zu
-FROM entwicklung RIGHT OUTER JOIN pokemon
-ON pokemon.id = entwicklung.von;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM entwicklung
+        RIGHT OUTER JOIN pokemon
+            ON pokemon.id = entwicklung.von;
+    \end{lstlisting}
 \end{sql}
 
 \begin{sql}{FULL OUTER JOIN}
@@ -173,22 +211,36 @@ ON pokemon.id = entwicklung.von;
     Manche DBMS bieten keinen Befehl für einen \texttt{FULL OUTER JOIN}.
     In diesem Fall vereinigt man die Ergebnisse der beiden \texttt{OUTER JOIN}s mit \texttt{UNION}.}.
 
-    \begin{minted}{mysql}
-SELECT
-    pokemon.ID, pokemon.Name, entwicklung.Von, entwicklung.Zu
-FROM pokemon FULL OUTER JOIN entwicklung
-ON pokemon.id = entwicklung.von;
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        !FULL OUTER! JOIN entwicklung
+            ON pokemon.id = entwicklung.von;
+    \end{lstlisting}
 
-SELECT
-    pokemon.ID, pokemon.Name, entwicklung.Von, entwicklung.Zu
-FROM pokemon LEFT OUTER JOIN entwicklung
-ON pokemon.id = entwicklung.von;
-UNION
-SELECT
-    pokemon.ID, pokemon.Name, entwicklung.Von, entwicklung.Zu
-FROM pokemon RIGHT OUTER JOIN entwicklung
-ON pokemon.id = entwicklung.von;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        !LEFT OUTER! JOIN entwicklung
+            ON pokemon.id = entwicklung.von
+        !UNION!
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        !RIGHT OUTER! JOIN entwicklung
+            ON pokemon.id = entwicklung.von;
+    \end{lstlisting}
 \end{sql}
 
 \begin{bonus}{NATURAL JOIN}
@@ -214,26 +266,43 @@ ON pokemon.id = entwicklung.von;
     \exampleseparator
 
     \begin{enumerate}[label=\alph*)]
-        \item \begin{minted}{mysql}
-SELECT
-    von.ID, von.Name, von.PrimaerTyp, von.SekundaerTyp,
-    entwicklung.Level,
-    zu.ID, zu.Name
-FROM 
-    pokemon AS von,
-    pokemon AS zu,
-    entwicklung
-WHERE von.ID = entwicklung.Von AND entwicklung.Zu = zu.ID;
-            \end{minted}
-        \item \begin{minted}{mysql}
-SELECT
-    von.ID, von.Name, von.PrimaerTyp, von.SekundaerTyp,
-    entwicklung.Level,
-    zu.ID, zu.Name
-FROM pokemon AS von
-JOIN entwicklung ON von.ID = entwicklung.Von
-JOIN pokemon AS zu ON entwicklung.Zu = zu.ID;
-            \end{minted}
+        \item \texttt{WHERE}
+            
+            \begin{lstlisting}[style=SqlInputStyle]
+                SELECT
+                    von.ID,
+                    von.Name,
+                    von.PrimaerTyp,
+                    von.SekundaerTyp,
+                    entwicklung.Level,
+                    zu.ID,
+                    zu.Name
+                FROM 
+                    pokemon AS von,
+                    pokemon AS zu,
+                    entwicklung
+                WHERE
+                    von.ID = entwicklung.Von
+                    AND entwicklung.Zu = zu.ID;
+            \end{lstlisting}
+        \item \texttt{JOIN}
+        
+            \begin{lstlisting}[style=SqlInputStyle]
+                SELECT
+                    von.ID,
+                    von.Name,
+                    von.PrimaerTyp,
+                    von.SekundaerTyp,
+                    entwicklung.Level,
+                    zu.ID,
+                    zu.Name
+                FROM pokemon
+                AS von
+                JOIN entwicklung
+                    ON von.ID = entwicklung.Von
+                JOIN pokemon AS zu
+                    ON entwicklung.Zu = zu.ID;
+            \end{lstlisting}
     \end{enumerate}
     
     \begin{tabular}{I|ITTTIIT}
@@ -252,15 +321,21 @@ JOIN pokemon AS zu ON entwicklung.Zu = zu.ID;
 
     \exampleseparator
 
-    \begin{minted}{mysql}
-SELECT
-    von.ID, von.Name, von.PrimaerTyp, von.SekundaerTyp,
-    entwicklung.Level,
-    zu.ID, zu.Name
-FROM pokemon AS von
-LEFT OUTER JOIN entwicklung ON von.ID = entwicklung.Von
-LEFT OUTER JOIN pokemon AS zu ON entwicklung.Zu = zu.ID;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            von.ID,
+            von.Name,
+            von.PrimaerTyp,
+            von.SekundaerTyp,
+            entwicklung.Level,
+            zu.ID,
+            zu.Name
+        FROM pokemon AS von
+        LEFT OUTER JOIN entwicklung
+            ON von.ID = entwicklung.Von
+        LEFT OUTER JOIN pokemon AS zu
+            ON entwicklung.Zu = zu.ID;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITTTIIT}
         \rowcolor{gray!35}
@@ -269,7 +344,7 @@ LEFT OUTER JOIN pokemon AS zu ON entwicklung.Zu = zu.ID;
         2 & 2 & Bisaknosp & Pflanze & Gift & 32 & 3 & Bisaflor \\
         3 & 3 & Bisaflor & Pflanze & Gift & NULL & NULL & NULL \\
         \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
-        5 & 898 & Coronospa & Psycho & Pflanze & NULL & NULL & NULL \\
+        920 & 898 & Coronospa & Psycho & Pflanze & NULL & NULL & NULL \\
     \end{tabular}
 \end{example}
 
@@ -278,13 +353,17 @@ LEFT OUTER JOIN pokemon AS zu ON entwicklung.Zu = zu.ID;
 
     \exampleseparator
 
-    \begin{minted}{mysql}
-SELECT
-    pokemon.ID, pokemon.Name, pokemon.PrimaerTyp, pokemon.SekundaerTyp
-FROM pokemon
-LEFT OUTER JOIN entwicklung ON pokemon.ID = entwicklung.Von
-WHERE entwicklung.Von IS NULL;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            pokemon.PrimaerTyp,
+            pokemon.SekundaerTyp
+        FROM pokemon
+        LEFT OUTER JOIN entwicklung
+            ON pokemon.ID = entwicklung.Von
+        WHERE entwicklung.Von IS NULL;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITTT}
         \rowcolor{gray!35}
@@ -302,15 +381,21 @@ WHERE entwicklung.Von IS NULL;
 
     \exampleseparator
 
-    \begin{minted}{mysql}
-SELECT
-    zu.ID, zu.Name, zu.PrimaerTyp, zu.SekundaerTyp,
-    von.ID, von.Name
-FROM pokemon AS zu
-JOIN entwicklung ON zu.ID = entwicklung.Zu
-JOIN pokemon AS von ON entwicklung.Von = von.ID
-WHERE von.Name = 'Evoli';
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            zu.ID,
+            zu.Name,
+            zu.PrimaerTyp,
+            zu.SekundaerTyp,
+            von.ID,
+            von.Name
+        FROM pokemon AS zu
+        JOIN entwicklung
+            ON zu.ID = entwicklung.Zu
+        JOIN pokemon AS von
+            ON entwicklung.Von = von.ID
+        WHERE von.Name = 'Evoli';
+    \end{lstlisting}
 
     \begin{tabular}{I|TTTTTT}
         \rowcolor{gray!35}

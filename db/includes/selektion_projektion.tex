@@ -6,9 +6,9 @@
 
     Möchte man also z.B. die Datenbank \texttt{db\_pokemon} auswählen, so nutzt man:
 
-    \begin{minted}{mysql}
-USE db_pokemon;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        USE db_pokemon;
+    \end{lstlisting}
 \end{sql}
 
 \begin{defi}{Projektion}
@@ -24,7 +24,10 @@ USE db_pokemon;
 
     Möchte man sich z.B. alle Pokémon aus der Tabelle \texttt{pokemon} anzeigen lassen, so nutzt man:
 
-    \mint{mysql}|SELECT * FROM pokemon;|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM pokemon;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITIIITT}
         \rowcolor{gray!35}
@@ -38,7 +41,14 @@ USE db_pokemon;
 
     Möchte man eine \emph{Projektion} auf die Ergebnisse der Abfrage anwenden, sich also nur bestimmte Spalten anzeigen lassen, kann man dies im \texttt{SELECT} spezifizieren\footnote{Der \texttt{*} dient als Platzhalter für alle Attribute}:
 
-    \mint{mysql}|SELECT ID, Name, PrimaerTyp, SekundaerTyp FROM pokemon;|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            ID,
+            Name,
+            PrimaerTyp,
+            SekundaerTyp
+        FROM pokemon;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITTT}
         \rowcolor{gray!35}
@@ -58,7 +68,13 @@ USE db_pokemon;
 
     Beispielsweise werden im folgendem Befehl alle Pokémon mit dem Typ Feuer ausgegeben:
 
-    \mint{mysql}|SELECT * FROM pokemon WHERE PrimaerTyp = 'Feuer' OR SekundaerTyp = 'Feuer';|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM pokemon
+        WHERE
+            PrimaerTyp = 'Feuer'
+            OR SekundaerTyp = 'Feuer';
+    \end{lstlisting}
 
     \begin{tabular}{I|ITIIITT}
         \rowcolor{gray!35}
@@ -76,11 +92,17 @@ USE db_pokemon;
 
     Beispielsweise wäre im folgenden Befehl die Tabelle \texttt{pokemon} unter \texttt{p} erreichbar:
 
-    \mint{mysql}|SELECT p.* FROM pokemon AS p;|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT p.*
+        FROM pokemon !AS! p;
+    \end{lstlisting}
 
     Das Schlüsselwort \texttt{AS} ist optional, d.h folgende Abfrage ist äquivalent:
     
-    \mint{mysql}|SELECT p.* FROM pokemon p;|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT p.*
+        FROM pokemon p;
+    \end{lstlisting}
 \end{sql}
 
 \begin{sql}{ORDER BY}
@@ -93,10 +115,17 @@ USE db_pokemon;
     
     Wenn man sich also alle Pokémon nach Namen sortiert ausgeben möchte, so erhält man\footnote{ASC ist dabei der \texttt{Default} Wert}:
 
-    \begin{minted}{mysql}
-SELECT * FROM pokemon ORDER BY Name;
-SELECT * FROM pokemon ORDER BY Name ASC;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM pokemon
+        ORDER BY Name;
+    \end{lstlisting}
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM pokemon
+        ORDER BY Name !ASC!;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITIIITT}
         \rowcolor{gray!35}
@@ -109,8 +138,14 @@ SELECT * FROM pokemon ORDER BY Name ASC;
     \end{tabular}
 
     Wenn man alternativ alle Pokémon erst nach Primärtyp (\texttt{ASC}), dann nach Sekundärtyp (\texttt{DESC}) sortiert ausgeben möchte, erhält man:
-
-    \mint{mysql}|SELECT * FROM pokemon ORDER BY PrimaerTyp ASC, SekundaerTyp DESC;|
+    
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM pokemon
+        ORDER BY
+            PrimaerTyp ASC,
+            SekundaerTyp DESC;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITIIITT}
         \rowcolor{gray!35}
@@ -130,13 +165,14 @@ SELECT * FROM pokemon ORDER BY Name ASC;
 
     In folgendem Beispiel werden Primärtyp und Sekundärtyp zu einem Eintrag zusammengefasst:
 
-    \begin{minted}{mysql}
-SELECT
-    ID, Name,
-    CONCAT('[', PrimaerTyp, ', ', SekundaerTyp, ']') AS 'Typ'
-FROM pokemon
-    WHERE SekundaerTyp IS NOT NULL;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            ID,
+            Name,
+            CONCAT('[', PrimaerTyp, ', ', SekundaerTyp, ']') AS 'Typ'
+        FROM pokemon
+            WHERE SekundaerTyp IS NOT NULL;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITT}
         \rowcolor{gray!35}
@@ -155,12 +191,14 @@ FROM pokemon
 
     In folgendem Beispiel wird das Gewicht eines Pokémon auf ganzzahlige Werte gerundet:
 
-    \begin{minted}{mysql}
-SELECT
-    ID, Name, Gewicht,
-    ROUND(Gewicht, 0)
-FROM pokemon;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            ID,
+            Name,
+            Gewicht,
+            ROUND(Gewicht, 0)
+        FROM pokemon;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITII}
         \rowcolor{gray!35}
@@ -179,11 +217,20 @@ FROM pokemon;
 
     Dudurch, dass \texttt{ID} und \texttt{PrimaerTyp} nicht \texttt{NULL} sein können, erhält man mit folgenden äquivalenten Befehlen die Anzahl aller Pokémon:
 
-    \begin{minted}{mysql}
-SELECT COUNT(*) FROM pokemon;
-SELECT COUNT(ID) FROM pokemon;
-SELECT COUNT(PrimaerTyp) FROM pokemon;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT COUNT(*)
+        FROM pokemon;
+    \end{lstlisting}
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT COUNT(ID)
+        FROM pokemon;
+    \end{lstlisting}
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT COUNT(PrimaerTyp)
+        FROM pokemon;
+    \end{lstlisting}
 
     \begin{tabular}{I|I}
         \rowcolor{gray!35}
@@ -193,7 +240,10 @@ SELECT COUNT(PrimaerTyp) FROM pokemon;
 
     Möchten wir nun alle Pokémon mit einem Sekundärtypen zählen, so erhalten wir: 
 
-    \mint{mysql}|SELECT COUNT(SekundaerTyp) FROM pokemon;|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT COUNT(SekundaerTyp)
+        FROM pokemon;
+    \end{lstlisting}
 
     \begin{tabular}{I|I}
         \rowcolor{gray!35}
@@ -209,12 +259,15 @@ SELECT COUNT(PrimaerTyp) FROM pokemon;
 
     In der folgenden Abfrage werden Pokémon mit exakt einem Typen zurückgegeben:
 
-    \begin{minted}{mysql}
-SELECT
-    ID, Name, PrimaerTyp, SekundaerTyp
-FROM pokemon
-    WHERE SekundaerTyp IS NULL;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            ID,
+            Name,
+            PrimaerTyp,
+            SekundaerTyp
+        FROM pokemon
+            WHERE SekundaerTyp IS NULL;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITTT}
         \rowcolor{gray!35}
@@ -231,10 +284,15 @@ FROM pokemon
     \texttt{COALESCE} gibt den ersten nicht-\texttt{NULL} Eintrag aus der Parameterliste zurück.
     Dementsprechend sind folgende SQL-Befehle äquivalent:
 
-    \begin{minted}{mysql}
-SELECT 'Ausgabe' AS 'Beispiel';
-SELECT COALESCE(NULL, NULL, ..., NULL, 'Ausgabe') AS 'Beispiel';
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT 'Ausgabe' AS 'Beispiel';
+    \end{lstlisting}
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT COALESCE(
+            NULL, NULL, ..., NULL, 'Ausgabe'
+        ) AS 'Beispiel';
+    \end{lstlisting}
 
     \begin{tabular}{I|T}
         \rowcolor{gray!35}
@@ -244,12 +302,14 @@ SELECT COALESCE(NULL, NULL, ..., NULL, 'Ausgabe') AS 'Beispiel';
 
     In diesem Beispiel wird aus der Tabelle \texttt{entwicklung} jede \texttt{NULL}-Tageszeit mit dem String \texttt{Immer} ersetzt:
 
-    \begin{minted}{mysql}
-SELECT
-    Von, Zu, Tageszeit,
-    COALESCE(Tageszeit, 'Immer') AS Entwicklungszeitraum
-FROM entwicklung;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            Von,
+            Zu,
+            Tageszeit,
+            COALESCE(Tageszeit, 'Immer') AS Entwicklungszeitraum
+        FROM entwicklung;
+    \end{lstlisting}
 
     \begin{tabular}{I|IITT}
         \rowcolor{gray!35}
@@ -265,16 +325,25 @@ FROM entwicklung;
         \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots} \\
         429 & 891 & 892 & NULL & Immer \\
     \end{tabular}
-    %\setcounter{rownum}{0}
+    \setcounter{rownum}{0}
 \end{sql}
 
 \begin{sql}{Bedingungen}
     \emph{Bedingungen} werden von Selektionen, sowie von \texttt{IF}-Abfragen genutzt:
 
-    \begin{minted}{mysql}
-SELECT * FROM <Tabelle> WHERE <Bedingung>;
-SELECT IF(<Bedingung>, <Wert wenn TRUE>, <Wert wenn FALSE>);
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT *
+        FROM <Tabelle>
+        WHERE <Bedingung>;
+    \end{lstlisting}
+
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT IF(
+            <Bedingung>,
+            <Wert wenn TRUE>,
+            <Wert wenn FALSE>
+        );
+    \end{lstlisting}
 
     Verschiedene Bedingungen lassen sich mit \texttt{AND} und \texttt{OR} verbinden, sowie mit \texttt{NOT} negieren.
 
@@ -310,7 +379,12 @@ SELECT IF(<Bedingung>, <Wert wenn TRUE>, <Wert wenn FALSE>);
 
     Wenn man sich jede vorhandene Kombination an Typen anzeigen lassen möchte, so erhält man in folgender Abfrage doppelte Werte:
 
-    \mint{mysql}|SELECT PrimaerTyp, SekundaerTyp FROM pokemon;|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            PrimaerTyp,
+            SekundaerTyp
+        FROM pokemon;
+    \end{lstlisting}
 
     \begin{tabular}{I|TT}
         \rowcolor{gray!35}
@@ -324,7 +398,12 @@ SELECT IF(<Bedingung>, <Wert wenn TRUE>, <Wert wenn FALSE>);
 
     Diese entfallen, wenn man das Schlüsselwort \texttt{DISTINCT} ergänzt:
 
-    \mint{mysql}|SELECT DISTINCT PrimaerTyp, SekundaerTyp FROM pokemon;|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT DISTINCT
+            PrimaerTyp,
+            SekundaerTyp
+        FROM pokemon;
+    \end{lstlisting}
 
     \begin{tabular}{I|TT}
         \rowcolor{gray!35}
@@ -344,14 +423,13 @@ SELECT IF(<Bedingung>, <Wert wenn TRUE>, <Wert wenn FALSE>);
 
     \exampleseparator
 
-    \begin{minted}{mysql}
-SELECT
-    COUNT(
-        DISTINCT PrimaerTyp,
-        COALESCE(SekundaerTyp, 'NULL')
-    )
-FROM pokemon;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT COUNT(
+            DISTINCT PrimaerTyp,
+            COALESCE(SekundaerTyp, 'NULL')
+        )
+        FROM pokemon;
+    \end{lstlisting}
 
     \begin{tabular}{I|I}
         \rowcolor{gray!35}
@@ -367,14 +445,19 @@ FROM pokemon;
 
     \exampleseparator
 
-    \begin{minted}{mysql}
-SELECT
-    ID, Name, Gewicht, Groesse,
-    ROUND(Gewicht / (Groesse * Groesse), 2) AS BMI
-FROM pokemon
-    WHERE Gewicht > 50
-    ORDER BY BMI DESC;
-    \end{minted}
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT
+            ID,
+            Name,
+            Gewicht, 
+            Groesse,
+            ROUND(
+                Gewicht / (POW(Groesse, 2)), 2
+            ) AS BMI
+        FROM pokemon
+        WHERE Gewicht > 50
+        ORDER BY BMI DESC;
+    \end{lstlisting}
 
     \begin{tabular}{I|ITIII}
         \rowcolor{gray!35}
@@ -398,7 +481,11 @@ FROM pokemon
 
     \exampleseparator
 
-    \mint{mysql}|SELECT COUNT(*) FROM pokemon WHERE Name LIKE 'P%';|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT COUNT(*)
+        FROM pokemon
+        WHERE Name LIKE 'P%';
+    \end{lstlisting}
 
     \begin{tabular}{I|I}
         \rowcolor{gray!35}
@@ -406,7 +493,11 @@ FROM pokemon
         1 & 73 \\
     \end{tabular}
 
-    \mint{mysql}|SELECT COUNT(*) FROM pokemon WHERE Name LIKE '%P%';|
+    \begin{lstlisting}[style=SqlInputStyle]
+        SELECT COUNT(*)
+        FROM pokemon
+        WHERE Name LIKE '%P%';
+    \end{lstlisting}
 
     \begin{tabular}{I|I}
         \rowcolor{gray!35}
