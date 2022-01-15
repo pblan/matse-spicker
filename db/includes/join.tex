@@ -5,13 +5,14 @@
 
     Möchte man jede mögliche Typkombination\footnote{Sollte man das kartesische Produkt einer Tabelle mit sich selbst bilden, benötigt man Aliase für die Tabellen} erhalten, nutzt man \texttt{SELECT} zwei mal auf \texttt{Typ}:
     
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM
             typ AS typ1,
             typ AS typ2;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|TT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{typ1.Bezeichnung} & \multicolumn{1}{T}{typ2.Bezeichnung} \\\hline
@@ -33,7 +34,7 @@
 
     In unserem Beispiel kann kein Pokemon zwei mal den selben Typen besitzen:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM
             typ AS typ1,
@@ -41,6 +42,7 @@
         WHERE NOT typ1.Bezeichnung = typ2.Bezeichnung;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|TT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{typ1.Bezeichnung} & \multicolumn{1}{T}{typ2.Bezeichnung} \\\hline
@@ -62,7 +64,7 @@
         Bei \texttt{JOIN} muss das DBMS nicht alle Kombinationen ermitteln, nur um diese dann zu filtern.
     }
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM typ AS typ1
         JOIN typ AS typ2
@@ -75,20 +77,20 @@
 
     Dementsprechend sind die folgenden Abfragen erneut äquivalent:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM typ AS typ1
         CROSS JOIN typ AS typ2;
     \end{lstlisting}
         
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM typ AS typ1
         JOIN typ as typ2
             ON TRUE;
     \end{lstlisting}
     
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM
             typ AS typ1,
@@ -101,14 +103,14 @@
 
     Dementsprechend sind folgende abfragen äquivalent:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM typ AS typ1
         JOIN typ AS typ2
             ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
     \end{lstlisting}
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM typ AS typ1
         !INNER! JOIN typ AS typ2
@@ -117,7 +119,7 @@
 
     Wenn man sich beispielsweise alle Pokémon samt ihrer Entwicklung anzeigen lassen möchte, so erhält man:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             pokemon.ID,
             pokemon.Name,
@@ -128,6 +130,7 @@
             ON pokemon.ID = entwicklung.Von;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|ITII}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} \\\hline
@@ -164,7 +167,7 @@
 
     Nun werden alle Pokémon dargestellt, ggf. mit \texttt{NULL}-Attributen bei Entwicklung:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             pokemon.ID,
             pokemon.Name,
@@ -175,6 +178,7 @@
             ON pokemon.id = entwicklung.von;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|ITII}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} \\\hline
@@ -193,7 +197,7 @@
 
     So würde unser Beispiel aus \texttt{LEFT OUTER JOIN} folgendermaßen aussehen:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             pokemon.ID,
             pokemon.Name,
@@ -211,7 +215,7 @@
     Manche DBMS bieten keinen Befehl für einen \texttt{FULL OUTER JOIN}.
     In diesem Fall vereinigt man die Ergebnisse der beiden \texttt{OUTER JOIN}s mit \texttt{UNION}.}.
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             pokemon.ID,
             pokemon.Name,
@@ -222,7 +226,7 @@
             ON pokemon.id = entwicklung.von;
     \end{lstlisting}
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             pokemon.ID,
             pokemon.Name,
@@ -268,7 +272,7 @@
     \begin{enumerate}[label=\alph*)]
         \item \texttt{WHERE}
             
-            \begin{lstlisting}[style=SqlInputStyle]
+            \begin{lstlisting}[language=mysql]
                 SELECT
                     von.ID,
                     von.Name,
@@ -287,7 +291,7 @@
             \end{lstlisting}
         \item \texttt{JOIN}
         
-            \begin{lstlisting}[style=SqlInputStyle]
+            \begin{lstlisting}[language=mysql]
                 SELECT
                     von.ID,
                     von.Name,
@@ -305,6 +309,7 @@
             \end{lstlisting}
     \end{enumerate}
     
+    \setcounter{rownum}{0}
     \begin{tabular}{I|ITTTIIT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{Level} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline
@@ -321,7 +326,7 @@
 
     \exampleseparator
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             von.ID,
             von.Name,
@@ -337,6 +342,7 @@
             ON entwicklung.Zu = zu.ID;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|ITTTIIT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{Level} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline
@@ -353,7 +359,7 @@
 
     \exampleseparator
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             pokemon.ID,
             pokemon.Name,
@@ -365,6 +371,7 @@
         WHERE entwicklung.Von IS NULL;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|ITTT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
@@ -381,7 +388,7 @@
 
     \exampleseparator
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             zu.ID,
             zu.Name,
@@ -397,6 +404,7 @@
         WHERE von.Name = 'Evoli';
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|TTTTTT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline

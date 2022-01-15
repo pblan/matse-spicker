@@ -22,13 +22,14 @@
 
     Zuerst müssen wir die ID von Glumanda herausfinden:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         -- ID von 'Glumanda' herausfinden
         SELECT ID
         FROM pokemon
         WHERE Name = 'Glumanda';
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|I}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{ID} \\\hline
@@ -37,13 +38,14 @@
 
     Diese nutzen wir nun manuell um alle Entwicklungen herauszufinden:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         -- ID von 'Glumanda' nutzen um alle Entwicklungen herauszufinden
         SELECT *
         FROM entwicklung
         WHERE Von = 4;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|IIIITTT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} & \multicolumn{1}{T}{Level} & \multicolumn{1}{T}{Item} & \multicolumn{1}{T}{GetragenesItem} & \multicolumn{1}{T}{Tageszeit} \\\hline
@@ -52,7 +54,7 @@
 
     Diese beiden Abfragen lassen sich nun zu einer Abfrage zusammenfassen:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         -- ID von 'Glumanda' nutzen um alle Entwicklungen herauszufinden
         SELECT *
         FROM entwicklung
@@ -74,7 +76,7 @@
 \begin{example}{Unterabfrage (mehrzeilig)}
     Das Resultat des ersten Beispiels nutzen wir nun um den Namen der Entwicklung herauszufinden:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM pokemon
         WHERE ID = (
@@ -89,6 +91,7 @@
         );
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|ITIIITT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
@@ -98,7 +101,7 @@
     Sollten wir nun alternativ die Entwicklungen von Evoli anzeigen lassen, können wir die Bedingung \texttt{=} nicht benutzen, da die Abfrage aus \texttt{entwicklung} eine Menge an Entitäten zurück gibt.
     Dementsprechend muss man das bekannte \texttt{IN} verwenden.
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM pokemon
         WHERE ID IN (
@@ -113,6 +116,7 @@
         );
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|ITIIITT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
@@ -130,28 +134,32 @@
 \begin{defi}{Korrelierte Unterabfrage}
     In \emph{korrelierten Unterabfragen} (\enquote{Correlated Subselects}) verweist die innere Abfragen auf die Äußere.\footnote{Dies ist vergleichbar mit einer Variable, welche in einem inneren Scope erneut genutzt wird.}
 
-    Da die Bedingung für jede Entität neu überprüft werden muss, benötigen korrelierte Unterabfragen mehr Rechenleistung, dementsprechend haben diese eine längere Laufzeit.
+    Da eine Bedingung für jede Entität neu überprüft werden muss, haben korrelierte Unterabfragen unter Umständen eine längere Laufzeit.
+
+    Bei nicht korrelierten Unterabfragen wird eine Bedingung zu Beginn der Abfrage überprüft.
+    Dementsprechend wird hier die Laufzeit optimiert.
 \end{defi}
 
 \begin{example}{Unterabfrage (korreliert)}
     In folgender Abfrage wird jede Attacke ausgegeben, welche eine höhere Stärke besitzt, als der Durchschnitt aller Attacken mit dem selben Typ.
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             ID,
             Name,
             Staerke,
             Typ
-        FROM attacke AS aeussereAttacke
+        FROM attacke AS attacke1
         WHERE Staerke > (
             SELECT AVG(Staerke)
-            FROM attacke AS innereAttacke
-            -- attacke.Typ unterscheidet sich potentiell fuer jede Entitaet
-            WHERE aeussereAttacke.Typ = innereAttacke.Typ
+            FROM attacke AS attacke1
+            -- attacke2.Typ unterscheidet sich potentiell fuer jede Entitaet
+            WHERE attacke1.Typ = attacke2
         );
     \end{lstlisting}
 
-    \begin{tabular}{I|TTTT}
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|ITIT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Staerke} & \multicolumn{1}{T}{Typ} \\\hline
         1 & 5 & Megahieb & 80 & Normal \\
@@ -173,12 +181,13 @@
 \begin{example}{Unterabfrage (nicht skalar)}
     Möchte man sich beispielsweise alle Pokémon ausgeben, welche exakt die selbe Typkombination wie Bisasam haben, so nutzt man:
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT *
         FROM pokemon
         WHERE
             (PrimaerTyp, SekundaerTyp) = (
                 -- Entspricht einem Tupel aus 2 Typen
+                -- Obacht: Keiner der Typen darf NULL sein
                 SELECT
                     PrimaerTyp,
                     SekundaerTyp
@@ -188,6 +197,7 @@
             AND Name <> 'Bisasam';
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|ITIIITT}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
@@ -198,6 +208,8 @@
         13 & 591 & Hutsassa & 0.6 & 10.5 & 5 & Pflanze & Gift \\
     \end{tabular}
 \end{example}
+
+\subsection{Funktionen}    
 
 \begin{sql}{ANY}
     \begin{itemize}
@@ -214,3 +226,137 @@
         \item \texttt{> ALL} gibt Einträge zurück, welche größer als alle Elemente\footnote{d.h. größter als das Maximum} einer Menge sind.
     \end{itemize}
 \end{sql}
+
+\begin{sql}{EXISTS}
+    Bedingungen mit \texttt{EXISTS} sind erfüllt, sollte bei einer Unterabfrage eine nicht leere Menge zurückgegeben werden.   
+
+    \texttt{EXISTS} wird meist mit korrelierenden Unterabfragen genutzt.
+\end{sql}
+
+\subsection{Beispiele}
+
+\begin{example}{Unterabfrage}
+    Welche Kombinationen von Typen werden von mehr Pokémon genutzt, als die Kombination \texttt{('Feuer', NULL)}?
+
+    \exampleseparator
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            PrimaerTyp,
+            SekundaerTyp
+        FROM pokemon
+        GROUP BY
+            PrimaerTyp,
+            SekundaerTyp
+        HAVING COUNT(*) > (
+                -- COUNT(*) = 33
+                SELECT COUNT(*)
+                FROM pokemon
+                WHERE
+                    PrimaerTyp = 'Feuer'
+                    AND SekundaerTyp IS NULL
+                GROUP BY
+                    PrimaerTyp,
+                    SekundaerTyp
+        );
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|TT} 
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & Wasser & NULL \\
+        2 & Normal & NULL \\
+        3 & Psycho & NULL \\
+        4 & Pflanze & NULL \\
+    \end{tabular}
+\end{example}
+
+\begin{example}{Unterabfrage}
+    Geben Sie alle Typen aus, welche nicht as Sekundärtyp in Kombination mit dem Primärtypen 'Feuer' für mindestens ein Pokémon auftreten.
+
+    \exampleseparator
+
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM typ
+        WHERE NOT EXISTS (
+            SELECT *
+            FROM pokemon
+            WHERE
+                PrimaerTyp = 'Feuer'
+                AND SekundaerTyp = typ.bezeichnung
+        );
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|T}    
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{Bezeichnung} \\\hline
+        1 & Eis \\
+        2 & Elektro \\
+        3 & Fee \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{1}{c}{\dots} \\
+        6 & Pflanze \\
+    \end{tabular}
+\end{example}
+
+\begin{example}{Unterabfrage}
+    Geben Sie alle Pokémon aus, welche exakt die selbe Typkombination wie Glumanda, also \texttt{('Feuer', NULL)}, haben.
+
+    Da der Sekundärtyp von Glumanda \texttt{NULL} ist, muss man das Beispiel aus nicht skalaren Unterabfragen anpassen.
+
+    \exampleseparator
+
+    In der ersten, simplen, Lösung ersetzt man alle \texttt{NULL}-Sekundärtypen mit einem String:
+    
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM pokemon
+        WHERE
+            (PrimaerTyp, COALESCE(SekundaerTyp, 'NULL')) = (
+                SELECT
+                    PrimaerTyp,
+                    COALESCE(SekundaerTyp, 'NULL')
+                FROM pokemon
+                WHERE Name = 'Glumanda'
+            )
+            AND Name <> 'Glumanda';
+    \end{lstlisting}
+
+    Alternativ nutzt man korrelierende Unterabfragen:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM pokemon AS pokemon1
+        WHERE
+            EXISTS (
+                SELECT *
+                FROM pokemon AS pokemon2
+                WHERE
+                    Name = 'Glumanda'
+                    AND pokemon1.PrimaerTyp = pokemon2.PrimaerTyp
+                    AND (
+                        -- pokemon1 hat den selben Sekundaertyp wie pokemon2
+                        pokemon1.SekundaerTyp = pokemon2.SekundaerTyp
+                        -- der Sekundaertyp von pokemon1, sowie pokemon2 ist NULL 
+                        OR (
+                            pokemon1.SekundaerTyp IS NULL
+                            AND pokemon2.SekundaerTyp IS NULL
+                        )
+                    )
+            )
+            AND Name <> 'Glumanda';
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 5 & Glutexo & 1.1 & 19 & 1 & Feuer & NULL \\
+        2 & 37 & Vulpix & 0.6 & 9.9 & 1 & Feuer & NULL \\
+        3 & 38 & Vulnona & 1.1 & 19.9 & 1 & Feuer & NULL \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        32 & 815 & Liberlo & 1.4 & 33 & 8 & Feuer & NULL \\
+    \end{tabular}
+\end{example}

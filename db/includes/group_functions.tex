@@ -20,7 +20,7 @@
 
     Gibt man sich beispielsweise alle Typen aus, welche mindestens von 25 Attacken genutzt werden, so erhält man:
     
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             Typ,
             COUNT(*) AS Anzahl
@@ -30,6 +30,7 @@
         ORDER BY Anzahl DESC;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|TI}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{Typ} & \multicolumn{1}{T}{Anzahl} \\\hline
@@ -60,7 +61,7 @@
 \subsection{Beispiele}
 
 \begin{example}{GROUP BY}
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             typ,
             MIN(Staerke),
@@ -71,6 +72,7 @@
         GROUP BY typ;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|TIIIII}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{typ} & \multicolumn{1}{T}{COUNT(*)} & \multicolumn{1}{T}{MIN(Staerke)} & \multicolumn{1}{T}{MAX(Staerke)} & \multicolumn{1}{T}{SUM(Staerke)} & \multicolumn{1}{T}{AVG(Staerke)} \\\hline
@@ -103,7 +105,7 @@
 
     \exampleseparator
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             Typ,
             COUNT(*),
@@ -117,6 +119,7 @@
         ORDER BY AVG(Staerke) DESC;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|TTTTT}
         \rowcolor{gray!35}  
         & \multicolumn{1}{T}{Typ} & \multicolumn{1}{T}{COUNT(*)} & \multicolumn{1}{T}{MIN(Staerke)} & \multicolumn{1}{T}{MAX(Staerke)} & \multicolumn{1}{T}{AVG(Staerke)} \\\hline
@@ -141,7 +144,7 @@
 
     \exampleseparator
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
         SELECT
             Typ,
             ROUND(AVG(Staerke), 3) AS E,
@@ -152,6 +155,7 @@
         ORDER BY SD;
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|TIII}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{Typ} & \multicolumn{1}{T}{$\mu$} & \multicolumn{1}{T}{$\sigma^2$} & \multicolumn{1}{T}{$\sigma$} \\\hline
@@ -170,7 +174,7 @@
 
     \exampleseparator
 
-    \begin{lstlisting}[style=SqlInputStyle]
+    \begin{lstlisting}[language=mysql]
 SELECT
     Generation, COUNT(*), ROUND(AVG(Gewicht), 3)
 FROM pokemon
@@ -178,6 +182,7 @@ GROUP BY Generation
 ORDER BY COUNT(*);
     \end{lstlisting}
 
+    \setcounter{rownum}{0}
     \begin{tabular}{I|III}
         \rowcolor{gray!35}
         & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{COUNT(*)} & \multicolumn{1}{T}{ROUND(AVG(Gewicht), 3)} \\\hline
