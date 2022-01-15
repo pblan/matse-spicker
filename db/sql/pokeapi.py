@@ -277,15 +277,41 @@ def print_version(version):
         if name["language"]["name"] == "de":
             print(f'("{name["name"]}"),')
 
+# ================ Regional Variants ================
+def get_regional_variant_list():
+    for pokemon_id in range(898):
+        if pokemon_id != 0:
+            try:
+                print_regional_variant(get_regional_variant(pokemon_id))
+            except:
+                pass
+
+def get_regional_variant(pokemon_id):
+    regional_variant_url = "https://pokeapi.co/api/v2/pokemon-form/" + str(pokemon_id)
+    return call(regional_variant_url)
+    
+def print_regional_variant(regional_variant):
+    for name in regional_variant["names"]:
+        if name["language"]["name"] == "de":
+            pokemon_type_1 = ""
+            pokemon_type_2 = "Null"
+            for type in regional_variant["types"]:
+                if pokemon_type_1 == "":
+                    pokemon_type_1 = translate_pokemon_type(type["type"]["name"])
+                else:
+                    pokemon_type_2 = translate_pokemon_type(type["type"]["name"])
+            print(f'({regional_variant["id"]}, "{name["name"]}, {pokemon_type_1}, {pokemon_type_2}"),')
+            
 def main():
     #get_pokemon(898)
     #get_pokemon_list()
-    get_evolution_list()
+    #get_evolution_list()
     #get_item_list()
     #get_move_list()
     #get_pokemon_learns_moves_list()
     #get_version_list()
     #get_machine_list()
+    get_regional_variant_list()
     
 
 # run
