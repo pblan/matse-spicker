@@ -1,1 +1,37 @@
 \section{Views}
+
+\begin{sql}{VIEW}
+    Eine \texttt{VIEW} erzeugt aus einem \texttt{SELECT} eine Tabelle.
+
+    Dementsprechend kann man wie folgt eine temporäre Tabelle aller Feuer-Pokémon erstellen\footnote{Das Schlüsselwort \texttt{OR REPLACE} überschreibt eine eventuell existierende Tabelle}, um bei den folgenden Abfragen Laufzeit zu sparen.\footnote{Wenn der innere \texttt{SELECT} z.B. mit einem oder mehreren \texttt{JOIN}-Befehlen kombiniert wird oder die Bedingung in der Selektion eine gewisse Komplexität überschreitet und die selbe Abfrage mehrfach benötigt wird}
+
+    \begin{lstlisting}[language=mysql]
+        -- Erstelle View feuerpokemon
+        CREATE OR REPLACE VIEW feuerpokemon
+        AS (
+            SELECT *
+            FROM pokemon
+            WHERE
+                PrimaerTyp = 'Feuer'
+                OR SekundaerTyp = 'Feuer'
+        );
+        -- Gebe Entitaeten der View feuerpokemon aus
+        SELECT * FROM feuerpokemon;
+    \end{lstlisting}
+
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 4 & Glumanda & 0.6 & 8.5 & 1 & Feuer & NULL \\
+        2 & 5 & Glutexo & 1.1 & 19 & 1 & Feuer & NULL \\
+        3 & 6 & Glurak & 1.7 & 90.5 & 1 & Feuer & Flug \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        71 & 851 & Infernopod & 3 & 120 & 8 & Feuer & Käfer \\
+    \end{tabular}
+
+    Um die View zu entfernen, nutzt man \texttt{DROP}:
+
+    \begin{lstlisting}[language=mysql]
+        DROP VIEW feuerpokemon;
+    \end{lstlisting}
+\end{sql}
