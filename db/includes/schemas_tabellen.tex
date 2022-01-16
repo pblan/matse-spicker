@@ -110,7 +110,7 @@
 \end{sql}
 
 \begin{sql}{DROP}
-    \texttt{DROP} löscht DBMS-spezifische Strukturen.
+    \texttt{DROP} bzw. \texttt{DELETE} löscht DBMS-spezifische Strukturen.
 
     Wenn man die gesamte Datenbank pokemon löschen möchte, so nutzt man:
 
@@ -122,12 +122,6 @@
 
     \begin{lstlisting}[language=mysql]
         DROP TABLE <Tabellenname>;
-    \end{lstlisting}
-
-    Um Entitäten zu löschen, nutzt man:
-
-    \begin{lstlisting}[language=mysql]
-        DROP FROM <Tabellenname> [WHERE <Bedingung>];
     \end{lstlisting}
 \end{sql}
 
@@ -178,64 +172,6 @@
     Ein \texttt{FOREIGN KEY} ist ein Fremdschlüssel, der Primärschlüssel einer anderen Entität referenziert.
 \end{sql}
 
-\begin{sql}{INSERT INTO}
-    \texttt{INSERT INTO} trägt Daten in eine Datenbank ein.
-
-    \begin{lstlisting}[language=mysql]
-        INSERT INTO
-        <Tabellenname> (<Spaltenname>, ...)
-        VALUES
-            (Wert, ...), ...;
-    \end{lstlisting}
-
-    Wenn man alle Attribute in der vorgegebenen Reihenfolge angibt, kann man die Angabe der Spalten weglassen.
-\end{sql}
-
-\begin{example}{INSERT INTO}
-    Hier wird die Entität \texttt{Glumanda} erstellt:
-
-    \begin{lstlisting}[language=mysql]
-        INSERT INTO pokemon (
-            ID, Name, Groesse, Gewicht, Generation, PrimaerTyp, SekundaerTyp
-        )
-        VALUES (
-            4, 'Glumanda', 0.6, 8.5, 1, 'Feuer', NULL
-        );
-    \end{lstlisting}
-
-    \begin{lstlisting}[language=mysql]
-        INSERT INTO pokemon
-        VALUES (
-            4, 'Glumanda', 0.6, 8.5, 1, 'Feuer', NULL
-        );
-    \end{lstlisting}
-\end{example}
-
-\begin{example}{INSERT INTO}
-    Da \texttt{NULL} der Standard Wert für SekundaerTyp ist, und Glumanda keinen Sekundärtyp hat, kann man \texttt{Glumanda} ebenfalls wie folgt erstellen:
-    
-    \begin{lstlisting}[language=mysql]
-        INSERT INTO pokemon (
-            ID, Name, Groesse, Gewicht, Generation, PrimaerTyp
-            -- SekundaerTyp
-        )
-        VALUES (
-            4, 'Glumanda', 0.6, 8.5, 1, 'Feuer'
-        );
-    \end{lstlisting}
-\end{example}
-
-\begin{example}{INSERT INTO}
-    Mehrere Pokemon ließen sich wie folgt gleichzeitig erstellen:
-
-    \begin{lstlisting}[language=mysql]
-        INSERT INTO pokemon
-        VALUES
-            (5, 'Glutexo', 1.1, 19, 1 'Feuer', NULL),
-            (6, 'Glurak', 1.7, 90.5, 1 'Feuer', 'Flug');
-    \end{lstlisting}
-\end{example}
-
 \begin{sql}{ALTER TABLE}
     \texttt{ALTER TABLE} modifiziert eine Tabelle.
 
@@ -272,33 +208,12 @@
     \end{lstlisting}
 \end{sql}
 
-\begin{sql}{TRUNCATE}
-    \texttt{TRUNCATE} löscht Entitäten einer Tabelle, lässt die Tabelle an sich jedoch bestehen.
-
-    \begin{lstlisting}[language=mysql]
-        TRUNCATE TABLE <Tabellenname>        
-    \end{lstlisting}
-\end{sql}
-
-\begin{bonus}{LOCK TABLES}
-    Wenn man mit mehreren Benutzenden an einer Tabelle arbeitet, ist es sinnvoll eine Tabelle zu sperren.
-    So kann bis zum freigeben der Tabelle niemand die Tabelle bearbeiten.
-
-    \begin{lstlisting}[language=mysql]
-        LOCK TABLES <Tabellenname> WRITE;
-    \end{lstlisting}
-
-    \begin{lstlisting}[language=mysql]
-        UNLOCK TABLES;
-    \end{lstlisting}
-\end{bonus}
-
 \subsection{Beispiele}
 
 \begin{example}{Schemas und Tabellen}
     Die SQL Befehle, welche zur Erstellung unserer Beispieldatenbank genutzt wurden sind in \texttt{pokemon.sql} zu finden.
 
-    Einige relevante Befehle sind hier zusammengefasst:
+    Einige relevante Befehle für die DBMS-Struktur sind hier zusammengefasst:
 
     Falls \texttt{pokemon} existiert wird diese Tabelle gelöscht:
 
@@ -322,21 +237,5 @@
             FOREIGN KEY (`SekundaerTyp`) REFERENCES `typ` (`Bezeichnung`),
             FOREIGN KEY (`Generation`) REFERENCES `generation` (`ID`)
         )
-    \end{lstlisting}
-
-    Nun werden einige Pokémon in die Tabelle eingefügt:
-
-    \begin{lstlisting}[language=mysql]
-        INSERT INTO `pokemon`
-        VALUES
-            (1,'Bisasam',0.7,6.9,1,'Pflanze','Gift'),
-            (2,'Bisaknosp',1,13,1,'Pflanze','Gift'),
-            (3,'Bisaflor',2,100,1,'Pflanze','Gift'),
-            (4,'Glumanda',0.6,8.5,1,'Feuer',NULL),
-            (5,'Glutexo',1.1,19,1,'Feuer',NULL),
-            (6,'Glurak',1.7,90.5,1,'Feuer','Flug'),
-            (7,'Schiggy',0.5,9,1,'Wasser',NULL),
-            (8,'Schillok',1,22.5,1,'Wasser',NULL),
-            (9,'Turtok',1.6,85.5,1,'Wasser',NULL)
     \end{lstlisting}
 \end{example}

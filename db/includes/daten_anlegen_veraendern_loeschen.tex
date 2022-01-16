@@ -1,1 +1,175 @@
 \section{Daten anlegen, verändern und löschen}
+
+\begin{sql}{INSERT INTO}
+    \texttt{INSERT INTO} trägt Daten in eine Datenbank ein.
+
+    \begin{lstlisting}[language=mysql]
+        INSERT INTO
+        <Tabellenname> (<Spaltenname>, ...)
+        VALUES
+            (Wert, ...), ...;
+    \end{lstlisting}
+
+    Wenn man alle Attribute in der vorgegebenen Reihenfolge angibt, kann man die Angabe der Spalten weglassen.
+
+    Es ist ebenfalls möglich \texttt{Subselects} zum Herausfinden von Daten mit \texttt{INSERT INTO} zu verwenden.
+\end{sql}
+
+\begin{example}{INSERT INTO}
+    Hier wird die Entität \texttt{Glumanda} erstellt:
+
+    \begin{lstlisting}[language=mysql]
+        INSERT INTO pokemon (
+            ID, Name, Groesse, Gewicht, Generation, PrimaerTyp, SekundaerTyp
+        )
+        VALUES (
+            4, 'Glumanda', 0.6, 8.5, 1, 'Feuer', NULL
+        );
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=mysql]
+        INSERT INTO pokemon
+        VALUES (
+            4, 'Glumanda', 0.6, 8.5, 1, 'Feuer', NULL
+        );
+    \end{lstlisting}
+\end{example}
+
+\begin{example}{INSERT INTO}
+    Da \texttt{NULL} der Standard Wert für SekundaerTyp ist, und Glumanda keinen Sekundärtyp hat, kann man \texttt{Glumanda} ebenfalls wie folgt erstellen:
+    
+    \begin{lstlisting}[language=mysql]
+        INSERT INTO pokemon (
+            ID, Name, Groesse, Gewicht, Generation, PrimaerTyp
+            -- SekundaerTyp
+        )
+        VALUES (
+            4, 'Glumanda', 0.6, 8.5, 1, 'Feuer'
+        );
+    \end{lstlisting}
+\end{example}
+
+\begin{example}{INSERT INTO}
+    Mehrere Pokemon ließen sich wie folgt gleichzeitig erstellen:
+
+    \begin{lstlisting}[language=mysql]
+        INSERT INTO pokemon
+        VALUES
+            (5, 'Glutexo', 1.1, 19, 1 'Feuer', NULL),
+            (6, 'Glurak', 1.7, 90.5, 1 'Feuer', 'Flug');
+    \end{lstlisting}
+\end{example}
+
+\begin{sql}{UPDATE}
+    Um Werte anzupassen nutzt man \texttt{UPDATE}:
+
+    \begin{lstlisting}[language=mysql]
+        UPDATE <Tabellenname>
+        SET
+            <Spaltenname> = <Wert>,
+            ...
+        WHERE <Bedingung>
+    \end{lstlisting}
+
+    Wenn man also den Typ von Glumanda auf Wasser setzen wollen würde, nutzt man:
+
+    \begin{lstlisting}[language=mysql]
+        UPDATE pokemon
+        SET PrimaerTyp = 'Wasser'
+        WHERE Name = 'Glumanda'
+    \end{lstlisting}
+
+    \texttt{UPDATE} verändert alle Entitäten, auf die die Bedingung zutrifft.
+    
+    Dementsprechend sollte man, wenn man eine einzige bestimmte Entität anpassen möchte, den Primärschlüssel bzw. \texttt{UNIQUE} Felder abfragen.
+\end{sql}
+
+\begin{sql}{DROP}
+    \texttt{DROP} bzw. \texttt{DELETE} wird genutzt um spezifische Entitäten zu löschen.
+
+    \begin{lstlisting}[language=mysql]
+        DROP FROM <Tabellenname>
+        [WHERE <Bedingung>];
+    \end{lstlisting}
+
+    Möchte man nun Schiggy löschen, nutzt man:
+
+    \begin{lstlisting}[language=mysql]
+        DROP FROM pokemon
+        WHERE Name = 'Schiggy';
+    \end{lstlisting}
+\end{sql}
+
+\begin{sql}{TRUNCATE}
+    \texttt{TRUNCATE} löscht Entitäten einer Tabelle, lässt die Tabelle an sich jedoch bestehen.
+
+    \begin{lstlisting}[language=mysql]
+        TRUNCATE TABLE <Tabellenname>        
+    \end{lstlisting}
+\end{sql}
+
+\begin{bonus}{LOCK TABLES}
+    Wenn man mit mehreren Benutzenden an einer Tabelle arbeitet, ist es sinnvoll eine Tabelle zu sperren.
+    So kann bis zum freigeben der Tabelle niemand die Tabelle bearbeiten.
+
+    \begin{lstlisting}[language=mysql]
+        LOCK TABLES <Tabellenname> WRITE;
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=mysql]
+        UNLOCK TABLES;
+    \end{lstlisting}
+\end{bonus}
+   
+\subsection{Beispiele}
+
+\begin{example}{INSERT INTO}
+    Die SQL Befehle, welche zur Erstellung unserer Beispieldatenbank genutzt wurden sind in \texttt{pokemon.sql} zu finden.
+
+    Hier ein Auszug, durch den die Ersten Pokemon erstellt wurden:
+
+    \begin{lstlisting}[language=mysql]
+        INSERT INTO `pokemon`
+        VALUES
+            (1,'Bisasam',0.7,6.9,1,'Pflanze','Gift'),
+            (2,'Bisaknosp',1,13,1,'Pflanze','Gift'),
+            (3,'Bisaflor',2,100,1,'Pflanze','Gift'),
+            (4,'Glumanda',0.6,8.5,1,'Feuer',NULL),
+            (5,'Glutexo',1.1,19,1,'Feuer',NULL),
+            (6,'Glurak',1.7,90.5,1,'Feuer','Flug'),
+            (7,'Schiggy',0.5,9,1,'Wasser',NULL),
+            (8,'Schillok',1,22.5,1,'Wasser',NULL),
+            (9,'Turtok',1.6,85.5,1,'Wasser',NULL);
+    \end{lstlisting}
+\end{example}
+
+\begin{example}{UPDATE}
+    Erhöhen Sie das Gewicht aller Pokémon um 5kg und verringern Sie gleichzeitig die Größe um 25cm.
+    
+    Sollte dabei die Größe unter 1cm fallen, bleibt diese bei diesem Wert.
+
+    \exampleseparator
+
+    \begin{lstlisting}[language=mysql]
+        UPDATE pokemon
+        SET
+            Gewicht = Gewicht + 5,
+            Groesse = MIN(Groesse - 0.25, 0.01)
+    \end{lstlisting}
+\end{example}
+
+\begin{example}{UPDATE}
+    Um die Spiele fair zu halten sollen alle Attacken auf die Durchschnittsstärke aller Attacken mit dem selben Typen gesetzt werden.
+
+    \exampleseparator
+
+    \begin{lstlisting}[language=mysql]
+        UPDATE attacke AS attacke1
+        SET Staerkte = (
+            SELECT ROUND(AVG(Staerke), 0)
+            FROM attacke AS attacke2
+            GROUP BY Typ
+            HAVING attacke1.Typ = attacke2.Typ 
+        );
+    \end{lstlisting}
+\end{example}
