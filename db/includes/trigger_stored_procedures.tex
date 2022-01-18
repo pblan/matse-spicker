@@ -1,1 +1,178 @@
 \section{Trigger, Stored Procedures}
+
+\begin{sql}{DELIMITER}
+    Da wir in \texttt{PROCEDURE}s einen \texttt{DELIMITER} nutzen, welcher von dem \texttt{DBMS} fälschlicherweise als Ende für den Befehl zum Erstellen der \texttt{PROCEDURE} erkannt wird, müssen wir diesen ändern.
+
+    \begin{lstlisting}[language=mysql]
+        DELIMITER <Trennzeichen>
+    \end{lstlisting}
+\end{sql}
+
+\begin{sql}{PROCEDURE}
+    Eine \texttt{PROCEDURE} wird genutzt um SQL Befehle Methodenähnlich zum Auszuführen zu speichern.
+
+    Diese \texttt{PROCEDURE}s sind vergleichbar mit \texttt{VIEW}s.
+    Jedoch wird bei einer \texttt{VIEW} ein Snapshot der aktuellen Tabelle erstellt und bei \texttt{PROCEDURE} jedes mal erneut die Datenbank aufgerufen. 
+
+    Sollte man nun eine \texttt{PROCEDURE} zum anzeigen aller Feuer-Pokémon erstellen wollen, nutzt man:
+
+    \begin{lstlisting}[language=mysql]
+        -- Aendern des Trennzeichens
+        DELIMITER //
+        -- Procedure anlegen
+        CREATE PROCEDURE ShowFeuerpokemon()
+        BEGIN
+            SELECT *
+            FROM pokemon
+            WHERE
+                PrimaerTyp = 'Feuer'
+                OR SekundaerTyp = 'Feuer';
+        END //
+        -- Aendern des Trennzeichens rueckgaengig machen
+        DELIMITER ;
+    \end{lstlisting}
+
+    Um diese \texttt{PROCEDURE} nun aufzurufen nutzen wir:
+
+    \begin{lstlisting}[language=mysql]
+        CALL ShowFeuerpokemon();
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|TTTTTTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 4 & Glumanda & 0.6 & 8.5 & 1 & Feuer & NULL \\
+        2 & 5 & Glutexo & 1.1 & 19 & 1 & Feuer & NULL \\
+        3 & 6 & Glurak & 1.7 & 90.5 & 1 & Feuer & Flug \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        71 & 851 & Infernopod & 3 & 120 & 8 & Feuer & Kï¿½fer \\
+    \end{tabular}
+
+    Zum Löschen einer \texttt{PROCEDURE} nutzen wir:
+
+    \begin{lstlisting}[language=mysql]
+        DROP PROCEDURE ShowFeuerpokemon;
+    \end{lstlisting}
+\end{sql}
+
+\begin{sql}{PROCEDURE (mit Parameter)}
+    Alternativ kann man Parameter mitgeben:
+
+    \begin{lstlisting}[language=mysql]
+        DELIMITER //
+        CREATE PROCEDURE ShowPokemonFromType(typ varchar(255))
+        BEGIN
+            SELECT *
+            FROM pokemon
+            WHERE
+                PrimaerTyp = typ
+                OR SekundaerTyp = typ;
+        END //
+        DELIMITER ;
+    \end{lstlisting}
+
+    Wenn man erneut alle Feuer-Pokémon ausgeben möchte, erhält man äquivalentes Ergebnis wie folgt:
+
+    \begin{lstlisting}[language=mysql]
+        CALL ShowPokemonFromType('Feuer');
+    \end{lstlisting}
+
+    Jedoch können wir uns ebenfalls jeden anderen Typen ausgeben lassen:
+
+    \begin{lstlisting}[language=mysql]
+        CALL ShowPokemonFromType('Pflanze');
+    \end{lstlisting}
+
+    \begin{tabular}{I|ITIIITT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 1 & Bisasam & 0.7 & 6.9 & 1 & Pflanze & Gift \\
+        2 & 2 & Bisaknosp & 1 & 13 & 1 & Pflanze & Gift \\
+        3 & 3 & Bisaflor & 2 & 100 & 1 & Pflanze & Gift \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        107 & 898 & Coronospa & 1.1 & 7.7 & 8 & Psycho & Pflanze \\
+    \end{tabular}
+
+    \begin{lstlisting}[language=mysql]
+        CALL ShowPokemonFromType('Wasser');
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|TTTTTTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{ID} & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Groesse} & \multicolumn{1}{T}{Gewicht} & \multicolumn{1}{T}{Generation} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 7 & Schiggy & 0.5 & 9 & 1 & Wasser & NULL \\
+        2 & 8 & Schillok & 1 & 22.5 & 1 & Wasser & NULL \\
+        3 & 9 & Turtok & 1.6 & 85.5 & 1 & Wasser & NULL \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots} \\
+        141 & 883 & Pescryodon & 2 & 175 & 8 & Wasser & Eis \\
+    \end{tabular}
+\end{sql}
+
+\begin{sql}{TRIGGER}
+    Um auf Benutzendeneingaben zu reagieren kann man \texttt{TRIGGER} verwenden.
+
+    Diese lösen automatisch aus, sollte ein bestimmtes Event stattfinden.
+
+    \begin{lstlisting}[language=mysql]
+        DELIMITER $$
+        CREATE TRIGGER <Triggername>
+        <Triggerzeitpunkt> <Triggerevent>
+        ON <Tabellenname>
+        FOR EACH ROW BEGIN
+            <TODO>
+        END $$
+        DELIMITER ;
+    \end{lstlisting}
+
+    Zulässige Werte sind dabei:
+
+    \begin{itemize}
+        \item Triggerzeitpunkt
+        
+            \begin{itemize}
+                \item \texttt{BEFORE}
+                \item \texttt{AFTER}
+            \end{itemize}
+        \item Triggerevent
+        
+            \begin{itemize}
+                \item \texttt{INSERT}
+                \item \texttt{UPDATE}
+                \item \texttt{DELETE}
+            \end{itemize}
+        \item In der Aufgabe verwendbare Keywords
+        
+            \begin{itemize}
+                \item \texttt{OLD}
+                
+                    \begin{itemize}
+                        \item Die zu löschende Entität oder
+                        \item Die zu verändernde Entität \textbf{vor} der Änderung
+                    \end{itemize}
+                \item \texttt{NEW}
+                
+                    \begin{itemize}
+                        \item Die einzufügende Entität oder
+                        \item Die zu verändernde Entität \textbf{nach} der Änderung
+                    \end{itemize}
+            \end{itemize}
+    \end{itemize}
+
+    Sollte man beispielsweise beim Einfügen von neuen Typen die Effektivitätsliste direkt anpassen wollen, indem man den neuen Typen mit allen existierenden kreuzt, so nutzt man:
+
+    \begin{lstlisting}[language=mysql]
+        DELIMITER $$
+        CREATE TRIGGER after_insert_typ
+        BEFORE INSERT
+        ON typ
+        FOR EACH ROW BEGIN
+            INSERT INTO effektivitaet (Angreifend, Verteidigend)
+                SELECT NEW.Bezeichnung, typ.Bezeichnung FROM typ;
+            INSERT INTO effektivitaet (Angreifend, Verteidigend)
+                SELECT typ.Bezeichnung, NEW.Bezeichnung FROM typ;
+        END $$
+        DELIMITER ;
+    \end{lstlisting}
+\end{sql}

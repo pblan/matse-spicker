@@ -233,6 +233,27 @@
     \texttt{EXISTS} wird meist mit korrelierenden Unterabfragen genutzt.
 \end{sql}
 
+\begin{bonus}{INSERT INTO mit Unterabfragen}
+    Wenn man automatisch Werte aus bestehenden Tabellen in neue Tabellen einfügen möchte, kann man Unterabfragen nutzen.
+
+    Hierbei entfällt das Keyword \texttt{VALUES}:
+
+    \begin{lstlisting}[language=mysql]
+        CREATE TABLE feuerpokemon (
+            ID int NOT NULL,
+            Bezeichnung varchar(255),
+            ...
+        );
+        INSERT INTO feuerpokemon
+            -- Unterabfrage
+            SELECT *
+            FROM pokemon
+            WHERE
+                PrimaerTyp = 'Feuer'
+                OR SekundaerTyp = 'Feuer';
+    \end{lstlisting}
+\end{bonus}
+
 \subsection{Beispiele}
 
 \begin{example}{Unterabfrage}

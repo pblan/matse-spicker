@@ -159,17 +159,108 @@
                 \item \texttt{CHAR(n)} ein String fester Länge n
                 \item \texttt{VARCHAR(n)} ein String variabler Länge 0 bis n
                 \item \texttt{BOOLEAN} bzw. \texttt{TINYINT(1)} speichert \texttt{TRUE} bzw. 1 oder \texttt{FALSE} bzw. 0
-                \item \texttt{DATETIME} wird genutzt, um ein Datum zu speichern\footnote{\texttt{NOW()} trägt das aktuelle Datum beim Erstellen der Wertes ein}
             \end{itemize}
         \item \texttt{DEFAULT} setzt einen Standardwert fest
         \item \texttt{UNIQUE} legt fest, ob der Wert einzigartig soll
         \item \texttt{NOT NULL} legt fest, ob der Wert \texttt{NULL} sein darf
+        \item \texttt{CHECK(<Bedingung>)} Einzufügende Werte müssen die Bedingung erfüllen
     \end{itemize}
 
     Ein \texttt{PRIMARY KEY} ist ein Primärschlüssel, der die Entität eindeutig beschreibt.
     Dieser darf nie \texttt{NULL} sein.
 
     Ein \texttt{FOREIGN KEY} ist ein Fremdschlüssel, der Primärschlüssel einer anderen Entität referenziert.
+\end{sql}
+
+\begin{sql}{Zeit- und Datumstypen}
+    Zusätzlich gibt es komplexere Typen, welche zur Speicherung von Daten genutzt werden:
+    
+    Dazu vorab:
+    MySQL nutzt \texttt{session} und \texttt{global} Konfigurationen.
+
+    Die \texttt{session} Konfiguration wird beim Abschalten der Datenbank auf \texttt{global} zurückgesetzt.
+
+    \begin{lstlisting}[language=mysql]
+        SELECT @@session.time_zone, @@global.time_zone;;
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|TT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{@@session.time\_zone} & \multicolumn{1}{T}{@@global.time\_zone} \\\hline
+        1 & SYSTEM & SYSTEM \\
+    \end{tabular}
+
+    Die Zeitzone kann mit folgendem Befehl angepasst werden:
+
+    \begin{lstlisting}[language=mysql]
+        SET SESSION TIME_ZONE = <Zeitzone>
+    \end{lstlisting}
+
+    Dabei kann als Zeitzone folgendes eingestellt werden:
+
+    \begin{itemize}
+        \item Eine exakte Zeitzone: \lstinline[language=mysql]{'Europe/Berlin'}
+        \item Ein Offset: \lstinline[language=mysql]{'+02:00'}
+    \end{itemize}
+
+    Einige Datumstypen sind:
+
+    \begin{itemize}
+        \item \texttt{date}
+        \item \texttt{time}
+        \item \texttt{datetime}
+    \end{itemize}
+
+    Ein Cast in verschiedene Typen ist wie folgt möglich:\footnote{\texttt{NOW()} gibt das aktuelle Datum in der Formatierung \texttt{session.TIME\_ZONE} zurück}
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            NOW() AS 'Session',
+            cast(NOW() AS DATE) AS 'Date',
+            cast(NOW() AS TIME) AS 'Time',
+            cast(NOW() AS DATETIME) AS 'Datetime';
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|TTTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{Session} & \multicolumn{1}{T}{Date} & \multicolumn{1}{T}{Time} & \multicolumn{1}{T}{Datetime} \\\hline
+        1 & 1996-02-27 10:00:00 & 1996-02-27 & 10:00:00 & 1996-02-27 10:00:00 \\
+    \end{tabular}
+
+    Zusätzlich ist es ebenfalls möglich von Strings zu einem Datum zu casten:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            STR_TO_DATE('27.02.1996', GET_FORMAT(DATE, 'EUR')) AS 'STR_TO_DATE',
+            DATE_FORMAT(NOW(), GET_FORMAT(DATE, 'EUR')) AS 'DATE',
+            -- %W = Wochentag, %D Tag im Monat, %M = Monat, %Y = Jahr
+            DATE_FORMAT(NOW(), '%W, %D %M %Y') AS 'CUSTOMIZED DATE';
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|TTT}
+        \rowcolor{gray!35}
+        & \multicolumn{1}{T}{STR\_TO\_DATE} & \multicolumn{1}{T}{DATE} & \multicolumn{1}{T}{CUSTOMIZED\_DATE} \\\hline
+        1 & 1996-02-27 & 27.02.1996 & Tuesday, 27th February 1996 \\
+    \end{tabular}
+
+    Ein Datum kann über \lstinline[language=mysql]{DATE_ADD()}, oder per \texttt{+} bzw. \texttt{-}, modifiziert werden:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            NOW() !+! INTERVAL 1 YEAR,
+            !DATE_ADD!(NOW(), INTERVAL 1 YEAR);
+    \end{lstlisting}
+
+    Alternativ kann ebenfalls eine Zeitspanne ermittelt werden:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            DATEDIFF(DATE_ADD(NOW(), INTERVAL 1 YEAR), NOW()),
+            TIMEDIFF(DATE_ADD(NOW(), INTERVAL 1 HOUR), NOW());
+    \end{lstlisting}
 \end{sql}
 
 \begin{sql}{ALTER TABLE}

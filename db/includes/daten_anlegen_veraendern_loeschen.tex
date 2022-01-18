@@ -4,10 +4,11 @@
     \texttt{INSERT INTO} trägt Daten in eine Datenbank ein.
 
     \begin{lstlisting}[language=mysql]
-        INSERT INTO
-        <Tabellenname> (<Spaltenname>, ...)
+        INSERT INTO <Tabellenname>
+            (<Spaltenname>, ...)
         VALUES
-            (Wert, ...), ...;
+            (Wert, ...),
+            ...;
     \end{lstlisting}
 
     Wenn man alle Attribute in der vorgegebenen Reihenfolge angibt, kann man die Angabe der Spalten weglassen.
@@ -19,19 +20,16 @@
     Hier wird die Entität \texttt{Glumanda} erstellt:
 
     \begin{lstlisting}[language=mysql]
-        INSERT INTO pokemon (
-            ID, Name, Groesse, Gewicht, Generation, PrimaerTyp, SekundaerTyp
-        )
-        VALUES (
-            4, 'Glumanda', 0.6, 8.5, 1, 'Feuer', NULL
-        );
+        INSERT INTO pokemon
+            (ID, Name, Groesse, Gewicht, Generation, PrimaerTyp, SekundaerTyp)
+        VALUES
+            (4, 'Glumanda', 0.6, 8.5, 1, 'Feuer', NULL);
     \end{lstlisting}
 
     \begin{lstlisting}[language=mysql]
         INSERT INTO pokemon
-        VALUES (
-            4, 'Glumanda', 0.6, 8.5, 1, 'Feuer', NULL
-        );
+        VALUES
+            (4, 'Glumanda', 0.6, 8.5, 1, 'Feuer', NULL);
     \end{lstlisting}
 \end{example}
 
@@ -39,13 +37,11 @@
     Da \texttt{NULL} der Standard Wert für SekundaerTyp ist, und Glumanda keinen Sekundärtyp hat, kann man \texttt{Glumanda} ebenfalls wie folgt erstellen:
     
     \begin{lstlisting}[language=mysql]
-        INSERT INTO pokemon (
-            ID, Name, Groesse, Gewicht, Generation, PrimaerTyp
-            -- SekundaerTyp
-        )
-        VALUES (
-            4, 'Glumanda', 0.6, 8.5, 1, 'Feuer'
-        );
+        INSERT INTO pokemon
+            -- kein SekundaerTyp
+            (ID, Name, Groesse, Gewicht, Generation, PrimaerTyp)
+        VALUES
+            (4, 'Glumanda', 0.6, 8.5, 1, 'Feuer');
     \end{lstlisting}
 \end{example}
 
@@ -168,8 +164,7 @@
         SET Staerkte = (
             SELECT ROUND(AVG(Staerke), 0)
             FROM attacke AS attacke2
-            GROUP BY Typ
-            HAVING attacke1.Typ = attacke2.Typ 
+            WHERE attacke1.Typ = attacke2.Typ 
         );
     \end{lstlisting}
 \end{example}

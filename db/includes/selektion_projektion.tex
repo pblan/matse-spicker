@@ -1,11 +1,41 @@
 \section{Selektion, Projektion}
 
 \begin{defi}{Projektion}
-    Eine \emph{Projektion} wählt Spalten durch Angabe von Attributen der Tabelle.
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \begin{center}
+            \setcounter{rownum}{0}
+            \begin{tabular}{I|TTTTT}
+                \rowcolor{gray!35}
+                && \cellcolor{orange} && \cellcolor{orange} & \\\hline
+                1 && \cellcolor{orange} && \cellcolor{orange} & \\
+                2 && \cellcolor{orange} && \cellcolor{orange} & \\
+                3 && \cellcolor{orange} && \cellcolor{orange} & \\
+            \end{tabular}
+        \end{center}
+    \end{wrapfigure}
+
+    Eine \emph{Projektion} filtert Spalten durch Angabe von Attributen einer Tabelle.
+
+    \vspace{3em}
 \end{defi}
 
 \begin{defi}{Selektion}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \begin{center}
+            \begin{tabular}{I|TTTTT}
+                \rowcolor{gray!35}
+                &&&&& \\\hline
+                1 &&&&& \\
+                \rowcolor{orange}
+                2 &&&&& \\
+                3 &&&&& \\
+            \end{tabular}
+        \end{center}
+    \end{wrapfigure}
+
     Eine \emph{Selektion} filtert Zeilen durch Angabe eines Kriteriums, welches je Zeile erfüllt sein muss.
+    
+    \vspace{3em}
 \end{defi}
 
 \begin{sql}{SELECT}
@@ -248,6 +278,31 @@
         & \multicolumn{1}{T}{COUNT(SekundaerTyp)} \\\hline
         1 & 442 \\
     \end{tabular}
+\end{sql}
+
+\begin{sql}{CASE}
+    \texttt{CASE} führt die erste passende \texttt{WHEN-}Klausel aus.\footnote{Dementsprechend sollte die Abfrage möglichst so formuliert sein, dass die Reihenfolge irrelevant ist.}
+
+    Sollte uns die Spalte \texttt{Generation} in \texttt{pokemon} verloren gehen, könnten wie diese wir folgt nachbauen:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            ID,
+            Name,
+            (
+                CASE
+                    WHEN ID >= 810 THEN 8
+                    WHEN ID >= 722 THEN 7
+                    WHEN ID >= 650 THEN 6
+                    WHEN ID >= 494 THEN 5
+                    WHEN ID >= 387 THEN 4
+                    WHEN ID >= 252 THEN 3
+                    WHEN ID >= 152 THEN 2
+                    ELSE 1
+                END
+            ) AS Generation_Case
+        FROM pokemon;
+    \end{lstlisting}
 \end{sql}
 
 \subsection{Operatoren}

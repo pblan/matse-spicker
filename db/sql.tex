@@ -17,15 +17,56 @@
 \rowcolors{2}{gray!15}{white}
 
 \include{includes/selektion_projektion.tex}
-\include{includes/join.tex}
-\include{includes/group_functions.tex}
 \include{includes/subselects.tex}
-\include{includes/schemas_tabellen.tex}
-\include{includes/zeit_datumsfunktionen}
-\include{includes/views.tex}
+\include{includes/group_functions.tex}
+\include{includes/join.tex}
 \include{includes/transaktionen.tex}
+\include{includes/trigger_stored_procedures.tex}
+
+\include{includes/schemas_tabellen.tex}
+\include{includes/views.tex}
 \include{includes/daten_anlegen_veraendern_loeschen.tex}
-% \include{includes/trigger_stored_procedures.tex}
+\include{includes/zeit_datumsfunktionen}
+
+\begin{sql}{Rekursive Abfragen}
+    Wenn man sich eine Entwicklungskette ausgeben lassen möchte, muss man einen Startpunkt angeben.
+    Aus diesem wird eine Ursprungsabfrage erstellt und mit einer Rekursionsabfrage kombiniert.
+
+    \begin{lstlisting}[language=mysql]
+        -- Rekursive Abfrage
+        WITH RECURSIVE !r_entwicklung!(von, zu) AS (
+            (
+                -- Ursprungsabfrage
+                SELECT von, zu
+                FROM entwicklung
+                WHERE von = (
+                    -- Startpunkt
+                    SELECT ID
+                    FROM pokemon
+                    WHERE Name = 'Glumanda'
+                )
+            ) UNION ALL (
+                -- Rekursionsabfrage
+                SELECT entwicklung.von, entwicklung.zu
+                FROM !r_entwicklung!
+                JOIN entwicklung
+                    ON r_entwicklung.Zu = entwicklung.Von
+            )
+        )
+        -- Aufruf der rekursiven Abfrage
+        SELECT
+            pokemon1.ID,
+            pokemon1.Name,
+            pokemon2.ID,
+            pokemon2.Name
+        FROM r_entwicklung
+        -- Join um Namen anzeigen zu koennen
+        JOIN pokemon AS pokemon1
+            ON r_entwicklung.Von = pokemon1.ID
+        JOIN pokemon AS pokemon2
+            ON r_entwicklung.Zu = pokemon2.ID;
+    \end{lstlisting}
+\end{sql}
 
 \printindex
 \printindex[Beispiele]
