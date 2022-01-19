@@ -1,0 +1,178 @@
+\section{SQL (temporär)}
+
+\begin{defi}{ACID}
+    Der Begriff \emph{ACID} beschreibt Regeln und Eigenschaften zur Durchführung von Transaktionen in Datenbankmanagementsystemen.
+
+    Dabei steht ACID für:
+    \begin{itemize}
+        \item \emph{Atomicity} (Atomarität)
+              \begin{itemize}
+                  \item atomar in dem Sinne, dass entweder alle Operationen der Transaktion bedingten Änderungen in der Datenbank umgesetzt werden, oder gar keine
+              \end{itemize}
+        \item \emph{Consistency} (Konsistenz)
+              \begin{itemize}
+                  \item Ausgangspunkt ist konsistente Datenbank vor Beginn einer Transaktion
+                  \item am Ende einer Transaktion ist Datenbank in konsistentem Zustand, d.h.
+                        \begin{itemize}
+                            \item entweder jede Integritätsregel ist erfüllt\footnote{z.B. referentielle Integrität (Fremdschlüssel)}
+                            \item Transaktion wird komplett zurückgesetzt und Datenbank befindet sich wieder in dem (konsistenten) Zustand wie zu Beginn
+                        \end{itemize}
+              \end{itemize}
+        \item \emph{Isolation} (Nebenläufigkeit)
+              \begin{itemize}
+                  \item parallele bzw. gleichzeitig ausgeführte Transaktionen beeinflussen sich nicht\footnote{Fehlerfälle sind z.B. \enquote{Lost Updates} oder \enquote{Dirty Reads}}
+                  \item Locking (Lese- bzw. Schreibsperre)
+              \end{itemize}
+        \item \emph{Durability)} (Dauerhaftigkeit)
+              \begin{itemize}
+                  \item nach Abschluss einer Transaktion haben ausgeführte Änderungen dauerhaft Bestand
+              \end{itemize}
+    \end{itemize}
+
+    ACID wird häufig zur Charakterisierung eines DBMS genannt, insbesondere auch für Nicht-Relationale DBMS.
+\end{defi}
+
+\begin{defi}{Lost Update}
+    Zwei Transaktionen modifizieren parallel denselben Datensatz und nach Ablauf dieser beiden Transaktionen wird nur die Änderung von einer von ihnen übernommen.
+\end{defi}
+
+\begin{example}{Lost Update}
+    Wir haben zwei nebenläufige Transaktionen, die denselben Datensatz modifizieren:
+    \begin{itemize}
+        \item $T_1$: Buche Betrag $300$ von Konto $A$ auf Konto $B$
+        \item $T_2$: Schreibe Konto $A$ $3\%$ Zinsen zu
+    \end{itemize}
+
+    \begin{center}
+        \begin{tabular}{|I|T|T|}
+            \hline
+               & $T_1$         & $T_2$          \\
+            \hline
+            01 & a1 = read(A)  &                \\
+            02 & a1 = a1 - 300 &                \\
+            03 &               & a2 = read(A)   \\
+            04 &               & a2 = a2 * 1.03 \\
+            05 &               & write(A, a2)   \\
+            06 & write(A, a1)  &                \\
+            07 & b1 = read(B)  &                \\
+            08 & b1 = b1 + 300 &                \\
+            09 & write(B, b1)  &                \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    Die Änderung von $T_2$ in Zeile 5 geht verloren, da $T_1$ im nächsten Schritt die Änderung überschreibt.
+\end{example}
+
+\begin{defi}{Dirty Read}
+    Daten einer noch nicht abgeschlossenen Transaktion werden von einer anderen Transaktion gelesen.
+\end{defi}
+
+\begin{example}{Dirty Read}
+    Wir haben zwei nebenläufige Transaktionen, die denselben Datensatz modifizieren:
+    \begin{itemize}
+        \item $T_1$: Buche Betrag $300$ von Konto $A$ auf Konto $B$
+        \item $T_2$: Schreibe Konto $A$ $3\%$ Zinsen zu
+    \end{itemize}
+
+    \begin{center}
+        \begin{tabular}{|I|T|T|}
+            \hline
+               & $T_1$         & $T_2$          \\
+            \hline
+            01 & a1 = read(A)  &                \\
+            02 & a1 = a1 - 300 &                \\
+            03 & write(A, a1)  &                \\
+            04 &               & a2 = read(A)   \\
+            05 &               & a2 = a2 * 1.03 \\
+            06 &               & write(A, a2)   \\
+            07 & b1 = read(B)  &                \\
+            08 & b1 = b1 + 300 &                \\
+            09 & write(B, b1)  &                \\
+            10 & ...           &                \\
+            n  & abort         &                \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    Sollte $T_1$ abbrechen (\texttt{abort}), oder eine andere Änderung an $A$ vornehmen, war die Sicht auf $A$ in Schritt 3 für $T_2$ falsch.
+\end{example}
+
+\begin{defi}{Locking}
+    Unter \emph{Locking} versteht man das Sperren des Zugriffs auf ein Betriebsmittel.
+
+    Eine solche Sperre ermöglicht den exklusiven Zugriff eines Prozesses auf eine Ressource, d. h. mit der Garantie, dass kein anderer Prozess diese Ressource liest oder verändert, solange die Sperre besteht.
+
+    Regeln beim Locking:
+    \begin{itemize}
+        \item Jedes Objekt muss vor der Benutzung gesperrt werden.
+        \item Eine Transaktion fordert eine Sperre, die sie schon besitzt, nicht erneut an.
+        \item Eine Transaktion respektiert vorhandene Sperren und wird ggf. in eine Warteschlange eingereiht.
+        \item Jede Transaktion durchläuft zwei Phasen:
+              \begin{itemize}
+                  \item Wachstumsphase (nur Sperren anfordern)
+                  \item Freigabephase (nur Sperren freigeben)
+              \end{itemize}
+        \item Spätestens bei Transaktionsende muss eine Transaktion all ihre Sperren zurückgeben.
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{Lesesperre}
+    Besitzt eine Ressource eine \emph{Lesesperre} (\enquote{Shared Lock}), so möchte der Prozess, der diese Sperre gesetzt hat, von der Ressource nur lesen.
+
+    Somit können auch andere Prozesse auf diese Ressource lesend zugreifen, dürfen diese aber nicht verändern.
+\end{bonus}
+
+\begin{bonus}{Schreibsperre}
+    Besitzt eine Ressource eine \emph{Schreibsperre} (\enquote{Exclusive Lock}), wird verhindert, dass die Ressource von anderen Prozessen gelesen oder geschrieben wird, da der Prozess, der den Lock gesetzt hat, die Ressource verändern möchte.
+
+    Es wird vorausgesetzt, dass keine Lesesperre auf die Ressource gesetzt ist.
+\end{bonus}
+
+\subsection{ORM und Hibernate}
+
+\begin{defi}{Object-Relational Mapping}
+    \emph{Object-Relational Mapping} bzw. ORM ist eine Technik der Softwareentwicklung, mit der ein in einer objektorientierten Programmiersprache geschriebenes Anwendungsprogramm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm erscheint die Datenbank dann als objektorientierte Datenbank, was die Programmierung erleichtert.
+
+    Implementiert wird diese Technik normalerweise mit Klassenbibliotheken, wie beispielsweise Entity Framework für .NET-Programmiersprachen, Hibernate für Java.
+
+    Man unterscheidet zwischen den Varianten:
+    \begin{itemize}
+        \item Statisches Mapping
+              \begin{itemize}
+                  \item Klassen
+                  \item Vererbung
+                  \item Aggregation, Komposition, Assoziation
+              \end{itemize}
+        \item Dynamisches Mapping\footnote{Nicht behandelt in der Vorlesung.}
+              \begin{itemize}
+                  \item Constraints und Trigger
+                  \item Performance: Dirty Checking, Lazy Fetching, Caching
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Abbildung von Vererbungshierarchien}
+    Es gibt im Wesentlichen drei verschiedene Verfahren, um Vererbungshierarchien auf Datenbanktabellen abzubilden:
+    \begin{itemize}
+        \item \emph{Tabelle pro Vererbungshierarchie} bzw. \emph{Single Table}:
+              \begin{itemize}
+                  \item alle Attribute der Basisklasse und aller abgeleiteten Klassen in gemeinsamer Tabelle
+                  \item Diskriminator in weiterer Spalte abgelegt, der festlegt, welcher Klasse das in dieser Zeile gespeicherte Objekt angehört
+                  \item Attribute von abgeleiteten Klassen dürfen den meisten Fällen nicht mit einem \texttt{NOT-NULL}-Constraint versehen werden
+                  \item Beschränkungen der Anzahl erlaubter Spalten pro Tabelle können Ansatz bei großen Klassen bzw. Klassenhierarchien vereiteln
+              \end{itemize}
+        \item \emph{Tabelle pro Unterklasse} bzw. \emph{Joined }:
+              \begin{itemize}
+                  \item eine Tabelle für die Basisklasse angelegt und für jede davon abgeleitete Unterklasse eine weitere Tabelle
+                  \item Diskriminator wird nicht benötigt, weil Klasse eines Objekts durch 1:1-Beziehung zwischen Eintrag in Tabelle der Basisklasse und Eintrag in einer der Tabellen der abgeleiteten Klassen festgelegt ist
+              \end{itemize}
+        \item \emph{Tabelle pro konkrete Klasse} bzw. \emph{Table per Class}:
+              \begin{itemize}
+                  \item Attribute der abstrakten Basisklasse in die Tabellen für die konkreten Unterklassen mit aufgenommen
+                  \item  Tabelle für Basisklasse entfällt
+                  \item  Nachteil besteht darin, dass es nicht möglich ist, mit einer Abfrage Instanzen verschiedener Klassen zu ermitteln
+              \end{itemize}
+    \end{itemize}
+
+\end{defi}

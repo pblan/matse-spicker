@@ -1,1 +1,837 @@
 \section{Normalformen}
+
+\begin{defi}{Funktionale Abhängigkeit}
+    Eine Relation wird durch Attribute definiert.
+    Bestimmen einige dieser Attribute eindeutig die Werte anderer Attribute, so spricht man von \emph{funktionaler Abhängigkeit}.
+
+    Sei $R = \{a_, \ldots, a_n\}$ ein vereinfachtes Schema, $\alpha \subseteq \ident(R)$, $\beta \subseteq \ident(R)$, und $D \subseteq \dom(R)$.
+
+    Dann ist $\beta$ funktional abhängig von $\alpha$ genau dann, wenn für alle zulässigen $D$ gilt:
+    \[
+        \forall s, t \in D: s.\alpha = t.\alpha \implies s.\beta = t.\beta
+    \]
+
+    Man schreibt:\footnote{$\alpha \to \beta$ heißt, für alle Tupel $s$, $t$ mit gleichen $\alpha$-Attributen gilt, dass auch ihre $\beta$-Attribute gleich sind.
+        Die Werte der Attribute aus der Attributmenge $\alpha$ bestimmen also eindeutig die Werte der Attribute aus der Attributmenge $\beta$.}
+    \[
+        \alpha \to \beta \iff \text{Wenn $\alpha$ bekannt ist, dann auch $\beta$} \iff \text{$\beta$ ist funktional abhängig von $\alpha$}
+    \]
+
+    Für eine Menge von funktionalen Abhängigkeiten einer Relation $R$ schreibt man $\FD$ bzw. $\FD(R)$.
+\end{defi}
+
+\begin{defi}{Volle funktionale Abhängigkeit}
+    Sei $R = \{a_, \ldots, a_n\}$ ein vereinfachtes Schema und $\alpha \to \beta$ eine funktionale Abhängigkeit.
+
+    Dann ist $\beta$ \emph{voll funktional abhängig} von $\alpha$, wenn
+    \[
+        \forall \gamma \in \Pot(\alpha) - \alpha: \alpha - \gamma \not\to \beta
+    \]
+
+    Man schreibt:\footnote{Volle funktionale Abhängigkeit bedeutet, dass $\alpha$ minimal ist, man also kein Attribut aus $\alpha$ weglassen kann, ohne dass man die funktionale Abhängigkeit verliert.}
+    \[
+        \alpha \dotto \beta \iff \text{$\alpha$ ist minimal}
+    \]
+\end{defi}
+
+\begin{defi}{Schlüssel}
+    Sei $R = \{ a_1, \ldots, a_n \}$ ein vereinfachtes Schema und $\alpha \subseteq \ident(R)$.
+
+    Dann ist
+    \begin{itemize}
+        \item $\alpha$ ein \emph{Superschlüssel}, falls $a \to \ident(R)$, und
+        \item $\alpha$ ein \emph{Schlüsselkandidat}, falls $a \dotto \ident(R)$.
+    \end{itemize}
+
+    Ein \emph{Primärschlüssel} ist ein ausgesuchter bzw. festgelegter Schlüsselkandidat.
+
+    Ein Attribut $a \in \ident(R)$ heißt \emph{prim}, falls $a$ Attribut eines Schlüsselkandidaten von $R$ ist, sonst \emph{nicht prim}.
+
+    Es macht Sinn, aus den möglichen Schlüsselkandidaten einer Relation $R$ genau einen Primärschlüssel festzulegen, da Verweise auf Tupel aus $R$ über Fremdschlüssel in anderen Relationen realisiert werden, also Schlüsselattribute dieses Primärschlüssels.
+
+    Nicht jedes $\alpha$ mit $\alpha \to \ident(R)$ ist ein Schlüsselkandidat, denn $\alpha$ muss nicht minimal sein.
+    Insbesondere ist $\alpha \to \ident(R)$ der triviale Superschlüssel.
+\end{defi}
+
+\begin{defi}{Armstrong-Axiome}
+    Mit Hilfe der \emph{Armstrong-Axiome} lassen sich aus einer Menge von funktionalen Abhängigkeiten, die auf einer Relation gelten, weitere funktionale Abhängigkeiten ableiten.
+
+    Die folgenden drei Regeln reichen aus, um alle funktionalen Abhängigkeiten herzuleiten:
+    \begin{enumerate}
+        \item \emph{Reflexivität}:\\
+              Eine Menge von Attributen bestimmt eindeutig die Werte einer Teilmenge dieser Attribute (triviale Abhängigkeit):
+              \[
+                  \beta \subseteq \alpha \implies \alpha \to \beta
+              \]
+        \item \emph{Erweiterungsregel, Verstärkung}:\\
+              Gilt $\alpha \to \beta$, so gilt auch $\alpha\gamma \to \beta\gamma$ für jede Menge von Attributen $\gamma \in \schema(R)$:
+              \[
+                  \alpha \to \beta \implies \alpha\gamma \to \beta\gamma \qquad \forall \gamma \in \schema(R)
+              \]
+        \item \emph{Transitivitätsregel}:\\
+              Gilt $\alpha \to \beta$ und $\beta \to \gamma$, so gilt auch $\alpha \to \gamma$:
+              \[
+                  (\alpha \to \beta) \land (\beta \to \gamma) \implies \alpha \to \gamma
+              \]
+    \end{enumerate}
+
+    Um Herleitungen einfacher zu gestalten, können zusätzlich die folgenden (abgeleiteten) Regeln verwendet werden:
+    \begin{enumerate}
+        \setcounter{enumi}{3}
+        \item \emph{Vereinigungsregel}:\\
+              Gelten $\alpha \to \beta$ und $\alpha \to \gamma$, so gilt auch $\alpha \to \beta\gamma$:
+              \[
+                  (\alpha \to \beta) \land (\alpha \to \gamma) \implies \alpha \to \beta\gamma
+              \]
+        \item \emph{Dekompositions-/Zerlegungsregel}:\\
+              Gilt $\alpha \to \beta\gamma$, so gelten auch $\alpha \to \beta$ und $\alpha \to \gamma$:
+              \[
+                  \alpha \to \beta\gamma \implies (\alpha \to \beta) \land (\alpha \to \gamma)
+              \]
+        \item \emph{Pseudotransitivitätsregel}:\\
+              Gilt $\alpha \to \beta$ und $\beta\gamma \to \delta$, so gilt auch $\alpha\gamma \to \delta$:
+              \[
+                  (\alpha \to \beta) \land (\beta\gamma \to \delta) \implies \alpha\gamma \to \delta
+              \]
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{Attributhülle}
+    Zu einem Schema $R$ und einer Menge von funktionalen Abhängigkeiten $\FD$ funktionaler Abhängigkeiten bestimmt die \emph{Attributhülle}
+    \[
+        \AttrHuelle(\FD, \alpha) \quad \text{bzw.} \quad \alpha^+ \ (\text{wenn $\FD$ klar})
+    \]
+    alle Attribute, die bzgl. der $\FD$ funktional abhängig von $\alpha$ sind.
+\end{defi}
+
+\begin{algo}{Bestimmen der Attributhülle}
+    Um die \emph{Attributhülle} für eine Menge von Attributen $\alpha$ bzgl. einer Menge von funktionaler Abhängigkeiten $\FD$ zu bestimmen, geht man folgendermaßen vor:
+
+    \textbf{Input:}
+    \begin{itemize}
+        \item $\FD$: Menge funktionaler Abhängigkeiten
+        \item $\alpha$: Menge von Attributen
+    \end{itemize}
+
+    \textbf{Output:}
+    \begin{itemize}
+        \item $\AttrHuelle(\FD, \alpha)$: Attributhülle bzw. transitiver Abschluss von $\alpha$ bzgl. $\FD$
+    \end{itemize}
+
+    \textbf{Algorithmus:}
+    \begin{algorithmic}[1]
+        \State \texttt{ergebnis = \{$\alpha$\}} \Comment{Attributhülle von $\alpha$}
+        \State \texttt{alt = \{$\emptyset$\}}
+        \While {\texttt{(ergebnis != alt)}} \Comment{Solange Änderungen stattfinden \dots}
+        \State \texttt{alt = ergebnis}
+        \ForEach {\texttt{($\beta \to \gamma$ in $\FD$)}}
+        \If {$\beta$ in ergebnis} \Comment{Prüfen, ob Transitivitätsbedingung erfüllt ist}
+        \State \texttt{ergebnis += $\gamma$}
+        \EndIf
+        \EndFor
+        \EndWhile
+        \State \texttt{return ergebnis}
+    \end{algorithmic}
+\end{algo}
+
+\begin{example}{Bestimmen der Attributhülle}
+    Gegeben sei ein abstraktes Relationenschema $R = \{ A, B, C, D, E, F \}$ mit den funktionalen Abhängigkeiten:
+    \[
+        \FD = \{
+        A \to BC, \,
+        C \to DA, \,
+        E \to ABC, \,
+        F \to CD, \,
+        CD \to BEF
+        \}
+    \]
+
+    Bestimmen Sie die Attributhülle von $A$.
+
+    \exampleseparator
+
+    Nach dem bekannten Algorithmus gilt:
+
+    \vspace{1em}
+    \begin{center}
+        \begin{tabular}{|c|c|l|}
+            \hline
+            Schritt & betrachtete $\FD$  & $\AttrHuelle(A)$                     \\
+            \hline
+            0       &                    & $\{A\}$                              \\
+            1       & $A \to \mhl{BC}$   & $\{ A, \mhl{B}, \mhl{C} \}$          \\
+            2       & $C \to \mhl{D}A$   & $\{ A, B, C, \mhl{D} \}$             \\
+            3       & $E \to ABC$        & $\{ A, B, C, D \}$                   \\
+            4       & $F \to CD$         & $\{ A, B, C, D \}$                   \\
+            5       & $CD \to B\mhl{EF}$ & $\{ A, B, C, D, \mhl{E}, \mhl{F} \}$ \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \vspace{1em}
+
+    Wir können nach Schritt 5 aufhören, da $A$ dort bereits ein Superschlüssel ist.
+    \qed
+\end{example}
+
+\begin{bonus}{Tipps zum Bestimmen der Schlüsselkandidaten}
+    Alle Attributhüllen der Elemente aus $\Pot(\ident(R))$ zu bestimmen kann schnell zu aufwendig werden.
+    Man kann allerdings \enquote{klug} anfangen:
+    \begin{itemize}
+        \item Alle Attribute, die nicht gefolgert werden können\footnote{Das sind die Attribute, die auf keiner \enquote{rechten Seite} einer funktionalen Abhängigkeit stehen.}, müssen in die Schlüsselkandidaten.
+        \item Im Laufe der Berechnung einer Attributhülle ergeben sich Attributkombinationen, die z.B. einen Schlüsselkandidaten enthalten.
+              Dann ist man schon fertig mit dieser Attributhülle.
+    \end{itemize}
+\end{bonus}
+
+\begin{example}{Bestimmen der Schlüsselkandidaten}
+    Gegeben sei ein abstraktes Relationenschema $R = \{ A, B, C, D, E, F \}$ mit den funktionalen Abhängigkeiten:
+    \[
+        \FD = \{
+        A \to BC, \,
+        C \to DA, \,
+        E \to ABC, \,
+        F \to CD, \,
+        CD \to BEF
+        \}
+    \]
+
+    Bestimmen Sie alle Schlüsselkandidaten.
+
+    \exampleseparator
+
+    In dem voherigen Beispiel haben wir bereits festgestellt, dass $A$ ein Superschlüssel ist.
+    $A$ ist offensichtlich minimal und damit bereits ein Schlüsselkandidat.
+
+    \[
+        \FD = \{
+        A \to BC, \,
+        \mhl{C \to DA}, \,
+        \mhl{E \to ABC}, \,
+        F \to CD, \,
+        CD \to BEF
+        \}
+    \]
+
+    Wir erkennen aus den funktionalen Abhängigkeiten auch, dass $A$ aus $C$ und $E$ gefolgert werden kann.
+    Beide sind wieder minimal, da einelementig, und damit ebenfalls Schlüsselkandidaten.
+
+    \[
+        \FD = \{
+        A \to BC, \,
+        C \to DA, \,
+        E \to ABC, \,
+        \mhl{F \to CD}, \,
+        CD \to BEF
+        \}
+    \]
+
+    Wieder erkennen wir, dass $C$ aus $F$ gefolgert werden kann.
+    Analog ist $F$ wieder ein Schlüsselkandidat.
+
+    \[
+        \FD = \{
+        A \to BC, \,
+        C \to DA, \,
+        E \to ABC, \,
+        F \to CD, \,
+        CD \to BEF
+        \}
+    \]
+
+    Wir können keinen einelementigen Superschlüssel mehr identifizieren.
+    Die letzte prüfenswerte Option wäre $CD$.
+    $CD$ ist zwar Superschlüssel, aber nicht minimal, da $D$ weggelassen werden kann.
+
+    Damit sind die Schlüsselkandidaten:
+    \[
+        A, C, E, F
+    \]
+    \qed
+\end{example}
+\begin{defi}{Äquivalente Menge funktionaler Abhängigkeiten}
+    Zu einem Schema $R$ und einer Menge $\FD$ funktionaler Abhängigkeiten bezeichne $\FD^+$ die Menge aller funktionalen Abhängigkeiten, die von $\FD$ impliziert werden.
+
+    Zwei Mengen funktionaler Abhängigkeiten $\FD_1$ und $\FD_2$ heißen \emph{äquivalent}, falls
+    \[
+        \FD_1^+ = \FD_2^+ \quad \iff \quad \FD_1 \equiv \FD_2
+    \]
+
+    Sind zwei Mengen funktionaler Abhängigkeiten nur in wenigen Abhängigkeiten verschieden, genügt die Betrachtung der relevanten Attributhüllen in den jeweiligen Mengen.\footnote{
+        z.B. $R = \{A, B, C, D, E\}$, $\FD_1 = \{A \to B, B \to C, AB \to CD\}$,  $\FD_2 = \{A \to B, B \to C, A \to CD\}$.\\
+        Hier reduziert sich $\FD_1^+ = \FD_2^+$ auf $CD \subseteq \AttrHuelle(\FD_1, AB)$ und $CD \subseteq \AttrHuelle(\FD_2, A)$.
+    }
+\end{defi}
+
+\begin{defi}{Kanonische Überdeckung}
+    Zu einer gegebenen Menge $\FD$ von funktionalen Abhängigkeiten nennt man $\FD^c$ eine \emph{kanonische Überdeckung}, wenn folgende drei Eigenschaften erfüllt sind:
+    \begin{itemize}
+        \item $\FD^c \equiv \FD$, d.h. $(\FD^c)^+ = \FD^+$
+        \item Alle funktionalen Abhängigkeiten in $\alpha \to \beta \in \FD^c$ sind minimal, d.h.
+              \begin{itemize}
+                  \item $\forall a \in \alpha: \FD^c - (\alpha \to \beta) \cup (\alpha - a \to \beta) \not\equiv \FD^c$
+                  \item $\forall b \in \beta: \FD^c - (\alpha \to \beta) \cup (\alpha \to \beta - b) \not\equiv \FD^c$
+              \end{itemize}
+        \item Jede linke Seite einer funktionalen Abhängigkeit in $\FD^c$ ist einzigartig.
+    \end{itemize}
+\end{defi}
+
+\begin{algo}{Berechnung der kanonischen Überdeckung}
+    Gegeben sind ein Schema $R$ und eine Menge $\FD$ funktionaler Abhängigkeiten.
+
+    \begin{enumerate}
+        \item \emph{Linksreduktion}: \\
+              \index{Linksreduktion}
+              Für alle $\alpha \to \beta \in \FD$ überprüfe, ob ein $a \in \alpha$ überflüssig ist, d.h. ob:
+              \[
+                  \beta \subseteq \AttrHuelle(\FD, \alpha - a)
+              \]
+              In diesem Fall wird $\alpha \to \beta$ durch $\alpha - a \to \beta$ in $\FD$ ersetzt.
+        \item \emph{Rechtsreduktion}: \\
+              \index{Rechtsreduktion}
+              Für alle $\alpha \to \beta \in \FD$ überprüfe, ob ein $b \in \beta$ überflüssig ist, d.h. ob:
+              \[
+                  b \subseteq \AttrHuelle(\FD - \{ \alpha \to \beta \} \cup \{ \alpha \to \beta - b \}, \alpha)
+              \]
+              In diesem Fall wird $\alpha \to \beta$ durch $\alpha \to \beta - b$ in $\FD$ ersetzt.
+        \item \emph{Entfernung} potentiell entstandener $\alpha \to \emptyset$.
+        \item \emph{Vereinigung} potentiell entstandener $\alpha \to \beta_1$ und $\alpha \to \beta_2$ zu $\alpha \to \beta_1\beta_2$ (Vereinigung).
+    \end{enumerate}
+\end{algo}
+
+
+\begin{example}{Berechnung der kanonischen Überdeckung (Linksreduktion)}
+    Gegeben sei ein abstraktes Relationenschema $R = \{ A, B, C, D, E, F \}$ mit den funktionalen Abhängigkeiten:
+    \[
+        \FD = \{
+        A \to BC, \,
+        C \to DA, \,
+        E \to ABC, \,
+        F \to CD, \,
+        CD \to BEF
+        \}
+    \]
+
+    Bestimmen Sie zu den gegegben funktionalen Abhängigkeiten die kanonische Überdeckung.
+
+    \exampleseparator
+
+    \emph{Linksreduktion}:
+
+    Die einzige zu betrachtende funktionale Abhängigkeit ist $CD \to BEF$\footnote{Alle anderen funktionalen Abhängigkeiten sind \enquote{links einstellig}.}
+    \begin{itemize}
+        \item Ist $C$ überflüssig?
+              \[
+                  \AttrHuelle(\FD, \{D\}) = \{ D \} \quad \land \quad \{ B, E, F \} \not\subseteq \{ D \}
+              \]
+        \item Ist $D$ überflüssig?
+
+              Wir berechnen $\AttrHuelle(\FD, \{ C \})$:
+
+              \vspace{1em}
+              \begin{center}
+                  \begin{tabular}{|c|c|l|}
+                      \hline
+                      Schritt & betrachtete $\FD$  & $\AttrHuelle(C)$                           \\
+                      \hline
+                      0       &                    & $\{C\}$                                    \\
+                      1       & $A \to BC$         & $\{C\}$                                    \\
+                      2       & $C \to \mhl{DA}$   & $\{\mhl{A}, C, \mhl{D} \}$                 \\
+                      3       & $E \to ABC$        & $\{ A, C, D \}$                            \\
+                      4       & $F \to CD$         & $\{ A, C, D \}$                            \\
+                      5       & $CD \to \mhl{BEF}$ & $\{ A, \mhl{B}, C, D, \mhl{E}, \mhl{F} \}$ \\
+                      \hline
+                  \end{tabular}
+              \end{center}
+              \vspace{1em}
+
+              Damit gilt:
+              \[
+                  \AttrHuelle(\FD, \{C\}) = \{ A, B, C, D, E, F \} \quad \land \quad \{ B, E, F \} \subseteq \{ A, B, C, D, E, F \}
+              \]
+              Damit können wir $CD \to BEF$ zu $C \to BEF$ reduzieren.
+    \end{itemize}
+
+    Damit sind unsere funktionalen Abhängigkeiten reduziert zu:
+    \[
+        \FD = \{
+        A \to BC, \,
+        C \to DA, \,
+        E \to ABC, \,
+        F \to CD, \,
+        \mhl{C \to BEF}
+        \}
+    \]
+\end{example}
+
+\begin{example}{Berechnung der kanonischen Überdeckung (Rechtsreduktion)}
+    Wir haben durch eine Linksreduktion unsere funktionalen Abhängigkeiten reduziert auf:
+    \[
+        \FD = \{
+        A \to BC, \,
+        C \to DA, \,
+        E \to ABC, \,
+        F \to CD, \,
+        \mhl{C \to BEF}
+        \}
+    \]
+
+    \emph{Rechtsreduktion}:
+
+    \begin{itemize}
+        \item Betrachte $A \to BC$:
+              \begin{itemize}
+                  \item Ist $B$ überflüssig? ($A \to BC$ wird zu $A \to C$)
+                        \[
+                            \mhl{A \to C \to BEF} \implies B \in \AttrHuelle(\FD - \{ A \to BC \} \cup \{ A \to C \}, \{A\})
+                        \]
+                        Damit ist $B$ überflüssig.
+                  \item Ist $C$ überflüssig? ($A \to BC$ wird zu $A \to B$)
+                        \[
+                            \AttrHuelle(\FD - \{ A \to BC \} \cup \{ A \to B \}, \{A\}) = \{ A, B \} \not\ni C
+                        \]
+              \end{itemize}
+              Damit können wir $A \to BC$ zu $A \to C$ reduzieren und erhalten:
+              \[
+                  \boxed{
+                      \FD = \{
+                      \mhl{A \to C}, \,
+                      C \to DA, \,
+                      E \to ABC, \,
+                      F \to CD, \,
+                      C \to BEF
+                      \}
+                  }
+              \]
+
+        \item Betrachte $C \to DA$:
+              \begin{itemize}
+                  \item Ist $D$ überflüssig? ($C \to DA$ wird zu $C \to A$)
+                        \[
+                            \mhl{C \to BEF, F \to CD} \implies D \in \AttrHuelle(\FD - \{ C \to DA \} \cup \{ C \to A \}, \{C\})
+                        \]
+                        Damit ist $D$ überflüssig.
+                  \item Ist $A$ überflüssig? ($C \to DA$ wird zu $C \to D$)
+                        \[
+                            \mhl{C \to BEF, E \to ABC} \implies A \in \AttrHuelle(\FD - \{ C \to DA \} \cup \{ C \to D \}, \{C\})
+                        \]
+                        Damit ist $A$ überflüssig.
+              \end{itemize}
+              Damit können wir $C \to DA$ zu $C \to \emptyset$ reduzieren und erhalten:
+              \[
+                  \boxed{
+                      \FD = \{
+                      A \to C, \,
+                      \mhl{C \to \emptyset}, \,
+                      E \to ABC, \,
+                      F \to CD, \,
+                      C \to BEF
+                      \}
+                  }
+              \]
+    \end{itemize}
+
+\end{example}
+
+\begin{example}{Berechnung der kanonischen Überdeckung (Rechtsreduktion) (Fortsetzung)}
+    \begin{itemize}
+        \item Betrachte $E \to ABC$:
+              \begin{itemize}
+                  \item Ist $A$ überflüssig? ($E \to ABC$ wird zu $E \to BC$)
+                        \[
+                            \AttrHuelle(\FD - \{ E \to ABC \} \cup \{ E \to BC \}, \{E\}) = \{ B, C, D, E, F \} \not\ni A
+                        \]
+                  \item Ist $B$ überflüssig? ($E \to ABC$ wird zu $E \to AC$)
+                        \[
+                            \mhl{E \to AC, C \to BEF} \implies B \in \AttrHuelle(\FD - \{ E \to ABC \} \cup \{ E \to AC \}, \{E\})
+                        \]
+                        Damit ist $B$ überflüssig.
+                  \item Ist $C$ überflüssig? ($E \to ABC$ wird zu $E \to AB$)
+                        \[
+                            \mhl{E \to AB, A \to C} \implies C \in \AttrHuelle(\FD - \{ E \to ABC \} \cup \{ E \to AB \}, \{E\})
+                        \]
+                        Damit ist $C$ überflüssig.
+              \end{itemize}
+              Damit können wir $E \to ABC$ zu $E \to A$ reduzieren und erhalten:
+              \[
+                  \boxed{
+                      \FD = \{
+                      A \to C, \,
+                      C \to \emptyset, \,
+                      \mhl{E \to A}, \,
+                      F \to CD, \,
+                      C \to BEF
+                      \}
+                  }
+              \]
+
+        \item Betrachte $F \to CD$:
+              \begin{itemize}
+                  \item Ist $C$ überflüssig? ($F \to CD$ wird zu $F \to D$)
+                        \[
+                            \AttrHuelle(\FD - \{ F \to CD \} \cup \{ F \to D \}, \{F\}) = \{ D, F \} \not\ni C
+                        \]
+                  \item Ist $D$ überflüssig? ($F \to CD$ wird zu $F \to C$)
+                        \[
+                            \AttrHuelle(\FD - \{ F \to CD \} \cup \{ F \to C \}, \{F\}) = \{ B, C, E, F \} \not\ni D
+                        \]
+              \end{itemize}
+              Damit können wir $F \to CD$ nicht reduzieren.
+
+        \item Betrachte $C \to BEF$:
+              \begin{itemize}
+                  \item Ist $B$ überflüssig? ($C \to BEF$ wird zu $C \to EF$)
+                        \[
+                            \AttrHuelle(\FD - \{ C \to BEF \} \cup \{ C \to EF \}, \{C\}) = \{ C, D, E, F \} \not\ni B
+                        \]
+                  \item Ist $E$ überflüssig? ($C \to BEF$ wird zu $C \to BF$)
+                        \[
+                            \AttrHuelle(\FD - \{ C \to BEF \} \cup \{ C \to BF \}, \{C\}) = \{ B, C, D, F \} \not\ni E
+                        \]
+                  \item Ist $F$ überflüssig? ($C \to BEF$ wird zu $C \to BE$)
+                        \[
+                            \AttrHuelle(\FD - \{ C \to BEF \} \cup \{ C \to BE \}, \{C\}) = \{ B, C, E \} \not\ni F
+                        \]
+              \end{itemize}
+              Damit können wir $F \to CD$ nicht reduzieren.
+    \end{itemize}
+
+    Damit sind unsere funktionalen Abhängigkeiten reduziert zu:
+    \[
+        \FD = \{
+        A \to C, \,
+        C \to \emptyset, \,
+        E \to A, \,
+        F \to CD, \,
+        C \to BEF
+        \}
+    \]
+\end{example}
+
+\begin{example}{Berechnung der kanonischen Überdeckung (Entfernung und Vereinigung)}
+    Wir haben durch Links- und Rechtsreduktion unsere funktionalen Abhängigkeiten reduziert auf:
+    \[
+        \FD = \{
+        A \to C, \,
+        C \to \emptyset, \,
+        E \to A, \,
+        F \to CD, \,
+        C \to BEF
+        \}
+    \]
+    \emph{Entfernung}:
+
+    Wir erkennen, dass wir $C \to \emptyset$ weglassen können und erhalten:
+    \[
+        \FD = \{
+        A \to C, \,
+        E \to A, \,
+        F \to CD, \,
+        C \to BEF
+        \}
+    \]
+
+    \emph{Vereinigung}:
+
+    Wir haben keine gleichen linken Seiten, also können wir keine funktionalen Abhängigkeiten vereinigen.
+
+    Wir erhalten final unsere kanonische Überdeckung $\FD^c$ mit
+    \[
+        \FD^c = \{
+        A \to C, \,
+        E \to A, \,
+        F \to CD, \,
+        C \to BEF
+        \}
+    \]
+    \qed
+\end{example}
+
+\begin{bonus}{Tipps zur Berechnung der kanonischen Überdeckung}
+    \begin{itemize}
+        \item Linksreduktion:
+              \begin{itemize}
+                  \item Hier sind nur die funktionalen Abhängigkeiten zu überprüfen, die links mindestens zwei Attribute besitzen
+              \end{itemize}
+        \item Rechtsreduktion:
+              \begin{itemize}
+                  \item Hier sind alle funktionalen Abhängigkeiten zu prüfen.
+                  \item Es kann hilfreich sein, alle funktionalen Abhängigkeiten aus $\FD$ mit mehr auf einem Attribut auf der rechten Seite aufzuspalten (Dekomposition).\\
+                        Das führt zwar zu einer größeren Menge $\FD'$, aber die Komplexität der Abfragen wird deutlich reduziert.\\
+                        im letzten Schritt müssen die aufgespaltenen funktionalen Abhängigkeiten ohnehin wieder vereinigt werden.
+              \end{itemize}
+    \end{itemize}
+\end{bonus}
+
+\begin{bonus}{CRUD}
+    Unter \emph{CRUD} versteht man die fundamentalen Datenbankoperationen:
+    \begin{itemize}
+        \item \emph{Create}: Datensatz anlegen,
+        \item \emph{Read/Retrieve}: Datensatz lesen,
+        \item \emph{Update}: Datensatz aktualisieren und
+        \item \emph{Delete/Destroy}: Datensatz löschen.
+    \end{itemize}
+
+    Im Gegensatz zum Lesezugriff (Read) können die Daten verändernden Operationen Create, Update und Delete zu Anomalien innerhalb der Datenbank führen.
+\end{bonus}
+
+\begin{defi}{Anomalie}
+    \emph{Anomalien} bezeichnen in relationalen Datenbanken Fehlverhalten der Datenbank durch Verletzung der Regel \enquote{every information once}.
+    Das bedeutet, dass das zugrunde liegende Datenmodell Tabellen mit Spalten gleicher Bedeutung und darüber hinaus auch noch mit abweichenden (anomalen) Inhalten zulässt, so dass nicht mehr erkennbar ist, welche Tabelle bzw. Spalte den richtigen Inhalt enthält (Dateninkonsistenz)
+
+    Man unterscheides zwischen:
+    \begin{itemize}
+        \item \emph{Update-Anomalien}
+              \begin{itemize}
+                  \item tritt generell auf, wenn redundante Daten in einem Tupel nur teilweise bzw. falsch aktualisiert werden
+              \end{itemize}
+        \item \emph{Einfüge-Anomalien}
+              \begin{itemize}
+                  \item generell Daten so verbunden, dass sie nicht ohne andere (nicht \texttt{NULL}) eingegeben werden können
+              \end{itemize}
+        \item \emph{Lösch-Anomalien}
+              \begin{itemize}
+                  \item entsteht, wenn durch das Löschen eines Datensatzes mehr Informationen als erwünscht verloren gehen
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Verlustlosigkeit und Abhängigkeitserhaltung}
+    Gegeben sei eine Relation $R$ mit einer Menge funktionaler Abhängigkeiten.
+    Diese Relation soll in neue Relationen $R_i$ aufgeteilt werden, z.B. um Anomalien zu vermeiden.
+
+    \begin{itemize}
+        \item \emph{Verlustlosigkeit/Verbundtreue}: \\
+              \begin{itemize}
+                  \item Die in der ursprünglichen Relation $R$ enthaltenen Informationen müssen aus den neuen Relationen $R_1, \ldots ,R_n$ mittels natürlichen Verbunds (Natural-Join) rekonstruierbar sein.
+                  \item Eine Zerlegung einer Relation $R$ in zwei Relationen $R_1$ und $R_2$ ist \emph{verlustlos}, wenn man mindestens eine der beiden aus dem gemeinsamen Bereich (Überlappung der Attribute) wieder ableiten kann.
+                  \item Es gilt:
+                        \[
+                            R_1 \cap R_2 \to R_1 \quad \text{oder} \quad R_1 \cap R_2 \to R_2
+                        \]
+              \end{itemize}
+        \item \emph{Abhängigkeitserhaltung}: \\
+              \begin{itemize}
+                  \item Die ursprünglich geltenden \emph{funktionalen Abhängigkeiten} müssen auch auf der Zerlegung, also den neuen Relationen, gelten.
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Erste Normalform}
+    Ein Schema in \emph{erster Normalform} (1NF, auch NF1) besitzt nur atomare bzw. elementare Attribute, d.h. kein Attribut ist zusammengesetzt oder mehrwertig.
+
+    Funktionale Abhängigkeiten spielen keine Rolle.
+\end{defi}
+
+\begin{algo}{Überführung in erste Normalform}
+    Um 1NF zu erreichen, müssen Sachverhalte in mehrere Attribute getrennt und Mehrwertigkeiten, typischerweise in eine 1:n-Relation, aufgespalten werden.
+\end{algo}
+
+\begin{defi}{Zweite Normalform}
+    Ein Schema $R$ ist in \emph{zweiter Normalform} (2NF, auch NF2), wenn es in 1NF vorliegt und jedes Attribut entweder
+    \begin{itemize}
+        \item prim ist, oder
+        \item voll funktional abhängig von jedem Schlüsselkandidaten ist.
+    \end{itemize}
+\end{defi}
+
+\begin{algo}{Überführung in zweite Normalform}
+    Um 1NF zu erreichen, müssen Sachverhalte in mehrere Attribute getrennt und Mehrwertigkeiten, typischerweise in eine 1:N-Relation, aufgespalten werden.
+
+    Für den Test, ob 2NF vorliegt, benötigt man alle Schlüsselkandidaten.
+
+    Wenn jedes Attribut in irgendeinem Schlüsselkandidaten vorkommt, ist 2NF erfüllt, da es nur prim Attribute gibt.
+
+    2NF kann nur verletzt sein, wenn ein Schlüsselkandidat zusammengesetzt ist.
+\end{algo}
+
+\begin{defi}{Dritte Normalform}
+    Ein Schema $R$ ist in \emph{dritter  Normalform} (3NF, auch NF3), wenn es in 2NF vorliegt und jedes nicht-prim Attribut direkt, also nicht transitiv, von einem Schlüsselkandidaten abhängt.
+
+    Gemeint ist, dass bei einer vorliegenden transitiven Abhängigkeit $b$ von $\beta$, also
+    \[
+        \beta \to a \to b
+    \]
+    wobei $\beta$ ein Schlüsselkandidat ist, hier $a$ kein Schlüsselkandidat ist.
+\end{defi}
+
+\begin{defi}{Dritte Normalform (Alternative)}
+    Ein Schema $R$ mit einer Menge funktionaler Abhängigkeiten $\FD$ ist in \emph{dritter  Normalform} (3NF, auch NF3), wenn für jede funktionale Abhängigkeit $\alpha \to \beta \in \FD^+$ mindesten eine der folgenden Bedingungen gilt:
+
+    \begin{itemize}
+        \item $\alpha \to \beta$ ist trivial, also $\beta \subseteq \alpha$ ,
+        \item $\beta$ enthält nur prim Attribute,
+        \item $\alpha$ ist Superschlüssel.
+    \end{itemize}
+
+    Für den Test, ob 3NF vorliegt, benötigt man alle Schlüsselkandidaten.
+
+    Die zweite Normalform ist eingeschlossen.
+\end{defi}
+
+\begin{algo}{Überführung in dritte Normalform}
+    Der Synthesealgorithmus überführt $R$ verlustlos und abhängigkeitserhaltend in 3NF.
+\end{algo}
+
+\begin{algo}{Synthesealgorithmus}
+    \begin{enumerate}
+        \item Bestimme die kanonische Überdeckung $\FD^c$ zu $\FD$:
+              \begin{enumerate}
+                  \item Linksreduktion
+                  \item Rechtsreduktion
+                  \item Entfernung von funktionalen Abhängigkeiten der Form $\alpha \to \emptyset$
+                  \item Zusammenfassung gleicher linker Seiten
+              \end{enumerate}
+        \item Für jede funktionale Abhängigkeit $\alpha \to \beta \in \FD^c$:
+              \begin{itemize}
+                  \item Kreiere ein Relationenschema $R_a := \alpha \cup \beta$
+                  \item Ordne $R_a$ die funktionalen Abhängigkeiten
+                        \[
+                            \FD_a = \{ \alpha' \to \beta' \in \FD^c \mid \alpha' \cup \beta' \subseteq R_a \}
+                        \]
+                        zu.
+              \end{itemize}
+        \item Falls eines der in Schritt 2. erzeugten Schemata einen Schlüsselkandidaten von $R$ bzgl. $\FD^c$ enthält, sind wir fertig. \\
+              Sonst wähle einen Schlüsselkandidaten $x \in R$ aus und definiere folgendes Schema:
+              \[
+                  R_x = x \quad \land \quad \FD_x = \emptyset
+              \]
+        \item Eliminiere diejenigen Schemata $R_a$, die in einem anderen Relationenschema $R'_a$ enthalten sind, d.h.:
+              \[
+                  R_a \subseteq R'_a
+              \]
+    \end{enumerate}
+\end{algo}
+
+\begin{example}{Synthesealgorithmus}
+    Gegeben sei ein abstraktes Relationenschema $R = \{ A, \underline{B}, C, \underline{D}, E, F, \underline{G} \}$ mit der kanonischen Überdeckung:
+    \[
+        \FD^c = \{
+        CD \to A, \,
+        A \to C, \,
+        B \to C, \,
+        D \to E, \,
+        E \to F
+        \}
+    \]
+    und dem Schlüsselkandidaten $BDG$.
+
+    Überführen Sie die Relation in die dritte Normalform, indem Sie den Synthesealgorithmus anwenden.
+
+    \exampleseparator
+
+    \emph{Schritt 1:}
+
+    Die kanonische Überdeckung $\FD^c$ wurde bereits gegeben.
+
+    \emph{Schritt 2:}
+
+    Wir erstellen für jede funktionale Abhängigkeit ein Relationenschema:
+    \begin{itemize}
+        \item $CD \to A \implies R_1 = \{ A, C, D \} \quad \land \quad \FD_1 = \{ CD \to A, \, A \to C \}$
+        \item $A \to C \implies R_2 = \{ A, C \} \quad \land \quad \FD_2 = \{ A \to C \}$
+        \item $B \to C \implies R_3 = \{ B, C \} \quad \land \quad \FD_3 = \{ B \to C \}$
+        \item $D \to E \implies R_4 = \{ D, E \} \quad \land \quad \FD_4 = \{ D \to E \}$
+        \item $E \to F \implies R_5 = \{ E, F \} \quad \land \quad \FD_5 = \{ E \to F \}$
+    \end{itemize}
+
+    \emph{Schritt 3:}
+
+    Kein Relationenschema enthält einen Schlüsselkandidaten, deswegen müssen wir ein weiteres Schema mit dem ursprünglichen Schlüssel anlegen:
+    \[
+        R_S = \{ \underline{B}, \underline{D}, \underline{G} \}
+    \]
+
+    \emph{Schritt 4:}
+
+    Wir erkennen:
+    \[
+        R_2 \subseteq R_1
+    \]
+    Damit können wir $R_2$ entfernen.
+
+    Übrig bleibt nun die überführte Relation in 3NF.
+    \qed
+\end{example}
+
+\begin{defi}{Boyce-Codd Normalform}
+    Ein Schema $R$ mit einer Menge funktionaler Abhängigkeiten $\FD$ ist in \emph{Boyce-Codd Normalform} (BCNF), wenn für jede funktionale Abhängigkeit $\alpha \to \beta \in \FD^+$ mindestens eine der folgenden Bedingungen gilt:
+    \begin{itemize}
+        \item $\alpha \to \beta$ ist trivial, also $\beta \subseteq \alpha$
+        \item $\alpha$ ist Superschlüssel
+    \end{itemize}
+
+    Die dritte Normalform ist eingeschlossen.
+
+    Man kann jedes Schema $R$ mit funktionalen Abhängigkeiten $\FD$ so in Schemata $R_1,\ldots , R_n$ zerlegen, dass die BCNF erfüllt ist.\footnote{Die Zerlegung nicht notwendigerweise abhängigkeitserhaltend.}
+\end{defi}
+
+\begin{algo}{Überführung in Boyce-Codd Normalform}
+    Der Dekompositionsalgorithmus setzt genau das um und durch die Aufteilung der Relationen können funktionale Abhängigkeiten verloren gehen.
+\end{algo}
+
+\begin{algo}{Dekompositionsalgorithmus}
+    \begin{enumerate}
+        \item Starte mit $Z = \{R\}$
+        \item Solange es noch ein Relationenschema $R_i$ in $Z$ gibt, das nicht in BCNF ist, mache folgendes:\footnote{Es gibt also eine für $R_i$ geltende funktionale Abhängigkeit $\alpha \to \beta$ mit $\alpha \cap \beta = \emptyset$ (nicht trivial) und $\lnot (\alpha \to R_i)$ ($\alpha$ also kein Superschlüssel)}
+              \begin{enumerate}
+                  \item Finde eine solche funktionale Abhängigkeit\footnote{Man sollte die funktionale Abhängigkeit so wählen, dass $\beta$ alle von $\alpha$ funktional abhängigen Attribute $b \in (R_i - \alpha)$ enthält, damit der Dekompositionsalgorithmus möglichst schnell terminiert.}
+                  \item Zerlege $R_i$ in $R_{i_1} = \alpha \cup \beta$ und $R_{i_2} = R_i - \beta$\footnote{In diesem Schritt gehen potentiell Abhängigkeiten verloren.}
+                  \item Entferne $R_i$ aus $Z$ und füge $R_{i_1}$ und $R_{i_2}$ ein:
+                        \[
+                            Z = (Z - \{R_i\}) \cup \{R_{i_1}\} \cup \{R_{i_2}\}
+                        \]
+              \end{enumerate}
+    \end{enumerate}
+\end{algo}
+
+\begin{example}{Dekompositionsalgorithmus}
+    Gegeben sei die Relation $R = \{ A, B, C, D, E, F \}$ mit den funktionalen Abhängigkeiten
+    \[
+        \FD = \{
+        B \to DA, \,
+        DEF \to B, \,
+        C \to EA
+        \}
+    \]
+
+    Wenden Sie den Dekompositionsalgorithmus an, um die Relation $R$ in die BCNF zu zerlegen und unterstreichen Sie die Schlüssel der Teilrelationen des Endergebnisses.
+
+    \exampleseparator
+
+    \begin{itemize}
+        \item Starte mit $Z = \{ R \}$.
+        \item Ist $R$ in BCNF? $\lightning$
+              \begin{itemize}
+                  \item $B \to DA$ verletzt BCNF\footnote{$\beta \notin \alpha$ und $B$ ist kein Superschlüssel.}
+                        \begin{itemize}
+                            \item Zerlegung von $R$ anhand der funktionalen Abhängigkeit $B \to DA$:
+                                  \begin{itemize}
+                                      \item $R_1 = \alpha \cup \beta = \{ A, B, D \} \quad \land \quad \FD_1 = \{ B \to DA \}$
+                                      \item $R_2 = R - \beta = \{ B, C, E, F \} \quad \land \quad \FD_2 = \{ C \to E \}$\footnote{Hier geht $DEF \to B$ komplett verloren, und $C \to AE$ geht teilweise verloren (Dekompositionsalgorithmus).}
+                                  \end{itemize}
+                        \end{itemize}
+                  \item Ist $R_1$ in BCNF? $\checkmark$
+                  \item Ist $R_2$ in BCNF? $\lightning$
+                        \begin{itemize}
+                            \item Zerlegung von $R_2$ anhand der funktionalen Abhängigkeit $C \to E$:
+                                  \begin{itemize}
+                                      \item $R_{2_1} = \alpha \cup \beta = \{ C, E \} \quad \land \quad \FD_{2_1} = \{ C \to E \}$
+                                      \item $R_{2_2} = R_2 - \beta = \{ B, C, F \} \quad \land \quad \FD_{2_1}$ trivial
+                                  \end{itemize}
+                        \end{itemize}
+                  \item Ist $R_{2_1}$ in BCNF? $\checkmark$
+                  \item Ist $R_{2_2}$ in BCNF? $\checkmark$
+              \end{itemize}
+    \end{itemize}
+
+    Damit erhalten wir unser Relationenschema in BCNF mit:
+    \[
+        R_1 = \{ A, \underline{B}, D \} \quad \land \quad \FD_1 = \{ B \to DA \}
+    \]
+    \[
+        R_{2_1} = \{ \underline{C}, E \} \quad \land \quad \FD_{2_1} = \{ C \to E \}
+    \]
+    \[
+        R_{2_2} = \{ \underline{B}, \underline{C}, \underline{F} \} \quad \land \quad \FD_{2_1} \text{trivial}
+    \]
+\end{example}

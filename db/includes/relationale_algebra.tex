@@ -66,7 +66,7 @@
               \]
     \end{itemize}
 
-    Für mehr Informationen und Beispiele zu den konkreten Anwendungen in SQL: %\fullref{SQL}.
+    %Für mehr Informationen und Beispiele zu den konkreten Anwendungen in SQL: %\fullref{SQL}.
 \end{defi}
 
 \begin{defi}{Kartesisches Produkt}
@@ -99,9 +99,9 @@
 \end{defi}
 
 \begin{defi}{Projektion}
-    Die \emph{Projektion} $\Pi_{a_{i1}, \ldots, a_{ik}}$ wählt aus einer Relation $S$ mit $\ident(S) = \{a_{1}, \ldots, a_{n}\}$ die Attribute $a_{i1}$ bis $a_{ik}$ aus:
+    Die \emph{Projektion} $\pi_{a_{i1}, \ldots, a_{ik}}$ wählt aus einer Relation $S$ mit $\ident(S) = \{a_{1}, \ldots, a_{n}\}$ die Attribute $a_{i1}$ bis $a_{ik}$ aus:
     \[
-        \Pi_{a_{i1}, \ldots, a_{ik}}(S) = \{ (a_{i1}, \ldots, a_{ik}) \mid a \in S \}
+        \pi_{a_{i1}, \ldots, a_{ik}}(S) = \{ (a_{i1}, \ldots, a_{ik}) \mid a \in S \}
     \]
 
     Die mathematische Menge eliminiert Duplikate, die Ergebnismenge in SQL aber nicht.
@@ -129,9 +129,9 @@
 
     Im Unterschied zum Theta-Verbund enthält der Natural-Join die gleichen Attribute nur einmal, eliminiert so also ungewünschte Redundanz.
 
-    Für zwei Relationen $S$ und $T$ mit $\schema(S) = \{ [ a_1, \ldots, a_n, b_1, \ldots, b_k ] \}$ und $\schema(T) = \{ [ b_1, \ldots, b_k, c_1, \ldots, c_m ] \}$ ist der Natural-Join $S \bowtie T$ definiert durch\footnote{Das entspricht dem Schema $\{ [a_1, \ldots, a_n, b_1, \ldots, b_k, c_1, \ldots, c_m] \}$ und man sieht, dass die doppelten Attribute $S.b_i$ bzw. $T.b_i$ durch die Projektion $\Pi$ wegfallen.}
+    Für zwei Relationen $S$ und $T$ mit $\schema(S) = \{ [ a_1, \ldots, a_n, b_1, \ldots, b_k ] \}$ und $\schema(T) = \{ [ b_1, \ldots, b_k, c_1, \ldots, c_m ] \}$ ist der Natural-Join $S \bowtie T$ definiert durch\footnote{Das entspricht dem Schema $\{ [a_1, \ldots, a_n, b_1, \ldots, b_k, c_1, \ldots, c_m] \}$ und man sieht, dass die doppelten Attribute $S.b_i$ bzw. $T.b_i$ durch die Projektion $\pi$ wegfallen.}
     \[
-        S \bowtie T = \Pi_{a_1, \ldots, a_n, S.b_1, \ldots, S.b_k, c_1, \ldots, c_m} \sigma_{S.b_1 = T.b_1 \land \ldots \land S.b_n = T.b_n} (S \times T)
+        S \bowtie T = \pi_{a_1, \ldots, a_n, S.b_1, \ldots, S.b_k, c_1, \ldots, c_m} \sigma_{S.b_1 = T.b_1 \land \ldots \land S.b_n = T.b_n} (S \times T)
     \]
 
     \emph{Hinweis:}
@@ -145,14 +145,14 @@
 
     Der Semi-Join $S \ltimes T$ ist für zwei Relationen $S$ und $T$ definiert durch
     \[
-        S \ltimes T = \Pi_{\ident(S)} (S \bowtie T)
+        S \ltimes T = \pi_{\ident(S)} (S \bowtie T)
     \]
 \end{bonus}
 
 \begin{bonus}{Anti-Semi-Join}
     Beim \emph{Anti-Semi-Join} $S \rhd T$ zweier Relationen $S$ und $T$ werden die Tupel aus $S$ selektiert, die am Natural-Join \emph{nicht} teilnehmen:
     \[
-        S \rhd T = S - (S \ltimes T) = S - \Pi_{\ident(S)} (S \bowtie T)
+        S \rhd T = S - (S \ltimes T) = S - \pi_{\ident(S)} (S \bowtie T)
     \]
 \end{bonus}
 
@@ -201,8 +201,8 @@
     \end{center}
 \end{bonus}
 
-\begin{sql}{Differenz}
-    Die \emph{Differenz} ist in MySQL bzw. MariaDB als Opesration so nicht vorhanden, kann aber leicht über Joins abgebildet werden.
+\begin{sql}{MINUS}
+    Die \emph{Differenz} ist in MySQL bzw. MariaDB als Operation so nicht vorhanden, kann aber leicht über Joins abgebildet werden.
 
     Für zwei Relationen $S$ und $T$ mit $\schema(S) = \schema(T)$ und Schlüsselattribut $K$ gilt:
     \[
@@ -210,7 +210,7 @@
     \]
 \end{sql}
 
-\begin{sql}{Schnittmenge}
+\begin{sql}{INTERSECT}
     Die \emph{Schnittmenge} ist in MySQL bzw. MariaDB als Operation so nicht vorhanden, kann aber leicht über Joins abgebildet werden.
 
     Für zwei Relationen $S$ und $T$ mit $\schema(S) = \schema(T)$ und Schlüsselattribut $K$ gilt:
@@ -243,7 +243,7 @@
     \]
     bzw. äquivalent
     \[
-        S \div T = \Pi_{S-T}(S) - \Pi_{S-T}( (\Pi_{S-T}(S) \times T) - S )
+        S \div T = \pi_{S-T}(S) - \pi_{S-T}( (\pi_{S-T}(S) \times T) - S )
     \]
 
     Die Division $\div$ ist also die \enquote{Umkehroperation} zum kartesischen Produkt, denn es gilt symbolisch:
@@ -253,8 +253,117 @@
 
     \emph{Hinweis:}
 
-    Die Ergebnismenge ist nur der $a$-Anteil von $S$, also $\Pi_a(S) = \Pi_{a_1, \ldots, a_n}(S)$.
+    Die Ergebnismenge ist nur der $a$-Anteil von $S$, also $\pi_a(S) = \pi_{a_1, \ldots, a_n}(S)$.
 \end{defi}
+
+\begin{example}{Schrittweise Division}
+    Gegeben seien zum einen die Tabelle \texttt{effektivitaet} als $S$:
+
+    \rowcolors{2}{gray!15}{white}
+
+    \vspace{1em}
+    \begin{tabular}{I|ITT}
+        \rowcolor{gray!35}
+                                   & \multicolumn{1}{T}{Multiplikator} & \multicolumn{1}{T}{Angreifend} & \multicolumn{1}{T}{Verteidigend} \\\hline
+        1                          & 1                                 & Boden                          & Boden                            \\
+        2                          & 1                                 & Boden                          & Drache                           \\
+        3                          & 1                                 & Boden                          & Eis                              \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{3}{c}{\dots}                                                                             \\
+        324                        & 0.5                               & Wasser                         & Wasser                           \\
+    \end{tabular}
+    \vspace{1em}
+
+    und $T$ mit
+
+    \vspace{1em}
+    \begin{tabular}{I|IT}
+        \rowcolor{gray!35}
+          & \multicolumn{1}{T}{Multiplikator} & \multicolumn{1}{T}{Verteidigend} \\\hline
+        1 & 2                                 & Eis                              \\
+        2 & 2                                 & Gestein                          \\
+    \end{tabular}
+    \vspace{1em}
+
+    Wir bestimmen schrittweise die Division $S \div T$:
+    \begin{enumerate}
+        \item $\pi_{S-T}(S)$:
+
+              \vspace{1em}
+              \begin{tabular}{I|T}
+                  \rowcolor{gray!35}
+                                             & \multicolumn{1}{T}{S.Angreifend} \\\hline
+                  1                          & Boden                            \\
+                  2                          & Drache                           \\
+                  3                          & Eis                              \\
+                  \multicolumn{1}{c|}{\dots} & \multicolumn{1}{c}{\dots}        \\
+                  18                         & Wasser                           \\
+              \end{tabular}
+              \vspace{1em}
+
+        \item $\pi_{S-T}(S) \mhl{\times T}$:
+
+              \vspace{1em}
+              \begin{tabular}{I|TIT}
+                  \rowcolor{gray!35}
+                                             & \multicolumn{1}{T}{S.Angreifend} & \multicolumn{1}{T}{T.Multiplikator} & \multicolumn{1}{T}{T.Verteidigend} \\\hline
+                  1                          & Boden                            & 2                                   & Eis                                \\
+                  2                          & Boden                            & 2                                   & Gestein                            \\
+                  3                          & Drache                           & 2                                   & Eis                                \\
+                  \multicolumn{1}{c|}{\dots} & \multicolumn{3}{c}{\dots}                                                                                   \\
+                  36                         & Wasser                           & 2                                   & Gestein                            \\
+              \end{tabular}
+              \vspace{1em}
+
+        \item $\pi_{S-T}(S) \times T \mhl{- S}$:
+
+              \vspace{1em}
+              \begin{tabular}{I|TIT}
+                  \rowcolor{gray!35}
+                                             & \multicolumn{1}{T}{S.Angreifend} & \multicolumn{1}{T}{T.Multiplikator} & \multicolumn{1}{T}{T.Verteidigend} \\\hline
+                  1                          & Boden                            & 2                                   & Eis                                \\
+                  2                          & Drache                           & 2                                   & Eis                                \\
+                  3                          & Drache                           & 2                                   & Gestein                            \\
+                  \multicolumn{1}{c|}{\dots} & \multicolumn{3}{c}{\dots}                                                                                   \\
+                  27                         & Wasser                           & 2                                   & Gestein                            \\
+              \end{tabular}
+              \vspace{1em}
+    \end{enumerate}
+\end{example}
+
+\begin{example}{Schrittweise Division (Fortsetzung)}
+    \rowcolors{2}{gray!15}{white}
+
+    \begin{enumerate}
+        \setcounter{enumi}{3}
+        \item $\mhl{\pi_{S-T}} (\pi_{S-T}(S) \times T - S)$
+
+              \vspace{1em}
+              \begin{tabular}{I|T}
+                  \rowcolor{gray!35}
+                                             & \multicolumn{1}{T}{S.Angreifend} \\\hline
+                  1                          & Boden                            \\
+                  2                          & Drache                           \\
+                  3                          & Eis                              \\
+                  \multicolumn{1}{c|}{\dots} & \multicolumn{1}{c}{\dots}        \\
+                  16                         & Wasser                           \\
+              \end{tabular}
+              \vspace{1em}
+
+        \item $\mhl{\pi_{S-T}(S) -} \pi_{S-T} (\pi_{S-T}(S) \times T - S)$:
+
+              \vspace{1em}
+              \begin{tabular}{I|T}
+                  \rowcolor{gray!35}
+                    & \multicolumn{1}{T}{S.Angreifend} \\\hline
+                  1 & Kampf                            \\
+                  2 & Stahl
+              \end{tabular}
+              \vspace{1em}
+    \end{enumerate}
+
+    Damit wissen wir nun, dass die Typen Kampf und Stahl beide doppelt effektiv gegen Eis und Gestein sind.
+    \qed
+\end{example}
 
 \begin{defi}{Aggregation und Gruppierung}
     Die \emph{Gruppierung} wendet \emph{Aggregatfunktionen}\footnote{Aggregatfunktionen sind z.B. \texttt{COUNT}, \texttt{AVG}, \texttt{SUM}, \texttt{MIN} und \texttt{MAX}.} auf gleiche Attribute in einer Relation an.
@@ -268,3 +377,340 @@
 
     Jede Aggregatfunktion $f_1, \ldots, f_k$ ergibt eine Spalte in der Ergebnistabelle.
 \end{defi}
+
+\begin{bonus}{Zusammenfassung Notation relationale Algebra}
+    Seien zwei Relationen $S$ und $T$ gegeben.
+
+    \begin{center}
+        \begin{tabular}{l|c|l}
+            Funktion                        & \multicolumn{1}{l|}{Notation}                    & Hinweise                                      \\
+            \hline
+            Selektion                       & $\sigma_\Theta(S)$                               & filtert Entitäten nach Bedingung $\Theta$     \\
+                                            &                                                  &                                               \\
+            Projektion                      & $\pi_{a_{i1}, \ldots, a_{ik}}(S) $               & filtert Attribute zu $a_{i1}, \ldots, a_{ik}$ \\
+                                            &                                                  &                                               \\
+            Theta-Join                      & $S \bowtie_\Theta T$                             & filtert kartesisches Produkt nach             \\
+            \hspace{4ex} \emph{alternativ:} & $\sigma_\Theta (S \times T)$                     & Bedingung $\Theta$                            \\
+                                            &                                                  &                                               \\
+            Equi-Join                       & $S \bowtie_{a_1 = a_2} T$                        & Spezialfall des Theta-Join                    \\
+            \hspace{4ex} \emph{alternativ:} & $\sigma_{a_1 = a_2} (S \times T)$                &                                               \\
+                                            &                                                  &                                               \\
+            Natural-Join                    & $S \bowtie T$                                    & verbindet Entitäten, die in gleich be-        \\
+                                            &                                                  & nannten Attributen gleiche Werte haben        \\
+                                            &                                                  &                                               \\
+            Semi-Join                       & $S \ltimes T$                                    & berechnet Anteil eines Natural Joins,         \\
+            \hspace{4ex} \emph{alternativ:} & $\pi_{\ident(S)} (S \bowtie T)$                  & der nach Reduktion auf $S$ übrig bleibt       \\
+                                            &                                                  &                                               \\
+            Anti-Semi-Join                  & $S \rhd T$                                       & berechnet Anteil eines Natural Joins,         \\
+            \hspace{4ex} \emph{alternativ:} & $S - \pi_{\ident(S)} (S \bowtie T)$              & der in keiner Relation zu $T$ steht           \\
+                                            &                                                  &                                               \\
+            Left-Outer-Join                 & $S \lojoin T$                                    & schließt alle Entitäten aus $S$ ein,          \\
+                                            &                                                  & auch die ohne Relation zu $T$                 \\
+                                            &                                                  &                                               \\
+            Right-Outer-Join                & $S \rojoin T$                                    & schließt alle Entitäten aus $T$ ein,          \\
+                                            &                                                  & auch die ohne Relation zu $S$                 \\
+                                            &                                                  &                                               \\
+            Full-Outer-Join                 & $S \fojoin T$                                    & schließt alle Entitäten aus $S$ und $T$ ein   \\
+                                            &                                                  &                                               \\
+            Umbenennung (Relation)          & $\rho_{S'}(S)$                                   & benennt Relation $S$ um in $S'$               \\
+                                            &                                                  &                                               \\
+            Umbenennung (Attribut)          & $\rho_{a \to a'}(T)$                             & benennt Attribut $a$ um in $a'$               \\
+                                            &                                                  &                                               \\
+            Division                        & $S \div T $                                      & beschreibt die Tupel aus $S$, die mit         \\
+                                            &                                                  & allen Tupeln aus $T$ verknüpft sind           \\
+                                            &                                                  &                                               \\
+            Gruppierung                     & $\gamma_{a_1, \ldots, a_n; f_1, \ldots, f_k}(S)$ & gruppiert nach Attributen $a_1, \ldots, a_n$  \\
+                                            &                                                  & und wendet Funktionen $f_1, \ldots, f_k$ an
+        \end{tabular}
+    \end{center}
+\end{bonus}
+
+
+\subsection{Anfrageoptimierung}
+
+\begin{defi}{Ablauf der Anfrageoptimierung}
+    \begin{enumerate}
+        \item Scanner, Parser, Sichtenauflösung
+              \begin{itemize}
+                  \item Input: Deklarative Anfrage (Query)
+                  \item Output: Algebraischer Ausdruck
+              \end{itemize}
+        \item Anfrageoptimierer
+              \begin{itemize}
+                  \item Input: Algebraischer Ausdruck
+                  \item Output: Auswertungsplan (\enquote{Query Execution Plan (QEP)})
+              \end{itemize}
+        \item Codeerzeugung, Ausführung
+              \begin{itemize}
+                  \item Input: Auswertungsplan
+                  \item Führt optimierte Anfrage aus.
+              \end{itemize}
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{Äquivalenzerhaltende Transformationen}
+    \begin{enumerate}
+        \item Aufbrechen von Konjunktionen im Selektionsprädikat:
+              \[
+                  \mhl{\sigma_{\Theta_1 \land \Theta_2 \land \ldots \land \Theta_n} \quad \equiv \quad \sigma_{\Theta_1} ( \sigma_{\Theta_2} ( \ldots ( \sigma_{\Theta_n} (R) ) ) )}
+              \]
+
+        \item $\sigma$ ist kommutativ:
+              \[
+                  \mhl{\sigma_{\Theta_1} ( \sigma_{\Theta_2} (R) ) \quad \equiv \quad \sigma_{\Theta_2} ( \sigma_{\Theta_1} (R) )}
+              \]
+
+        \item $\pi$-Kaskaden:
+              \begin{itemize}
+                  \item falls $L_1 \subseteq L_2 \subseteq \ldots \subseteq L_n$
+              \end{itemize}
+              \[
+                  \mhl{\pi_{L_1} ( \pi_{L_2} ( \ldots ( \pi_{L_n} (R) ) ) ) \quad \equiv \quad \pi_{L_1} (R)}
+              \]
+
+        \item Vertauschen von $\pi$ und $\sigma$:
+              \begin{itemize}
+                  \item falls sich $\Theta$ nur auf $a_1, \ldots, a_n$ bezieht
+              \end{itemize}
+              \[
+                  \mhl{\pi_{a_1, \ldots, a_n} ( \sigma_\Theta (R) ) \quad \equiv \quad \sigma_\Theta ( \pi_{a_1, \ldots, a_n} (R) )}
+              \]
+        \item $\times$, $\cup$, $\cap$, $\bowtie$ sind kommutativ
+        \item Pushing Selections (\enquote{Selektiere so früh wie möglich}):
+              \begin{itemize}
+                  \item falls sich $\Theta$ sich nur auf Attribute von $R$ bezieht
+              \end{itemize}
+
+              \[
+                  \mhl{\sigma_\Theta (R \bowtie_{\Theta_J} S) \quad \equiv \quad \sigma_\Theta (R) \bowtie_{\Theta_J} S}
+              \]
+
+              \begin{itemize}
+                  \item falls $\Theta$ eine Konjunktion der Form $\Theta_1 \land \Theta_2$ ist und
+                        \begin{itemize}
+                            \item sich $\Theta_1$ nur auf Attribute von $R$ bezieht
+                            \item sich $\Theta_2$ nur auf Attribute von $S$ bezieht
+                        \end{itemize}
+              \end{itemize}
+              \[
+                  \mhl{\sigma_{\Theta_1 \land \Theta_2} (R \bowtie_{\Theta_J} S) \quad \equiv \quad \sigma_{\Theta_1} (R) \bowtie_{\Theta_J} \sigma_{\Theta_2} (S)}
+              \]
+        \item Vertauschen von $\pi$ mit $\bowtie$ (\enquote{Projeziere so früh wie möglich}):
+              \begin{itemize}
+                  \item Sei Projektionsliste $L = \{ a_1, \ldots, a_n, b_1, \ldots, b_m \}$ \\ mit $\{ a_1, \ldots, a_n \} \subseteq R$ und $\{ b_1, \ldots, b_m \} \subseteq S$ und
+                  \item Joinprädikat $\Theta_J$ bezieht sich ausschließlich auf Attribute aus $L$
+              \end{itemize}
+              \[
+                  \mhl{\pi_L (R \bowtie_{\Theta_J} S) \quad \equiv \quad \pi_{a_1, \ldots, a_n} (R) \bowtie_{\Theta_J} \pi_{b_1, \ldots, b_m} (S)}
+              \]
+              \begin{itemize}
+                  \item Joinprädikat $\Theta_J$ bezieht sich auch auf weitere Attribute \\ $\{ a'_1, \ldots, a'_k \} \subseteq R$ und $\{ b'_1, \ldots, b'_l \} \subseteq S$
+              \end{itemize}
+              \[
+                  \mhl{\pi_L (R \bowtie_{\Theta_J} S) \quad \equiv \quad \pi_L ( \pi_{a_1, \ldots, a_n, a'_1, \ldots, a'_k} (R) \bowtie_{\Theta_J} \pi_{b_1, \ldots, b_m, b'_1, \ldots, b'_l} (S) )}
+              \]
+        \item $\times$, $\cup$, $\cap$, $\bowtie$ sind jeweils assoziativ\footnote{Die Regel hat viel Potential mit Join!}
+        \item $\sigma$ ist distributiv mit $\cup$, $\cap$, $-$
+        \item $\pi$ ist distributiv mit $\cup$:
+              \[
+                  \mhl{\pi_L (R \cup S) \quad \equiv \quad \pi_L (R) \cup \pi_L (S)}
+              \]
+        \item De-Morgans Regeln für Join- und Selektionsprädikate
+        \item Zusammenfassung von $\sigma$ und $\times$ zu $\bowtie$:
+              \[
+                  \mhl{\sigma_\Theta (R \times S) \quad \equiv \quad R \bowtie_\Theta S}
+              \]
+    \end{enumerate}
+\end{defi}
+
+\begin{bonus}{Hinweise zu Transformationen}
+    Das Ziel ist generell, dass ein Worst-Case vermieden wird, nicht aber die optimale Anfrage.
+
+    Hinweise zu den Transformationen:
+    \begin{itemize}
+        \item Die Regeln 2, 4, 6 und 9 verschieben Selektionen so weit nach hinten wie möglich.
+        \item Regel 8 (Assoziativgesetz) vertauscht die Blattknoten so, dass derjenige, der das kleinste Zwischenergebnis liefert, zuerst ausgewertet wird.
+        \item Eine $\times$-Operation, gefolgt von einer $\sigma$-Operation wird eine $\bowtie$-Operation.
+        \item Die Regeln 3, 4, 7 und 10 verschieben Projektionen so weit nach hinten wie möglich.
+    \end{itemize}
+\end{bonus}
+
+\begin{example}{Anfrageoptimierung}
+
+    \begin{lstlisting}[language=mysql]
+        -- Alle Feuer-Pokemon, die sich durch ein Item mit 'Feuer' im Namen entwickeln
+        SELECT p1.Name -- Projektion
+        FROM -- kartesisches Produkt
+            pokemon AS p1,                                
+            entwicklung AS e,                 
+            pokemon AS p2,                    
+            item AS i                         
+        WHERE
+            p1.ID = e.Von -- Join
+            AND e.Zu = p2.ID -- Join
+            AND e.Item = i.ID -- Join            
+            AND ( 
+                p2.PrimaerTyp = 'Feuer'
+                OR p2.SekundaerTyp = 'Feuer'
+            ) -- Selektion
+            AND i.Bezeichnung LIKE "%Feuer%"; -- Selektion
+    \end{lstlisting}
+
+    Die kanonische Übersetzung der Anfrage ist:
+
+    \begin{center}
+        \begin{forest}
+            [$\pi_{\texttt{p1.Name}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{4}}
+            [$\sigma_{\substack{\texttt{p1.ID = e.Von} \ \land \\ \texttt{e.Zu = p2.ID} \ \land \\ \texttt{e.Item = i.ID} \ \land \\ (\texttt{p2.PrimaerTyp = 'Feuer'} \ \lor \\ \texttt{p2.SekundaerTyp = 'Feuer'}) \ \land \\ \texttt{i.Bezeichung = '\%Feuer\%'}} }$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{4}}
+            [$\times$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=red!30]{537.602.129.064}}
+            [
+            $\times$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=orange!30]{345.947.316}}
+            [
+            $\times$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=yellow!30]{385.242}}
+            [
+            \texttt{p1}, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{898}}
+            ]
+            [
+            \texttt{e}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{429}}
+            ]
+            ]
+            [
+            \texttt{p2}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{898}}
+            ]
+            ]
+            [
+            \texttt{i}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{1.554}}
+            ]
+            ]
+            ]
+            ]
+        \end{forest}
+    \end{center}
+\end{example}
+
+\begin{example}{Anfrageoptimierung (Aufbrechen von Konjunktionen)}
+    Wir brechen die Konjunktionen im Selektionsprädikat auf und erhalten:
+
+    \begin{center}
+        \begin{forest}
+            [$\pi_{\texttt{p1.Name}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{4}}
+            [$\sigma_{\texttt{p1.ID = e.Von}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{4}}
+            [$\sigma_{\texttt{e.Zu = p2.ID}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{3.592}}
+            [$\sigma_{\texttt{e.Item = i.ID}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=yellow!30]{255.032}}
+            [$\sigma_{\substack{\texttt{p2.PrimaerTyp = 'Feuer'} \ \lor \\ \texttt{p2.SekundaerTyp = 'Feuer'}}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=orange!30]{164.113.092}}
+            [$\sigma_{\texttt{i.Bezeichnung = '\%Feuer\%'}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=red!30]{2.075.683.896}}
+            [$\times$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=red!30]{537.602.129.064}}
+            [
+            $\times$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=orange!30]{345.947.316}}
+            [
+            $\times$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=yellow!30]{385.242}}
+            [
+            \texttt{p1}, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{898}}
+            ]
+            [
+            \texttt{e}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{429}}
+            ]
+            ]
+            [
+            \texttt{p2}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{898}}
+            ]
+            ]
+            [
+            \texttt{i}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{1.554}}
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+        \end{forest}
+    \end{center}
+\end{example}
+
+\begin{example}{Anfrageoptimierung (Pushing Selections)}
+    Wir wollen so früh wie möglich selektieren und erkennen z.B.:
+    \begin{itemize}
+        \item \texttt{i.Bezeichnung = '\%Feuer\%'} bezieht sich nur auf \texttt{i}
+        \item \texttt{p2.PrimaerTyp = 'Feuer'} und \texttt{p2.SekundaerTyp = 'Feuer'} beziehen sich nur auf \texttt{p2}
+    \end{itemize}
+
+    Wir verschieben die Selektionen \enquote{so weit nach unten wie möglich} und erhalten:
+
+    \begin{center}
+        \begin{forest}
+            [$\pi_{\texttt{p1.Name}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{4}}
+            [$\sigma_{\texttt{e.Item = i.ID}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{222}}
+            [$\times$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{222}}
+            [$\sigma_{\texttt{e.Zu = p2.ID}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{37}}
+            [$\times$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=yellow!30]{30.459}}
+            [$\sigma_{\texttt{p1.ID = e.Von}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{429}}
+            [$\times$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=yellow!30]{385.242}}
+            [
+            \texttt{p1}, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{898}}
+            ]
+            [
+            \texttt{e}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{429}}
+            ]
+            ]
+            ]
+            [$\sigma_{\substack{\texttt{p2.PrimaerTyp = 'Feuer'} \ \lor \\ \texttt{p2.SekundaerTyp = 'Feuer'}}}$, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{71}}
+            [
+            \texttt{p2}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{898}}
+            ]
+            ]
+            ]
+            ]
+            [$\sigma_{\texttt{i.Bezeichnung = '\%Feuer\%'}}$, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{6}}
+            [
+            \texttt{i}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{1.554}}
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+        \end{forest}
+    \end{center}
+\end{example}
+
+\begin{example}{Anfrageoptimierung (Selektionen und Kreuzprodukte zu Joins)}
+    Wir können Kreuzprodukte gefolgt von Selektionen zu Joins zusammenfassen und erhalten damit:
+
+    \begin{center}
+        \begin{forest}
+            [$\pi_{\texttt{p1.Name}}$, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{4}}
+            [$\bowtie_{\texttt{e.Item = i.ID}}$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{222}}
+            [$\bowtie_{\texttt{e.Zu = p2.ID}}$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{37}}
+            [$\bowtie_{\texttt{p1.ID = e.Von}}$, l sep+= 10pt, s sep+= 40pt, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{429}}
+            [
+            \texttt{p1}, label=left:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{898}}
+            ]
+            [
+            \texttt{e}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{429}}
+            ]
+            ]
+            [$\sigma_{\substack{\texttt{p2.PrimaerTyp = 'Feuer'} \ \lor \\ \texttt{p2.SekundaerTyp = 'Feuer'}}}$, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{71}}
+            [
+            \texttt{p2}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{898}}
+            ]
+            ]
+            ]
+            [$\sigma_{\texttt{i.Bezeichnung = '\%Feuer\%'}}$, l sep+= 10pt, s sep+= 40pt, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{6}}
+            [
+            \texttt{i}, label=right:{\footnotesize\ttfamily \tcbox[on line,boxsep=0pt,left=2pt,right=2pt,top=2pt,bottom=2pt,boxrule=1pt,colback=green!30]{1.554}}
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+            ]
+        \end{forest}
+    \end{center}
+\end{example}

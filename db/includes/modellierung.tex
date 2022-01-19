@@ -19,27 +19,45 @@
 
     Die drei Ebenen sind:
     \begin{itemize}
-        \item Die \emph{externe Ebene}, die den Benutzern und Anwendungen individuelle Benutzersichten bereitstellt. Beispiele: Formulare, Masken-Layouts, Listen, Schnittstellen.
-        \item Die \emph{konzeptionelle Ebene}, in der beschrieben wird, welche Daten in der Datenbank gespeichert sind, sowie deren Beziehungen zueinander. Designziel ist hier eine vollständige und redundanzfreie Darstellung aller zu speichernden Informationen.
-              Hier findet die Normalisierung des relationalen Datenbankschemas statt.
-        \item Die \emph{interne Ebene} (auch physische Ebene), die die physische Sicht der Datenbank im Computer darstellt.
-              In ihr wird beschrieben, wie und wo die Daten in der Datenbank gespeichert werden.
-              Designziel ist hier ein effizienter Zugriff auf die gespeicherten Informationen.
-              Das wird meistens nur durch eine bewusst in Kauf genommene Redundanz erreicht (z. B. im Index werden die gleichen Daten gespeichert, die auch schon in der Tabelle gespeichert sind).
+        \item Die \emph{externe Ebene}:
+              \begin{itemize}
+                  \item stellt den Benutzern und Anwendungen individuelle Benutzersichten bereit
+                  \item z.B. Formulare, Masken-Layouts, Listen, Schnittstellen.
+              \end{itemize}
+        \item Die \emph{konzeptionelle Ebene}:
+              \begin{itemize}
+                  \item beschreibt, welche Daten in der Datenbank gespeichert sind und deren Beziehungen zueinander
+                  \item Designziel ist vollständige und redundanzfreie Darstellung aller zu speichernden Informationen
+                  \item hier findet Normalisierung des relationalen Datenbankschemas statt
+              \end{itemize}
+        \item Die \emph{interne Ebene} (auch physische Ebene):
+              \begin{itemize}
+                  \item stellt physische Sicht der Datenbank im Computer dar
+                  \item beschreibt, wie und wo die Daten in der Datenbank gespeichert werden
+                  \item Designziel ist hier  effizienter Zugriff auf die gespeicherten Informationen
+                  \item meistens nur durch eine bewusst in Kauf genommene Redundanz erreicht
+              \end{itemize}
     \end{itemize}
 
     Die Vorteile des Drei-Ebenen-Modells sind:
     \begin{itemize}
-        \item Physische Datenunabhängigkeit: Die interne Ebene ist von der konzeptionellen und externen Ebene getrennt. Physische Änderungen, z. B. des Speichermediums oder des Datenbankprodukts, wirken sich nicht auf die konzeptionelle oder externe Ebene aus.
-        \item Logische Datenunabhängigkeit: Die konzeptionelle und die externe Ebene sind getrennt.
-              Dies bedeutet, dass Änderungen an der Datenbankstruktur (konzeptionelle Ebene) keine Auswirkungen auf die externe Ebene, also die Masken-Layouts, Listen und Schnittstellen haben.
+        \item \emph{Physische Datenunabhängigkeit}:
+              \begin{itemize}
+                  \item interne Ebene ist von der konzeptionellen und externen Ebene getrennt
+                  \item physische Änderungen, z. B. des Speichermediums oder des Datenbankprodukts, wirken sich nicht auf konzeptionelle oder externe Ebene aus
+              \end{itemize}
+        \item \emph{Logische Datenunabhängigkeit}:
+              \begin{itemize}
+                  \item konzeptionelle und die externe Ebene getrennt
+                  \item bedeutet, dass Änderungen an der Datenbankstruktur (konzeptionelle Ebene) keine Auswirkungen auf externe Ebene, also die Masken-Layouts, Listen und Schnittstellen haben
+              \end{itemize}
     \end{itemize}
 \end{defi}
 
 \subsection{Entity-Relationship-Modell}
 
 \begin{defi}{Entity-Relationship-Modell}
-    Das \emph{Entity-Relationship-Modell} (kurz \emph{ER-Modell}) dient dazu, im Rahmen der semantischen Datenmodellierung den in einem gegebenen Kontext (z. B. einem Projekt zur Erstellung eines Informationssystems) relevanten Ausschnitt der realen Welt zu bestimmen und darzustellen.
+    Das \emph{Entity-Relationship-Modell} bzw. \emph{ER-Modell} dient dazu, im Rahmen der semantischen Datenmodellierung den in einem gegebenen Kontext (z. B. einem Projekt zur Erstellung eines Informationssystems) relevanten Ausschnitt der realen Welt zu bestimmen und darzustellen.
 
     Grundlage der Entity-Relationship-Modelle ist die Typisierung von Objekten, ihrer Beziehungen untereinander und der über sie zu führenden Informationen („Attribute“).
 \end{defi}
@@ -59,7 +77,7 @@
     Im Folgenden beziehen wir uns bis auf weiteres auf die Chen-Notation.
 \end{defi}
 
-\begin{defi}{Entität (Chen-Notation)}
+\begin{defi}{Entität}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_entity.pdf}
@@ -76,7 +94,7 @@
     Ein Entitätstyp ist vergleichbar mit einer Klassenbeschreibung und entspricht damit häufig einer Tabelle in einer relationalen Datenbank, hierbei sind die Spalten die Attribute.
 \end{defi}
 
-\begin{defi}{Attribut (Chen-Notation)}
+\begin{defi}{Attribut}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_attribute.pdf}
@@ -97,7 +115,7 @@
     $W(D)$ bezeichnet alle real existierenden Werte der Domain $D$ in einer Datenbank.
 \end{defi}
 
-\begin{defi}{Zusammengesetztes Attribut (Chen-Notation)}
+\begin{defi}{Zusammengesetztes Attribut}
     \begin{wrapfigure}{r}{0.35\textwidth}
         \begin{center}
             %\includegraphics[width=0.4\textwidth]{includes/figures/definition_entity_relationship_model_attribute_combined.pdf}
@@ -117,7 +135,7 @@
     \vspace{3em}
 \end{defi}
 
-\begin{defi}{Mehrwertiges Attribut (Chen-Notation)}
+\begin{defi}{Mehrwertiges Attribut}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_attribute_multivalue.pdf}
@@ -134,7 +152,7 @@
     \]
 \end{defi}
 
-\begin{defi}{Schlüsselkandidat (Chen-Notation)}
+\begin{defi}{Schlüsselkandidat}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_attribute_primary.pdf}
@@ -157,7 +175,7 @@
     \end{center}
 \end{defi}
 
-\begin{defi}{Relation (Chen-Notation)}
+\begin{defi}{Relation}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \includegraphics[width=0.2\textwidth]{includes/figures/definition_entity_relationship_model_relation.pdf}
@@ -195,7 +213,7 @@
     Das kann im Diagramm mit Pfeilen verdeutlicht werden.
 \end{defi}
 
-\begin{defi}{Kardinalität (Chen-Notation)}
+\begin{defi}{Kardinalität}
     \begin{wrapfigure}{r}{0.45\textwidth}
         \begin{center}
             \includegraphics[width=0.4\textwidth]{includes/figures/definition_entity_relationship_model_cardinality.pdf}
@@ -603,7 +621,7 @@
     Enthaltene Informationen werden nur durch Datenwerte ausgedrückt.
 \end{defi}
 
-\begin{defi}{Schlüsselattribute}
+\begin{defi}{Schlüsselattribut (Relationales Modell)}
     \begin{wrapfigure}{r}{0.5\textwidth}
         \begin{center}
             \includegraphics[width=0.45\textwidth]{includes/figures/definition_relational_modell_keys.pdf}
@@ -616,7 +634,7 @@
     Schlüsselattribute werden im relationalen Modell zu \emph{primary keys}.
 \end{defi}
 
-\begin{defi}{Zusammengesetzte Attribute (Relationales Modell)}
+\begin{defi}{Zusammengesetztes Attribut (Relationales Modell)}
     \begin{wrapfigure}{r}{0.35\textwidth}
         \begin{center}
             \includegraphics[width=0.3\textwidth]{includes/figures/definition_relational_modell_attribute_combined.pdf}
