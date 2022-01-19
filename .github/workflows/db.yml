@@ -40,7 +40,6 @@ jobs:
           working_directory: db
           root_file: |
             db.tex
-            sql.tex
             
       - name: Uploading artifacts
         uses: actions/upload-artifact@v2
@@ -48,4 +47,3 @@ jobs:
           name: db
           path: |
             db/db.pdf
-            db/sql.pdf
