@@ -1,4 +1,4 @@
-\section{SQL (temporär)}
+\subsection{Transaktionen}
 
 \begin{defi}{ACID}
     Der Begriff \emph{ACID} beschreibt Regeln und Eigenschaften zur Durchführung von Transaktionen in Datenbankmanagementsystemen.
@@ -31,6 +31,8 @@
 
     ACID wird häufig zur Charakterisierung eines DBMS genannt, insbesondere auch für Nicht-Relationale DBMS.
 \end{defi}
+
+\subsubsection{Locking}
 
 \begin{defi}{Lost Update}
     Zwei Transaktionen modifizieren parallel denselben Datensatz und nach Ablauf dieser beiden Transaktionen wird nur die Änderung von einer von ihnen übernommen.
@@ -129,50 +131,55 @@
     Es wird vorausgesetzt, dass keine Lesesperre auf die Ressource gesetzt ist.
 \end{bonus}
 
-\subsection{ORM und Hibernate}
+\begin{sql}{TRANSACTION}
+    Um eine Transaktion zu starten, nutzt man:
 
-\begin{defi}{Object-Relational Mapping}
-    \emph{Object-Relational Mapping} bzw. ORM ist eine Technik der Softwareentwicklung, mit der ein in einer objektorientierten Programmiersprache geschriebenes Anwendungsprogramm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm erscheint die Datenbank dann als objektorientierte Datenbank, was die Programmierung erleichtert.
+    \begin{lstlisting}[language=mysql]
+        START TRANSACTION;
+    \end{lstlisting}
 
-    Implementiert wird diese Technik normalerweise mit Klassenbibliotheken, wie beispielsweise Entity Framework für .NET-Programmiersprachen, Hibernate für Java.
+    Nun kann man Daten einfügen, löschen oder verändern bzw. die DBMS-spezifische Struktur anpassen.
 
-    Man unterscheidet zwischen den Varianten:
-    \begin{itemize}
-        \item Statisches Mapping
-              \begin{itemize}
-                  \item Klassen
-                  \item Vererbung
-                  \item Aggregation, Komposition, Assoziation
-              \end{itemize}
-        \item Dynamisches Mapping\footnote{Nicht behandelt in der Vorlesung.}
-              \begin{itemize}
-                  \item Constraints und Trigger
-                  \item Performance: Dirty Checking, Lazy Fetching, Caching
-              \end{itemize}
-    \end{itemize}
-\end{defi}
+    Sollten dabei etwaige Fehler auftreten, welche irreparable Schäden an der Datenbank verursachen, ist erst mal nur die Session der Verursachenden betroffen.
 
-\begin{defi}{Abbildung von Vererbungshierarchien}
-    Es gibt im Wesentlichen drei verschiedene Verfahren, um Vererbungshierarchien auf Datenbanktabellen abzubilden:
-    \begin{itemize}
-        \item \emph{Tabelle pro Vererbungshierarchie} bzw. \emph{Single Table}:
-              \begin{itemize}
-                  \item alle Attribute der Basisklasse und aller abgeleiteten Klassen in gemeinsamer Tabelle
-                  \item Diskriminator in weiterer Spalte abgelegt, der festlegt, welcher Klasse das in dieser Zeile gespeicherte Objekt angehört
-                  \item Attribute von abgeleiteten Klassen dürfen den meisten Fällen nicht mit einem \texttt{NOT-NULL}-Constraint versehen werden
-                  \item Beschränkungen der Anzahl erlaubter Spalten pro Tabelle können Ansatz bei großen Klassen bzw. Klassenhierarchien vereiteln
-              \end{itemize}
-        \item \emph{Tabelle pro Unterklasse} bzw. \emph{Joined }:
-              \begin{itemize}
-                  \item eine Tabelle für die Basisklasse angelegt und für jede davon abgeleitete Unterklasse eine weitere Tabelle
-                  \item Diskriminator wird nicht benötigt, weil Klasse eines Objekts durch 1:1-Beziehung zwischen Eintrag in Tabelle der Basisklasse und Eintrag in einer der Tabellen der abgeleiteten Klassen festgelegt ist
-              \end{itemize}
-        \item \emph{Tabelle pro konkrete Klasse} bzw. \emph{Table per Class}:
-              \begin{itemize}
-                  \item Attribute der abstrakten Basisklasse in die Tabellen für die konkreten Unterklassen mit aufgenommen
-                  \item  Tabelle für Basisklasse entfällt
-                  \item  Nachteil besteht darin, dass es nicht möglich ist, mit einer Abfrage Instanzen verschiedener Klassen zu ermitteln
-              \end{itemize}
-    \end{itemize}
+    Um die Transaktion zu abzuschließen, nutzt man:
 
-\end{defi}
+    \begin{lstlisting}[language=mysql]
+        COMMIT;
+    \end{lstlisting}
+
+    Alternativ bricht man die Transaktion folgendermaßen ab:
+
+    \begin{lstlisting}[language=mysql]
+        ROLLBACK;
+    \end{lstlisting}
+\end{sql}
+
+\begin{sql}{AUTOCOMMIT}
+    Um jeden Befehl sofort zu verarbeiten muss die Einstellung \texttt{AUTOCOMMIT} auf \texttt{1} gesetzt werden.
+
+    Standardmäßig ist der Wert bereits auf \texttt{1}, jedoch nutzen wir um sicher zu gehen:
+
+    \begin{lstlisting}[language=mysql]
+        SET AUTOCOMMIT = 1;
+    \end{lstlisting}
+
+    Wenn der Wert auf \texttt{0} gesetzt wurde, werden Änderungen nur in der eigenen \texttt{SESSION} vorgenommen.
+    Wenn man seine Änderungen veröffentlichen möchte, nutzt man \texttt{COMMIT;}.
+\end{sql}
+
+\begin{sql}{FOREIGN\_KEY\_CHECKS}
+    Der folgende Befehl schaltet das automatische Überprüfen von Fremdschlüssel-Beziehungen aus:
+
+    \begin{lstlisting}[language=mysql]
+        SET FOREIGN_KEY_CHECKS = 0
+    \end{lstlisting}
+
+    Analog schaltet man die Überprüfung folgendermaßen wieder ein:
+
+    \begin{lstlisting}[language=mysql]
+        SET FOREIGN_KEY_CHECKS = 1
+    \end{lstlisting}
+
+    Dieser Befehl birgt auf den ersten Blick große Gefahren, ist jedoch vor allem bei Selbstrelationen nötig, wenn sich noch nicht existierende Entitäten gegenseitig referenzieren.
+\end{sql}

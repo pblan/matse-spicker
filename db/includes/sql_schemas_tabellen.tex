@@ -1,4 +1,4 @@
-\section{Schemas und Tabellen}
+\subsection{Schemas und Tabellen}
 
 \begin{sql}{USE}
     \texttt{USE} legt ein Default-Schema fest.
@@ -40,9 +40,10 @@
     \setcounter{rownum}{0}
     \begin{tabular}{I|T}
         \rowcolor{gray!35}
-        & \multicolumn{1}{T}{Database} \\\hline
-        1 & pokemon \\
+          & \multicolumn{1}{T}{Database} \\\hline
+        1 & pokemon                      \\
     \end{tabular}
+    \vspace{1em}
 
     Alternativ kann man sich innerhalb einer Datenbank alle Tabellen abfragen:
 
@@ -57,19 +58,20 @@
     \setcounter{rownum}{0}
     \begin{tabular}{I|T}
         \rowcolor{gray!35}
-        & \multicolumn{1}{T}{Tables\_in\_pokemon} \\\hline
-        1 & arenaleiter \\
-        2 & attacke \\
-        3 & attacke\_tm \\
-        4 & effektivitaet \\
-        5 & entwicklung \\
-        6 & generation \\
-        7 & item \\
-        8 & lernt \\
-        9 & pokemon \\
-        10 & typ \\
-        11 & version \\
+           & \multicolumn{1}{T}{Tables\_in\_pokemon} \\\hline
+        1  & arenaleiter                             \\
+        2  & attacke                                 \\
+        3  & attacke\_tm                             \\
+        4  & effektivitaet                           \\
+        5  & entwicklung                             \\
+        6  & generation                              \\
+        7  & item                                    \\
+        8  & lernt                                   \\
+        9  & pokemon                                 \\
+        10 & typ                                     \\
+        11 & version                                 \\
     \end{tabular}
+    \vspace{1em}
 
     Um sich die Struktur einer Tabelle anzuzeigen nutzt man:
 
@@ -84,29 +86,15 @@
     \setcounter{rownum}{0}
     \begin{tabular}{I|TTTTTT}
         \rowcolor{gray!35}
-        & \multicolumn{1}{T}{Field} & \multicolumn{1}{T}{Type} & \multicolumn{1}{T}{Null} & \multicolumn{1}{T}{Key} & \multicolumn{1}{T}{Default} & \multicolumn{1}{T}{Extra} \\\hline
-        1 & ID & int & NO & PRI & NULL &  \\
-        2 & Name & varchar(255) & NO &  & NULL &  \\
-        3 & Groesse & float & NO &  & NULL &  \\
-        4 & Gewicht & float & NO &  & NULL &  \\
-        5 & Generation & int & NO & MUL & NULL &  \\
-        6 & PrimaerTyp & varchar(255) & YES & MUL & NULL &  \\
-        7 & SekundaerTyp & varchar(255) & YES & MUL & NULL &  \\
+          & \multicolumn{1}{T}{Field} & \multicolumn{1}{T}{Type} & \multicolumn{1}{T}{Null} & \multicolumn{1}{T}{Key} & \multicolumn{1}{T}{Default} & \multicolumn{1}{T}{Extra} \\\hline
+        1 & ID                        & int                      & NO                       & PRI                     & NULL                        &                           \\
+        2 & Name                      & varchar(255)             & NO                       &                         & NULL                        &                           \\
+        3 & Groesse                   & float                    & NO                       &                         & NULL                        &                           \\
+        4 & Gewicht                   & float                    & NO                       &                         & NULL                        &                           \\
+        5 & Generation                & int                      & NO                       & MUL                     & NULL                        &                           \\
+        6 & PrimaerTyp                & varchar(255)             & YES                      & MUL                     & NULL                        &                           \\
+        7 & SekundaerTyp              & varchar(255)             & YES                      & MUL                     & NULL                        &                           \\
     \end{tabular}
-
-    \begin{itemize}
-        \item \emph{Field} ist dabei der Spaltenname
-        \item \emph{Type} ist der Typ der Werte in der Spalte
-        \item \emph{Null} gibt an, ob der Wert der Spalte NULL sein darf
-        \item \emph{Key} gibt an, ob der Wert der Spalte ein
-            
-            \begin{itemize}
-                \item \emph{PRI} Primärschlüssel
-                \item \emph{MUL} Fremdschlüssel
-            \end{itemize}
-
-            ist.
-    \end{itemize}
 \end{sql}
 
 \begin{sql}{DROP}
@@ -150,16 +138,16 @@
 
     \begin{itemize}
         \item \emph{Typ} beschreibt den Typen der Spaltenwerte.
-            Die meisten Typen benötigen eine Länge; einige haben jedoch eine Standardlänge:
-        
-            \begin{itemize}
-                \item \texttt{INT(n)} eine ganze Zahl der Länge n
-                \item \texttt{FLOAT(n)} eine Zahl der Länge n
-                \item \texttt{DECIMAL(n, m)} eine Zahl der Länge n mit m Nachkommastellen
-                \item \texttt{CHAR(n)} ein String fester Länge n
-                \item \texttt{VARCHAR(n)} ein String variabler Länge 0 bis n
-                \item \texttt{BOOLEAN} bzw. \texttt{TINYINT(1)} speichert \texttt{TRUE} bzw. 1 oder \texttt{FALSE} bzw. 0
-            \end{itemize}
+              Die meisten Typen benötigen eine Länge; einige haben jedoch eine Standardlänge:
+
+              \begin{itemize}
+                  \item \texttt{INT(n)} eine ganze Zahl der Länge n
+                  \item \texttt{FLOAT(n)} eine Zahl der Länge n
+                  \item \texttt{DECIMAL(n, m)} eine Zahl der Länge n mit m Nachkommastellen
+                  \item \texttt{CHAR(n)} ein String fester Länge n
+                  \item \texttt{VARCHAR(n)} ein String variabler Länge 0 bis n
+                  \item \texttt{BOOLEAN} bzw. \texttt{TINYINT(1)} speichert \texttt{TRUE} bzw. 1 oder \texttt{FALSE} bzw. 0
+              \end{itemize}
         \item \texttt{DEFAULT} setzt einen Standardwert fest
         \item \texttt{UNIQUE} legt fest, ob der Wert einzigartig soll
         \item \texttt{NOT NULL} legt fest, ob der Wert \texttt{NULL} sein darf
@@ -172,24 +160,22 @@
     Ein \texttt{FOREIGN KEY} ist ein Fremdschlüssel, der Primärschlüssel einer anderen Entität referenziert.
 \end{sql}
 
-\begin{sql}{Zeit- und Datumstypen}
-    Zusätzlich gibt es komplexere Typen, welche zur Speicherung von Daten genutzt werden:
-    
-    Dazu vorab:
-    MySQL nutzt \texttt{session} und \texttt{global} Konfigurationen.
+\begin{sqlbonus}{Konfigurationen in MySQL}
+    MySQL nutzt \texttt{SESSION} und \texttt{GLOBAL} Konfigurationen.
 
-    Die \texttt{session} Konfiguration wird beim Abschalten der Datenbank auf \texttt{global} zurückgesetzt.
+    Die \texttt{SESSION} Konfiguration wird beim Abschalten der Datenbank auf \texttt{GLOBAL} zurückgesetzt.
 
     \begin{lstlisting}[language=mysql]
-        SELECT @@session.time_zone, @@global.time_zone;;
+        SELECT @@SESSION.TIME_ZONE, @@GLOBAL.TIME_ZONE;
     \end{lstlisting}
 
     \setcounter{rownum}{0}
     \begin{tabular}{I|TT}
         \rowcolor{gray!35}
-        & \multicolumn{1}{T}{@@session.time\_zone} & \multicolumn{1}{T}{@@global.time\_zone} \\\hline
-        1 & SYSTEM & SYSTEM \\
+          & \multicolumn{1}{T}{@@SESSION.TIME\_ZONE} & \multicolumn{1}{T}{@@GLOBAL.TIME\_ZONE} \\\hline
+        1 & SYSTEM                                   & SYSTEM                                  \\
     \end{tabular}
+    \vspace{1em}
 
     Die Zeitzone kann mit folgendem Befehl angepasst werden:
 
@@ -200,16 +186,21 @@
     Dabei kann als Zeitzone folgendes eingestellt werden:
 
     \begin{itemize}
-        \item Eine exakte Zeitzone: \lstinline[language=mysql]{'Europe/Berlin'}
-        \item Ein Offset: \lstinline[language=mysql]{'+02:00'}
+        \item Eine exakte Zeitzone: \texttt{'Europe/Berlin'}
+        \item Ein Offset: \texttt{'+02:00'}
     \end{itemize}
+
+\end{sqlbonus}
+
+\begin{sql}{Zeit- und Datumstypen}
+    Zusätzlich gibt es komplexere Typen, welche zur Speicherung von Daten genutzt werden.
 
     Einige Datumstypen sind:
 
     \begin{itemize}
-        \item \texttt{date}
-        \item \texttt{time}
-        \item \texttt{datetime}
+        \item \texttt{DATE}
+        \item \texttt{TIME}
+        \item \texttt{DATETIME}
     \end{itemize}
 
     Ein Cast in verschiedene Typen ist wie folgt möglich:\footnote{\texttt{NOW()} gibt das aktuelle Datum in der Formatierung \texttt{session.TIME\_ZONE} zurück}
@@ -217,17 +208,18 @@
     \begin{lstlisting}[language=mysql]
         SELECT
             NOW() AS 'Session',
-            cast(NOW() AS DATE) AS 'Date',
-            cast(NOW() AS TIME) AS 'Time',
-            cast(NOW() AS DATETIME) AS 'Datetime';
+            CAST(NOW() AS DATE) AS 'Date',
+            CAST(NOW() AS TIME) AS 'Time',
+            CAST(NOW() AS DATETIME) AS 'Datetime';
     \end{lstlisting}
 
     \setcounter{rownum}{0}
     \begin{tabular}{I|TTTT}
         \rowcolor{gray!35}
-        & \multicolumn{1}{T}{Session} & \multicolumn{1}{T}{Date} & \multicolumn{1}{T}{Time} & \multicolumn{1}{T}{Datetime} \\\hline
-        1 & 1996-02-27 10:00:00 & 1996-02-27 & 10:00:00 & 1996-02-27 10:00:00 \\
+          & \multicolumn{1}{T}{Session} & \multicolumn{1}{T}{Date} & \multicolumn{1}{T}{Time} & \multicolumn{1}{T}{Datetime} \\\hline
+        1 & 1996-02-27 10:00:00         & 1996-02-27               & 10:00:00                 & 1996-02-27 10:00:00          \\
     \end{tabular}
+    \vspace{1em}
 
     Zusätzlich ist es ebenfalls möglich von Strings zu einem Datum zu casten:
 
@@ -242,11 +234,12 @@
     \setcounter{rownum}{0}
     \begin{tabular}{I|TTT}
         \rowcolor{gray!35}
-        & \multicolumn{1}{T}{STR\_TO\_DATE} & \multicolumn{1}{T}{DATE} & \multicolumn{1}{T}{CUSTOMIZED\_DATE} \\\hline
-        1 & 1996-02-27 & 27.02.1996 & Tuesday, 27th February 1996 \\
+          & \multicolumn{1}{T}{STR\_TO\_DATE} & \multicolumn{1}{T}{DATE} & \multicolumn{1}{T}{CUSTOMIZED\_DATE} \\\hline
+        1 & 1996-02-27                        & 27.02.1996               & Tuesday, 27th February 1996          \\
     \end{tabular}
+    \vspace{1em}
 
-    Ein Datum kann über \lstinline[language=mysql]{DATE_ADD()}, oder per \texttt{+} bzw. \texttt{-}, modifiziert werden:
+    Ein Datum kann über \texttt{DATE\_ADD()}, oder per \texttt{+} bzw. \texttt{-}, modifiziert werden:
 
     \begin{lstlisting}[language=mysql]
         SELECT
@@ -299,34 +292,34 @@
     \end{lstlisting}
 \end{sql}
 
-\subsection{Beispiele}
+\subsubsection{Beispiele}
 
 \begin{example}{Schemas und Tabellen}
-    Die SQL Befehle, welche zur Erstellung unserer Beispieldatenbank genutzt wurden sind in \texttt{pokemon.sql} zu finden.
+    Die SQL Befehle, die zur Erstellung unserer Beispieldatenbank genutzt wurden sind in \texttt{pokemon.sql} zu finden.\footnote{Siehe \href{https://www.github.com/pblan/matse-spicker}{GitHub}.}
 
     Einige relevante Befehle für die DBMS-Struktur sind hier zusammengefasst:
 
     Falls \texttt{pokemon} existiert wird diese Tabelle gelöscht:
 
     \begin{lstlisting}[language=mysql]
-        DROP TABLE IF EXISTS `pokemon`;
+        DROP TABLE IF EXISTS pokemon;
     \end{lstlisting}
 
     Im Nachhinein wird eine neue Tabelle erstellt:
 
     \begin{lstlisting}[language=mysql]
-        CREATE TABLE `pokemon` (
-            `ID` int(11) NOT NULL,
-            `Name` varchar(255) NOT NULL,
-            `Groesse` float NOT NULL,
-            `Gewicht` float NOT NULL,
-            `Generation` int(11) NOT NULL,
-            `PrimaerTyp` varchar(255) DEFAULT NULL,
-            `SekundaerTyp` varchar(255) DEFAULT NULL,
-            PRIMARY KEY (`ID`),
-            FOREIGN KEY (`PrimaerTyp`) REFERENCES `typ` (`Bezeichnung`),
-            FOREIGN KEY (`SekundaerTyp`) REFERENCES `typ` (`Bezeichnung`),
-            FOREIGN KEY (`Generation`) REFERENCES `generation` (`ID`)
+        CREATE TABLE pokemon (
+            ID int(11) NOT NULL,
+            Name varchar(255) NOT NULL,
+            Groesse float NOT NULL,
+            Gewicht float NOT NULL,
+            Generation int(11) NOT NULL,
+            PrimaerTyp varchar(255) DEFAULT NULL,
+            SekundaerTyp varchar(255) DEFAULT NULL,
+            PRIMARY KEY (ID),
+            FOREIGN KEY (PrimaerTyp) REFERENCES typ (Bezeichnung),
+            FOREIGN KEY (SekundaerTyp) REFERENCES typ (Bezeichnung),
+            FOREIGN KEY (Generation) REFERENCES generation (ID)
         )
     \end{lstlisting}
 \end{example}

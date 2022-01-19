@@ -1,0 +1,46 @@
+\subsection{ORM und Hibernate}
+
+\begin{defi}{Object-Relational Mapping}
+    \emph{Object-Relational Mapping} bzw. ORM ist eine Technik der Softwareentwicklung, mit der ein in einer objektorientierten Programmiersprache geschriebenes Anwendungsprogramm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm erscheint die Datenbank dann als objektorientierte Datenbank, was die Programmierung erleichtert.
+
+    Implementiert wird diese Technik normalerweise mit Klassenbibliotheken, wie beispielsweise Entity Framework für .NET-Programmiersprachen, Hibernate für Java.
+
+    Man unterscheidet zwischen den Varianten:
+    \begin{itemize}
+        \item Statisches Mapping
+              \begin{itemize}
+                  \item Klassen
+                  \item Vererbung
+                  \item Aggregation, Komposition, Assoziation
+              \end{itemize}
+        \item Dynamisches Mapping\footnote{Nicht behandelt in der Vorlesung.}
+              \begin{itemize}
+                  \item Constraints und Trigger
+                  \item Performance: Dirty Checking, Lazy Fetching, Caching
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Abbildung von Vererbungshierarchien}
+    Es gibt im Wesentlichen drei verschiedene Verfahren, um Vererbungshierarchien auf Datenbanktabellen abzubilden:
+    \begin{itemize}
+        \item \emph{Tabelle pro Vererbungshierarchie} bzw. \emph{Single Table}:
+              \begin{itemize}
+                  \item alle Attribute der Basisklasse und aller abgeleiteten Klassen in gemeinsamer Tabelle
+                  \item Diskriminator in weiterer Spalte abgelegt, der festlegt, welcher Klasse das in dieser Zeile gespeicherte Objekt angehört
+                  \item Attribute von abgeleiteten Klassen dürfen den meisten Fällen nicht mit einem \texttt{NOT-NULL}-Constraint versehen werden
+                  \item Beschränkungen der Anzahl erlaubter Spalten pro Tabelle können Ansatz bei großen Klassen bzw. Klassenhierarchien vereiteln
+              \end{itemize}
+        \item \emph{Tabelle pro Unterklasse} bzw. \emph{Joined }:
+              \begin{itemize}
+                  \item eine Tabelle für die Basisklasse angelegt und für jede davon abgeleitete Unterklasse eine weitere Tabelle
+                  \item Diskriminator wird nicht benötigt, weil Klasse eines Objekts durch 1:1-Beziehung zwischen Eintrag in Tabelle der Basisklasse und Eintrag in einer der Tabellen der abgeleiteten Klassen festgelegt ist
+              \end{itemize}
+        \item \emph{Tabelle pro konkrete Klasse} bzw. \emph{Table per Class}:
+              \begin{itemize}
+                  \item Attribute der abstrakten Basisklasse in die Tabellen für die konkreten Unterklassen mit aufgenommen
+                  \item  Tabelle für Basisklasse entfällt
+                  \item  Nachteil besteht darin, dass es nicht möglich ist, mit einer Abfrage Instanzen verschiedener Klassen zu ermitteln
+              \end{itemize}
+    \end{itemize}
+\end{defi}

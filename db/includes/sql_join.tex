@@ -1,0 +1,422 @@
+\subsection{Join}
+
+\begin{sqlbonus}{Kartesisches Produkt in SQL}
+    Wenn man alle Entitäten einer Tabelle mit jeder Entität aus einer anderen Tabelle kombinieren möchte, benötigt man das \emph{kartesische Produkt}.
+
+    Möchte man jede mögliche Typkombination\footnote{Sollte man das kartesische Produkt einer Tabelle mit sich selbst bilden, benötigt man Aliasse für die Tabellen} erhalten, nutzt man \texttt{SELECT} zwei mal auf \texttt{Typ}:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM
+            typ AS typ1,
+            typ AS typ2;
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|TT}
+        \rowcolor{gray!35}
+                                   & \multicolumn{1}{T}{typ1.Bezeichnung} & \multicolumn{1}{T}{typ2.Bezeichnung} \\\hline
+        1                          & Boden                                & Boden                                \\
+        2                          & Drache                               & Boden                                \\
+        3                          & Eis                                  & Boden                                \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots}                                                   \\
+        19                         & Boden                                & Drache                               \\
+        20                         & Drache                               & Drache                               \\
+        21                         & Eis                                  & Drache                               \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots}                                                   \\
+        324                        & Wasser                               & Wasser                               \\
+    \end{tabular}
+    \vspace{1em}
+
+    Wenn eine Relation verschiedener Tabellen über einen Fremdschlüssel realisiert ist, kann man Entitäten aus diesen Tabellen zueinander zuordnen.
+    So wird nicht nur der Fremdschlüssel angezeigt, sondern alle zugehörigen Attribute.
+
+    Da wir die aus dem kartesischen Produkt erhaltene Menge noch sinnvoll selektieren müssen, nutzen wir \texttt{WHERE}.
+
+    In unserem Beispiel kann kein Pokemon zwei mal den selben Typen besitzen:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM
+            typ AS typ1,
+            typ AS typ2
+        WHERE NOT typ1.Bezeichnung = typ2.Bezeichnung;
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|TT}
+        \rowcolor{gray!35}
+                                   & \multicolumn{1}{T}{typ1.Bezeichnung} & \multicolumn{1}{T}{typ2.Bezeichnung} \\\hline
+        1                          & Drache                               & Boden                                \\
+        2                          & Eis                                  & Boden                                \\
+        3                          & Elektro                              & Boden                                \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots}                                                   \\
+        18                         & Boden                                & Drache                               \\
+        19                         & Eis                                  & Drache                               \\
+        20                         & Elektro                              & Drache                               \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{2}{c}{\dots}                                                   \\
+        306                        & Unlicht                              & Wasser
+    \end{tabular}
+\end{sqlbonus}
+
+\begin{sql}{JOIN}
+    \texttt{JOIN} bestimmt ebenfalls das kartesische Produkt zweier Tabellen.\footnote{
+        \texttt{JOIN} und \texttt{SELECT} von mehreren Tabellen unterscheiden sich ausschließlich in der Lesbarkeit und Optimierungsmöglichkeiten für das DBMS. \\
+        Bei \texttt{JOIN} muss das DBMS nicht alle Kombinationen ermitteln, nur um diese dann zu filtern.
+    }
+
+    Das Keyword \texttt{ON} verknüpft dann die beiden Tabellen anhand einer Bedingung.\footnote{Entspricht einem Theta-Join.}
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM typ AS typ1
+        JOIN typ AS typ2
+            ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
+    \end{lstlisting}
+\end{sql}
+
+\begin{sql}{CROSS JOIN}
+    \texttt{CROSS JOIN} gibt das unselektierte kartesische Produkt aus.
+
+    Dementsprechend sind die folgenden Abfragen erneut äquivalent:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM typ AS typ1
+        CROSS JOIN typ AS typ2;
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM typ AS typ1
+        JOIN typ as typ2
+            ON TRUE;
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM
+            typ AS typ1,
+            typ AS typ2;
+    \end{lstlisting}
+\end{sql}
+
+\begin{sql}{INNER JOIN}
+    \texttt{INNER JOIN} wird automatisch genutzt, wenn man \texttt{JOIN} nutzt.
+
+    Dementsprechend sind folgende abfragen äquivalent:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM typ AS typ1
+        JOIN typ AS typ2
+            ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=mysql]
+        SELECT *
+        FROM typ AS typ1
+        !INNER! JOIN typ AS typ2
+            ON NOT typ1.Bezeichnung = typ2.Bezeichnung;
+    \end{lstlisting}
+
+    Wenn man sich beispielsweise alle Pokémon samt ihrer Entwicklung anzeigen lassen möchte, so erhält man:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        JOIN entwicklung
+            ON pokemon.ID = entwicklung.Von;
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|ITII}
+        \rowcolor{gray!35}
+                                   & \multicolumn{1}{T}{ID}    & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} \\\hline
+        1                          & 1                         & Bisasam                  & 1                       & 2                      \\
+        2                          & 2                         & Bisaknosp                & 2                       & 3                      \\
+        3                          & 4                         & Glumanda                 & 4                       & 5                      \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots}                                                                               \\
+        429                        & 891                       & Dakuma                   & 891                     & 892                    \\
+    \end{tabular}
+\end{sql}
+
+\begin{sqlbonus}{SELF JOIN}
+    Als \texttt{SELF JOIN} werden \texttt{JOIN}s bezeichnet, welche eine reflexive Fremdschlüsselbeziehung abfragen.
+
+    Hierbei ist zu beachten, dass \texttt{SELF} kein Keyword ist, sondern die reine Bezeichnung für solche Relationen.
+
+    Dies wurde mit dem Beispiel \texttt{typ} auf \texttt{typ} bereits dargestellt.
+\end{sqlbonus}
+
+\begin{sqlbonus}{OUTER JOIN}
+    \texttt{OUTER JOIN} berücksichtigt ebenfalls Entitäten, für die kein passendes Pendant existiert.
+    Für diese Entitäten sind alle Attribute der jeweils anderen Entitätenmenge \texttt{NULL}.
+
+    \texttt{OUTER JOIN} ist keine gültige Abfrage.
+    Das Keyword \texttt{OUTER} benötigt immer eine Leserichtung.
+
+    Wenn wir erneut das Beispiel von \texttt{INNER JOIN} betrachten, sehen wir, dass das Pokémon mit der ID 3 nicht vorkommt.
+    Dies ist dem Fakt geschuldet, dass dieses Pokémon keine Entwicklung besitzt.
+    Sollte man dieses Pokemon trotzdem angezeigt bekommen, benötigt man einen \texttt{OUTER JOIN}.
+\end{sqlbonus}
+
+\begin{sql}{LEFT OUTER JOIN}
+    \texttt{LEFT OUTER JOIN} beachtet alle Entitäten \emph{links} der Relation.
+
+    Nun werden alle Pokémon dargestellt, ggf. mit \texttt{NULL}-Attributen bei Entwicklung:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        LEFT OUTER JOIN entwicklung
+            ON pokemon.id = entwicklung.von;
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|ITII}
+        \rowcolor{gray!35}
+                                   & \multicolumn{1}{T}{ID}    & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} \\\hline
+        1                          & 1                         & Bisasam                  & 1                       & 2                      \\
+        2                          & 2                         & Bisaknosp                & 2                       & 3                      \\
+        3                          & 3                         & Bisaflor                 & NULL                    & NULL                   \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots}                                                                               \\
+        920                        & 898                       & Coronospa                & NULL                    & NULL                   \\
+    \end{tabular}
+\end{sql}
+
+\begin{sql}{RIGHT OUTER JOIN}
+    \texttt{RIGHT OUTER JOIN} beachtet alle Entitäten \emph{rechts} der Relation.
+
+    Durch Vertauschen von Entitätstypen und Leserichtung erhält man äquivalente Befehle.
+
+    So würde unser Beispiel aus \texttt{LEFT OUTER JOIN} folgendermaßen aussehen:
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM entwicklung
+        RIGHT OUTER JOIN pokemon
+            ON pokemon.id = entwicklung.von;
+    \end{lstlisting}
+\end{sql}
+
+\begin{sql}{FULL OUTER JOIN}
+    \texttt{FULL OUTER JOIN} ist eine Vereinigung von \texttt{LEFT OUTER JOIN} und \texttt{RIGHT OUTER JOIN}.
+    Das bedeutet, dass beidseitig alle Entitäten betrachtet werden, ggf. mit \texttt{NULL} aufgefüllt\footnote{
+        Manche DBMS bieten keinen Befehl für einen \texttt{FULL OUTER JOIN}.
+        In diesem Fall vereinigt man die Ergebnisse der beiden \texttt{OUTER JOIN}s mit \texttt{UNION}.}.
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        !FULL OUTER! JOIN entwicklung
+            ON pokemon.id = entwicklung.von;
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        !LEFT OUTER! JOIN entwicklung
+            ON pokemon.id = entwicklung.von
+        !UNION!
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            entwicklung.Von,
+            entwicklung.Zu
+        FROM pokemon
+        !RIGHT OUTER! JOIN entwicklung
+            ON pokemon.id = entwicklung.von;
+    \end{lstlisting}
+\end{sql}
+
+\begin{sqlbonus}{NATURAL JOIN}
+    Von der Verwendung von \texttt{NATURAL JOIN}s wird abgeraten!
+
+    Bei Tabellen mit gleichnamigen Attributen kann auf die explizite Angabe der Bedingung verzichtet werden.
+    Das DBMS verwendet dann \emph{alle} gleichnamigen Attribute.
+\end{sqlbonus}
+
+\subsubsection{Beispiele}
+
+\begin{example}{JOIN}
+    Geben Sie für alle Pokemon jeweils die Entwicklung mit Level, sowie die Typen aus.
+
+    Nutzen Sie:
+    \begin{enumerate}[label=\alph*)]
+        \item einen \texttt{INNER JOIN} mit \texttt{WHERE}
+        \item einen \texttt{INNER JOIN} mit \texttt{JOIN}
+    \end{enumerate}
+
+    Fügen Sie noch den Namen, sowie die Typen der Entwicklung an.
+
+    \exampleseparator
+
+    \begin{enumerate}[label=\alph*)]
+        \item \texttt{WHERE}
+
+              \begin{lstlisting}[language=mysql]
+                SELECT
+                    von.ID,
+                    von.Name,
+                    von.PrimaerTyp,
+                    von.SekundaerTyp,
+                    entwicklung.Level,
+                    zu.ID,
+                    zu.Name
+                FROM 
+                    pokemon AS von,
+                    pokemon AS zu,
+                    entwicklung
+                WHERE
+                    von.ID = entwicklung.Von
+                    AND entwicklung.Zu = zu.ID;
+            \end{lstlisting}
+        \item \texttt{JOIN}
+
+              \begin{lstlisting}[language=mysql]
+                SELECT
+                    von.ID,
+                    von.Name,
+                    von.PrimaerTyp,
+                    von.SekundaerTyp,
+                    entwicklung.Level,
+                    zu.ID,
+                    zu.Name
+                FROM pokemon
+                AS von
+                JOIN entwicklung
+                    ON von.ID = entwicklung.Von
+                JOIN pokemon AS zu
+                    ON entwicklung.Zu = zu.ID;
+            \end{lstlisting}
+    \end{enumerate}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|ITTTIIT}
+        \rowcolor{gray!35}
+                                   & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{Level} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline
+        1                          & 1                          & Bisasam                      & Pflanze                        & Gift                             & 16                        & 2                         & Bisaknosp                   \\
+        2                          & 2                          & Bisaknosp                    & Pflanze                        & Gift                             & 32                        & 3                         & Bisaflor                    \\
+        3                          & 4                          & Glumanda                     & Feuer                          & NULL                             & 16                        & 5                         & Glutexo                     \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots}                                                                                                                                                                                           \\
+        429                        & 891                        & Dakuma                       & Kampf                          & NULL                             & NULL                      & 892                       & Wulaosu                     \\
+    \end{tabular}
+\end{example}
+
+\begin{example}{JOIN}
+    Geben Sie zusätzlich auch Pokémon aus, die (noch) keine Entwicklung haben.
+
+    \exampleseparator
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            von.ID,
+            von.Name,
+            von.PrimaerTyp,
+            von.SekundaerTyp,
+            entwicklung.Level,
+            zu.ID,
+            zu.Name
+        FROM pokemon AS von
+        LEFT OUTER JOIN entwicklung
+            ON von.ID = entwicklung.Von
+        LEFT OUTER JOIN pokemon AS zu
+            ON entwicklung.Zu = zu.ID;
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|ITTTIIT}
+        \rowcolor{gray!35}
+                                   & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{Level} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline
+        1                          & 1                          & Bisasam                      & Pflanze                        & Gift                             & 16                        & 2                         & Bisaknosp                   \\
+        2                          & 2                          & Bisaknosp                    & Pflanze                        & Gift                             & 32                        & 3                         & Bisaflor                    \\
+        3                          & 3                          & Bisaflor                     & Pflanze                        & Gift                             & NULL                      & NULL                      & NULL                        \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{7}{c}{\dots}                                                                                                                                                                                           \\
+        920                        & 898                        & Coronospa                    & Psycho                         & Pflanze                          & NULL                      & NULL                      & NULL                        \\
+    \end{tabular}
+\end{example}
+
+\begin{example}{JOIN}
+    Geben Sie alle Pokémon aus, die bislang keine Entwicklung besitzen.
+
+    \exampleseparator
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            pokemon.ID,
+            pokemon.Name,
+            pokemon.PrimaerTyp,
+            pokemon.SekundaerTyp
+        FROM pokemon
+        LEFT OUTER JOIN entwicklung
+            ON pokemon.ID = entwicklung.Von
+        WHERE entwicklung.Von IS NULL;
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|ITTT}
+        \rowcolor{gray!35}
+                                   & \multicolumn{1}{T}{ID}    & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1                          & 3                         & Bisaflor                 & Pflanze                        & Gift                             \\
+        2                          & 6                         & Glurak                   & Feuer                          & Flug                             \\
+        3                          & 9                         & Turtok                   & Wasser                         & NULL                             \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots}                                                                                                \\
+        491                        & 898                       & Coronospa                & Psycho                         & Pflanze                          \\
+    \end{tabular}
+\end{example}
+
+\begin{example}{JOIN}
+    Geben Sie alle Pokémon aus, die sich aus Evoli entwickeln.
+
+    \exampleseparator
+
+    \begin{lstlisting}[language=mysql]
+        SELECT
+            zu.ID,
+            zu.Name,
+            zu.PrimaerTyp,
+            zu.SekundaerTyp,
+            von.ID,
+            von.Name
+        FROM pokemon AS zu
+        JOIN entwicklung
+            ON zu.ID = entwicklung.Zu
+        JOIN pokemon AS von
+            ON entwicklung.Von = von.ID
+        WHERE von.Name = 'Evoli';
+    \end{lstlisting}
+
+    \setcounter{rownum}{0}
+    \begin{tabular}{I|TTTTTT}
+        \rowcolor{gray!35}
+          & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline
+        1 & 134                        & Aquana                       & Wasser                         & NULL                             & 133                       & Evoli                       \\
+        2 & 135                        & Blitza                       & Elektro                        & NULL                             & 133                       & Evoli                       \\
+        3 & 136                        & Flamara                      & Feuer                          & NULL                             & 133                       & Evoli                       \\
+        4 & 196                        & Psiana                       & Psycho                         & NULL                             & 133                       & Evoli                       \\
+        5 & 197                        & Nachtara                     & Unlicht                        & NULL                             & 133                       & Evoli                       \\
+        6 & 470                        & Folipurba                    & Pflanze                        & NULL                             & 133                       & Evoli                       \\
+        7 & 471                        & Glaziola                     & Eis                            & NULL                             & 133                       & Evoli                       \\
+        8 & 700                        & Feelinara                    & Fee                            & NULL                             & 133                       & Evoli                       \\
+    \end{tabular}
+\end{example}
