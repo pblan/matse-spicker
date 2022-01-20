@@ -15,6 +15,7 @@
 \end{sql}
 
 \begin{sql}{HAVING}
+    \rowcolors{2}{gray!15}{white}
     \texttt{HAVING} filtert die mit \texttt{GROUP BY} gruppierten Teilmengen.
 
     Dabei werden Bedingungen auf das Ergebnis der Abfrage angewandt.
@@ -62,6 +63,7 @@
 \subsubsection{Beispiele}
 
 \begin{example}{GROUP BY}
+    \rowcolors{2}{gray!15}{white}
     \begin{lstlisting}[language=mysql]
         SELECT
             typ,
@@ -100,7 +102,8 @@
 \end{example}
 
 \begin{example}{GROUP BY}
-    Geben Sie alle Attacken aus mit einer echter Stärke (>0) geordnet aus.
+    \rowcolors{2}{gray!15}{white}
+    Geben Sie alle Attacken aus mit einer echter Stärke ($>0$) geordnet aus.
     Gruppieren Sie diese nach Typ und ermitteln Sie die \texttt{MIN} und \texttt{MAX} Stärke.
     Ergänzen Sie diese um die Durchschnittsstärke und geben Sie nur die Einträge aus, bei denen diese über 75 liegt.
 
@@ -132,7 +135,8 @@
     \end{tabular}
 \end{example}
 
-\begin{sqlbonus}{GROUP BY}
+\begin{example}{GROUP BY}
+    \rowcolors{2}{gray!15}{white}
     Errechnen Sie
 
     \begin{itemize}
@@ -166,9 +170,10 @@
         \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots}                                                                                             \\
         18                         & Geist                     & 90.750                    & 2633.188                       & 51.315                       \\
     \end{tabular}
-\end{sqlbonus}
+\end{example}
 
 \begin{example}{GROUP BY}
+    \rowcolors{2}{gray!15}{white}
     Gruppieren Sie alle Pokémon nach Generation.
     Geben Sie diese Teilmengen sortiert nach Anzahl aus.
     Ermitteln Sie zusätzlich das gerundete Durchschnittsgewicht der Pokémon jeder Generation.

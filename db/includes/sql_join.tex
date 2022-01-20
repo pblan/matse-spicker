@@ -1,6 +1,7 @@
 \subsection{Join}
 
 \begin{sqlbonus}{Kartesisches Produkt in SQL}
+    \rowcolors{2}{gray!15}{white}
     Wenn man alle Entitäten einer Tabelle mit jeder Entität aus einer anderen Tabelle kombinieren möchte, benötigt man das \emph{kartesische Produkt}.
 
     Möchte man jede mögliche Typkombination\footnote{Sollte man das kartesische Produkt einer Tabelle mit sich selbst bilden, benötigt man Aliasse für die Tabellen} erhalten, nutzt man \texttt{SELECT} zwei mal auf \texttt{Typ}:
@@ -101,6 +102,7 @@
 \end{sql}
 
 \begin{sql}{INNER JOIN}
+    \rowcolors{2}{gray!15}{white}
     \texttt{INNER JOIN} wird automatisch genutzt, wenn man \texttt{JOIN} nutzt.
 
     Dementsprechend sind folgende abfragen äquivalent:
@@ -125,7 +127,6 @@
         SELECT
             pokemon.ID,
             pokemon.Name,
-            entwicklung.Von,
             entwicklung.Zu
         FROM pokemon
         JOIN entwicklung
@@ -135,12 +136,12 @@
     \setcounter{rownum}{0}
     \begin{tabular}{I|ITII}
         \rowcolor{gray!35}
-                                   & \multicolumn{1}{T}{ID}    & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Von} & \multicolumn{1}{T}{Zu} \\\hline
-        1                          & 1                         & Bisasam                  & 1                       & 2                      \\
-        2                          & 2                         & Bisaknosp                & 2                       & 3                      \\
-        3                          & 4                         & Glumanda                 & 4                       & 5                      \\
-        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots}                                                                               \\
-        429                        & 891                       & Dakuma                   & 891                     & 892                    \\
+                                   & \multicolumn{1}{T}{ID}    & \multicolumn{1}{T}{Name} & \multicolumn{1}{T}{Zu} \\\hline
+        1                          & 1                         & Bisasam                  & 2                      \\
+        2                          & 2                         & Bisaknosp                & 3                      \\
+        3                          & 4                         & Glumanda                 & 5                      \\
+        \multicolumn{1}{c|}{\dots} & \multicolumn{4}{c}{\dots}                                                     \\
+        429                        & 891                       & Dakuma                   & 892                    \\
     \end{tabular}
 \end{sql}
 
@@ -165,6 +166,7 @@
 \end{sqlbonus}
 
 \begin{sql}{LEFT OUTER JOIN}
+    \rowcolors{2}{gray!15}{white}
     \texttt{LEFT OUTER JOIN} beachtet alle Entitäten \emph{links} der Relation.
 
     Nun werden alle Pokémon dargestellt, ggf. mit \texttt{NULL}-Attributen bei Entwicklung:
@@ -259,6 +261,7 @@
 \subsubsection{Beispiele}
 
 \begin{example}{JOIN}
+    \rowcolors{2}{gray!15}{white}
     Geben Sie für alle Pokemon jeweils die Entwicklung mit Level, sowie die Typen aus.
 
     Nutzen Sie:
@@ -324,6 +327,7 @@
 \end{example}
 
 \begin{example}{JOIN}
+    \rowcolors{2}{gray!15}{white}
     Geben Sie zusätzlich auch Pokémon aus, die (noch) keine Entwicklung haben.
 
     \exampleseparator
@@ -357,6 +361,7 @@
 \end{example}
 
 \begin{example}{JOIN}
+    \rowcolors{2}{gray!15}{white}
     Geben Sie alle Pokémon aus, die bislang keine Entwicklung besitzen.
 
     \exampleseparator
@@ -370,7 +375,7 @@
         FROM pokemon
         LEFT OUTER JOIN entwicklung
             ON pokemon.ID = entwicklung.Von
-        WHERE entwicklung.Von IS NULL;
+        WHERE entwicklung.Zu IS NULL;
     \end{lstlisting}
 
     \setcounter{rownum}{0}
@@ -386,18 +391,19 @@
 \end{example}
 
 \begin{example}{JOIN}
+    \rowcolors{2}{gray!15}{white}
     Geben Sie alle Pokémon aus, die sich aus Evoli entwickeln.
 
     \exampleseparator
 
     \begin{lstlisting}[language=mysql]
         SELECT
+            von.ID,
+            von.Name,
             zu.ID,
             zu.Name,
             zu.PrimaerTyp,
-            zu.SekundaerTyp,
-            von.ID,
-            von.Name
+            zu.SekundaerTyp
         FROM pokemon AS zu
         JOIN entwicklung
             ON zu.ID = entwicklung.Zu
@@ -409,14 +415,14 @@
     \setcounter{rownum}{0}
     \begin{tabular}{I|TTTTTT}
         \rowcolor{gray!35}
-          & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} \\\hline
-        1 & 134                        & Aquana                       & Wasser                         & NULL                             & 133                       & Evoli                       \\
-        2 & 135                        & Blitza                       & Elektro                        & NULL                             & 133                       & Evoli                       \\
-        3 & 136                        & Flamara                      & Feuer                          & NULL                             & 133                       & Evoli                       \\
-        4 & 196                        & Psiana                       & Psycho                         & NULL                             & 133                       & Evoli                       \\
-        5 & 197                        & Nachtara                     & Unlicht                        & NULL                             & 133                       & Evoli                       \\
-        6 & 470                        & Folipurba                    & Pflanze                        & NULL                             & 133                       & Evoli                       \\
-        7 & 471                        & Glaziola                     & Eis                            & NULL                             & 133                       & Evoli                       \\
-        8 & 700                        & Feelinara                    & Fee                            & NULL                             & 133                       & Evoli                       \\
+          & \multicolumn{1}{T}{von.ID} & \multicolumn{1}{T}{von.Name} & \multicolumn{1}{T}{zu.ID} & \multicolumn{1}{T}{zu.Name} & \multicolumn{1}{T}{PrimaerTyp} & \multicolumn{1}{T}{SekundaerTyp} \\\hline
+        1 & 133                        & Evoli                        & 134                       & Aquana                      & Wasser                         & NULL                             \\
+        2 & 133                        & Evoli                        & 135                       & Blitza                      & Elektro                        & NULL                             \\
+        3 & 133                        & Evoli                        & 136                       & Flamara                     & Feuer                          & NULL                             \\
+        4 & 133                        & Evoli                        & 196                       & Psiana                      & Psycho                         & NULL                             \\
+        5 & 133                        & Evoli                        & 197                       & Nachtara                    & Unlicht                        & NULL                             \\
+        6 & 133                        & Evoli                        & 470                       & Folipurba                   & Pflanze                        & NULL                             \\
+        7 & 133                        & Evoli                        & 471                       & Glaziola                    & Eis                            & NULL                             \\
+        8 & 133                        & Evoli                        & 700                       & Feelinara                   & Fee                            & NULL                             \\
     \end{tabular}
 \end{example}

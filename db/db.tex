@@ -5,7 +5,7 @@
 \title{Datenbanken}
 \author{Patrick Gustav Blaneck, Tim Wende}
 \makeindex[intoc]
-\makeindex[intoc, name=SQL,title=SQL]
+\makeindex[intoc, name=SQL,title=Index SQL]
 \makeindex[intoc, name=Beispiele,title=Beispiele]
 
 \begin{document}
@@ -13,12 +13,65 @@
 \tableofcontents
 \newpage
 
+\section{Anmerkungen zum Spicker}
+
+\begin{info}{Genutzte Datenbank}
+    Um in diesem Spicker möglichst konsistene Beispiele zu erstellen, die sich von denen in der Vorlesung unterscheiden, haben wir eine Datenbank basierend auf den Pokémon-Spielen bis zur achten Spielgeneration erstellt.
+
+    Die Datenbank enthält die folgenden Tabellen:
+
+    \begin{center}
+        \begin{tabular}{|T|p{0.5\linewidth}|}
+            \hline
+            \multicolumn{1}{|l|}{Name} & Beschreibung                                                                                                                  \\
+            \hline\hline
+            pokemon                    & enthält alle\footnote{nicht beschrieben sind regionale Varianten} Pokémon, inkl. Größe, Gewicht und Typen                     \\
+            \hline
+            entwicklung                & enthält Informationen über alle möglichen Entwicklungen                                                                       \\
+            \hline
+            typ                        & enthält alle Pokémon-Typen                                                                                                    \\
+            \hline
+            effektivitaet              & beschreibt die Effektivität zwischen allen möglichen Typkombinationen                                                         \\
+            \hline
+            attacke                    & enthält alle Attacken, inkl. Informationen zu Stärke, Genauigkeit und Typ                                                     \\
+            \hline
+            item                       & enthält alle Items                                                                                                            \\
+            \hline
+            lernt                      & beschreibt, welches Pokémon welche Attacke wann und wie erlernen kann                                                         \\
+            \hline
+            version                    & enthält alle bisher erschienenen Hauptreihen-Pokémon-Spiele mit der jeweiligen Spielgeneration                                \\
+            \hline
+            generation                 & beschreibt, welche Region zu welcher Generation gehört\footnote{die Region, die bezeichnend für die jeweilige Generation ist} \\
+            \hline
+            attacke\_tm                & beschreibt, welches Item welche Attacke in welchem Pokémon-Spiel beibringen kann                                              \\
+            \hline
+            arenaleiter                & enthält alle Arenaleiter jeder Generation                                                                                     \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \vspace{1em}
+
+    Die meisten Beispiele beziehen sich auf diese Datenbank, wobei es aber auch vereinzelt Ausnahmen gibt.
+\end{info}
+
+\begin{info}{Installation der Datenbank}
+    Jede Abfrage in diesem Spicker wurde ausgeführt bzw. getestet.
+
+    Die Datenbank stellen wir zur Verfügung unter dem GitHub-Repository: \href{https://github.com/pblan/matse-spicker-db}{matse-spicker-db}
+
+    Dort findet sich auch eine Anleitung zur Installation.
+\end{info}
+
+\begin{info}{ER-Diagramm der Datenbank}
+    \begin{center}
+        \includegraphics[width=0.8\linewidth]{includes/figures/db_pokemon.pdf}
+    \end{center}
+\end{info}
+
 \include{includes/grundlagen.tex}
 \include{includes/modellierung.tex}
 \include{includes/relationale_algebra.tex}
 \include{includes/normalformen.tex}
-
-\section{SQL}
 
 \include{includes/sql_selektion_projektion.tex}
 \include{includes/sql_join.tex}

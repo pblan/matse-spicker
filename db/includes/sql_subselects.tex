@@ -18,6 +18,7 @@
 \end{defi}
 
 \begin{example}{Unterabfrage}
+    \rowcolors{2}{gray!15}{white}
     So könnte man z.B. alle IDs von Pokémon, welche sich aus Glumanda entwickeln, folgendermaßen herausfinden:
 
     Zuerst müssen wir die ID von Glumanda herausfinden:
@@ -76,6 +77,7 @@
 \end{defi}
 
 \begin{example}{Unterabfrage (mehrzeilig)}
+    \rowcolors{2}{gray!15}{white}
     Das Resultat des ersten Beispiels nutzen wir nun um den Namen der Entwicklung herauszufinden:
 
     \begin{lstlisting}[language=mysql]
@@ -144,6 +146,7 @@
 \end{defi}
 
 \begin{example}{Unterabfrage (korreliert)}
+    \rowcolors{2}{gray!15}{white}
     In folgender Abfrage wird jede Attacke ausgegeben, welche eine höhere Stärke besitzt, als der Durchschnitt aller Attacken mit dem selben Typ.
 
     \begin{lstlisting}[language=mysql]
@@ -182,6 +185,7 @@
 \end{defi}
 
 \begin{example}{Unterabfrage (nicht skalar)}
+    \rowcolors{2}{gray!15}{white}
     Möchte man sich beispielsweise alle Pokémon ausgeben, welche exakt die selbe Typkombination wie Bisasam haben, so nutzt man:
 
     \begin{lstlisting}[language=mysql]
@@ -260,6 +264,7 @@
 \subsubsection{Beispiele}
 
 \begin{example}{Unterabfrage}
+    \rowcolors{2}{gray!15}{white}
     Welche Kombinationen von Typen werden von mehr Pokémon genutzt, als die Kombination \texttt{('Feuer', NULL)}?
 
     \exampleseparator
@@ -297,6 +302,7 @@
 \end{example}
 
 \begin{example}{Unterabfrage}
+    \rowcolors{2}{gray!15}{white}
     Geben Sie alle Typen aus, welche nicht as Sekundärtyp in Kombination mit dem Primärtypen \texttt{'Feuer'} für mindestens ein Pokémon auftreten.
 
     \exampleseparator
@@ -326,6 +332,7 @@
 \end{example}
 
 \begin{example}{Unterabfrage}
+    \rowcolors{2}{gray!15}{white}
     Geben Sie alle Pokémon aus, welche exakt die selbe Typkombination wie Glumanda, also \texttt{('Feuer', NULL)}, haben.
 
     Da der Sekundärtyp von Glumanda \texttt{NULL} ist, muss man das Beispiel aus nicht skalaren Unterabfragen anpassen.

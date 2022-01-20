@@ -1,6 +1,7 @@
 \subsection{Views}
 
 \begin{sql}{VIEW}
+    \rowcolors{2}{gray!15}{white}
     Eine \texttt{VIEW} erzeugt aus einem \texttt{SELECT} eine temporäre Tabelle.
 
     Dementsprechend kann man wie folgt eine temporäre Tabelle aller Feuer-Pokémon erstellen\footnote{Das Schlüsselwort \texttt{OR REPLACE} überschreibt eine eventuell existierende Tabelle}, um bei den folgenden Abfragen Laufzeit zu sparen.\footnote{Wenn der innere \texttt{SELECT} z.B. mit einem oder mehreren \texttt{JOIN}-Befehlen kombiniert wird oder die Bedingung in der Selektion eine gewisse Komplexität überschreitet und die selbe Abfrage mehrfach benötigt wird}

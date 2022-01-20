@@ -1,6 +1,9 @@
+\section{SQL}
+
 \subsection{Selektion, Projektion}
 
 \begin{sqlbonus}{Projektion in SQL}
+    \rowcolors{2}{gray!15}{white}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \setcounter{rownum}{0}
@@ -20,6 +23,7 @@
 \end{sqlbonus}
 
 \begin{sqlbonus}{Selektion in SQL}
+    \rowcolors{2}{gray!15}{white}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \begin{center}
             \begin{tabular}{I|TTTTT}
@@ -39,6 +43,7 @@
 \end{sqlbonus}
 
 \begin{sql}{SELECT}
+    \rowcolors{2}{gray!15}{white}
     \texttt{SELECT} gibt alle Datensätze einer Tabelle aus.
 
     Möchte man sich z.B. alle Pokémon aus der Tabelle \texttt{pokemon} anzeigen lassen, nutzt man:\footnote{Der \texttt{*} dient als Platzhalter für alle Attribute}
@@ -87,6 +92,7 @@
 \end{sql}
 
 \begin{sql}{WHERE}
+    \rowcolors{2}{gray!15}{white}
     Möchte man eine \emph{Selektion} auf die Ergebnisse der Abfrage anwenden, also für jedes Element eine Bedingung voraussetzen, nutzt man \texttt{WHERE}.
 
     Beispielsweise werden im folgendem Befehl alle Pokémon mit dem Typ Feuer ausgegeben:
@@ -130,6 +136,7 @@
 \end{sql}
 
 \begin{sql}{ORDER BY}
+    \rowcolors{2}{gray!15}{white}
     \texttt{ORDER BY} sortiert die Ergebnismenge nach Kriterien auf- (\texttt{ASC}) oder absteigend (\texttt{DESC}).
 
     Sollten mehrere Kriterien angegeben sein, so wird die Menge nach dem ersten gegebenen Kriterium sortiert.
@@ -188,6 +195,7 @@
 \subsubsection{Funktionen}
 
 \begin{sql}{CONCAT}
+    \rowcolors{2}{gray!15}{white}
     \texttt{CONCAT} kombiniert verschiedene Strings zu einem.
 
     In folgendem Beispiel werden Primärtyp und Sekundärtyp zu einem Eintrag zusammengefasst:
@@ -214,6 +222,7 @@
 \end{sql}
 
 \begin{sql}{ROUND}
+    \rowcolors{2}{gray!15}{white}
     \texttt{ROUND} rundet numerische Werte.
     Der zweite Parameter gibt die gewünschte Anzahl an Nachkommastellen an.
 
@@ -241,6 +250,7 @@
 \end{sql}
 
 \begin{sql}{COUNT}
+    \rowcolors{2}{gray!15}{white}
     \texttt{COUNT} zählt alle nicht-\texttt{NULL} Datensätze.
     Sollte \texttt{*} angegeben werden, beachtet er alle Entitäten, welche mindestens ein nicht-\texttt{NULL} Attribut besitzen.
 
@@ -312,6 +322,7 @@
 \subsubsection{Operatoren}
 
 \begin{sql}{IS NULL}
+    \rowcolors{2}{gray!15}{white}
     \texttt{IS NULL} bzw. \texttt{IS NOT NULL} werden genutzt, um mit \texttt{NULL}-Einträgen zu arbeiten.
 
     In der folgenden Abfrage werden Pokémon mit exakt einem Typen zurückgegeben:
@@ -339,6 +350,7 @@
 \end{sql}
 
 \begin{sql}{COALESCE}
+    \rowcolors{2}{gray!15}{white}
     \texttt{COALESCE} gibt den ersten nicht-\texttt{NULL} Eintrag aus der Parameterliste zurück.
 
     % Dementsprechend sind folgende SQL-Befehle äquivalent:
@@ -436,6 +448,7 @@
 \end{sql}
 
 \begin{sql}{DISTINCT}
+    \rowcolors{2}{gray!15}{white}
     \texttt{DISTINCT} berücksichtigt keine doppelten Daten.
 
     Wenn man sich jede vorhandene Kombination an Typen anzeigen lassen möchte, so erhält man in folgender Abfrage doppelte Werte:
@@ -483,6 +496,7 @@
 \subsubsection{Beispiele}
 
 \begin{example}{SELECT}
+    \rowcolors{2}{gray!15}{white}
     Ermitteln Sie, wieviele verschiedene Typkombinationen in der Tabelle \texttt{pokemon} vorhanden sind und geben Sie die Anzahl aus.
 
     \exampleseparator
@@ -504,6 +518,7 @@
 \end{example}
 
 \begin{example}{SELECT}
+    \rowcolors{2}{gray!15}{white}
     Ermitteln Sie den BMI\footnote{$\text{BMI} = \frac{\text{Gewicht}}{\text{Größe}^2}$} aller Pokémon, welche mehr als 50kg wiegen.
 
     Runden Sie das Ergebnis auf 2 Nachkommastellen.
@@ -537,6 +552,7 @@
 \end{example}
 
 \begin{example}{SELECT}
+    \rowcolors{2}{gray!15}{white}
     Wieviele Pokémon-Namen beginnen mit einem \texttt{P}?
 
     Und wieviele enthalten ein \texttt{P}?
