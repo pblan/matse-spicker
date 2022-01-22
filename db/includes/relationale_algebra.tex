@@ -72,7 +72,7 @@
 \begin{defi}{Kartesisches Produkt}
     Für zwei Relationen $S$ und $T$ mit
     \[
-        \ident(S) \cap \ident(T) \neq \emptyset
+        \ident(S) \cap \ident(T) = \emptyset
     \]
     ist das \emph{kartesische Produkt} $S \times T$ definiert durch
     \[
@@ -82,7 +82,7 @@
     Im üblichen kartesisches Produkt entstehen Paare $(s,t)$ mit $s \in S$ und $t \in T$.
     Hier hingegen entstehen $\abs{S \times T} = \abs{S} \cdot \abs{T}$ Tupel, bestehend aus allen Attributen einer Entität $s \in S$ verbunden mit den Attributen einer Entität $t \in T$.
 
-    Im Fall $\ident(S) \cap \ident(T) = \emptyset$ würde obige Definition doppelte Attribute erzeugen, was mathematisch ein Problem ist, aber in der Praxis durch Umbenennung der Attribute gelöst werden kann.
+    Im Fall $\ident(S) \cap \ident(T) \neq \emptyset$ würde obige Definition doppelte Attribute erzeugen, was mathematisch ein Problem ist, aber in der Praxis durch Umbenennung der Attribute gelöst werden kann.
 
     \emph{Eselsbrücke}: Jedes Element von $S$ mit jedem von $T$.
 \end{defi}
