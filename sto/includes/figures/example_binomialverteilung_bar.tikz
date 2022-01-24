@@ -1,16 +1,18 @@
 % Säulendiagramm
 \begin{tikzpicture}
     \begin{axis}[
-            xlabel=$x$,
-            ylabel=$f(x)$,
-            ymajorgrids,
-            ytick distance={0.1},
-            xtick distance={10},
-            ycomb,
-            samples at={0,...,50},
-            mark options={mark=-,scale=1},
-            clip=false,
-            enlarge x limits={abs=1cm}, % The distance between the center of the first bar and the left edge
+        width=\linewidth,
+        height=0.5\linewidth,
+        xlabel=$x$,
+        ylabel=$f(x)$,
+        ymajorgrids,
+        ytick distance={0.1},
+        xtick distance={10},
+        ycomb,
+        samples at={0,...,50},
+        mark options={mark=-,scale=1},
+        clip=false,
+        enlarge x limits={abs=1cm}, % The distance between the center of the first bar and the left edge
         ]
         \addplot {binomial(x,50,0.1)}; \addlegendentry{$B(50, 0.1)$}
         %\addplot {binomial(x,50,0.3)}; \addlegendentry{$B(50, 0.3)$}

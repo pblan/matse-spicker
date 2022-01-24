@@ -60,7 +60,22 @@
 \end{defi}
 
 \begin{bonus}{Kombinatoriktabelle}
-    TO DO
+    \begin{center}
+        \begin{tabular}{c|c|c|c}
+            \cline{2-3}
+                                                  & ohne Wiederholung                                            & mit Wiederholung                                              &                                  \\
+            \hline
+            \multicolumn{1}{|c|}{Kombinationen}   & \multirow{2}{*}{$\displaystyle C(n;k) = \binom{n}{k} $}      & \multirow{2}{*}{$\displaystyle C_W(n;k) = \binom{n+k-1}{k} $} & \multicolumn{1}{c|}{ungeordnete} \\
+            \multicolumn{1}{|c|}{$k$-ter Ordnung} &                                                              &                                                               & \multicolumn{1}{c|}{Stichproben} \\
+            \hline
+            \multicolumn{1}{|c|}{Variationen}     & \multirow{2}{*}{$\displaystyle V(n;k) = \frac{n!}{(n-k)!} $} & \multirow{2}{*}{$\displaystyle V_W(n;k) = n^k $}              & \multicolumn{1}{c|}{geordnete}   \\
+            \multicolumn{1}{|c|}{$k$-ter Ordnung} &                                                              &                                                               & \multicolumn{1}{c|}{Stichproben} \\
+            \hline
+                                                  & Ziehung ohne                                                 & Ziehung mit                                                   &                                  \\
+                                                  & Zurücklegen                                                  & Zurücklegen                                                   &                                  \\
+            \cline{2-3}
+        \end{tabular}
+    \end{center}
 \end{bonus}
 
 \subsection{Grundbegriffe}
@@ -255,26 +270,30 @@
 
 \begin{bonus}{Vierfeldertafel}
     \begin{center}
-        \begin{tabular}{C|CC|C}
-                                & B                  & \conj{B}                  & \text{Zeilensumme} \\
+        \begin{tabular}{c|CC|c|}
+            \cline{2-4}
+                                               & B                  & \conj{B}                  & Zeilensumme   \\
             \hline
-            A                   & P(A \cap B)        & P(A \cap \conj{B})        & P(A)               \\
-            \conj{A}            & P(\conj{A} \cap B) & P(\conj{A} \cap \conj{B}) & P(\conj{A})        \\
+            \multicolumn{1}{|c|}{$A$}          & P(A \cap B)        & P(A \cap \conj{B})        & $P(A)$        \\
+            \multicolumn{1}{|c|}{$\conj{A}$}   & P(\conj{A} \cap B) & P(\conj{A} \cap \conj{B}) & $P(\conj{A})$ \\
             \hline
-            \text{Spaltensumme} & P(B)               & P(\conj{B})               & 1
+            \multicolumn{1}{|c|}{Spaltensumme} & P(B)               & P(\conj{B})               & $1$           \\
+            \hline
         \end{tabular}
     \end{center}
 
     Bei vollständiger Unabhängigkeit der Ereignisse $A$ und $B$ voneinander gilt:
 
     \begin{center}
-        \begin{tabular}{C|CC|C}
-                                & B                      & \conj{B}                      & \text{Zeilensumme} \\
+        \begin{tabular}{c|CC|c|}
+            \cline{2-4}
+                                               & B                      & \conj{B}                      & Zeilensumme   \\
             \hline
-            A                   & P(A) \cdot P(B)        & P(A) \cdot P(\conj{B})        & P(A)               \\
-            \conj{A}            & P(\conj{A}) \cdot P(B) & P(\conj{A}) \cdot P(\conj{B}) & P(\conj{A})        \\
+            \multicolumn{1}{|c|}{$A$}          & P(A) \cdot P(B)        & P(A) \cdot P(\conj{B})        & $P(A)$        \\
+            \multicolumn{1}{|c|}{$\conj{A}$}   & P(\conj{A}) \cdot P(B) & P(\conj{A}) \cdot P(\conj{B}) & $P(\conj{A})$ \\
             \hline
-            \text{Spaltensumme} & P(B)                   & P(\conj{B})                   & 1
+            \multicolumn{1}{|c|}{Spaltensumme} & P(B)                   & P(\conj{B})                   & $1$           \\
+            \hline
         \end{tabular}
     \end{center}
 \end{bonus}
@@ -293,7 +312,93 @@
 \end{defi}
 
 \begin{example}{Ereignisbaum}
-    TO DO
+    Ein Zufallsexperiment bestehe aus dem gleichzeitigen Werfen dreier \emph{unterscheidbarer} Münzen.
+
+    Wie groß ist die Wahrscheinlichkeit dafür, dass einmal \enquote{Zahl} und zweimal \enquote{Wappen} erscheint?
+
+    \exampleseparator
+
+    Sei $A = \{ \text{Es erscheint einmal \enquote{Zahl} und zweimal \enquote{Wappen}} \}$.
+
+    \begin{center}
+
+        \begin{forest}
+            [
+                [
+                        $Z_1$, left prob, marked
+                            [
+                                $Z_2$, left prob
+                                    [
+                                        $Z_3$, left prob
+                                            [
+                                                $\nicefrac{1}{8}$, edge={->}
+                                            ]
+                                    ]
+                                    [
+                                        $W_3$, right prob
+                                            [
+                                                $\nicefrac{1}{8}$, edge={->}
+                                            ]
+                                    ]
+                            ]
+                            [
+                                $W_2$, right prob, marked
+                                    [
+                                        $Z_3$, left prob
+                                            [
+                                                $\nicefrac{1}{8}$, edge={->}
+                                            ]
+                                    ]
+                                    [
+                                        $W_3$, right prob, marked
+                                            [
+                                                $\nicefrac{1}{8}$, edge={->}, marked
+                                            ]
+                                    ]
+                            ]
+                    ]
+                    [
+                        $W_1$, right prob, marked
+                            [
+                                $Z_2$, left prob, marked
+                                    [
+                                        $Z_3$, left prob
+                                            [
+                                                $\nicefrac{1}{8}$, edge={->}
+                                            ]
+                                    ]
+                                    [
+                                        $W_3$, right prob, marked
+                                            [
+                                                $\nicefrac{1}{8}$, edge={->}, marked
+                                            ]
+                                    ]
+                            ]
+                            [
+                                $W_2$, right prob, marked
+                                    [
+                                        $Z_3$, left prob, marked
+                                            [
+                                                $\nicefrac{1}{8}$, edge={->}, marked
+                                            ]
+                                    ]
+                                    [
+                                        $W_3$, right prob
+                                            [
+                                                $\nicefrac{1}{8}$, edge={->}
+                                            ]
+                                    ]
+                            ]
+                    ]
+            ]
+        \end{forest}
+    \end{center}
+
+    Damit gilt:
+    \[
+        P(A) = \underbrace{\frac{1}{2} \cdot \frac{1}{2} \cdot \frac{1}{2}}_{P(Z_1 \cap W_2 \cap W_3)} + \underbrace{\frac{1}{2} \cdot \frac{1}{2} \cdot \frac{1}{2}}_{P(W_1 \cap Z_2 \cap W_3)} + \underbrace{\frac{1}{2} \cdot \frac{1}{2} \cdot \frac{1}{2}}_{P(W_1 \cap W_2 \cap Z_3)} = \frac{3}{8}
+    \]
+    \qed
 \end{example}
 
 \begin{defi}{Totale Wahrscheinlichkeit}
@@ -301,8 +406,6 @@
     \[
         P(B) = \sum_{i=1}^n P(A_i) \cdot P(B \mid A_i)
     \]
-
-    TO DO (Graph, siehe Folie 67)
 \end{defi}
 
 \begin{defi}{Bayes'sche Formel}
@@ -461,30 +564,30 @@
 \end{algo}
 
 \begin{defi}{Erwartungswert}
-    Der wichtigste Lageparameter einer Verteilung ist der \emph{Erwartungswert}. 
+    Der wichtigste Lageparameter einer Verteilung ist der \emph{Erwartungswert}.
     Der Erwartungswert einer Zufallsvariablen beschreibt die Zahl, die die Zufallsvariable im Mittel annimmt.
 
-    Für eine diskrete Zufallsvariable $X$ gilt: 
-    \[ 
+    Für eine diskrete Zufallsvariable $X$ gilt:
+    \[
         \Mean(X) := \sum_i x_i \cdot P(X = x_i) \quad \text{bzw.} \quad \Mean(X) := \sum_i X(\omega_i) \cdot P(\{ \omega_i \}), \, \omega_i \in \Omega
     \]
 
     Für eine stetige Zufallsvariable $X$ gilt: (Schwerpunkt der Dichtefunktion)
     \[
-        \Mean(X) = \int_{-\infty}^{\infty} x \cdot f(x) \diff x 
+        \Mean(X) = \int_{-\infty}^{\infty} x \cdot f(x) \diff x
     \]
 
     Sehr oft wird statt $\Mean(X)$ auch $\mu$ oder $\mu_X$ geschrieben.
 \end{defi}
 
 \begin{algo}{Transformation des Erwartungswertes auf eine neue Zufallsvariable}
-    Bei einer Transformation von einer Zufallsvariable $X$ auf eine neue Zufallsvariable $Y = g(X)$ gilt: 
-    \[ 
+    Bei einer Transformation von einer Zufallsvariable $X$ auf eine neue Zufallsvariable $Y = g(X)$ gilt:
+    \[
         \Mean(Y) = \int_{-\infty}^{\infty} y \cdot f_Y(y) \diff y = \int_{-\infty}^{\infty} g(x) \cdot f_X(x) \diff x
     \]
 
-    Speziell bei der linearen Transformation gilt: 
-    \[ 
+    Speziell bei der linearen Transformation gilt:
+    \[
         \Mean(aX + b) = a \Mean(X) + b
     \]
 \end{algo}
@@ -492,30 +595,30 @@
 \begin{defi}{Median}
     Der \emph{Median} $\tilde{x}$ ist der Wert, der die Verteilung \enquote{halbiert}.
 
-    Bei stetigen Zufallsvariablen existiert der Median immer und es gilt: 
-    \[ 
+    Bei stetigen Zufallsvariablen existiert der Median immer und es gilt:
+    \[
         P(X \leq \tilde{x}) = F_X(\tilde{x}) = \int_{-\infty}^{\tilde{x}} f_X(x) \diff x = \frac{1}{2}
     \]
 
     Bei diskreten Zufallsvariablen gibt es nur wenige Ausnahmen, bei denen ein $x$-Wert existiert mit genau $F(x) = \frac{1}{2}$.
-    Daher gilt folgende Definition: 
-    \[ 
+    Daher gilt folgende Definition:
+    \[
         P(X < \tilde{x}) \leq \frac{1}{2} \quad \land \quad P(X \leq \tilde{x}) \geq \frac{1}{2}
     \]
 \end{defi}
 
 \begin{defi}{Quantile}
-    Ein \emph{Quantil} ist ein Lagemaß. 
-    Ein bestimmter Anteil der Werte (einer Zufallsstichprobe) ist kleiner als das Quantil, der Rest ist größer. 
-    Das 25\%-Quantil, bzw. das untere Quartil, beispielsweise ist der Wert, für den gilt, dass 25\% aller Werte $\leq$ sind als dieser Wert. 
+    Ein \emph{Quantil} ist ein Lagemaß.
+    Ein bestimmter Anteil der Werte (einer Zufallsstichprobe) ist kleiner als das Quantil, der Rest ist größer.
+    Das 25\%-Quantil, bzw. das untere Quartil, beispielsweise ist der Wert, für den gilt, dass 25\% aller Werte $\leq$ sind als dieser Wert.
 
-    Bei stetigen Zufallsvariablen gilt: 
-    \[ 
-        P(X \leq x_\alpha) = F_X(x_\alpha) = \int_{-\infty}^{x_\alpha} f_X(x) \diff x = \alpha 
+    Bei stetigen Zufallsvariablen gilt:
+    \[
+        P(X \leq x_\alpha) = F_X(x_\alpha) = \int_{-\infty}^{x_\alpha} f_X(x) \diff x = \alpha
     \]
 
-    Bei diskreten Zufallsvariablen gilt: 
-    \[ 
+    Bei diskreten Zufallsvariablen gilt:
+    \[
         P(X < x_\alpha) \leq \alpha \quad \land \quad P(X \leq x_\alpha) \geq \alpha
     \]
 
@@ -525,22 +628,22 @@
 \end{defi}
 
 \begin{defi}{Varianz}
-    Die \emph{Varianz} ist ein wichtiges Maß für die Streuung der Wahrscheinlichkeitsdichte um ihren Schwerpunkt. 
+    Die \emph{Varianz} ist ein wichtiges Maß für die Streuung der Wahrscheinlichkeitsdichte um ihren Schwerpunkt.
     Mathematisch wird sie definiert als die mittlere quadratische Abweichung einer reellen Zufallsvariablen von ihrem Erwartungswert.
 
-    Bei diskreten Zufallsvariablen gilt: 
+    Bei diskreten Zufallsvariablen gilt:
     \[
         \sigma^2 = \Var(X) = \sum_i (x_i - \mu)^2 \cdot P(X = x_i)
     \]
 
-    Bei stetigen Zufallsvariablen gilt: 
+    Bei stetigen Zufallsvariablen gilt:
     \[
-        \sigma^2 = \Var(X) = \int_{-\infty}^{\infty} (x - \mu)^2 \cdot f(x) \diff x 
+        \sigma^2 = \Var(X) = \int_{-\infty}^{\infty} (x - \mu)^2 \cdot f(x) \diff x
     \]
 \end{defi}
 
 \begin{defi}{Standardabweichung}
-    Die \emph{Stamdardabweichung} ist ein weiteres Streuungsmaß und wird definiert als die Quadratwurzel der Varianz: 
+    Die \emph{Stamdardabweichung} ist ein weiteres Streuungsmaß und wird definiert als die Quadratwurzel der Varianz:
     \[
         \sigma = \sqrt{\Var(X)}
     \]
@@ -548,61 +651,61 @@
 
 \begin{algo}{Verschiebungssatz}
     Sei der Erwartungswert einer Zufallsvariable $X$ gegeben mit $\Mean(X) = \mu$.
-    Dann gilt mit dem \emph{Verschiebungssatz} für ein beliebiges $a \in \R$: 
-    \[ 
+    Dann gilt mit dem \emph{Verschiebungssatz} für ein beliebiges $a \in \R$:
+    \[
         \Mean((X-a)^2) = \Var(X) + (\mu - a)^2
     \]
 
-    Für $a = 0$ erhalten wir eine alternative Formel zur Berechnung der Varianz: 
-    \[ 
+    Für $a = 0$ erhalten wir eine alternative Formel zur Berechnung der Varianz:
+    \[
         \Var(X) = \Mean(X^2) -\Mean(X)^2 = \Mean(X^2) - \mu^2
     \]
 \end{algo}
 
 \begin{defi}{Tschebyscheffsche Ungleichung}
-    Mithilfe der \emph{Tschebyscheffschen Ungleichung} lässt sich unter Verwendung der existierenden ersten beiden Momente (Erwartungswert und Varianz) die Wahrscheinlichkeit dafür abschätzen, dass die Zufallsvariable $X$ Werte in bestimmten Intervallen der reellen Zahlengeraden annimmt, ohne jedoch die Verteilung von $X$ zu kennen. 
-    
+    Mithilfe der \emph{Tschebyscheffschen Ungleichung} lässt sich unter Verwendung der existierenden ersten beiden Momente (Erwartungswert und Varianz) die Wahrscheinlichkeit dafür abschätzen, dass die Zufallsvariable $X$ Werte in bestimmten Intervallen der reellen Zahlengeraden annimmt, ohne jedoch die Verteilung von $X$ zu kennen.
+
     Sie lautet für eine Zufallsvariable $X$ mit Erwartungswert $\mu$ und Varianz $\sigma^2$:
 
     \[
         P(\abs{X - \mu} \geq \epsilon) \leq \frac{\sigma^2}{\epsilon^2}
     \]
 
-    Sie setzt keine besondere Verteilungsform voraus. 
+    Sie setzt keine besondere Verteilungsform voraus.
 
-    Ein Nachteil der Tschebyscheffschen Ungleichung ist, dass sie nur eine grobe Abschätzung liefert. 
+    Ein Nachteil der Tschebyscheffschen Ungleichung ist, dass sie nur eine grobe Abschätzung liefert.
 \end{defi}
 
 \subsection{Spezielle Wahrscheinlichkeitsverteilungen}
 
 \begin{defi}{Gleichverteilung}
-    Eine \emph{Gleichverteilung} beschreibt eine Wahrscheinlichkeitsverteilung mit bestimmten Eigenschaften. 
+    Eine \emph{Gleichverteilung} beschreibt eine Wahrscheinlichkeitsverteilung mit bestimmten Eigenschaften.
 
-    Im diskreten Fall tritt jedes mögliche Ergebnis mit der gleichen Wahrscheinlichkeit ein, im stetigen Fall ist die Dichte konstant. 
-    
+    Im diskreten Fall tritt jedes mögliche Ergebnis mit der gleichen Wahrscheinlichkeit ein, im stetigen Fall ist die Dichte konstant.
+
     Für eine im Intervall $[a,b]$ stetige gleichverteilte Zufallsvariable $X$ gilt also:
     \[
-        f(x) = 
+        f(x) =
         \begin{cases}
-            \frac{1}{b-a}   & \text{für} \ x \in [a;b] \\ 
-            0               & \text{sonst}
+            \frac{1}{b-a} & \text{für} \ x \in [a;b] \\
+            0             & \text{sonst}
         \end{cases}
     \]
     \[
-        F(x) = 
+        F(x) =
         \begin{cases}
-            0 & \text{für} \ x \leq a \\ 
-            \frac{x-a}{b-a} & \text{für} \ a < x \leq b \\ 
-            1 & \text{für} \ x > b
+            0               & \text{für} \ x \leq a     \\
+            \frac{x-a}{b-a} & \text{für} \ a < x \leq b \\
+            1               & \text{für} \ x > b
         \end{cases}
     \]
 
-    Der Grundgedanke einer Gleichverteilung ist, dass es keine Präferenz gibt. 
+    Der Grundgedanke einer Gleichverteilung ist, dass es keine Präferenz gibt.
 \end{defi}
 
 \begin{defi}{Bernoulli-Experiment}
-    Bei einem \emph{Bernoulli-Experiment} gibt es stets nur zwei Ausgänge, Treffer oder Niete. 
-    Zudem muss die Wahrscheinlichkeit für einen Treffer, $p$, und somit auch die für eine Niete, $1-p$, bei jedem der Experimente dieselbe sein. 
+    Bei einem \emph{Bernoulli-Experiment} gibt es stets nur zwei Ausgänge, Treffer oder Niete.
+    Zudem muss die Wahrscheinlichkeit für einen Treffer, $p$, und somit auch die für eine Niete, $1-p$, bei jedem der Experimente dieselbe sein.
 
     Bei einem \emph{Bernoulli-Experiment vom Umfang $n$} wird ein Bernoulli-Experiment $n$-fach ausgeführt mit der Voraussetzung, dass die Ergebnisse der einzelnen Studen voneinander unabhängig sind.
 \end{defi}
@@ -611,20 +714,20 @@
     Ein Bernoulli-Experiment mit den beiden sich gegenseitig ausschließenden Ergebnissen $A$ und $\conj{A}$ werde $n$-mal nacheinander ausgeführt (Bernoulli-Experiment mit Umfang $n$).
 
     Dann genügt die diskrete Zufallsvariable
-    \[ 
+    \[
         X = \text{Anzahl der Versuche, in denen das Ereignis $A$ eintritt}
     \]
-    der \emph{Binomialverteilung} mit der Wahrscheinlichkeitsfunktion 
-    \[ 
+    der \emph{Binomialverteilung} mit der Wahrscheinlichkeitsfunktion
+    \[
         f(x) = P(X = x) = \binom{n}{x} \cdot p^x \cdot q^{n-x} \qquad x \in [0,n]
     \]
-    und der zugehörigen Verteilungsfunktion 
-    \[ 
+    und der zugehörigen Verteilungsfunktion
+    \[
         F(x) = P(X \leq x) = \sum_{k \leq x} \binom{n}{k} \cdot p^k \cdot q^{n-k} \qquad x \geq 0
     \]
     (für $x < 0$ ist $F(x) = 0$) $n$ und $p$ sind dabei die Parameter der Binomialverteilung.
 
-    Die Maßzahlen dieser Verteilung lauten: 
+    Die Maßzahlen dieser Verteilung lauten:
     \begin{itemize}
         \item Erwartungswert: $\mu = np$
         \item Varianz: $\sigma^2 = npq = np(1-p)$
@@ -641,10 +744,10 @@
 \end{example}
 
 \begin{defi}{Hypergeometrische Verteilung}
-    Die \emph{hypergeometrische Verteilung} beschreibt die Wahrscheinlichkeit dafür, dass bei $N$ gegebenen Elementen (Grundgesamtheit des Umfangs $N$), von denen $M$ die gewünschte Eigenschaft besitzen, beim Herausgreifen von $n$ Probestücken (Stichprobe des Umfangs $n$) genau $x$ Treffer erzielt werden, d. h. die Wahrscheinlichkeit für $X = x$ Erfolge in $n$ Versuchen. 
+    Die \emph{hypergeometrische Verteilung} beschreibt die Wahrscheinlichkeit dafür, dass bei $N$ gegebenen Elementen (Grundgesamtheit des Umfangs $N$), von denen $M$ die gewünschte Eigenschaft besitzen, beim Herausgreifen von $n$ Probestücken (Stichprobe des Umfangs $n$) genau $x$ Treffer erzielt werden, d. h. die Wahrscheinlichkeit für $X = x$ Erfolge in $n$ Versuchen.
 
-    Dabei ist die Wahrscheinlichkeitsfunktion 
-    \[ 
+    Dabei ist die Wahrscheinlichkeitsfunktion
+    \[
         f(x) = P(X = x) = \frac{\binom{M}{x} \binom{N-M}{n-x}}{\binom{N}{n}} \qquad x \in [0,n]
     \]
 
@@ -652,12 +755,12 @@
     \[
         F(x) = P(X \leq x) = \sum_{k\leq x} \frac{\binom{M}{k} \binom{N-M}{n-k}}{\binom{N}{n}} \qquad x \geq 0
     \]
-    (für $x < 0$ ist $F(x) = 0$) $N$, $M$ und $n$ sind dabei die Parameter der hypergeometrischen Verteilung. 
+    (für $x < 0$ ist $F(x) = 0$) $N$, $M$ und $n$ sind dabei die Parameter der hypergeometrischen Verteilung.
 
-    Die Maßzahlen dieser Verteilung lauten: 
+    Die Maßzahlen dieser Verteilung lauten:
     \begin{itemize}
         \item Erwartungswert: $\mu = n \cdot \frac{M}{N}$
-        \item Varianz: $\sigma^2 = n \cdot \frac{M}{N} \cdot \left( 1 - \frac{M}{N}\right) \cdot \frac{N-n}{N-1} = \frac{nM(N-M)(N-n)}{N^2(N-1)}$ 
+        \item Varianz: $\sigma^2 = n \cdot \frac{M}{N} \cdot \left( 1 - \frac{M}{N}\right) \cdot \frac{N-n}{N-1} = \frac{nM(N-M)(N-n)}{N^2(N-1)}$
     \end{itemize}
 
     Man schreibt auch $X \sim H(N,M,n)$.
@@ -670,19 +773,19 @@
 \end{example}
 
 \begin{defi}{Poisson-Verteilung}
-    Die \emph{Poisson-Verteilung} ist eine Wahrscheinlichkeitsverteilung, mit der die Anzahl von Ereignissen modelliert werden kann, die bei konstanter mittlerer Rate unabhängig voneinander in einem festen Zeitintervall oder räumlichen Gebiet eintreten. 
+    Die \emph{Poisson-Verteilung} ist eine Wahrscheinlichkeitsverteilung, mit der die Anzahl von Ereignissen modelliert werden kann, die bei konstanter mittlerer Rate unabhängig voneinander in einem festen Zeitintervall oder räumlichen Gebiet eintreten.
 
-    Die Wahrscheinlichkeitsfunktion einer diskreten poisson-verteilten Zufallsvariablen $X$ ist gegeben mit 
+    Die Wahrscheinlichkeitsfunktion einer diskreten poisson-verteilten Zufallsvariablen $X$ ist gegeben mit
     \[
         f(x) = P(X = x) = \frac{\mu^x}{x!} \cdot e^{-\mu} \qquad x \in [0,\infty]
-    \]  
-    und die zugehörige Verteilungsfunktion mit 
-    \[ 
+    \]
+    und die zugehörige Verteilungsfunktion mit
+    \[
         F(x) = P(X \leq x) = e^{-\mu} \cdot \sum_{k \leq x} \frac{\mu^k}{k!} \qquad x \geq 0
     \]
     (für $x < 0$ ist $F(x) = 0$) $\mu$ ist dabei der Parameter der Poisson-Verteilung.
 
-    Die Maßzahlen dieser Verteilung lauten: 
+    Die Maßzahlen dieser Verteilung lauten:
     \begin{itemize}
         \item Erwartungswert: $\mu$
         \item Varianz: $\sigma^2 = \mu$
@@ -699,12 +802,12 @@
 \end{example}
 
 \begin{defi}{Lokaler Grenzwertsatz von de Moivre-Laplace}
-    Nach dem \emph{lokalen Grenzwertsatz von de Moivre-Laplace} konvergiert die Binomialverteilung für den Stichprobenumfang $n \to \infty$ und Wahrscheinlichkeiten $0 < p < 1$ gegen die Normalverteilung. 
-    Bei großem Stichprobenumpfang kann daher die Normalverteilung als Näherung der Binomialverteilung verwendet werden. 
+    Nach dem \emph{lokalen Grenzwertsatz von de Moivre-Laplace} konvergiert die Binomialverteilung für den Stichprobenumfang $n \to \infty$ und Wahrscheinlichkeiten $0 < p < 1$ gegen die Normalverteilung.
+    Bei großem Stichprobenumpfang kann daher die Normalverteilung als Näherung der Binomialverteilung verwendet werden.
 
-    Also gilt ($\sigma^2 = p(1-p)$): 
+    Also gilt ($\sigma^2 = p(1-p)$):
     \[
-        B(k \mid p, n) = \binom{n}{k} \cdot p^k \cdot (1-p)^{n-k} \approx \frac{1}{2\pi n \sigma^2} \cdot \exp \left( -\frac{n}{2\sigma^2} \left( \frac{k}{n} - p \right)^2 \right) 
+        B(k \mid p, n) = \binom{n}{k} \cdot p^k \cdot (1-p)^{n-k} \approx \frac{1}{2\pi n \sigma^2} \cdot \exp \left( -\frac{n}{2\sigma^2} \left( \frac{k}{n} - p \right)^2 \right)
     \]
 \end{defi}
 
@@ -714,17 +817,17 @@
     %Die besondere Bedeutung der Normalverteilung beruht unter anderem auf dem zentralen Grenzwertsatz, dem zufolge Verteilungen, die durch additive Überlagerung einer großen Zahl von unabhängigen Einflüssen entstehen, annähernd normalverteilt sind.
 
     Eine stetige Zufallsvariable $X$ hat eine Normalverteilung mit Erwartungswert $\mu \neq \pm \infty$ und Varianz $\sigma^2 > 0$, oft geschrieben als $X \sim \mathcal{N} \left(\mu ,\sigma^{2}\right)$, wenn $X$ die folgende Wahrscheinlichkeitsdichte hat:
-    
+
     \[
         f(x) = P(X = x) = \frac{1}{\sqrt{2\pi n \sigma^2}} \cdot \exp \left( - \frac{(x-\mu)^2}{2\sigma^2} \right) \qquad x \in \R
     \]
 
-    Die zugehörige Verteilungsfunktion ist dann gegeben mit 
-    \[ 
+    Die zugehörige Verteilungsfunktion ist dann gegeben mit
+    \[
         F(x) = P(X \leq x) = \frac{1}{\sigma\sqrt{2\pi}} \int_{-\infty}^x e^{\left( \frac{t-\mu}{\sigma} \right)^2} \diff t
     \]
 
-    Wichtige Eigenschaften der Normalverteilung sind: 
+    Wichtige Eigenschaften der Normalverteilung sind:
     \begin{itemize}
         \item $f(x)$ ist symmetrisch um $x = \mu$
         \item $f(x)$ hat ein Maximum der Höhe $\nicefrac{1}{\sigma\sqrt{2\pi}}$ bei $x = \mu$
@@ -741,9 +844,9 @@
 
 \begin{defi}{Standardnormalverteilung}
     Die \emph{Standardnormalverteilung} ist eine spezielle Variante der Normalverteilung.
-    Dabei gilt $\mu = 0$, $\sigma^2 = 1$, bzw. $X \sim \mathcal{N}(0,1)$. 
+    Dabei gilt $\mu = 0$, $\sigma^2 = 1$, bzw. $X \sim \mathcal{N}(0,1)$.
 
-    Wichtige Eigenschaften der Standardnormalverteilung sind: 
+    Wichtige Eigenschaften der Standardnormalverteilung sind:
     \begin{itemize}
         \item Jede Normalverteilung lässt sich auf die Standardnormalverteilung transformieren.
         \item Die Verteilungsfunktion $\Phi(x)$ der Standardnormalverteilung ist tabelliert.
@@ -751,8 +854,8 @@
 \end{defi}
 
 \begin{algo}{Transformation auf standardisierte Variable}
-    Sei $X \sim \mathcal{N}(\mu,\sigma^2)$. 
-    Dann gilt: 
+    Sei $X \sim \mathcal{N}(\mu,\sigma^2)$.
+    Dann gilt:
     \[
         P(X \leq x) = F(x) = \Phi \left( \frac{x-\mu}{\sigma} \right) = \Phi (u)
     \]
@@ -767,16 +870,16 @@
 \end{algo}
 
 \begin{bonus}{Geometrische Verteilung}
-    Die \emph{geometrische Verteilung} beschreibt das \enquote{Warten auf den ersten Erfolg}. 
+    Die \emph{geometrische Verteilung} beschreibt das \enquote{Warten auf den ersten Erfolg}.
 
-    Dabei besitzt eine diskrete Zufallsvariable $X$ eine geometrische Verteilung mit Parameter $0 < p < 1$, falls ihre Verteilung gegeben ist durch 
+    Dabei besitzt eine diskrete Zufallsvariable $X$ eine geometrische Verteilung mit Parameter $0 < p < 1$, falls ihre Verteilung gegeben ist durch
     \[
         f(x) = P(X = x) = (1-p)^xp \qquad x \in \N_0
     \]
 
     $X$ beschreibt dann die Anzahl der \enquote{Nieten} vor dem ersten \enquote{Treffer}, der mit der Wahrscheinlichkeit $p$ eintritt.
 
-    Die Maßzahlen dieser Verteilung lauten: 
+    Die Maßzahlen dieser Verteilung lauten:
     \begin{itemize}
         \item Erwartungswert: $\mu = \frac{1-p}{p}$
         \item Varianz: $\sigma^2 = \frac{1-p}{p^2}$
@@ -793,16 +896,16 @@
 
     \begin{center}
         \begin{tabularx}{\linewidth}{|>{\hsize=.6\hsize}X|X|X|>{\hsize=1.4\hsize}X|}
-        \hline
-        & \multicolumn{3}{l|}{Approximation durch eine $\ldots$} \\ \cline{2-4}
-        & Binomialverteilung & Poisson-Verteilung & Normalverteilung \\ 
-        \hline
-        Binomial-verteilung & & \makecell[c]{ \textbf{Bedingungen:} \\ $np \leq 10$ \\ $n \geq 1500p$ \\ \\ \textbf{Dann gilt:} \\ $\approx \Poi(np)$ } & \makecell[c]{ \textbf{Bedingungen:} \\ $np(1-p) > 9$ \\ \\ \textbf{Dann gilt:} \\ $\approx \mathcal{N}(np, np(1-p))$ } \\ 
-        \hline
-        Hypergeo-metrische Verteilung & \makecell[c]{ \textbf{Bedingungen:} \\ $0.1 < \frac{M}{N} < 0.9$ \\ $n < 0.05N$, $n > 10$ \\ \\ \textbf{Dann gilt:} \\ $\approx B(n,\frac{M}{N})$} & \makecell[c]{ \textbf{Bedingungen:} \\ $0.1 \not< \frac{M}{N} \not< 0.9$ \\ $n < 0.05N$, $n > 30$ \\ \\ \textbf{Dann gilt:} \\ $\approx \Poi(n \frac{M}{N})$ } & \makecell[c]{ \textbf{Bedingungen:} \\ $0.1 < \frac{M}{N} < 0.9$ \\ $n < 0.05N$, $n > 30$ \\ \\ \textbf{Dann gilt:} \\ $\approx \mathcal{N}(n \frac{M}{N},n \frac{M}{N}(1-\frac{M}{N}) \frac{N-n}{N-1})$ } \\ 
-        \hline
-        Poisson-Verteilung & & & \makecell[c]{ \textbf{Bedingungen:} \\ $\mu > 9$ \\ \\ \textbf{Dann gilt:} \\ $\approx \mathcal{N} (\mu, \sqrt{\mu})$} \\ 
-        \hline
+            \hline
+                                          & \multicolumn{3}{l|}{Approximation durch eine $\ldots$}                                                                             \\ \cline{2-4}
+                                          & Binomialverteilung                                     & Poisson-Verteilung                  & Normalverteilung                    \\
+            \hline
+            Binomial-verteilung           &                                                        & \makecell[c]{ \textbf{Bedingungen:}                                       \\ $np \leq 10$ \\ $n \geq 1500p$ \\ \\ \textbf{Dann gilt:} \\ $\approx \Poi(np)$ } & \makecell[c]{ \textbf{Bedingungen:} \\ $np(1-p) > 9$ \\ \\ \textbf{Dann gilt:} \\ $\approx \mathcal{N}(np, np(1-p))$ } \\
+            \hline
+            Hypergeo-metrische Verteilung & \makecell[c]{ \textbf{Bedingungen:}                                                                                                \\ $0.1 < \frac{M}{N} < 0.9$ \\ $n < 0.05N$, $n > 10$ \\ \\ \textbf{Dann gilt:} \\ $\approx B(n,\frac{M}{N})$} & \makecell[c]{ \textbf{Bedingungen:} \\ $0.1 \not< \frac{M}{N} \not< 0.9$ \\ $n < 0.05N$, $n > 30$ \\ \\ \textbf{Dann gilt:} \\ $\approx \Poi(n \frac{M}{N})$ } & \makecell[c]{ \textbf{Bedingungen:} \\ $0.1 < \frac{M}{N} < 0.9$ \\ $n < 0.05N$, $n > 30$ \\ \\ \textbf{Dann gilt:} \\ $\approx \mathcal{N}(n \frac{M}{N},n \frac{M}{N}(1-\frac{M}{N}) \frac{N-n}{N-1})$ } \\
+            \hline
+            Poisson-Verteilung            &                                                        &                                     & \makecell[c]{ \textbf{Bedingungen:} \\ $\mu > 9$ \\ \\ \textbf{Dann gilt:} \\ $\approx \mathcal{N} (\mu, \sqrt{\mu})$} \\
+            \hline
         \end{tabularx}
     \end{center}
 
@@ -813,39 +916,41 @@
 
     Weil diskrete Verteilungen oft Werte aus den ganzen Zahlen annehmen, teilt man die Intervalle zwischen den einzelnen Zahlen einfach gerecht auf.
 
-    So wird aus $a$ das Intervall $[a-0.5,a+0.5]$ und wir betrachten bei der Approximation 
-    \[ 
+    So wird aus $a$ das Intervall $[a-0.5,a+0.5]$ und wir betrachten bei der Approximation
+    \[
         P(a-0.5 \leq X \leq a+0.5) \ \text{statt} \ P(a)
-    \] 
+    \]
 \end{algo}
 
 \begin{bonus}{Zusammenfassung von Verteilungsfunktionen}
 
-\begin{center}
-    \begin{tabularx}{\linewidth}{|>{\hsize=.15\hsize}X|>{\hsize=.15\hsize}X|>{\hsize=.35\hsize}X|>{\hsize=.1\hsize}X|>{\hsize=.3\hsize}X|}
-        \hline
-        Verteilung & Parameter & Wahrscheinlichkeits- bzw. Dichtefunktion & Art & Kennzahlen \\ 
-        \hline 
-        Binomial-verteilung $B(n,p)$ & \makecell[l]{$n \in \N$ \\ $0 < p < 1$} & \[ f(x) = \binom{n}{x}p^x(1-p)^{n-x} \] & diskret & \makecell[l]{$\mu = np$ \\ $\sigma^2 = np(1-p)$} \\
-        \hline 
-        Hypergeo-metrische Verteilung $H(N,M,n)$ & \makecell[l]{$N \in \N$ \\ $M \in [0,N]$ \\ $n \in [0,N]$} & \[ f(x) = \frac{\binom{M}{x} \binom{N-M}{n-x}}{\binom{N}{n}} \] & diskret & \makecell[l]{$\mu = n\frac{M}{N}$ \\ $\sigma^2 = n\frac{M}{N}\left( 1 - \frac{M}{N} \right) \frac{N-n}{N-1}$} \\ 
-        \hline 
-        Poisson-Verteilung $\Poi(\mu)$ & $\mu > 0$ & \[ f(x) = \frac{\mu^x}{x!} \cdot e^{-\mu} \] & diskret & \makecell[l]{$\mu = \mu$ \\ $\sigma^2 = \mu$} \\ 
-        \hline
-        (Gaußsche) Normal-verteilung $\mathcal{N} (\mu, \sigma^2)$ & \makecell[l]{$\mu \in \R$ \\ $\sigma^2 > 0$} & \[ f(x) = \frac{1}{\sqrt{2\pi} \cdot \sigma} \cdot e^{-\frac{1}{2}\left( \frac{x-\mu}{\sigma} \right)^2} \] & stetig & \makecell[l]{$\mu = \mu$ \\ $\sigma^2 = \sigma^2$} \\ 
-        \hline
-        Standard-normal-verteilung $\mathcal{N} (0,1)$ & \makecell[l]{$\mu = 0$ \\ $\sigma^2 = 1$} & \[ \phi(u) = \frac{1}{\sqrt{2\pi}} \cdot e^{-\frac{1}{2} u^2} \] & stetig & \makecell[l]{$\mu = 0$ \\ $\sigma^2 = 1$} \\ 
-        \hline
-    \end{tabularx}
-\end{center}
+    \begin{center}
+        \begin{tabularx}{\linewidth}{|>{\hsize=.15\hsize}X|>{\hsize=.15\hsize}X|>{\hsize=.35\hsize}X|>{\hsize=.1\hsize}X|>{\hsize=.3\hsize}X|}
+            \hline
+            Verteilung                                                 & Parameter                 & Wahrscheinlichkeits- bzw. Dichtefunktion     & Art     & Kennzahlen               \\
+            \hline
+            \hline
+            Binomial-verteilung $B(n,p)$                               & \makecell[l]{$n \in \N$                                                                                       \\ $0 < p < 1$} & \[ f(x) = \binom{n}{x}p^x(1-p)^{n-x} \] & diskret & \makecell[l]{$\mu = np$ \\ $\sigma^2 = np(1-p)$} \\
+            \hline
+            Hypergeo-metrische Verteilung $H(N,M,n)$                   & \makecell[l]{$N \in \N$                                                                                       \\ $M \in [0,N]$ \\ $n \in [0,N]$} & \[ f(x) = \frac{\binom{M}{x} \binom{N-M}{n-x}}{\binom{N}{n}} \] & diskret & \makecell[l]{$\mu = n\frac{M}{N}$ \\ $\sigma^2 = n\frac{M}{N}\left( 1 - \frac{M}{N} \right) \frac{N-n}{N-1}$} \\
+            \hline
+            Poisson-Verteilung $\Poi(\mu)$                             & $\mu > 0$                 & \[ f(x) = \frac{\mu^x}{x!} \cdot e^{-\mu} \] & diskret & \makecell[l]{$\mu = \mu$ \\ $\sigma^2 = \mu$} \\
+            \hline
+            \hline
+            (Gaußsche) Normal-verteilung $\mathcal{N} (\mu, \sigma^2)$ & \makecell[l]{$\mu \in \R$                                                                                     \\ $\sigma^2 > 0$} & \[ f(x) = \frac{1}{\sqrt{2\pi} \cdot \sigma} \cdot e^{-\frac{1}{2}\left( \frac{x-\mu}{\sigma} \right)^2} \] & stetig & \makecell[l]{$\mu = \mu$ \\ $\sigma^2 = \sigma^2$} \\
+            \hline
+            Standard-normal-verteilung $\mathcal{N} (0,1)$             & \makecell[l]{$\mu = 0$                                                                                        \\ $\sigma^2 = 1$} & \[ \phi(u) = \frac{1}{\sqrt{2\pi}} \cdot e^{-\frac{1}{2} u^2} \] & stetig & \makecell[l]{$\mu = 0$ \\ $\sigma^2 = 1$} \\
+            \hline
+        \end{tabularx}
+    \end{center}
 
 \end{bonus}
 
 \subsection{Mehrdimensionale Zufallsvariablen}
 
 \begin{defi}{Wahrscheinlichkeitsfunktion einer zweidimensionalen Verteilung}
-    Die \emph{Wahrscheinlichkeitsfunktion einer zweidimensionalen Verteilung} ist eine Funktion von zwei unabhängigen Variablen: 
-    \[ 
+    Die \emph{Wahrscheinlichkeitsfunktion einer zweidimensionalen Verteilung} ist eine Funktion von zwei unabhängigen Variablen:
+    \[
         f(x,y) = P(X = x, Y = y)
     \]
 \end{defi}
@@ -853,36 +958,36 @@
 \begin{defi}{Randverteilung}
     Die beiden eindimensionalen Wahrscheinlichkeitsfunktiontn $f_1(x)$ und $f_2(y)$ der Zufallsvariablen $X$ und $Y$ werden als \emph{Randverteilungen} der zweidimensionalen Verteilung $(X,Y)$ bezeichnet.
 
-    Es gilt: 
-    \[ 
-        f_1(x) = \sum_{y} f(x,y) 
-    \] 
-    \[ 
-        f_2(y) = \sum_{x} f(x,y) 
-    \] 
+    Es gilt:
+    \[
+        f_1(x) = \sum_{y} f(x,y)
+    \]
+    \[
+        f_2(y) = \sum_{x} f(x,y)
+    \]
 \end{defi}
 
 \begin{example}{Zweidimensionale Zufallsvariable}
-    Wir betrachten einen gleichzeitigen Wurf einer Münze und eines Würfels. 
+    Wir betrachten einen gleichzeitigen Wurf einer Münze und eines Würfels.
     Dabei seien die Zufallsvariablen $X$ und $Y$ wie folgt:
-    \[ 
+    \[
         X = \text{\enquote{Anzahl Wappen bei der Münze}} \in \{ 0,1 \}
     \]
-    \[ 
+    \[
         Y = \text{\enquote{Augenzahl beim Würfeln}} \in \{ 1,2,3,4,5,6 \}
     \]
 
     Dann gibt es für die zweidimensionale Zufallsvariable $(X,Y)$ offensichtlich 12 Elementareignisse:
-    
+
     \begin{center}
         \begin{tabular}{|C|C|C|C|C|C|C|}
             \hline
-            $\diagbox{X}{Y}$ & 1 & 2 & 3 & 4 & 5 & 6  \\ 
-            \hline 
-            0 & (0,1) & (0,2)  & (0,3)  & (0,4)  & (0,5)  & (0,6) \\   
-            \hline 
-            1 & (1,1) & (1,2)  & (1,3)  & (1,4)  & (1,5)  & (1,6) \\   
-            \hline 
+            $\diagbox{X}{Y}$ & 1     & 2     & 3     & 4     & 5     & 6     \\
+            \hline
+            0                & (0,1) & (0,2) & (0,3) & (0,4) & (0,5) & (0,6) \\
+            \hline
+            1                & (1,1) & (1,2) & (1,3) & (1,4) & (1,5) & (1,6) \\
+            \hline
         \end{tabular}
     \end{center}
 
@@ -891,45 +996,91 @@
     \begin{center}
         \begin{tabular}{|C|C|C|C|C|C|C||C|}
             \hline
-            $\diagbox{X}{Y}$ & 1 & 2 & 3 & 4 & 5 & 6 & f_1(x)  \\ 
-            \hline 
-            0 & \nicefrac{1}{12} & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12} & \nicefrac{1}{2} \\   
-            \hline 
-            1 & \nicefrac{1}{12} & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12}  & \nicefrac{1}{12} & \nicefrac{1}{2} \\      
-            \hline 
-            \hline 
-            f_2(y) & \nicefrac{1}{6} & \nicefrac{1}{6} & \nicefrac{1}{6} & \nicefrac{1}{6} & \nicefrac{1}{6} & \nicefrac{1}{6} & 1 \\ 
-            \hline 
+            $\diagbox{X}{Y}$ & 1                & 2                & 3                & 4                & 5                & 6                & f_1(x)          \\
+            \hline
+            0                & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{2} \\
+            \hline
+            1                & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{12} & \nicefrac{1}{2} \\
+            \hline
+            \hline
+            f_2(y)           & \nicefrac{1}{6}  & \nicefrac{1}{6}  & \nicefrac{1}{6}  & \nicefrac{1}{6}  & \nicefrac{1}{6}  & \nicefrac{1}{6}  & 1               \\
+            \hline
         \end{tabular}
     \end{center}
 \end{example}
 
 \begin{defi}{Verteilungsfunktion einer zweidimensionalen Verteilung}
-    Die Wahrscheinlichkeitsfunktion einer zweidimensionalen Verteilung $(X,Y)$ lässt sich vollständig durch die Verteilungsfunktion darstellen. 
+    Die Wahrscheinlichkeitsfunktion einer zweidimensionalen Verteilung $(X,Y)$ lässt sich vollständig durch die Verteilungsfunktion darstellen.
 
-    Für die \emph{Verteilungsfunktion} 
+    Für die \emph{Verteilungsfunktion}
     \[
-        F(x,y) = P(X \leq x, Y \leq y) 
+        F(x,y) = P(X \leq x, Y \leq y)
     \]
-    
+
     gelten folgende Eigenschaften:
     \begin{itemize}
-        \item $\lim_{x\to \infty, y\to \infty} F(x,y) = 1$ 
+        \item $\lim_{x\to \infty, y\to \infty} F(x,y) = 1$
         \item $\lim_{x \to -\infty} F(x,y) = \lim_{y \to -\infty} F(x,y) = 0$
         \item $P(a < x \leq b, c < Y \leq d) = F(b,d) - F(a,d) - F(b,c) + F(a,c)$
     \end{itemize}
 \end{defi}
 
 \begin{defi}{Diskrete zweidimensionale Verteilung}
-    $(X,Y)$ heißt \emph{diskret}, wenn beide Komponenten diskrete Zufallsvariablen sind. 
+    $(X,Y)$ heißt \emph{diskret}, wenn beide Komponenten diskrete Zufallsvariablen sind.
 
-    TO DO
+    Unter der Annahme, dass $X$ und $Y$ nur endlich viele Werte annehmen können, sei
+    \[
+        P(X = x_i, Y = y_k) = p_{ik}
+    \]
+
+    Für die Wahrscheinlichkeitsfunktion gilt:
+    \[
+        f(x, y) =
+        \begin{cases}
+            p_{ik} & \text{für} \ x = x_i, \ y = y_k \\
+            0      & \text{sonst}
+        \end{cases}
+    \]
+
+    mit der Normierung:
+    \[
+        f(x, y) = \sum_{i = 1}^m \sum_{j = 1}^n f(x_i, y_k) = 1
+    \]
+
+    Für die Randverteilungen gilt:
+    \[
+        f_1(x) = \sum_{y} f(x,y)
+    \]
+    \[
+        f_2(y) = \sum_{x} f(x,y)
+    \]
+
+    Für die Verteilungsfunktion gilt:
+    \[
+        F(x,y) = \sum_{x_i \leq x} \sum_{y_k \leq y} f(x_i, y_k)
+    \]
 \end{defi}
 
 \begin{defi}{Stetige zweidimensionale Verteilung}
-    $(X,Y)$ heißt \emph{stetig}, wenn beide Komponenten stetige Zufallsvariablen sind. 
+    $(X,Y)$ heißt \emph{stetig}, wenn beide Komponenten stetige Zufallsvariablen sind.
 
-    TO DO
+    Für die Verteilungsfunktion gilt:
+    \[
+        F(x, y) = \int_{u=-\infty}^{x} \int_{v=-\infty}^{y} f(u,v) \diff v \diff u
+    \]
+
+    Für die Dichtefunktion gilt die Normierung:
+    \[
+        f(x, y) = \int_{x=-\infty}^{\infty} \int_{y=-\infty}^{\infty} f(x,y) \diff y \diff x = 1
+    \]
+
+    Für die Randverteilungen gilt:
+    \[
+        f_1(x) = \int_{y=-\infty}^{\infty} f(x,y) \diff y
+    \]
+    \[
+        f_2(y) = \int_{x=-\infty}^{\infty} f(x,y) \diff x
+    \]
 \end{defi}
 
 \begin{defi}{Stochastisch unabhängige Zufallsvariable}
@@ -939,36 +1090,36 @@
     \]
     für alle $(x,y)$ erfüllt ist.
 
-    Es gilt: 
+    Es gilt:
     \begin{itemize}
-        \item Ist die Bedingung nicht erfüllt, sind die Zufallsvariablen stochastisch abhängig. 
-        \item Ist die Bedingung erfüllt, sind die beiden Ereignisse $X = x$ und $Y = y$ stochastisch unabhängig. 
-        \item Sind $X$ und $Y$ stochastisch unabhängige Zufallsvariablen, so gilt $f(x,y) = f_1(x) \cdot f_2(y)$ 
-        \item Sinngemäße Erweiterung auf $n$ Zufallsvariablen 
+        \item Ist die Bedingung nicht erfüllt, sind die Zufallsvariablen stochastisch abhängig.
+        \item Ist die Bedingung erfüllt, sind die beiden Ereignisse $X = x$ und $Y = y$ stochastisch unabhängig.
+        \item Sind $X$ und $Y$ stochastisch unabhängige Zufallsvariablen, so gilt $f(x,y) = f_1(x) \cdot f_2(y)$
+        \item Sinngemäße Erweiterung auf $n$ Zufallsvariablen
     \end{itemize}
 \end{defi}
 
 \begin{algo}{Summen von Zufallsgrößen}
-    Die neue Zufallsvariable wird als Summe von anderen Zufallsvariablen definiert: 
+    Die neue Zufallsvariable wird als Summe von anderen Zufallsvariablen definiert:
     \[
         Z := X_1 + X_2 + \ldots + X_n
     \]
 
     Den Zahlenwerten $x_1 := X_1(\omega)$, $\ldots$, $x_n := X_n(\omega)$ eines Zufallsversuches mit Resultat $\omega$ wird die Zahl $z := x_1 + \ldots + x_n$ als Ergebnis $Z(\omega)$ der neuen Zufallsgröße $Z$ zugeordnet.
 
-    Sei $Z = X + Y$. 
+    Sei $Z = X + Y$.
 
-    Dann gilt im diskreten Fall 
+    Dann gilt im diskreten Fall
     \[
         P(Z = z) = \sum_i P(X = x_i, Y = z - x_i)
     \]
     und im stetigen Fall
-    \[ 
+    \[
         f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(x,z-x) \diff x
     \]
 
-    Sind $X$ und $Y$ stohastisch unabhängig, dann gilt insbesondere 
-    \[ 
+    Sind $X$ und $Y$ stohastisch unabhängig, dann gilt insbesondere
+    \[
         f_Z(z) = \int_{-\infty}^{\infty} f_X(x) \cdot f_Y(z-x) \diff x
     \]
     Das wird auch als \enquote{Faltung} bezeichnet.
@@ -977,14 +1128,14 @@
 \begin{algo}{Produkt und Quotient zweier stetiger Zufallsgrößen}
     Sei $Z = XY$.
     Dann gilt:
-    \[ 
-        f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(\nicefrac{z}{y}, y) \cdot \frac{1}{\abs{y}} \diff y 
+    \[
+        f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(\nicefrac{z}{y}, y) \cdot \frac{1}{\abs{y}} \diff y
     \]
 
     Sei $Z = \nicefrac{X}{Z}$.
     Dann gilt:
-    \[ 
-        f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(zy,y) \cdot \abs{y} \diff y 
+    \[
+        f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(zy,y) \cdot \abs{y} \diff y
     \]
 \end{algo}
 
@@ -994,11 +1145,11 @@
         \implies (X+Y)(\omega) = X(\omega) + Y(\omega) \quad \land \quad (X \cdot Y)(\omega) = X(\omega) \cdot Y(\omega)
     \]
 
-    Dann gilt für den Erwartungswert: 
+    Dann gilt für den Erwartungswert:
     \[
-        \forall \alpha \in \R: \Mean(\alpha X + b) = \alpha\Mean(X) + b 
+        \forall \alpha \in \R: \Mean(\alpha X + b) = \alpha\Mean(X) + b
     \]
-    \[ 
+    \[
         \Mean(\alpha X + \beta Y) = \alpha\Mean(X) + \beta\Mean(Y)
     \]
 
@@ -1007,10 +1158,10 @@
         \forall \alpha \in \R: \Var(\alpha X + b) = \alpha^2 \Var(X)
     \]
     \[
-        \Var(\alpha X + \beta Y) = \alpha^2 X + \beta^2 Y + 2\alpha\beta\Cov(X, Y) 
+        \Var(\alpha X + \beta Y) = \alpha^2 X + \beta^2 Y + 2\alpha\beta\Cov(X, Y)
     \]
 
-    Falls $X$ und $Y$ stochastisch unabhängige Zufallsvariablen sind, gilt: 
+    Falls $X$ und $Y$ stochastisch unabhängige Zufallsvariablen sind, gilt:
     \[
         \Mean(X \cdot Y) = \Mean(X) \cdot \Mean(Y) \implies \Cov(X, Y) = 0 \implies \Var(\alpha X + \beta Y) = \alpha^2 \Var(X) + \beta^2 \Var(Y)
     \]
@@ -1019,42 +1170,42 @@
 \subsection{Kovarianz und Korrelation}
 
 \begin{defi}{Kovarianz}
-        Die \emph{Kovarianz} ein Zusammenhangsmaß für einen monotonen Zusammenhang zweier Zufallsvariablen mit gemeinsamer Wahrscheinlichkeitsverteilung. 
-        Der Wert dieser Kennzahl macht tendenzielle Aussagen darüber, ob hohe Werte der einen Zufallsvariablen eher mit hohen oder eher mit niedrigen Werten der anderen Zufallsvariablen einhergehen.
+    Die \emph{Kovarianz} ein Zusammenhangsmaß für einen monotonen Zusammenhang zweier Zufallsvariablen mit gemeinsamer Wahrscheinlichkeitsverteilung.
+    Der Wert dieser Kennzahl macht tendenzielle Aussagen darüber, ob hohe Werte der einen Zufallsvariablen eher mit hohen oder eher mit niedrigen Werten der anderen Zufallsvariablen einhergehen.
 
-        Die Kovarianz ist definiert als: 
-        \[
-            \Cov(X, Y) = \Mean \left( (X - \Mean(X)) \cdot (Y - \Mean(Y)) \right)
-        \]
+    Die Kovarianz ist definiert als:
+    \[
+        \Cov(X, Y) = \Mean \left( (X - \Mean(X)) \cdot (Y - \Mean(Y)) \right)
+    \]
 
-        Es gilt: 
-        \[
-            \Cov(X, Y) = \Mean(XY) - \Mean(X)\Mean(Y)
-        \]
+    Es gilt:
+    \[
+        \Cov(X, Y) = \Mean(XY) - \Mean(X)\Mean(Y)
+    \]
 
-        Eigenschaften der Kovarianz: 
-        \begin{enumerate}
-            \item $\Cov(X, Y) = \Cov(Y, X)$
-            \item $\Cov(X, X) = \Var(X)$
-            \item $\Cov(\alpha X + \beta, \gamma Y + \delta) = \alpha\gamma \cdot \Cov(X, Y)$
-            \item $X$, $Y$ stochastisch unabhängig $\implies \Cov(X, Y) = 0$
-            \item 
-            \[
-                \Cov \left( \sum_{i=1}^{m} \alpha_i X_i, \sum_{j=1}^{n} \beta_j Y_j \right) = \sum_{i=1}^{m} \sum_{j=1}^{n} \alpha_i \beta_j \Cov(X_i, Y_j)
-            \]
-        \end{enumerate}
+    Eigenschaften der Kovarianz:
+    \begin{enumerate}
+        \item $\Cov(X, Y) = \Cov(Y, X)$
+        \item $\Cov(X, X) = \Var(X)$
+        \item $\Cov(\alpha X + \beta, \gamma Y + \delta) = \alpha\gamma \cdot \Cov(X, Y)$
+        \item $X$, $Y$ stochastisch unabhängig $\implies \Cov(X, Y) = 0$
+        \item
+              \[
+                  \Cov \left( \sum_{i=1}^{m} \alpha_i X_i, \sum_{j=1}^{n} \beta_j Y_j \right) = \sum_{i=1}^{m} \sum_{j=1}^{n} \alpha_i \beta_j \Cov(X_i, Y_j)
+              \]
+    \end{enumerate}
 
-        Zwei Zufallsvariablen $X$, $Y$ heißen \emph{unkorelliert}, falls $\Cov(X, Y) = 0$ ist.
+    Zwei Zufallsvariablen $X$, $Y$ heißen \emph{unkorelliert}, falls $\Cov(X, Y) = 0$ ist.
 
-        Im Allgemeinen darf aus der Unkorreliertheit zweier Zufallsvariablen nicht auf deren stochastische Unabhängigkeit geschlossen werden!
-\end{defi}  
+    Im Allgemeinen darf aus der Unkorreliertheit zweier Zufallsvariablen nicht auf deren stochastische Unabhängigkeit geschlossen werden!
+\end{defi}
 
 \begin{defi}{Korrelationskoeffizient}
-    Der \emph{Person'sche Korrelationskoeffizient} ist ein Maß für den Grad des linearen Zusammenhangs zwischen zwei Zufallsvariablen. 
-    Er kann Werte zwischen $-1$ und $+1$ annehmen. 
-    Bei einem Wert von $+1$ (bzw. $-1$) besteht ein vollständig positiver (bzw. negativer) linearer Zusammenhang zwischen den betrachteten Merkmalen. 
-    Wenn der Korrelationskoeffizient den Wert $0$ aufweist, hängen die beiden Merkmale überhaupt nicht linear voneinander ab. 
-    Allerdings können diese ungeachtet dessen in nichtlinearer Weise voneinander abhängen. 
+    Der \emph{Person'sche Korrelationskoeffizient} ist ein Maß für den Grad des linearen Zusammenhangs zwischen zwei Zufallsvariablen.
+    Er kann Werte zwischen $-1$ und $+1$ annehmen.
+    Bei einem Wert von $+1$ (bzw. $-1$) besteht ein vollständig positiver (bzw. negativer) linearer Zusammenhang zwischen den betrachteten Merkmalen.
+    Wenn der Korrelationskoeffizient den Wert $0$ aufweist, hängen die beiden Merkmale überhaupt nicht linear voneinander ab.
+    Allerdings können diese ungeachtet dessen in nichtlinearer Weise voneinander abhängen.
     Damit ist der Korrelationskoeffizient kein geeignetes Maß für die (reine) stochastische Abhängigkeit von Merkmalen.
 
     Der Pearson'sche Korrelationskoeffizient ist definiert durch
@@ -1069,32 +1220,32 @@
 
 \begin{defi}{Schwaches Gesetz großer Zahlen}
     Betrachte eine $n$-malige Wiederholung eines Zufallsexperimentes mit Messung der Zufallsvariablen (des Merkmals) $X$.
-    Wir erhalten $n$ stochastisch unabhängige Ergebnisse. 
-    
+    Wir erhalten $n$ stochastisch unabhängige Ergebnisse.
+
     $X_i$ sei die Realisierung der Zufallsvariablen im $i$-ten Versuch.
 
     $X_i$ ist dann eine Zufallsvariable mit der \emph{gleichen Verteilung} wie $X$, insbesondere aber auch mit \emph{gleichem Erwartungswert} und \emph{gleicher Varianz}.
 
     \[
         \conj{X}_{(n)} = \frac{1}{n} \sum_{i=1}^{n} X_i
-    \] 
+    \]
 
-    ist dann auch eine Zufallsvariable mit 
+    ist dann auch eine Zufallsvariable mit
 
-    \[ 
-        \implies \Mean(\conj{X}_{(n)}) = \frac{1}{n} \sum_{i=1}^{n} \Mean(X_i) = \frac{1}{n} \cdot n \cdot \Mean(X) = \Mean(X) 
-    \] 
-    und 
-    \[ 
+    \[
+        \implies \Mean(\conj{X}_{(n)}) = \frac{1}{n} \sum_{i=1}^{n} \Mean(X_i) = \frac{1}{n} \cdot n \cdot \Mean(X) = \Mean(X)
+    \]
+    und
+    \[
         \implies \Var(\conj{X}_{(n)}) = \frac{1}{n^2} \sum_{i=1}^{n} \Var(X_i) = \frac{1}{n^2} \cdot n \cdot \Var(X) = \frac{1}{n} \Var(X)
     \]
 
-    Nach Tschebyscheff gilt dann: 
+    Nach Tschebyscheff gilt dann:
     \[
         P(\abs{\conj{X}_{(n)} - \mu} \geq \epsilon) \leq \frac{\Var(\conj{X}_{(n)})}{\epsilon^2} = \frac{\Var(X)}{n} \cdot \frac{1}{\epsilon} = \frac{1}{n} \cdot \frac{\sigma^2}{\epsilon^2}
     \]
 
-    Mit 
+    Mit
     \[
         \lim_{n\to\infty} \frac{1}{n} \cdot \frac{\sigma^2}{\epsilon^2} = 0 \quad \text{und} \quad \conj{X}_{(n)} = \frac{1}{n}\sum_{i-1}^{n} X_i
     \]
@@ -1103,7 +1254,7 @@
         \lim_{n\to\infty} P \left( \abs{\frac{1}{n} \sum_{i=1}^n X_i - \mu} \geq \epsilon \right) = 0
     \]
 
-    Dieses besagt \enquote{stochastische Konvergenz}: 
+    Dieses besagt \enquote{stochastische Konvergenz}:
     Die Wahrscheinlichkeit, dass ein Mittelwert um mehr als ein beliebiges, festes $\epsilon > 0$ von $\mu$ abweicht, geht für wachsendes $n$ gegen Null.
 
     Es wird aber nicht ausgeschlossen, dass auch für unbeschränkt wachsende $n$ gelegentlich noch größere Abweichungen als $\epsilon$ auftreten.
@@ -1111,10 +1262,10 @@
 \end{defi}
 
 \begin{defi}{Starkes Gesetz großer Zahlen}
-    Bei gleichen Voraussetzungen wie in der Herleitung für das schwache Gesetz großer Zahlen gilt auch das \emph{Starke Gesetz großer Zahlen}: 
-    \[ 
+    Bei gleichen Voraussetzungen wie in der Herleitung für das schwache Gesetz großer Zahlen gilt auch das \emph{Starke Gesetz großer Zahlen}:
+    \[
         P \left( \lim_{n\to\infty} \abs{\frac{1}{n} \sum_{i-1}^n X_i - \mu} = 0 \right) = 1
-    \] 
+    \]
 
     Bei unbeschränkt oftmaliger Wiederholung der Messung einer Zufallsgröße konvergiert das Stichprobenmittel gegen den Erwartungswert von $X$.
 
@@ -1122,24 +1273,24 @@
 \end{defi}
 
 \begin{defi}{Zentraler Grenzwertsatz}
-    Die unabhängigen Zufallsgrößen $X_1$, $X_2$, $\ldots$ sollen die gleiche Verteilung haben mit 
+    Die unabhängigen Zufallsgrößen $X_1$, $X_2$, $\ldots$ sollen die gleiche Verteilung haben mit
     \[
-        \Mean(X_1) = \Mean(X_2) = \ldots = \mu    
-        \quad \text{und} \quad 
+        \Mean(X_1) = \Mean(X_2) = \ldots = \mu
+        \quad \text{und} \quad
         \Var(X_1) = \Var(X_2) = \ldots = \sigma^2
     \]
 
-    Betrachte die Summe 
-    \[ 
+    Betrachte die Summe
+    \[
         S_n := \sum_{i=1}^n X_i
-    \] 
+    \]
 
-    Dann gilt offensichtlich 
-    \[ 
+    Dann gilt offensichtlich
+    \[
         \Mean(S_n) = \sum_{i=1}^n \Mean(X_i) = n \cdot \mu
-        \quad \text{und} \quad 
+        \quad \text{und} \quad
         \Var(S_n) = \sum_{i=1}^n \Var(X_i) = n \cdot \sigma^2
-    \] 
+    \]
 
     Betrachte nun die \enquote{standardisierte Version} von $S_n$ als neue Zufallsgröße:
     \[
@@ -1148,18 +1299,18 @@
 
     Dann gilt der \emph{Zentrale Grenzwertsatz} nach Lindeberg und Lévy, welcher besagt:
 
-    Für die Standardisierung 
-    \[ 
-        S_n^* = \frac{S_n - \Mean(S_n)}{\sqrt{\Var(S_n)}} 
-    \] 
-    der Summe 
-    \[ 
+    Für die Standardisierung
+    \[
+        S_n^* = \frac{S_n - \Mean(S_n)}{\sqrt{\Var(S_n)}}
+    \]
+    der Summe
+    \[
         S_n = \sum_{i=1}^n X_i
-    \] 
-    gilt die Grenzwertbeziehung 
-    \[ 
+    \]
+    gilt die Grenzwertbeziehung
+    \[
         \lim_{n\to\infty} P(S_n^* \leq s) = \frac{1}{\sqrt{2\pi}} \cdot \int_{-\infty}^s e^{\frac{x^2}{2}} \diff x \qquad \forall s \in \R
-    \] 
+    \]
 
     Der zentrale Grenzwertsatz liefert also die Begründung für das Phänomen, dass sich bei der additiven Überlagerung vieler kleiner unabhängiger Zufallseffekte zu einem Gesamteffekt zumindest approximativ eine Normalverteilung ergibt.
 \end{defi}
