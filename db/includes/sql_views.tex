@@ -1,4 +1,48 @@
-\subsection{Views}
+\subsection{Sichten}
+
+\begin{defi}{Sicht}
+    Eine \emph{Sicht} ist eine logische Relation in einem Datenbanksystem.
+
+    Diese logische Relation wird über eine im DBMS gespeicherte Abfrage definiert.
+    Der Benutzende kann eine Sicht wie eine normale Tabelle abfragen.
+
+    Wann immer eine Abfrage diese Sicht benutzt, wird diese zuvor durch das DBMS berechnet.
+
+    Eine Sicht stellt im Wesentlichen einen Alias für eine Abfrage dar.
+
+    Man kann unterscheiden zwischen:
+    \begin{itemize}
+        \item \emph{temporären Sichten}:
+              \begin{itemize}
+                  \item im Kontext von \texttt{WITH}-Definitionen
+                  \item überdauern die Anfrage nicht
+              \end{itemize}
+        \item \emph{statischen Sichten}:
+              \begin{itemize}
+                  \item Datenschutz
+                  \item Vereinfachung von Aufgaben
+                  \item Darstellung der Generalisierung
+              \end{itemize}
+    \end{itemize}
+
+    Sichten arbeiten auf den Daten der logischen Gesamtsicht.
+    Somit sind entsprechende Transformationsregeln notwendig.
+
+    Änderungen einer Sicht müssen immer noch auf die Basisrelationen abgebildet werden.
+    Dies ist je nach Sichtendefinition nicht immer möglich.
+
+    Auch können Änderungen von Tupeln ein \enquote{Löschen} des Tupels aus der entsprechenden Sicht bewirken.
+
+    Damit eine Sicht änderbar ist, muss sie durch eine einzelne \texttt{SELECT}-Anweisung definiert sein.\footnote{d.h. kein \texttt{JOIN}, \texttt{UNION}, etc.}
+
+    Weiterhin gilt für Änderbarkeit:\footnote{Mehr dazu: \href{https://wikis.gm.fh-koeln.de/Datenbanken/Aenderbare-Sicht}{edb-Online-Lexikon, TH Köln}}
+    \begin{itemize}
+        \item Die \texttt{SELECT}-Klausel darf nur Attributnamen enthalten und jeden Namen nur einmal, keine Aggregatfunktionen, berechnete oder konstante Ausdrücke, ebenso kein \texttt{DISTINCT}.
+        \item Die \texttt{FROM}-Klausel darf nur einen einzigen Relationsnamen enthalten.
+              Dieser muss eine Basisrelation oder eine änderbare Sicht bezeichnen.
+        \item Falls die \texttt{WHERE}-Klausel geschachtelte Anfragen beinhaltet, darf in deren \texttt{FROM}- Klauseln der Relationsname auch \texttt{FROM} nicht auftauchen, d.h. keine korrelierten Unterabfragen.
+    \end{itemize}
+\end{defi}
 
 \begin{sql}{VIEW}
     \rowcolors{2}{gray!15}{white}
