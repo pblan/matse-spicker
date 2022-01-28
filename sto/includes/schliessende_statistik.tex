@@ -1,10 +1,460 @@
 \section{Schließende Statistik}
 
+\begin{bonus}{Aufgabe der schließenden Statistik}
+    Die \emph{schließende Statistik} befasst sich mit dem Rückschluß von einer Stichprobe auf die Grundgesamtheit.
+    Es muss eine repräsentative (d.h. nur zufallsbeeinflusste) Stichprobe aus der Grundgesamtheit gezogen werden.
+
+    Grundlage der schließenden Statistik ist die Wahrscheinlichkeitsrechnung.
+\end{bonus}
+
 \subsection{Grundbegriffe}
+
+\begin{defi}{Grundgesamtheit}
+    Unter einer Grundgesamtheit verstehen wir die Gesamtheit gleichartiger Objekte oder Elemente, die hinsichtlich eines bestimmten Merkmals untersucht werden sollen.
+
+    Das interessierende Merkmal beschreiben wir dabei durch eine Zufallsvariable $X$.
+\end{defi}
+
+\begin{defi}{Stichprobe}
+    Eine Stichprobe vom Umfang $n$ der Zufallsvariablen $X$ ist die Beobachtung von $n$ unabhängigen, identisch verteilten Zufallsvariablen $X_1, \ldots, X_n$.
+
+    $X_1, \ldots, X_n$ nennt man \emph{Stichprobenvariablen}, die beobachteten Werte $x_1, \ldots, x_n$ die \emph{Stichprobenwerte}.
+\end{defi}
 
 \subsection{Punktschätzungen}
 
+\begin{defi}{Schätzfunktion}
+    Eine Funktion $g(X_1, \ldots, X_n)$ der Stichprobenvariablen heißt \emph{Stichprobenfunktion} und ist wieder eine zufällige Variable.
+
+    Wird die Stichprobenfunktion zur Schätzung des Parameters $\theta$ verwendet, so heißt sie \emph{Schätzfunktion} oder kurz \emph{Schätzer} für $\theta$ und wird mit $\hat{\theta}$ bezeichnet.
+
+    Eine Schätzfunktion $\hat{\theta}$ für den Parameter $\theta$ heißt \emph{erwartungstreu}, wenn gilt:
+    \[
+        \Mean(\hat{\theta}) = \theta
+    \]
+
+    Sie heißt \emph{konsistent}, wenn ihre Varianz mit wachsendem Stichprobenumfang $n$ gegen $0$ strebt:
+    \[
+        \lim_{n \to \infty} \Var(\hat{\theta}) = 0
+    \]
+\end{defi}
+
+\begin{example}{Schätzung von Erwartungswertes}
+    Das arithmetische Mittel ist eine \emph{erwartungstreue} und \emph{konsistente} Schätzfunktion des Erwartungswertes von $X$.
+
+    Es gilt (Erwartungstreue):
+    \[
+        \Mean(\conj{X}) = \Mean \left(\frac{1}{n} \sum_{i=1}^n X_i \right) = \frac{1}{n} \Mean \left(\sum_{i=1}^n X_i \right) = \frac{1}{n} \sum_{i=1}^n \Mean(X_i) = \frac{1}{n} \cdot n \cdot \mu = \mu
+    \]
+    und (Konsistenz):\footnote{Hier werden unter anderem der zentrale Grenzwertsatz und das starke Gesetz der großen Zahlen angewendet.}
+    \[
+        \Var(\conj{X}) = \Var \left(\frac{1}{n} \sum_{i=1}^n X_i \right) = \frac{1}{n^2} \Var \left( \sum_{i=1}^n X_i \right) = \frac{1}{n^2} \sum_{i=1}^{n} \Var(X_i) = \frac{1}{n^2} \cdot n \cdot \sigma^2 = \frac{\sigma^2}{n}
+    \]
+\end{example}
+
+\begin{example}{Schätzung der Varianz}
+    Die Stichprobenvarianz ist eine \emph{erwartungstreue} und \emph{konsistente} Schätzfunktion der Varianz von $X$.
+
+    Es gilt (Erwartungstreue):
+    \begin{alignat*}{1}
+        \Mean(S^2) & = \Mean \left( \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \conj{X}) \right)^2                                                          \\
+                   & = \Mean \left( \frac{1}{n-1} \sum_{i=1}^{n} (X_i - \mu)^2 - \frac{n}{n-1} (\conj{X} - \mu)^2 \right)                            \\
+                   & = \ldots                                                                                                                        \\
+                   & = \frac{1}{n-1} \cdot \sum_{i=1}^{n} \Mean \left( (X_i - \mu)^2 \right) - \frac{n}{n-1} \Mean \left( (\conj{X} - \mu)^2 \right) \\
+                   & = \frac{n}{n-1} \cdot \sigma^2 - \frac{n}{n-1} \cdot \frac{\sigma^2}{n}                                                         \\
+                   & = \frac{n-1}{n-1} \cdot \sigma^2                                                                                                \\
+                   & = \sigma^2
+    \end{alignat*}
+
+    Auf einen Beweis der Konsistenz wird hier verzichtet.
+\end{example}
+
+\begin{algo}{Maximum-Likelihood-Methode}
+    Bei der \emph{Maximum-Likelihood-Methode} wird von einer Zufallsvariablen $X$ ausgegangen, deren Dichte- bzw. Wahrscheinlichkeitsfunktion $f$ von einem unbekannten Parameter $\theta$ abhängig ist.
+
+    Liegt eine einfache Zufallsstichprobe mit $n$ Realisierungen $x_1, \ldots, x_n$ von $n$ unabhängig und identisch verteilten Zufallsvariablen $X_1, \ldots, X_n$ vor, so lässt sich die gemeinsame Dichtefunktion bzw. Wahrscheinlichkeitsfunktion wie folgt faktorisieren:
+    \[
+        f(x_1, x_2, \ldots, x_n ; \theta) = \prod_{i=1}^n f(x_i ; \theta)
+    \]
+
+    Statt nun für einen festen Parameter $\theta$ die Dichte für beliebige Werte $x_1, \ldots, x_n$ auszuwerten,  kann umgekehrt für beobachtete und somit feste Realisierungen $x_1, \ldots, x_n$ die gemeinsame Dichte als Funktion von $\theta$ interpretiert werden.
+    Dies führt zur Likelihood-Funktion:
+    \[
+        L(\theta) = \prod_{i=1}^n f(x_i ; \theta)
+    \]
+    Wird diese Funktion in Abhängigkeit von $\theta$ maximiert, also:\footnote{Dies gilt meist. Manchmal ist $L$ aber nicht differenzierbar.}
+    \[
+        \frac{\partial L}{\partial \theta} = 0
+    \]
+    so erhält man die Maximum-Likelihood-Schätzung für den unbekannten Parameter $\theta$.
+
+    Es wird also der Wert von $\theta$ gesucht, bei dem die Stichprobenwerte die größte Dichte- bzw. Wahrscheinlichkeitsfunktion haben.
+    Es ist naheliegend, einen Parameterwert $\theta$ als umso plausibler anzusehen, je höher die Likelihood.
+
+    Da das Ableiten bei Dichtefunktionen mit komplizierten Exponentenausdrücken sehr aufwändig werden kann, wird häufig die logarithmierte Likelihood-Funktion  verwendet, da sie auf Grund der Monotonie des Logarithmus ihr Maximum an derselben Stelle wie die nichtlogarithmierte Dichtefunktion besitzt, jedoch einfacher zu berechnen ist:
+    \[
+        L^*(\theta) = \log \prod_{i=1}^n f(x_i ; \theta) = \sum_{i=1}^n \log f(x_i ; \theta)
+    \]
+
+    Die Maximum-Likelihood-Methode liefert nicht immer erwartungstreue Schätzer.
+\end{algo}
+
 \subsection{Intervallschätzungen}
 
-\subsection{Statistische Testverfahren
-}
+\begin{defi}{Konfidenzintervall und Konfidenzniveau}
+    Sei $X_1, \ldots, X_n$ eine Stichprobe zu einer Verteilung mit Parameter $\theta$ und $0 < \alpha < 1$.
+
+    Ist dann
+    \[
+        I_n := [ c_u, c_o ]
+    \]
+    ein Intervall, das von der Stichprobe abhängt und gilt
+    \[
+        P( \theta \in I_n ) \geq 1 - \alpha
+    \]
+    dann nennt man $I_n$ \emph{Konfidenzintervall} für $\theta$ mit dem \emph{Konfidenzniveau} $1 - \alpha$.\footnote{Wenn ihr über Konfidenzintervalle und deren beschriebene Parameter redet, formuliert nicht den Satz: \enquote{Der Parameter liegt zu $n\%$ im Konfidenzintervall.} Entweder liegt der Parameter im Intervall, oder nicht.}
+
+    Typische Werte für $\alpha$ sind $\alpha = 0.05$, $\alpha = 0.01$ oder $\alpha = 0.001$.
+
+    Kann man ein Konfidenzintervall von oben und unten begrenzen, spricht man von einem \emph{zweiseitigen Konfidenzintervall} mit
+    \[
+        I_n = [ c_u, c_o ]
+    \]
+
+    Kann man ein Konfidenzintervall nur von einer Seite begrenzen, spricht man von einem \emph{einseitigen Konfidenzintervall} mit entweder
+    \[
+        I_n = \left[ c_u, \infty \right) \quad \text{(nach unten beschränkt)}
+            \]
+            oder
+            \[
+            I_n = \left( -\infty, c_o \right] \quad \text{(nach oben beschränkt)}
+    \]
+\end{defi}
+
+\begin{bonus}{Berechnung von Intervallen einer Standardnormalverteilung}
+    Sei $0 < p < 1$ eine vorgegebene Wahrscheinlichkeit.
+
+    Dann sei $u_p$ das zur Wahrscheinlichkeit $p$ gehörige Quantil (obere Schranke) mit
+    \[
+        \Phi(u_p) = p
+    \]
+
+    Es gilt:
+    \[
+        u_{1-p} = -u_p \quad \iff \quad u_p = - u_{1-p}
+    \]
+
+    Der Wert von $u_p$ kann dann aus folgender Tabelle abgelesen werden:
+    \begin{center}
+        \begin{tabular}{|C|C||C|C|}
+            \hline
+            p     & u_p   & p     & u_p    \\
+            \hline
+            0.90  & 1.282 & 0.1   & -1.282 \\
+            0.95  & 1.645 & 0.05  & -1.645 \\
+            0.975 & 1.960 & 0.025 & -1.960 \\
+            0.99  & 2.326 & 0.01  & -2.326 \\
+            0.995 & 2.576 & 0.005 & -2.576 \\
+            0.999 & 3.090 & 0.001 & -3.090 \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    Für zu berechnende Intervalle gilt dann:
+    \begin{enumerate}
+        \item Einseitige Abgrenzung nach oben:
+              \[
+                  P( U \leq c) = \Phi(c) = p
+              \]
+              \[
+                  \Phi(c) = p \implies c = u_p
+              \]
+        \item Einseitige Abgrenzung nach unten:
+              \[
+                  P( U \geq c) = 1 -  P( U \leq c) = 1 - \Phi(c) = 1 - p
+              \]
+              \[
+                  \Phi(c) = 1 - p \implies c = u_{1-p}
+              \]
+        \item \hl{Zweiseitige (symmetrische) Abgrenzung}:
+              \[
+                  \mhl{P( -c \leq U \leq c) = 2 \cdot \Phi(c) - 1 = p}
+              \]
+              \[
+                  \mhl{\Phi(c) = \frac{1}{2} (1+p) = u_{\nicefrac{(1+p)}{2}}}
+              \]
+    \end{enumerate}
+\end{bonus}
+
+\begin{algo}{Konfidenzintervalle für den unbekannten Erwartungswert einer Normalverteilung bei bekannter Varianz}
+    $X$ sei eine normalverteilte Zufallsvariable mit \emph{unbekanntem} Erwartungswert $\mu$ und \emph{bekannter} Varianz $\sigma^2$.
+
+    Wir wissen, dass das arithmetische Mittel ein Schätzer für den Erwartungswert $\mu$ ist:
+    \[
+        \conj{X} = \frac{1}{n} \sum_{i=1}^{n} X_i
+    \]
+
+    Die normierte Zufallsvariable
+    \[
+        \mhl{U = \sqrt{n} \cdot \frac{\conj{X} - \mu}{\sigma}}
+    \]
+    ist dann standardnormalverteilt.
+
+
+    Für $U$ lässt sich dann schrittweise ein Konfidenzintervall konstruieren:
+    \begin{enumerate}
+        \item Wähle ein bestimmtes Konfidenzniveau $\gamma = 1 - \alpha$
+        \item Die Zufallsvariable $U$ soll dann mit der gewählten Wahrscheinlichkeit $\gamma$ einen Wert in dem \emph{symmetrischen} Intervall $-c \leq U \leq c$ annehmen, also:
+              \[
+                  \mhl{P(-c \leq U \leq c) = \gamma = 1 - \alpha}
+              \]
+        \item Mit dem vorgegebenen Konfidenzniveau $\gamma$ können wir dann das Intervall wie folgt berechnen:
+              \begin{alignat*}{3}
+                               & -c                                                                    &  & \leq U                                            &  & \leq c                                                                     \\
+                  \equiv \quad & -u_{\gamma}                                                           &  & \leq U                                            &  & \leq u_{\gamma}                                                            \\
+                  \equiv \quad & -u_{\nicefrac{(1+\gamma)}{2}}                                         &  & \leq U                                            &  & \leq u_{\nicefrac{(1+\gamma)}{2}}                                          \\
+                  \equiv \quad & -u_{\nicefrac{(1+1 - \alpha)}{2}}                                     &  & \leq U                                            &  & \leq u_{\nicefrac{(1+1 - \alpha)}{2}}                                      \\
+                  \equiv \quad & -u_{1 - \nicefrac{\alpha}{2}}                                         &  & \leq U                                            &  & \leq u_{1 - \nicefrac{\alpha}{2}}                                          \\
+                  \equiv \quad & -u_{1 - \nicefrac{\alpha}{2}}                                         &  & \leq \sqrt{n} \cdot \frac{\conj{X} - \mu}{\sigma} &  & \leq u_{1 - \nicefrac{\alpha}{2}}                                          \\
+                  \equiv \quad & \conj{X} - u_{1 - \nicefrac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}} &  & \leq \mu                                          &  & \leq \conj{X} + u_{1 - \nicefrac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}
+              \end{alignat*}
+              \[
+                  \implies P \left( \conj{X} - u_{1 - \nicefrac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}} \leq \mu \leq \conj{X} + u_{1 - \nicefrac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}} \right) = \gamma = 1 - \alpha
+              \]
+        \item Die Berechnung der Intervallgrenzen erfolgt dann anhand einer konkreten Stichprobe.
+
+              Das Konfidenzintervall
+              \[
+                  \mhl{\conj{X} - u_{1 - \nicefrac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}} \leq \mu \leq \conj{X} + u_{1 - \nicefrac{\alpha}{2}} \cdot \frac{\sigma}{\sqrt{n}}}
+              \]
+              enthält den unbekannten Erwartungswert $\mu$ der normalverteilten Grundgesamtheit mit einem Konfidenzniveau von $\gamma$.
+    \end{enumerate}
+\end{algo}
+
+\begin{defi}{Chi-Quadrat-Verteilung}
+    $X_1, \ldots, X_n$ seien mit $n$ mit $\mathcal{N}(0, 1)$ verteilte, stochastisch unabhängige Zufallsvariablen.
+
+    Betrachte die stetige Zufallsvariable $Z$ mit Wertebereich $z \geq 0$:
+    \[
+        Z = X_1^2 + \ldots + X_n^2
+    \]
+    $Z$ ist dann \emph{Chi-Quadrat-verteilt} mit der Anzahl der Freiheitsgraden $n$, man schreibt $Z \sim \chi^2_n$.
+
+    Die Dichte- und Verteilungsfunktion der Chi-Quadrat-Verteilung sind an dieser Stelle nicht wirklich relevant.
+    In den Teilen, in denen sie genutzt wird, muss lediglich der jeweilige Wert eines oder mehrerer $\chi^2_n (z)$ aus einer Tabelle abgelesen werden.
+
+    Eigenschaften der Chi-Quadrat-Verteilung:
+    \begin{itemize}
+        \item Die Dichtefunktion ist asymmetrisch.
+        \item Die Dichtefunktion ist für $n \in \{ 1, 2 \}$ streng monoton fallend.
+        \item Die Dichtefunktion besitzt für $n > 2$ ein absolutes Maximum bei $z_{\max} = n-2$.
+        \item Für große Freiheitsgrade ($n > 1000$) lässt sich die Chi-Quadrat-Verteilung durch eine Normalverteilung $\mathcal{N} (n, 2n)$ annähern.
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Chi-Quadrat-Verteilung}
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[%
+                    width=\linewidth,
+                    height=0.45\linewidth,
+                    xlabel = $z$,
+                    ylabel = $f(z)$,
+                    samples = 200,
+                    restrict y to domain = 0:0.5,
+                    domain = 0.01:15]
+                \foreach \n in {1,...,8} {%
+                        \addplot+[mark={}] gnuplot[raw gnuplot] {%
+                                isint(x) = (int(x)==x);
+                                log2 = 0.693147180559945;
+                                chisq(x,n)=n<=0||!isint(n)?1/0:x<=0?0.0:exp((0.5*n-1.0)*log(x)-0.5*x-lgamma(0.5*n)-n*0.5*log2);
+                                set xrange [1.00000e-5:15.0000];
+                                set yrange [0.00000:0.500000];
+                                samples=200;
+                                plot chisq(x,\n)};
+                        \addlegendentryexpanded{$n = \n$}}
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+\end{example}
+
+\begin{bonus}{Anzahl der Freiheitsgrade}
+    Schätzungen statistischer Parameter können auf unterschiedlichen Mengen an Informationen oder Daten basieren.
+    Die Anzahl unabhängiger Information, die in die Schätzung eines Parameters einfließen, wird als \emph{Anzahl der Freiheitsgrade} bezeichnet.
+
+    Im Allgemeinen sind die Freiheitsgrade einer Schätzung eines Parameters gleich der Anzahl unabhängiger Einzelinformationen, die in die Schätzung einfließen, abzüglich der Anzahl der zu schätzenden Parameter, die als Zwischenschritte bei der Schätzung des Parameters selbst verwendet werden.
+
+    Beispielsweise fließen in die Berechnung der Stichprobenvarianz $n$ Werte mit ein.
+    Dennoch lautet die Anzahl der Freiheitsgrade $n-1$, da als Zwischenschritt der Mittelwert geschätzt wird und somit ein Freiheitsgrad verloren geht.
+\end{bonus}
+
+\begin{algo}{Konfidenzintervalle für die unbekannte Varianz einer Normalverteilung}
+    $X$ sei eine normalverteilte Zufallsvariable mit \emph{unbekanntem} Erwartungswert $\mu$ und \emph{unbekannter} Varianz $\sigma^2$.
+
+    Wir wissen, dass das Stichprobenmittel ein Schätzer für die Varianz $\sigma^2$ ist:
+    \[
+        S^2 = \frac{1}{n-1} \sum_{i=1}^n (X_i - \conj{X})^2
+    \]
+
+    Die Variable
+    \[
+        \mhl{Z = (n-1) \cdot \frac{S^2}{\sigma^2} = \frac{1}{\sigma^2} \sum_{i=1}^n (X_i - \conj{X})^2 = \sum_{i=1}^n (\frac{X_i - \conj{X}}{\sigma})^2}
+    \]
+    ist dann Chi-Quadrat-verteilt mit $f = n-1$ Freiheitsgraden.\footnote{$n-1$ Freiheitsgrade statt $n$, da hier $\mu$ über $\conj{X}$ der Stichprobe geschätzt werden muss.}
+
+    Für $Z$ lässt sich dann schrittweise ein Konfidenzintervall konstruieren:
+    \begin{enumerate}
+        \item Wähle ein bestimmtes Konfidenzniveau $\gamma = 1 - \alpha$
+        \item Die Zufallsvariable $Z$ soll dann mit der gewählten Wahrscheinlichkeit $\gamma$ einen Wert in dem Intervall $c_1 \leq Z \leq c_2$ annehmen, also:
+              \[
+                  \mhl{P(c_1 \leq Z \leq c_2) = \gamma = 1 - \alpha}
+              \]
+        \item Mit dem vorgegebenen Konfidenzniveau $\gamma$ können wir dann das Intervall wie folgt berechnen:
+              \begin{alignat*}{3}
+                               & c_1                                                            &  & \leq Z                                &  & \leq c_2                                                         \\
+                  \equiv \quad & \chi^2_{n-1} (\nicefrac{\alpha}{2})                            &  & \leq Z                                &  & \leq \chi^2_{n-1} (1 - \nicefrac{\alpha}{2})                     \\
+                  \equiv \quad & \chi^2_{n-1} (\nicefrac{\alpha}{2})                            &  & \leq (n-1) \cdot \frac{S^2}{\sigma^2} &  & \leq \chi^2_{n-1} (1 - \nicefrac{\alpha}{2})                     \\
+                  \equiv \quad & (n-1) \cdot \frac{S^2}{\chi^2_{n-1}(1 - \nicefrac{\alpha}{2})} &  & \leq \sigma^2                         &  & \leq (n-1) \cdot \frac{S^2}{\chi^2_{n-1} (\nicefrac{\alpha}{2})}
+              \end{alignat*}
+              \[
+                  \implies P \left( (n-1) \cdot \frac{S^2}{\chi^2_{n-1}(1 - \nicefrac{\alpha}{2})} \leq \sigma^2 \leq (n-1) \cdot \frac{S^2}{\chi^2_{n-1} (\nicefrac{\alpha}{2})} \right) = \gamma = 1 - \alpha
+              \]
+        \item Die Berechnung der Intervallgrenzen erfolgt dann anhand einer konkreten Stichprobe.
+
+              Das Konfidenzintervall
+              \[
+                  \mhl{(n-1) \cdot \frac{S^2}{\chi^2_{n-1}(1 - \nicefrac{\alpha}{2})} \leq \sigma^2 \leq (n-1) \cdot \frac{S^2}{\chi^2_{n-1} (\nicefrac{\alpha}{2})}}
+              \]
+              enthält die unbekannte Varianz $\sigma^2$ der normalverteilten Grundgesamtheit mit einem Konfidenzniveau $\gamma$.
+
+              Durch Radizieren erhält man ein entsprechendes Konfidenzintervall für $\sigma$.
+    \end{enumerate}
+\end{algo}
+
+\begin{defi}{t-Verteilung}
+    $X$ und $Y$ seien xwei stochastisch unabhängige Zufallsvariablen mit
+    \[
+        X \sim \mathcal{0, 1} \quad \land \quad Y \sim \chi^2_n
+    \]
+
+    Dann ist die stetige Zufallsvariable $T$ mit
+    \[
+        T = \frac{T}{\sqrt{\frac{Y}{n}}}
+    \]
+    \emph{t-verteilt} mit $n$ Freiheitsgraden, man schreibt $T \sim t_n$.
+
+    Die Dichte- und Verteilungsfunktion der t-Verteilung sind an dieser Stelle nicht wirklich relevant.
+    In den Teilen, in denen sie genutzt wird, muss lediglich der jeweilige Wert eines oder mehrerer $t_n (t)$ aus einer Tabelle abgelesen werden.
+
+    Eigenschaften der t-Verteilung:
+    \begin{itemize}
+        \item Die Dichtefunktion ist eine gerade Funktion (achsensymmetrisch).
+        \item Die Dichtefunktion besitzt an der Stelle $t_{\max} = 0$ ein absolutes Maximum.
+        \item Die Dichtefunktion nähert sich für $t \to \pm \infty$ asymptotisch der $t$-Achse.
+        \item Für große Freiheitsgrade ($n > 30$) lässt sich die t-Verteilung durch die Standardnormalverteilung $\mathcal{N}(0, 1)$ annähern.
+    \end{itemize}
+\end{defi}
+
+\begin{example}{t-Verteilung}
+    \begin{center}
+        \includegraphics[width=.7\linewidth]{includes/figures/example_t_verteilung}
+    \end{center}
+\end{example}
+
+\begin{algo}{Konfidenzintervalle für den unbekannten Erwartungswert einer Normalverteilung bei unbekannter Varianz}
+    $X$ sei eine normalverteilte Zufallsvariable mit \emph{unbekanntem} Erwartungswert $\mu$ und \emph{unbekannter} Varianz $\sigma^2$.
+
+    Wir wissen, dass das arithmetische Mittel ein Schätzer für den Erwartungswert $\mu$ ist:
+    \[
+        \conj{X} = \frac{1}{n} \sum_{i=1}^{n} X_i
+    \]
+
+    Wir wissen auch, dass die Wurzel des Stichprobenmittels ein Schätzer für die Standardabweichung $\sigma$ ist:
+    \[
+        S = \sqrt{ \frac{1}{n-1} \sum_{i=1}^n (X_i - \conj{X})^2 }
+    \]
+
+    Die normierte Variable
+    \[
+        \mhl{ T = \sqrt{n} \cdot \frac{\conj{X} - \mu}{S} }
+    \]
+    ist dann t-verteilt mit $f = n-1$ Freiheitsgraden.
+
+    Für $T$ lässt sich dann schrittweise ein Konfidenzintervall konstruieren:
+    \begin{enumerate}
+        \item Wähle ein bestimmtes Konfidenzniveau $\gamma = 1 - \alpha$
+        \item Die Zufallsvariable $T$ soll dann mit der gewählten Wahrscheinlichkeit $\gamma$ einen Wert in dem \emph{symmetrischen} $-c \leq U \leq c$ annehmen, also:
+              \[
+                  \mhl{P(-c \leq T \leq c) = \gamma = 1 - \alpha}
+              \]
+        \item Mit dem vorgegebenen Konfidenzniveau $\gamma$ können wir dann das Intervall wie folgt berechnen:
+              \begin{alignat*}{3}
+                               & -c                                                                     &  & \leq T                                       &  & \leq c                                                                      \\
+                  \equiv \quad & -t_{n-1} (1 - \nicefrac{\alpha}{2})                                    &  & \leq T                                       &  & \leq t_{n-1} (1 - \nicefrac{\alpha}{2})                                     \\
+                  \equiv \quad & -t_{n-1} (1 - \nicefrac{\alpha}{2})                                    &  & \leq \sqrt{n} \cdot \frac{\conj{X} - \mu}{S} &  & \leq t_{n-1} (1 - \nicefrac{\alpha}{2})                                     \\
+                  \equiv \quad & \conj{X} - t_{n-1} (1 - \nicefrac{\alpha}{2}) \cdot \frac{S}{\sqrt{n}} &  & \leq \mu                                     &  & \leq \conj{X} + t_{n-1} (1 - \nicefrac{\alpha}{2}) \cdot \frac{S}{\sqrt{n}}
+              \end{alignat*}
+              \[
+                  \implies P \left( \conj{X} - t_{n-1} (1 - \nicefrac{\alpha}{2}) \cdot \frac{S}{\sqrt{n}} \leq \mu \leq \conj{X} + t_{n-1} (1 - \nicefrac{\alpha}{2}) \cdot \frac{S}{\sqrt{n}} \right) = \gamma = 1 - \alpha
+              \]
+        \item Die Berechnung der Intervallgrenzen erfolgt dann anhand einer konkreten Stichprobe.
+
+              Das Konfidenzintervall
+              \[
+                  \mhl{ \conj{X} - t_{n-1} (1 - \nicefrac{\alpha}{2}) \cdot \frac{S}{\sqrt{n}} \leq \mu \leq \conj{X} + t_{n-1} (1 - \nicefrac{\alpha}{2}) \cdot \frac{S}{\sqrt{n}} }
+              \]
+              enthält den unbekannten Erwartungswert $\gamma$ der normalverteilten Grundgesamtheit mit einem Konfidenzniveau von $\gamma$.
+    \end{enumerate}
+\end{algo}
+
+\begin{algo}{Konfidenzintervalle für den unbekannten Anteilswert $p$ (Parameter $p$ einer Binomialverteilung)}
+    Sei $p = P(A)$ die Wahrscheinlichkeit für ein Ereignis $A$ in einem Bernoulli-Experiment.
+
+    Dann ist
+    \[
+        X := \text{Anzahl des Eintretens von $A$}
+    \]
+    bei einer $n$-fachen Ausführung des Bernoulli-Experiments eine \emph{binomialverteilte Zufallsvariable}, die bei umfangreichen Stichproben näherungsweise normalverteilt ist\footnote{Siehe Grenzwertsatz von Moivre und Laplace} mit
+    \[
+        \Mean(X) = \mu = np \quad \land \quad \Var(X) = \sigma^2 = np(1-p)
+    \]
+
+    Eine erwartungstreue Schätzfunktion für $p$ ist:
+    \[
+        \hat{p} = \frac{X}{n} \quad \implies \quad X = n \cdot \hat{p}
+    \]
+
+    Die Zufallsvariable
+    \[
+        \mhl{ U = \frac{X-\mu}{\sqrt{\Var(\hat{p})}} = \frac{X - np}{\sqrt{n\hat{p}(1-\hat{p})}} = \frac{n\hat{p} - np}{\sqrt{n\hat{p}(1-\hat{p})}}}
+    \]
+    ist dann näherungsweise standardnormalverteilt.
+
+    Für $p$ lässt sich dann schrittweise ein Konfidenzintervall konstruieren:
+    \begin{enumerate}
+        \item Wähle ein bestimmtes Konfidenzniveau $\gamma = 1 - \alpha$
+        \item Die Zufallsvariable $U$ soll dann mit der gewählten Wahrscheinlichkeit $\gamma$ einen Wert in dem \emph{symmetrischen} $-c \leq U \leq c$ annehmen, also:
+              \[
+                  \mhl{ P(-c \leq U \leq c) = \gamma = 1 - \alpha }
+              \]
+        \item Mit dem vorgegebenen Konfidenzniveau $\gamma$ können wir dann das Intervall wie folgt berechnen:
+              \begin{alignat*}{3}
+                               & -c                                                                          &  & \leq U &  & \leq c                                                                           \\
+                  \equiv \quad & \ldots                                                                                                                                                                        \\
+                  \equiv \quad & \hat{p} - \frac{u_{1 - \nicefrac{\alpha}{2}}}{n} \sqrt{n\hat{p}(1-\hat{p})} &  & \leq p &  & \leq \hat{p} + \frac{u_{1 - \nicefrac{\alpha}{2}}}{n} \sqrt{n\hat{p}(1-\hat{p})}
+              \end{alignat*}
+              \[
+                  \implies P \left( \hat{p} - \frac{u_{1 - \nicefrac{\alpha}{2}}}{n} \sqrt{n\hat{p}(1-\hat{p})} \leq p \leq \hat{p} + \frac{u_{1 - \nicefrac{\alpha}{2}}}{n} \sqrt{n\hat{p}(1-\hat{p})} \right) = \gamma = 1 - \alpha
+              \]
+        \item Die Berechnung der Intervallgrenzen erfolgt dann anhand einer konkreten Stichprobe.\footnote{In dieser gilt dann $\hat{p} = \nicefrac{k}{n}$, wobei $k$ die Anzahl der eingetretenen Elemente mit Eigenschaft $A$ darstellt.}
+
+              Das Konfidenzintervall
+              \[
+                  \mhl{ \hat{p} - \frac{u_{1 - \nicefrac{\alpha}{2}}}{n} \sqrt{n\hat{p}(1-\hat{p})} \leq p \leq \hat{p} + \frac{u_{1 - \nicefrac{\alpha}{2}}}{n} \sqrt{n\hat{p}(1-\hat{p})} }
+              \]
+              enthält den unbekannten Anteilswert $p$ der binomialverteilten Grundgesamtheit mit einem Konfidenzniveau von $\gamma$.
+    \end{enumerate}
+\end{algo}
+
+\subsection{Statistische Testverfahren}
+
