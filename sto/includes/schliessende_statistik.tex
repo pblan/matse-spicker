@@ -993,7 +993,7 @@
                               & = P \left( \sqrt{n} \cdot \frac{\abs{X} - \mu}{\sigma} > \sqrt{n} \cdot \frac{c + \mu_0 - \mu}{\sigma} \right) + P \left( \sqrt{n} \cdot \frac{\abs{X} - \mu}{\sigma} < \sqrt{n} \cdot \frac{-c + \mu_0 - \mu}{\sigma} \right) \\
                               & = 1 - \Phi \left( \sqrt{n} \cdot \frac{c + \mu_0 - \mu}{\sigma} \right) + \Phi \left( \sqrt{n} \cdot \frac{-c + \mu_0 - \mu}{\sigma} \right)                                                                                   \\
                               & = 1 - \Phi \left( \sqrt{n} \cdot \frac{c}{\sigma} + \frac{\sqrt{n}}{\sigma} \cdot (\mu_0 - \mu) \right) + \Phi \left( \sqrt{n} \cdot \frac{-c}{\sigma} + \frac{\sqrt{n}}{\sigma} \cdot (\mu_0 - \mu) \right)                   \\
-                              & = \mhl{ 1 - \Phi \left( -u_{1 - \nicefrac{\alpha}{2}} + \frac{\sqrt{n}}{\sigma} \cdot (\mu_0 - \mu) \right) + \Phi \left( -u_{1 - \nicefrac{\alpha}{2}} + \frac{\sqrt{n}}{\sigma} \cdot (\mu_0 - \mu) \right) }
+                              & = \mhl{ 1 - \Phi \left( u_{1 - \nicefrac{\alpha}{2}} + \frac{\sqrt{n}}{\sigma} \cdot (\mu_0 - \mu) \right) + \Phi \left( -u_{1 - \nicefrac{\alpha}{2}} + \frac{\sqrt{n}}{\sigma} \cdot (\mu_0 - \mu) \right) }
               \end{alignat*}
     \end{enumerate}
 \end{algo}
