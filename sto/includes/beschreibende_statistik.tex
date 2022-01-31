@@ -520,7 +520,7 @@
     \]
 \end{defi}
 
-\begin{defi}{Variationskoeffizient}
+\begin{bonus}{Variationskoeffizient}
     Die Motivation für den \emph{Variationskoeffizienten} ist, dass eine statistische Variable mit großem Mittelwert bzw. eine Zufallsvariable mit großem Erwartungswert im Allgemeinen eine größere Varianz aufweist als eine mit einem kleinen Mittel- bzw. Erwartungswert.
 
     Da die Varianz und die daraus abgeleitete Standardabweichung nicht normiert sind, kann ohne Kenntnis des Mittelwerts nicht beurteilt werden, ob eine Varianz groß oder klein ist.
@@ -531,7 +531,7 @@
     \[
         \VarK = \frac{s}{\conj{x}}
     \]
-\end{defi}
+\end{bonus}
 
 \subsection{Lineare Regression und Korrelation}
 
@@ -584,14 +584,14 @@
     \end{itemize}
 \end{defi}
 
-\begin{defi}{Bestimmtheitsmaß}
+\begin{bonus}{Bestimmtheitsmaß}
     Das \emph{Bestimmtheitsmaß} bewertet als Quadrat des Korrelationskoeffizienten die Anpassungsgüte der zu einem Datensatz ermittelten Regressionsgerade und hat einen Wert zwischen $0$ und $1$, wobei der Wert $1$ die Situation beschreibt, dass alle Datenpaare auf einer Geraden liegen und damit perfekte Anpassung vorliegt.
 
     Es gilt:
     \[
         B_{x, y} = r_{x, y}^2
     \]
-\end{defi}
+\end{bonus}
 
 \begin{algo}{Lineare Regression}
     Das Ziel einer \emph{Regression} ist es, eine abhängige Variable durch eine oder mehrere unabhängige Variablen zu erklären.
@@ -632,7 +632,8 @@
     \]
 \end{algo}
 
-\begin{example}{Lineare Regression (empirische Kovarianz)}
+\begin{example}{Lineare Regression, Empirische Kovarianz}
+    \index[Beispiele]{Empirische Kovarianz}
     Die Schülerinnen und Schüler wurden vor der Klausur anonym befragt, wie viele Stunden Schlaf sie vor der Klausur gehabt haben:
     \begin{center}
         \begin{tabular}{|c||C|C|C|C|C|C|C|C|C|C|}
@@ -680,7 +681,8 @@
     \end{alignat*}
 \end{example}
 
-\begin{example}{Lineare Regression (empirischer Korrelationskoeffizient)}
+\begin{example}{Lineare Regression, Empirischer Korrelationskoeffizient}
+    \index[Beispiele]{Empirischer Korrelationskoeffizient}
     b) Es gilt:
     \[
         r_{xy} = \frac{s_{xy}}{s_x \cdot s_y} = \frac{\sum_{i=1}^{n} (x_i - \conj{x})(y_i - \conj{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \conj{x})^2 \cdot \sum_{i=1}^{n} (y_i - \conj{y})^2 }}
@@ -699,7 +701,8 @@
     \]
 \end{example}
 
-\begin{example}{Lineare Regression (empirischer Korrelationskoeffizient)}
+\begin{example}{Lineare Regression, Regressionsgleichung}
+    \index[Beispiele]{Regressionsgleichung}
     c) Die Regressionsgerade ist gegeben mit:
     \[
         \hat{y}_i = \hat{a} + \hat{b}x_i
@@ -719,7 +722,8 @@
     \]
 \end{example}
 
-\begin{example}{Lineare Regression (Regressionsgerade)}
+\begin{example}{Lineare Regression, Regressionsgerade}
+    \index[Beispiele]{Regressionsgerade}
     \begin{center}
         \begin{tikzpicture}
             \begin{axis}[%

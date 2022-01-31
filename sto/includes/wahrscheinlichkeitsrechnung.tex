@@ -257,6 +257,119 @@
     \]
 \end{defi}
 
+\begin{example}{Bedingte Wahrscheinlichkeit (Wahrscheinlichkeitsbaum)}
+    Aufgrund des Praxisbezugs des Informatik Studiums, wurden Projektarbeiten eingeführt, welche in Teams zu je vier Studenten bearbeitet werden sollen.
+    Die Teams sind für die Arbeitsaufteilung innerhalb der Gruppe selbst verantwortlich.
+    Bei dem hier betrachteten Team 2 \enquote{jeder macht das was er am besten kann} ergab sich folgende Tabelle:
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            Mitglied & Codeanteil (in \%) & Fehler (in \%) \\
+            \hline
+            1        & 20                 & 1.25           \\
+            2        & 20                 & 2.5            \\
+            3        & 20                 & 5              \\
+            4        & 40                 & 1.875          \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    Dem fertigen Code ist nicht mehr anzusehen, von welchem Teammitglied er programmiert worden ist.
+    Aus der Masse an Code wird rein zufällig eine Zeile herausgegriffen und auf Fehler überprüft.
+    Folgende Ereignisse werden formuliert:
+
+    \[
+        \begin{aligned}
+            A_i & = \{ \text{Der Code wurde von Teammitglied $i$ programmiert} \} \quad i = 1,2,3,4 \\
+            B   & = \{ \text{Der Code ist fehlerhaft} \}
+        \end{aligned}
+    \]
+
+    \begin{enumerate}[\alph*)]
+        \item Formulieren Sie die Fehlerwahrscheinlichkeiten als bedingte Wahrscheinlichkeiten und zeichnen Sie den Wahrscheinlichkeitsbaum.
+        \item Berechnen Sie die Wahrscheinlichkeit, dass die zufällig herausgegriffene Codezeile fehlerhaft ist.
+        \item Wie groß ist die Wahrscheinlichkeit, dass ein fehlerhafter Code von Teammitglied $i$ programmiert worden ist?
+    \end{enumerate}
+
+    \exampleseparator
+
+    a) \vspace{-2em}
+    \begin{center}
+        \begin{forest}
+            [,wide
+            [
+            $A_1$, above left prob={$20\%$}, wide, s sep+=30pt
+            [
+            $B$, above left prob={$1.25\%$}
+            ]
+            [
+            $\conj{B}$, above right prob={$98.75\%$}
+            ]
+            ]
+            [
+            $A_2$, below right prob={$20\%$}, wide, s sep+=30pt
+            [
+            $B$, above left prob={$2.5\%$}
+            ]
+            [
+            $\conj{B}$, above right prob={$97.5\%$}
+            ]
+            ]
+            [
+            $A_3$, below left prob={$20\%$}, wide, s sep+=30pt
+            [
+            $B$, above left prob={$5\%$}
+            ]
+            [
+            $\conj{B}$, above right prob={$95\%$}
+            ]
+            ]
+            [
+            $A_4$, above right prob={$40\%$}, wide, s sep+=30pt
+            [
+            $B$, above left prob={$1.875\%$}
+            ]
+            [
+            $\conj{B}$, above right prob={$98.125\%$}
+            ]
+            ]
+            ]
+        \end{forest}
+    \end{center}
+
+    Es gilt:
+    \[
+        \begin{aligned}
+            P(B \mid A_1) & = 1.25\%  \\
+            P(B \mid A_2) & = 2.5\%   \\
+            P(B \mid A_3) & = 5\%     \\
+            P(B \mid A_4) & = 1.875\%
+        \end{aligned}
+    \]
+    \qed
+\end{example}
+
+\begin{example}{Bedingte Wahrscheinlichkeit (Berechnung)}
+    b) Es gilt:
+    \[
+        P(B) = \sum_{i = 1}^4 P(A_i \cap B) = 0.2 \cdot 0.0125 + 0.2 \cdot 0.025 + 0.2 \cdot 0.05 + 0.4 \cdot 0.01875 = 0.025
+    \]
+    \qed
+
+    c) Es gilt:
+    \[
+        \begin{aligned}
+                           & P(A_i \mid B) &  & = \frac{P(A_i \cap B)}{P(B)}                                              \\
+            \implies \quad & P(A_1 \mid B) &  & = \frac{P(A_1 \cap B)}{P(B)} = \frac{0.2 \cdot 0.0125}{0.025}  &  & = 0.1 \\
+            \land    \quad & P(A_2 \mid B) &  & = \frac{P(A_2 \cap B)}{P(B)} = \frac{0.2 \cdot 0.025}{0.025}   &  & = 0.2 \\
+            \land    \quad & P(A_3 \mid B) &  & = \frac{P(A_3 \cap B)}{P(B)} = \frac{0.2 \cdot 0.05}{0.025}    &  & = 0.4 \\
+            \land    \quad & P(A_4 \mid B) &  & = \frac{P(A_4 \cap B)}{P(B)} = \frac{0.4 \cdot 0.01875}{0.025} &  & = 0.3
+        \end{aligned}
+    \]
+    \qed
+\end{example}
+
 \begin{defi}{Stochastische Unabhängigkeit}
     In einigen Anwendungen ist die Wahrscheinlichkeit für das Eintreten des Ereignisses $A$ unabhängig davon, ob $B$ eingetreten ist oder nicht:
     \[
@@ -409,7 +522,7 @@
 \end{defi}
 
 \begin{defi}{Bayes'sche Formel}
-    Für den Zusammenhang zwischen $P(A \mid B)$ und $P(B \mid A)$ ergibt sihc direkt aus der Definition und dem Multiplikationssatz die \emph{Bayes'sche Formel} bzw. der \emph{Satz von Bayes}:
+    Für den Zusammenhang zwischen $P(A \mid B)$ und $P(B \mid A)$ ergibt sich direkt aus der Definition und dem Multiplikationssatz die \emph{Bayes'sche Formel} bzw. der \emph{Satz von Bayes}:
     \[
         P(A \mid B) = \frac{P(A \cap B)}{P(B)} = \frac{P(B \cap A)}{P(B)} = \frac{P(B \mid A) \cdot P(A)}{P(B)} = \frac{P(B \mid A) \cdot P(A)}{\sum_{i=1}^n P(A_i) \cdot P(B \mid A_i)}
     \]
@@ -454,6 +567,52 @@
         \item $P(a < X \leq b) = F(b) - F(a)$
     \end{enumerate}
 \end{defi}
+
+\begin{example}{Verteilungsfunktion}
+    Gegeben seien die folgenden, jeweils auf $\R$ definierten Funktionen:
+    \begin{enumerate}[\alph*)]
+        \item $F_1(x) =
+                  \begin{cases}
+                      0   & \text{für} \ x < 2        \\
+                      x-2 & \text{für} \ 2 \leq x < 4 \\
+                      1   & \text{für} \ x \geq 4
+                  \end{cases}
+              $
+        \item $F_2(x) =
+                  \begin{cases}
+                      0      & \text{für} \ x < 0    \\
+                      e^{-x} & \text{für} \ x \geq 0
+                  \end{cases}
+              $
+        \item $F_3(x) = e^{-e^{-x}}$ für $x \in \R$
+    \end{enumerate}
+
+    \exampleseparator
+
+    a)  Für $x_1 = \nicefrac{7}{2}$ und $x_2 = 2$ gilt:
+    \[
+        F_1(x_1) = \frac{3}{2} > 1 = F_2(x_2) \quad \land \quad x_1 < x_2 \quad \lightning
+    \]
+
+    Also ist $F_1(x)$ nicht monoton steigend und damit insgesamt keine Verteilungsfunktion.
+    \qed
+
+    b) Offensichtlich ist $F_2(x)$ (streng) monoton fallend für $x \geq 0$ und damit insgesamt keine Verteilungsfunktion.
+    \qed
+
+    c) Offensichtlich ist $F_3(x)$ monoton steigend und rechtsseitig stetig.
+
+    Es gilt:
+    \[
+        \lim_{x \to \infty} F_3(x) = \lim_{x \to \infty} e^{-e^{-x}} = e^{- \lim_{x \to \infty} e^{-x}} = e^{0} = 1
+    \]
+    \[
+        \lim_{x \to -\infty} F_3(x) = \lim_{x \to -\infty} e^{-e^{-x}} = e^{- \lim_{x \to -\infty} e^{-x}} = e^{-\infty} = 0
+    \]
+
+    Also ist $F_3(x)$ damit insgesamt eine Verteilungsfunktion.
+    \qed
+\end{example}
 
 \begin{defi}{Wahrscheinlichkeitsverteilung einer diskreten Zufallsvariablen}
     Bei einer diskreten Zufallsvariablen $X$ gehört zu jedem Wert $x_i$, den sie annehmen kann, eine bestimmte Wahrscheinlichkeit:
@@ -511,6 +670,46 @@
     \end{enumerate}
 \end{defi}
 
+\begin{example}{Dichtefunktion}
+    Handelt es sich bei den folgenden Funktionen um Dichtefunktionen?
+    Begründen Sie Ihre Antwort.
+
+    \begin{enumerate}[\alph*)]
+        \item $f_1(x) =
+                  \begin{cases}
+                      \sin(x) & \text{für} \ -\nicefrac{\pi}{2} \leq x \leq \nicefrac{\pi}{2} \\
+                      0       & \text{sonst}
+                  \end{cases}
+              $
+        \item $f_2(x) =
+                  \begin{cases}
+                      e^{-x} & \text{für} \ x \geq 0 \\
+                      0      & \text{sonst}
+                  \end{cases}
+              $
+    \end{enumerate}
+
+    \exampleseparator
+
+    a) Offensichtlich ist $f_1(x) = \sin(x) < 0$ für alle $-\frac{\pi}{2} < x < 0$.
+
+    Damit kann $f_1(x)$ keine Dichtefunktion sein.
+    \qed
+
+    b) Es muss gelten:
+    \begin{itemize}
+        \item $f_2$ ist nichtnegativ \quad $\checkmark$ (offensichtlich)
+        \item $f_2$ ist integrierbar \quad $\checkmark$ (offensichtlich)
+        \item $f_2$ ist normiert:
+              \[
+                  \int^{\infty}_{-\infty} f_2(t) \diff t = \int^{\infty}_{0} e^{-t} \diff t = \left[-e^{-t}\right]^{\infty}_{0} = 0 + 1 = 1 \quad \checkmark
+              \]
+    \end{itemize}
+
+    Damit ist $f_2(x)$ eine Dichtefunktion.
+    \qed
+\end{example}
+
 \begin{defi}{Transformierte Zufallsvariable}
     Wenn eine reelle Zufallsvariable $X$ auf dem Ergebnisraum $\Omega$ und eine Funktion $g : \R \to \R$ gegeben ist, dann ist auch $Y = g(X)$ eine Zufallsvariable auf demselben Ergebnisraum.
 
@@ -559,9 +758,42 @@
     \]
     Für eine lineare Transformation gilt damit:
     \[
-        F_Y(y) = F_X\left( \frac{y-b}{a} \right) \quad \implies \quad f_Y(y) = \frac{\diff}{\diff y} F_X \left( \frac{y-b}{a} \right) = f_X \left( \frac{y-b}{a} \right) \cdot \frac{1}{a}
+        F_Y(y) = F_X\left( \frac{y-b}{a} \right) \quad \implies \quad f_Y(y) = \frac{\diff}{\diff y} F_X \left( \frac{y-b}{a} \right) = f_X \left( \frac{y-b}{a} \right) \cdot \frac{1}{\abs{a}}
     \]
 \end{algo}
+
+\begin{example}{Transformation der Verteilungsfunktion und Dichtefunktion}
+    Bestimmen Sie die Verteilungsfunktion $F_y(y)$ und die Dichtefunktion $f_y(y)$ für die transformierte Zufallsvariable $Y$, die sich als $Y = g(X)$ aus der ursprünglichen Zufallsvariablen $X$ mit bekannter Verteilungsfunktion $F_x(x)$ und bekannter Dichtefunktion $f_x(x)$ ergibt:
+    \[
+        g(X) = 3X - 1 \quad \text{mit} \ f_X(x) =
+        \begin{cases}
+            \nicefrac{4}{27}(3x^2 - x^3) & \text{für} \ 0 \leq x \leq 3 \\
+            0                            & \text{sonst}
+        \end{cases}
+    \]
+
+    \exampleseparator
+
+    Es gilt:
+    \[
+        f_Y(y) = f_X\left(\frac{y+1}{3}\right) \cdot \frac{1}{\abs{3}} =
+        \begin{cases}
+            \frac{1}{3} \cdot \frac{4}{27} \left( 3\left( \frac{y+1}{3} \right)^2 - \left( \frac{y+1}{3} \right)^3 \right) & \text{für}\footnote{$0 \leq x \leq 3 \quad \land \quad y = g(x) = 3x - 1 \quad \implies \quad -1 \leq y \leq 8$} \ -1 \leq y \leq 8 \\
+            0                                                                                                              & \text{sonst}
+        \end{cases}
+    \]
+
+    Und damit:
+    \[
+        F_Y(y) = F_X\left( \frac{y+1}{3} \right) =
+        \begin{cases}
+            0                                                                                    & \text{für} \ y < -1           \\
+            \frac{4}{27} \left(\frac{y+1}{3}\right)^3 - \frac{1}{27}\left(\frac{y+1}{3}\right)^4 & \text{für} \ -1 \leq y \leq 8 \\
+            1                                                                                    & \text{für} \ y > 8
+        \end{cases}
+    \]
+    \qed
+\end{example}
 
 \begin{defi}{Erwartungswert}
     Der wichtigste Lageparameter einer Verteilung ist der \emph{Erwartungswert}.
@@ -641,6 +873,33 @@
         \sigma^2 = \Var(X) = \int_{-\infty}^{\infty} (x - \mu)^2 \cdot f(x) \diff x
     \]
 \end{defi}
+
+\begin{algo}{Transformation der Varianz auf eine neue Zufallsvariable}
+    Bei einer Transformation von einer Zufallsvariable $X$ auf eine neue Zufallsvariable $Y = g(X)$ gilt speziell bei der linearen Transformation:
+    \[
+        \Var(aX + b) = a^2 \Var(X)
+    \]
+\end{algo}
+
+\begin{example}{Transformation des Erwartungswertes und der Varianz}
+    Gegeben ist ein Spannungssignal $X$ mit Gaußscher Dichtefunktion $f_X(x)$, Erwartungswert $\mu_x = 1\si{V}$ und Varianz $\sigma_X^2 = 0.25\si{\volt}^2$.
+    Das Signal wird durch die Funktion $Y = g(X) = 2X + 1.5\si{\V}$ in ein Ausgangssignal $Y$ transformiert.
+
+    Bestimmen Sie den Erwartungswert $\mu_Y$ sowie die Varianz $\sigma^2_Y$ des Ausgangssignals.
+
+    \exampleseparator
+
+    Es handelt sich hier im eine \emph{lineare} Transformation.
+
+    Damit gilt:
+    \[
+        \Mean(Y) = \Mean(2X + 1.5\si{\V}) = 2\Mean(X) + 1.5\si{\V} = 2\mu_X + 1.5\si{\V} = 2 \cdot 1\si{\V} + 1.5\si{\V} = 3.5\si{\V}
+    \]
+    \[
+        \Var(Y) = \Var(2X + 1.5\si{\V}) = 2^2 \Var(X) = 4 \sigma_X^2 = 4 \cdot 0.25\si{\volt^2} = 1\si{\V^2}
+    \]
+    \qed
+\end{example}
 
 \begin{defi}{Standardabweichung}
     Die \emph{Stamdardabweichung} ist ein weiteres Streuungsmaß und wird definiert als die Quadratwurzel der Varianz:
@@ -803,11 +1062,11 @@
 
 \begin{defi}{Lokaler Grenzwertsatz von de Moivre-Laplace}
     Nach dem \emph{lokalen Grenzwertsatz von de Moivre-Laplace} konvergiert die Binomialverteilung für den Stichprobenumfang $n \to \infty$ und Wahrscheinlichkeiten $0 < p < 1$ gegen die Normalverteilung.
-    Bei großem Stichprobenumpfang kann daher die Normalverteilung als Näherung der Binomialverteilung verwendet werden.
+    Bei großem Stichprobenumpfang kann daher die Normalverteilung $\mathcal{N}(0, \sigma^2)$ (mit $\sigma^2 = p(1-p)$) als Näherung der Binomialverteilung verwendet werden.
 
-    Also gilt ($\sigma^2 = p(1-p)$):
+    Also gilt:
     \[
-        B(k \mid p, n) = \binom{n}{k} \cdot p^k \cdot (1-p)^{n-k} \approx \frac{1}{2\pi n \sigma^2} \cdot \exp \left( -\frac{n}{2\sigma^2} \left( \frac{k}{n} - p \right)^2 \right)
+        B(k \mid p, n) = \binom{n}{k} \cdot p^k \cdot (1-p)^{n-k} \approx \frac{1}{\sqrt{2\pi n \sigma^2}} \cdot \exp \left( -\frac{n}{2\sigma^2} \left( \frac{k}{n} - p \right)^2 \right)
     \]
 \end{defi}
 
@@ -869,7 +1128,7 @@
     \end{itemize}
 \end{algo}
 
-\begin{bonus}{Geometrische Verteilung}
+\begin{defi}{Geometrische Verteilung}
     Die \emph{geometrische Verteilung} beschreibt das \enquote{Warten auf den ersten Erfolg}.
 
     Dabei besitzt eine diskrete Zufallsvariable $X$ eine geometrische Verteilung mit Parameter $0 < p < 1$, falls ihre Verteilung gegeben ist durch
@@ -884,7 +1143,7 @@
         \item Erwartungswert: $\mu = \frac{1-p}{p}$
         \item Varianz: $\sigma^2 = \frac{1-p}{p^2}$
     \end{itemize}
-\end{bonus}
+\end{defi}
 
 \begin{example}{Geometrische Verteilung}
     \begin{center}
@@ -1118,7 +1377,7 @@
         f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(x,z-x) \diff x
     \]
 
-    Sind $X$ und $Y$ stohastisch unabhängig, dann gilt insbesondere
+    Sind $X$ und $Y$ stochastisch unabhängig, dann gilt insbesondere
     \[
         f_Z(z) = \int_{-\infty}^{\infty} f_X(x) \cdot f_Y(z-x) \diff x
     \]
@@ -1132,7 +1391,7 @@
         f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(\nicefrac{z}{y}, y) \cdot \frac{1}{\abs{y}} \diff y
     \]
 
-    Sei $Z = \nicefrac{X}{Z}$.
+    Sei $Z = \nicefrac{X}{Y}$.
     Dann gilt:
     \[
         f_Z(z) = \int_{-\infty}^{\infty} f_{XY}(zy,y) \cdot \abs{y} \diff y
@@ -1166,6 +1425,65 @@
         \Mean(X \cdot Y) = \Mean(X) \cdot \Mean(Y) \implies \Cov(X, Y) = 0 \implies \Var(\alpha X + \beta Y) = \alpha^2 \Var(X) + \beta^2 \Var(Y)
     \]
 \end{algo}
+
+\begin{example}{Summen von Zufallsgrößen}
+    Bei einem Produktionsvorgang werden Zylinder in den ausgefrästen Kreis eines Metallsockels eingepasst.
+    Die beiden Teile werden rein zufällig aus den bisher produzierten Zylindern bzw. ausgefrästen Metallplatten ausgewählt.
+    Der Durchmesser des Zylinders ist (in \si{\mm}) nach $\mathcal{N}(24.9; (0.03)^2)$-verteilt, der Durchmesser des in den Metallsockel eingefrästen Kreises ist nach $\mathcal{N}(25; (0.04)^2)$-verteilt.
+    Der Zylinder kann noch eingepasst werden, falls die lichte Weite der Durchmessers (= Durchmesser des gefrästen Kreises - Durchmesser des Zylinders) nicht mehr als $0.2\si{\mm}$ beträgt.
+
+    \begin{enumerate}[\alph*)]
+        \item Berechnen Sie
+              \begin{enumerate}[i)]
+                  \item den Erwartungswert
+                  \item die Varianz
+                  \item die Verteilung
+              \end{enumerate}
+              der Zufallsvariablen \enquote{lichte Weite des Durchmessers}.
+        \item In wie viel Prozent aller Fälle lässt sich der Zylinder nicht in die Metallplatte einpassen?
+    \end{enumerate}
+
+    \exampleseparator
+
+    a) i) Es gilt:
+    \[
+        X = \{ \text{Durchmesser des Zylinders [\si{\mm}]} \} \sim \mathcal{N}(\mu_X, \sigma_X^2) = N(24.9, (0.03)^2)
+    \]
+    \[
+        Y = \{ \text{Durchmesser des eingefrästen Kreises [\si{\mm}]} \} \sim \mathcal{N}(\mu_Y, \sigma_Y^2) = N(25, (0.04)^2)
+    \]
+    und wir definieren:
+    \[
+        Z = Y - X
+    \]
+    Damit gilt:
+    \[
+        \Mean(Z) = \Mean(Y) - \Mean(X) = \mu_Y - \mu_X = 0.1
+    \]
+    \qed
+
+    ii)  Da $X$ und $Y$ stochastisch unabhängig sind, gilt:
+    \[
+        \Var(Z) = \Var(Y) + \Var(X) - 2\Cov(X,Y) = \Var(Y) + \Var(X) = (0.05)^2
+    \]
+    \qed
+
+    iii) \[
+        Z \sim \mathcal{N}(\mu_Z, \sigma_Z^2) = \mathcal{N}(0.1, (0.05)^2)
+    \]
+    \qed
+
+    b)  Sei
+    \[
+        u = \frac{x - \mu_Z}{\sigma_Z} = \frac{0.2 - 0.1}{0.05} = 2
+    \]
+
+    Dann gilt damit:
+    \[
+        P(X > 0.2) = 1 - P(X \leq 0.2) = 1 - \Phi(u) = 1 - \Phi(2) = 1 - 0.97725 = 0.02275
+    \]
+    \qed
+\end{example}
 
 \subsection{Kovarianz und Korrelation}
 
@@ -1215,6 +1533,67 @@
 
     Von einer vorhandenen Korrelation zweier Zufallsvariablen darf aber nicht auf einen kausalen Zusammenhang gechlossen werden!
 \end{defi}
+
+\begin{example}{Kovarianz und Korrelationskoeffizient}
+    In einem Beutel befinden sich 6 Münzen: eine 5-Cent-Münze, drei 2-Cent-Münzen und zwei 1-Cent-Münzen.
+    Zufällig werden nacheinander - ohne Zurücklegen - 2 Münzen gezogen.
+    $X_1$ gebe den Wert der ersten, $X_2$ den Wert der zweiten gezogenen Münzen an.
+    Bestimmen Sie folgenden Werte:
+    \begin{enumerate}[\alph*)]
+        \item die zweidimensionale Wahrscheinlichkeitsfunktion $P(X_1 = i, X_2 = j)$ für $i,j \in \{1; 2; 5\}$.
+        \item den Erwartungswert $\Mean(X_i)$ und die Varianz $\Var(X_i)$ ($i = 1,2$).
+        \item die Kovarianz $\Cov(X_1,X_2)$ sowie den Korrelationskoeffizient $\rho_{X_1,X_2}$.
+    \end{enumerate}
+
+    \exampleseparator
+
+    a) Offensichtlich gilt:
+    \begin{center}
+        \begin{tabular}{|C|C|C|C|C|}
+            \hline
+            $\diagbox{$X_1$}{$X_2$}$ & 1                & 2                & 5                & f_1(X_1)        \\ % \diagbox{X_1}{X_2}
+            \hline
+            1                        & \nicefrac{1}{15} & \nicefrac{1}{5}  & \nicefrac{1}{15} & \nicefrac{1}{3} \\
+            \hline
+            2                        & \nicefrac{1}{5}  & \nicefrac{1}{5}  & \nicefrac{1}{10} & \nicefrac{1}{2} \\
+            \hline
+            5                        & \nicefrac{1}{15} & \nicefrac{1}{10} & 0                & \nicefrac{1}{6} \\
+            \hline
+            f_2(X_2)                 & \nicefrac{1}{3}  & \nicefrac{1}{2}  & \nicefrac{1}{6}  & 1               \\
+            \hline
+        \end{tabular}
+    \end{center}
+    \qed
+
+    b) Für $X_1$ gilt offensichtlich:
+    \[
+        \mu_{X_1} = \Mean(X_1) = \sum_{i} i \cdot f_1(i) = \ldots = \frac{13}{6} \approx 2.1667
+    \]
+    \[
+        \sigma^2_{X_1} = \Var(X_1) = E((X_1 - \mu_{X_1})^2) = \sum_{i} f_1(i) \cdot \left( i   - \mu_{X_1} \right)^2 = \ldots = \frac{65}{36} \approx 1.8056
+    \]
+
+    In der Wahrscheinlichkeitsfunktion ist zu sehen, dass die Randverteilungen für beide Zufallsvariablen gleich sind.
+    Damit gilt offensichtlich:
+    \[
+        \mu_{X_2} = \Mean(X_2) = \mu_{X_1} = \frac{13}{6} \approx 2.1667 \quad \land \quad \sigma^2_{X_2} = \Var(X_2) = \sigma^2_{X_1} = \frac{65}{36} \approx 1.8056
+    \]
+    \qed
+
+    c) Es gilt mit $i,j \in \{1,2,5\}$:
+    \begin{alignat*}{1}
+        \Cov(X_1, X_2) & = \Mean(X_1X_2) - \Mean(X_1)\Mean(X_2) = \sum_i \sum_j i \cdot j \cdot f(i,j) - \Mean(X_1)\Mean(X_2)                                              \\
+                       & = \left( \frac{1}{15} + \frac{2}{5} + \frac{1}{3} + \frac{2}{5} + \frac{4}{5} + 1 + \frac{1}{3} + 1 + 0 \right) - \frac{13}{6} \cdot \frac{13}{6} \\
+                       & = \frac{13}{3} - \frac{169}{36}  = -\frac{13}{36} \approx -0.3611
+    \end{alignat*}
+
+    und
+
+    \[
+        \rho_{X_1X_2} = \frac{\Cov(X_1,X_2)}{\sigma_{X_1} \cdot \sigma_{X_2}} = \frac{-\frac{13}{36}}{\sqrt{\frac{65}{36}} \cdot \sqrt{\frac{65}{36}}} = -\frac{1}{5} = -0.2
+    \]
+    \qed
+\end{example}
 
 \subsection{Gesetze der großen Zahlen und Grenzwertsätze}
 
@@ -1314,3 +1693,56 @@
 
     Der zentrale Grenzwertsatz liefert also die Begründung für das Phänomen, dass sich bei der additiven Überlagerung vieler kleiner unabhängiger Zufallseffekte zu einem Gesamteffekt zumindest approximativ eine Normalverteilung ergibt.
 \end{defi}
+
+\begin{example}{Zentraler Grenzwertsatz}
+    Bei der Verpackung von Kartoffeln in Beutel kann das Normalgewicht von 10kg i.A. nicht exakt eingehalten werden.
+    Die Erfahrung zeigt, dass das Füllgewicht eines Beutels durch eine Zufallsvariable $Y = X + 10$ beschrieben werden kann, wobei $X$ eine auf dem Intervall $\interval{-0.25, 0.75}$ gleichverteilte Zufallsvariable ist.
+
+    \begin{enumerate}[\alph*)]
+        \item Berechnen Sie den Erwartungswert und die Varianz des Füllgewichtes eines Beutels.
+        \item Die abgefüllten Beutel sollen mit einem Kleintransporter befördert werden.
+              Berechnen Sie näherungsweise die Wahrscheinlichkeit dafür, dass die zulässige Nutzlast von 1020kg bei Zuladung von 100 Beuteln überschritten wird.
+    \end{enumerate}
+
+    \exampleseparator
+
+    a) Offensichtlich gilt:
+    \[
+        \Mean(X) = \frac{a + b}{2} = \frac{0.75 - 0.25}{2} = \frac{1}{4}
+    \]
+    \[
+        \Var(X) \stackrel{\footnote{Siehe: \href{https://de.wikipedia.org/wiki/Stetige_Gleichverteilung}{Wikipedia}}}{=} \frac{1}{12} (b-a)^2 = \frac{1}{12}
+    \]
+
+    Und für $Y = X + 10$:
+    \[
+        \mu_Y = \Mean(Y) = \Mean(X) + 10 = \frac{41}{4} \quad \land \quad \sigma_Y^2 = \Var(Y) = \Var(X) =  \frac{1}{12}
+    \]
+    \qed
+
+    b) Sei
+    \[
+        S_n = Y_1 + \ldots + Y_{100}
+    \]
+    dann gilt nach dem Zentralen Grenzwertsatz:
+    \[
+        \Mean(S_n) = n\mu_Y = 100 \cdot \mu_Y = 1025 \quad \land \quad \Var(S_n) = n\sigma_Y^2 = 100 \cdot \sigma_Y^2 = \frac{25}{3}
+    \]
+
+    Sei dann die standardisierte Zufallsvariable $Z_n$ gegeben mit
+    \[
+        Z_n = \frac{S_n - \Mean(S_n)}{\sigma_{S_n}} = \frac{S_n - n\mu_Y}{\sigma_Y\sqrt{n}} = \sqrt{3}\cdot \frac{S_n - 1025}{5}
+    \]
+    dann besagt der Zentrale Grenzwertsatz, dass die Verteilungsfunktion von $Z_n$ für $n \to \infty$ punktweise gegen die der Standardnormalverteilung $N(0,1)$ konvergiert.
+
+    Wir wählen
+    \[
+        u = \sqrt{3} \cdot \frac{1020 - 1025}{5} = -\sqrt{3} \approx -1.73
+    \]
+
+    Damit gilt:
+    \[
+        P(Z_n \geq u) = 1 - P(Z_n < u) \approx 1 - \Phi(-1.73) = 1 - (1 - \Phi(1.73)) = \Phi(1.73) = 95.82\%
+    \]
+    \qed
+\end{example}
