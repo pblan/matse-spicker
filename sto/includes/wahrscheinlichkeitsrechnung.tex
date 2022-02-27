@@ -14,7 +14,7 @@
 
     Für eine $n$-elementige Menge gilt für die Anzahl $P$ der Permutationen:
     \[
-        P(n) = n \cdot (n-1) \cdot (n-1) \cdot \ldots \cdot 1 = n!
+        P(n) = n \cdot (n-1) \cdot (n-2) \cdot \ldots \cdot 1 = n!
     \]
 
     Befinden sich unter den $n$ Elementen jeweils $n_1, n_2, \ldots, n_k$ gleiche, dann gilt:
@@ -960,6 +960,13 @@
     \]
 
     Der Grundgedanke einer Gleichverteilung ist, dass es keine Präferenz gibt.
+
+    Die Maßzahlen dieser Verteilung lauten:
+    \begin{itemize}
+        \item Erwartungswert: $\mu = \frac{a + b}{2}$
+        \item Varianz: $\sigma^2 = \frac{(b - a)^2}{12}$
+        \item Standardabweichung: $\sigma = \sqrt{\sigma^2} = \frac{b-a}{\sqrt{12}}$
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Bernoulli-Experiment}
@@ -1123,7 +1130,7 @@
     Dabei gilt:
     \begin{itemize}
         \item $P(X \geq x) = 1 - \Phi(u)$
-        \item $P(a \leq X \leq b) = \Phi \left( \frac{a - \mu}{\sigma} \right) - \Phi \left( \frac{a - \mu}{\sigma} \right)$
+        \item $P(a \leq X \leq b) = \Phi \left( \frac{a - \mu}{\sigma} \right) - \Phi \left( \frac{b - \mu}{\sigma} \right)$
         \item $\Phi(-u) = 1 - \Phi(u)$
     \end{itemize}
 \end{algo}
