@@ -5,13 +5,13 @@
 
     Prinzipien:
     \begin{itemize}
-        \item \emph{Planung und Koordination:}
+        \item \emph{Planung und Koordination}:
 
               Alle Beteiligten wissen im Voraus, was getan werden muss.
-        \item \emph{Iteration:}
+        \item \emph{Iteration}:
 
               Das Projekt bringt in kurzen Abständen einsetzbare Versionen (Prototypen) hervor.
-        \item \emph{Kontinuierliche Verbesserung:}
+        \item \emph{Kontinuierliche Verbesserung}:
 
               Unvermeidlich auftretende Fehler sollen gut ausgeglichen werden.
     \end{itemize}
@@ -72,16 +72,16 @@
     Trotz dieser immensen Nachteilen ist das Wasserfallmodell eines der verbreitesten Modelle.
 \end{defi}
 
-\begin{bonus}{Anforderungsanalyse}
+\begin{bonus}{Anforderungsanalyse (Wasserfallmodell)}
     Um eine Anforderung zu definieren muss man zuerst das Problem analysieren:
     \begin{itemize}
-        \item \emph{Kernprobleme bestimmen:}
+        \item \emph{Kernprobleme bestimmen}:
               \begin{itemize}
                   \item Welche Funktionen soll das System anbieten?
                   \item Wie soll sich die Benutzungsoberfläche verhalten?
                   \item Wie effizient, sicher, \ldots muss das System sein?
               \end{itemize}
-        \item \emph{Relevantes Umfeld bestimmen:}
+        \item \emph{Relevantes Umfeld bestimmen}:
               \begin{itemize}
                   \item Art, Anzahl der Nutzenden
                   \item Art, Variation der Eingaben
@@ -95,7 +95,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Entwurf}
+\begin{bonus}{Entwurf (Wasserfallmodell)}
     Um die Architektur zu modellieren bzw. das Design festzulegen muss man:
     \begin{itemize}
         \item das System grob in Komponenten zerlegen
@@ -111,7 +111,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Implementierung}
+\begin{bonus}{Implementierung (Wasserfallmodell)}
     \begin{itemize}
         \item Komponenten implementieren
               \begin{itemize}
@@ -132,7 +132,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Integration}
+\begin{bonus}{Integration (Wasserfallmodell)}
     \begin{itemize}
         \item Komponenten (zu Paketen) zusammenfügen
         \item Zusammenspiel zwischen den Komponenten prüfen
@@ -143,7 +143,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Installation / Auslieferung}
+\begin{bonus}{Installation bzw. Auslieferung (Wasserfallmodell)}
     \begin{itemize}
         \item System beim Auftraggebenden installieren
         \item Daten migrieren
@@ -154,7 +154,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Wartung}
+\begin{bonus}{Wartung (Wasserfallmodell)}
     Die am meisten unterschätze Phase in Vorgehensmodellen ist die Wartung.
     Dabei stellt diese mit knapp 70\% des Arbeitsaufwands den Großteil des z.B. Wasserfallmodells dar.
 
@@ -267,7 +267,7 @@
 \begin{defi}{V-Modell}
     \includegraphics[width=\textwidth]{includes/figures/01_v_model.pdf}
 
-    Das \emph{V-Modell} kann iterativ oder inkrementell zu einem W-Modell erweitert werden.
+    Das \emph{V-Modell} kann iterativ oder inkrementell zu einem W-Modell\footnote{Zwei aneinandergereihte V-Modelle} erweitert werden.
 
     Historie:
     \begin{itemize}
@@ -284,7 +284,7 @@
     \includegraphics[width=\textwidth]{includes/figures/RUP.png}
 \end{defi}
 
-\begin{bonus}{Konzeption}
+\begin{bonus}{Konzeption (RUP)}
     \begin{itemize}
         \item Ermittlung zentraler Anforderungen
         \item Projektumfang definieren
@@ -293,7 +293,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Konstruktion}
+\begin{bonus}{Konstruktion (RUP)}
     \begin{itemize}
         \item Implementierung
         \item Integration
@@ -301,7 +301,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Ausarbeitung}
+\begin{bonus}{Ausarbeitung (RUP)}
     \begin{itemize}
         \item stabile, möglichst vollständige Anforderungen
         \item Entwurfsspezifikation
@@ -309,7 +309,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Inbetriebnahme}
+\begin{bonus}{Inbetriebnahme (RUP)}
     \begin{itemize}
         \item Beta-Test
         \item Endabnahme
@@ -318,9 +318,9 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{RUP Struktur}
-    \includegraphics[width=\textwidth]{includes/figures/RUP_structure.png}
-\end{bonus}
+% \begin{bonus}{RUP Struktur}
+%     \includegraphics[width=\textwidth]{includes/figures/RUP_structure.png}
+% \end{bonus}
 
 \begin{bonus}{Kritik an Vorgehensmodellen}
     \begin{itemize}
@@ -329,7 +329,63 @@
         \item Prozessbeschreibung hemmen Kreativität
         \item Anpassung an neue Randbedingungen, z.B. neue Technologien (Web-Services) in Prozessen und benutzten Werkzeugen ist extrem aufwändig.
     \end{itemize}
+\end{bonus}
 
-    Alternativer Ansatz:
-    Menschen machen Projekte erfolgreich, traue dem Menschen
+\subsection{Agile Vorgehensmodelle}
+
+\begin{defi}{SCRUM}
+    Grundideen von \emph{SCRUM\footnote{eng. für \enquote{Gedränge}}}:
+    \begin{itemize}
+        \item Rollen
+              \begin{itemize}
+                  \item Product Owner
+                        \begin{itemize}
+                            \item Definiert Produkt Features\footnote{Inhalt des Product Backlogs} inkl. Priorisierung bei potentiell jedem Sprint
+                            \item Bestimmt Auslieferungsdatum, Inhalt sowie finanzielle Ergebnisse
+                            \item Akzeptiert oder weist Arbeitsergebnisse zurück
+                        \end{itemize}
+                  \item Scrum Master
+                        \begin{itemize}
+                            \item Verantwortlich für Einhaltung von Scrum-Werten und -Techniken
+                            \item Stellt sicher, dass Team vollständig funktional und produktiv ist
+                            \item Unterstützt enge Zusammenarbeit zwischen allen Rollen und Funktionen
+                        \end{itemize}
+                  \item Das Team
+                        \begin{itemize}
+                            \item Typischerweise 5-9 Vollzeitmitglieder
+                            \item Funktionsübergreifend (QS, Programmierung, UI-Design etc.)
+                            \item Teams organisieren sich selbst
+                            \item Mitgliedschaft kann sich nur zwischen Sprints verändern
+                        \end{itemize}
+              \end{itemize}
+        \item Meetings
+              \begin{itemize}
+                  \item Sprint-Planung
+                  \item Sprint-Review
+                  \item Sprint-Retrospektive
+                  \item Tägliches 15-minütiges Scrum-Meeting
+                        \begin{itemize}
+                            \item Was hast du gestern getan?
+                            \item Was wirst du heute tun?
+                            \item Welche Hindernisse sind in deinem Weg?
+                        \end{itemize}
+              \end{itemize}
+        \item Artefakte
+              \begin{itemize}
+                  \item Product Backlog
+                        \begin{itemize}
+                            \item Eine Liste aller gewünschten Projektarbeiten basierend auf den Anforderungen
+                        \end{itemize}
+                  \item Sprint Backlog
+                  \item Burndown-Diagramm bzw. Stundensystem
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{Aufbau SCRUM}
+    Zu Begin jedes Sprints Entscheidet sich der \emph{Product Owner} für ein Feature vom \emph{Product Backlog}.
+    Für dieses Feature wird ein Sprint (2-4 Wochen) angelegt, welches ein auslieferbares Inkrement der Software erstellt.
+    In diesem Zeitraum finden Täglich \emph{15-Minütige Meetings} statt.
+
+    \includegraphics[width=\textwidth]{includes/figures/SCRUM.png}
 \end{bonus}
