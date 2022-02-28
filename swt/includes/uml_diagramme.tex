@@ -3,7 +3,7 @@
 \begin{bonus}{UML Diagramme}
     \begin{tabular}{|l|l|l|}
         \hline
-        \multirow{2}{*}{Strukturdiagramme} & \multicolumn{2}{c|}{Verhaltensdiagramme}                                 \\%\cline{2-3}
+        \multirow{2}{*}{Strukturdiagramme} & \multicolumn{2}{c|}{Verhaltensdiagramme}                                 \\\cline{2-3}
                                            &                                          & Interaktionsdiagramme         \\\hline
         Klassendiagramm                    & Use-Case-Diagramm                        & Sequenzdiagramm               \\
         Paketdiagramm                      & Aktivitätsdiagramm                       & Kommunikationsdiagramm        \\
@@ -171,10 +171,10 @@
     \includegraphics[width=\textwidth]{includes/figures/02_use_case_example.pdf}
 \end{example}
 
-\begin{example}{UC2: Use-Case-Diagramm (Textuelle Beschreibung)}
+\begin{example}{Use-Case-Diagramm (Textuelle Beschreibung)}
     \begin{tabularx}{\textwidth}{|>{\bfseries}l|X|}
         \hline
-        \multicolumn{2}{|l|}{Pokémon sortieren}                                                                                \\\hline\hline
+        \multicolumn{2}{|l|}{UC2: Pokémon sortieren}                                                                           \\\hline\hline
         Kurzbeschreibung  & Verwaltet das aktuelle Team und tauscht - falls nötig - Pokémon aus dem Pokémon-Lagerungsystem ein \\\hline
         Akteure           & ProtagonistIn                                                                                      \\\hline
         Kategorie         & kann                                                                                               \\\hline
@@ -183,13 +183,13 @@
         Eingabe / Ausgabe & E: Altes Team, Modifikation, A: Neues Team                                                         \\\hline
         Nachbedingung     & Pokémon wurden gewählt und getauscht                                                               \\\hline
         Ablauf            & \begin{enumerate}
-                                \item ProtagonistIn betritt das Pokémon-Center
-                                \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
-                                \item Solange ProtagonistIn nicht fertig
-                                      \begin{enumerate}
+            \item ProtagonistIn betritt das Pokémon-Center
+            \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
+            \item Solange ProtagonistIn nicht fertig
+                  \begin{enumerate}
                       \item Wähle auszutauschendes Pokémon
                       \item Wähle einzutauschendes Pokémon
                   \end{enumerate}
-                            \end{enumerate}                                        \\\hline
+        \end{enumerate}                                                                         \\\hline
     \end{tabularx}
 \end{example}
