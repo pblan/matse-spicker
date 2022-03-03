@@ -1,1 +1,171 @@
 \section{Anforderungsanalyse}
+
+\begin{defi}{Anforderungsanalyse}
+    Die \emph{Anforderungsanalyse} (engl. \enquote{Requirements Engineering}) ist ein kooperativer, iterativer, inkrementeller Prozess, dessen Ziel es ist, zu gewährleisten, dass:
+    \begin{enumerate}
+        \item alle relevanten \emph{Anforderungen bekannt} und in dem erforderlichen Detaillierungsgrad \emph{verstanden} sind,
+        \item die involvierten Stakeholder eine \emph{ausreichende Übereinstimmung} über die bekannten Anforderungen erzielen,
+        \item alle Anforderungen konform zu den Dokumentationsvorschriften \emph{dokumentiert} sind.
+    \end{enumerate}
+
+    Es umfasst zudem die Querschnittsaktivitäten Management und Validierung.
+\end{defi}
+
+\begin{defi}{Stakeholder}
+    Ein \emph{Stakeholder} ist eine Person, die ein potenzielles Interesse an dem zukünftigen System hat und somit Anforderungen an das System stellt.
+
+    Eine Person kann dabei die Interessen von mehreren Personen vertreten, d.h. mehrere Rollen einnehmen.
+\end{defi}
+
+\begin{defi}{Anforderung}
+    \begin{enumerate}
+        \item Eine Eigenschaft, die ein System oder eine Person benötigt, um ein Problem zu lösen.
+        \item Eine Eigenschaft, die ein System aufweisen muss, um einen Vertrag zu erfüllen oder einem anderen formell auferlegten Dokument zu genügen.
+        \item Eine dokumentierte Repräsentation einer Bedingung wie in 1. oder 2. definiert.
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{Anforderungsspezifikation}
+    Eine \emph{Anforderungsspezifikation} ist ein Dokument, das spezifizierte Anforderungen enthält, d.h. Anforderungen, die definierten Spezifikationskriterien genügen.
+
+    \begin{itemize}
+        \item Bei einer Auftragsentwicklung dient eine Anforderungsspezifikation als \emph{Kontrakt} zwischen KundIn und Auftragnehmenden.
+        \item Ferner dient eine Anforderungsspezifikation als \emph{Vorgabe} für die Entwicklung des Systems durch den Auftragnehmenden.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Systemgrenze}
+    Die \emph{Systemgrenze} separiert das geplante System von seiner Umgebung.
+
+    Sie grenzt das System von den Teilen der Umgebung ab, die durch den Entwicklungsprozess nicht verändert werden können.
+\end{defi}
+
+\begin{defi}{Systemkontext}
+    Der \emph{Systemkontext} ist der Teil der Umgebung des Systems, der für die Definition und das Verständnis der Anforderungen an das System relevant ist.
+\end{defi}
+
+\subsection{Erhebung}
+
+\begin{defi}{Funktionale und Nicht-Funktionale Anforderung}
+    Funktionale Anforderungen sind z.B.:
+    \begin{itemize}
+        \item \emph{Was} soll das System leisten?
+        \item \emph{Welche Dienste} soll das System bereitstellen?
+        \item \emph{Welche Eingaben} werden verarbeitet? Wie sehen die \emph{Ausgaben} aus?
+        \item \emph{Wie verhält sich das System} in Situationen X, Y?
+    \end{itemize}
+
+    Nicht-Funktionale Anforderungen sind z.B.:
+    \begin{itemize}
+        \item \emph{Wie} soll das System arbeiten?
+        \item Welche Anforderungen bzgl. der \emph{Benutzerschnittstelle} bestehen?
+        \item Wie \emph{performant} oder \emph{verfügbar} muss das System sein?
+        \item \emph{Welchen Qualitätsanforderungen} soll das System genügen?
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Grundlegende Techniken zur Anforderungserhebung}
+    \begin{tabularx}{\textwidth}{|>{\bfseries}l|X|}
+        \hline
+        Interview                   & \emph{Befragung} von Stakeholdern in Einzel- oder Gruppeninterviews in explorativer oder standardisierter Form                                                                               \\
+        \hline
+        Workshop                    & \emph{Erarbeitung} von Anforderungen an das System durch eine \emph{Gruppe} von Stakeholdern , z.B. mit Brainstorming, Diskussionen, Kleingruppenarbeit oder interaktiver Szenariodefinition \\
+        \hline
+        Beobachtung                 & \emph{Beobachtung von Stakeholdern} bei der Durchführung von Arbeitsprozessen in direkter oder ethnografischer (teilnehmender) Form                                                          \\
+        \hline
+        Schriftliche Befragung      & Befragung von Stakeholdern mit Hilfe von Fragebögen, die offene oder geschlossene Fragen enthalten können                                                                                    \\
+        \hline
+        Perspektivenbasiertes Lesen & Gezieltes, ggf. selektives Lesen von Dokumenten aus einer bestimmten Perspektive (z.B. Nutzungs-, Gegenstands-, IT-System- oder Entwicklungsperspektive)                                     \\
+        \hline
+    \end{tabularx}
+
+    Besonders relevant sind hier \emph{Interview}, \emph{Workshop} und \emph{Beobachtung}.
+\end{defi}
+
+\begin{defi}{Hilfstechniken zur Anforderungserhebung}
+    \begin{tabularx}{\textwidth}{|>{\bfseries}l|X|}
+        \hline
+        Brainstorming & Generierung einer großen Zahl von Ideen in einer Gruppe, Visualisierung z.B. mit Whiteboards, Flipcharts oder Pinnwänden                                 \\
+        \hline
+        Prototypen    & Entwicklung einer initialen Version des Systems, um die Funktionalität und Benutzerschnittstelle zu demonstrieren                                        \\
+        \hline
+        Kartenabfrage & Synchrones Abfragen des Wissens aller Teilnehmer einer Gruppe, die jeweils Karten ausfüllen, die anschließend auf Pinnwänden thematisch gruppiert werden \\
+        \hline
+        Mind Maps     & Strukturierung von Informationen in einem baumartigen Diagramm                                                                                           \\
+        \hline
+        Checklisten   & Vorbereitete Listen von Fragen oder Aussagen, die zur Gewinnung von Anforderungen verwendet werden                                                       \\
+        \hline
+    \end{tabularx}
+
+    Besonders relevant ist hier der \emph{Prototyp}.
+\end{defi}
+
+\subsection{Dokumentation}
+
+\begin{defi}{Szenario}
+    Ein \emph{Szenario} ist ein konkretes Beispiel für die Erfüllung bzw. Nichterfüllung mehrerer Ziele.
+
+    Ein Szenario enthält typischerweise eine Folge von Interaktionsschritten und setzt diese in Bezug zum Systemkontext.
+
+    Ein Szenario kann z.B. (strukturiert) textuell, tabellarisch oder graphisch mit UML Use-Case-Diagrammen dargestellt werden.
+\end{defi}
+
+\begin{defi}{Datenlexikon}
+    Die Motivation eines \emph{Datenlexikons} liegt darin, die fachliche Struktur von Daten festzuhalten.
+
+    Es dient dazu, den Aufbau der Daten in textueller Notation darzustellen.
+    Dabei beschreibt die Grammatik den Aufbau:
+
+    \begin{center}
+        \begin{tabular}{r|l}
+            \bfseries Symbol            & \bfseries Bedeutung                                                       \\
+            \hline
+            \texttt{name = beschr}      & Definition (besteht aus)                                                  \\
+            \texttt{teil1 + teil 2}     & Sequenz (und)                                                             \\
+            \texttt{[optA | optB]}      & Alternative (entweder oder)                                               \\
+            \texttt{min \{beschr\} max} & Iteration (\texttt{min}-\texttt{max} mal, \texttt{max}-Default: $\infty$) \\
+            \texttt{(beschr)}           & Option (muss nicht, entspricht \texttt{0 \{...\} 1})                      \\
+            \texttt{name}               & Benennung eines atomaten Datenobjektes
+        \end{tabular}
+    \end{center}
+\end{defi}
+
+\begin{example}{Datenlexikon}
+    Wir beziehen uns hier auf das Lagerungssystem aus Pokémon\footnote{Für mehr Informationen, siehe:  \href{https://www.pokewiki.de/Pokémon-Lagerungssystem}{https://www.pokewiki.de/Pokémon-Lagerungssystem}}.
+    \begin{itemize}
+        \item \texttt{Box = 0 \{Pokémon\} 30}
+        \item \texttt{Pokémon = 1 \{Typ\} 2 + (Item) + 1 \{Level\} 100}
+    \end{itemize}
+\end{example}
+
+\begin{bonus}{Pseudocode}
+    Mit \emph{Pseudocode} kann man Minispezifikationen (Operationsweise atomarer Prozesse) beschreiben.
+
+    Dabei ist man nicht an eine exakte Syntax - also offensichtlich auch nicht an eine bestimmte Programmiersprache - gebunden.
+    Insbesondere kann es Teile geben, die in natürlicher Sprache geschrieben sind.
+
+    Üblicherweise werden Konstrukte wie Fallunterscheidungen und Schleifen verwendet.
+
+    Das richtige Niveau erfordert dabei viel Übung:
+    \begin{itemize}
+        \item Überspezifikation (wenig Pseudo, viel Code): einschränkend, wenig lesbar
+        \item Unterspezifikation (viel Pseudo, wenig Code): zu vage, versteckt Probleme
+    \end{itemize}
+\end{bonus}
+
+\begin{bonus}{Lastenheft}
+    In dem \emph{Lastenheft} legt der Auftraggebende fest, was dieser sich von dem Projekt erwartet.
+    Es wird also alles niedergeschrieben und es werden die  gesamten Anforderungen an das Projekt definiert.
+    Demnach lässt sich das Lastenheft auch als Kundenspezifikation oder Anforderungskatalog bezeichnen.
+
+    Durch das Lastenheft ist der Auftraggebende intensiv mit der Aufgabe konfrontiert.
+    Es müssen sich also intensive Gedanken darüber gemacht werden, was eigentlich vom Auftrag erwartet wird.
+    Das macht es dem Auftragnehmenden leichter, auf das Ziel hinzuarbeiten, welches sich gewünscht wird.
+\end{bonus}
+
+\begin{bonus}{Pflichtenheft}
+    Erst wenn das Lastenheft erstellt wurde, kann der Projektdurchführende das \emph{Pflichtenheft} erstellen.
+    Dieses bildet sozusagen die Antwort auf das Lastenheft.
+
+    In dem Pflichtenheft stellt der Dienstleistende in ganz konkreter Form dar, wie er das Projekt für den Auftraggebenden umsetzen kann und würde.
+\end{bonus}

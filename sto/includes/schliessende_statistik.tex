@@ -1159,8 +1159,8 @@
               \[
                   \abs{\hat{t}}
                   \begin{cases}
-                      \mhl{ > t_{n-1} (1 - \nicefrac{\alpha}{2}) \cdot \frac{\sigma}{\sqrt{n}}} & \implies \text{Entscheidung für $H_1$} \\
-                      \mhl{ \leq t_{n-1} (1 - \nicefrac{\alpha}{2})                           } & \implies \text{Entscheidung für $H_0$}
+                      \mhl{ > t_{n-1} (1 - \nicefrac{\alpha}{2}) }    & \implies \text{Entscheidung für $H_1$} \\
+                      \mhl{ \leq t_{n-1} (1 - \nicefrac{\alpha}{2}) } & \implies \text{Entscheidung für $H_0$}
                   \end{cases}
               \]
     \end{enumerate}
@@ -1196,10 +1196,10 @@
                   \hat{t} = \sqrt{n} \cdot \frac{\conj{X} - \mu_0}{S}
               \]
               \[
-                  \abs{\conj{X} - \mu_0}
+                  \abs{\hat{t}}
                   \begin{cases}
-                      \mhl{ > t_{n-1} (1 - \alpha) \cdot \frac{\sigma}{\sqrt{n}}}    & \implies \text{Entscheidung für $H_1$} \\
-                      \mhl{ \leq t_{n-1} (1 - \alpha) \cdot \frac{\sigma}{\sqrt{n}}} & \implies \text{Entscheidung für $H_0$}
+                      \mhl{ > t_{n-1} (1 - \alpha) }   & \implies \text{Entscheidung für $H_1$} \\
+                      \mhl{ \leq t_{n-1} (1 - \alpha)} & \implies \text{Entscheidung für $H_0$}
                   \end{cases}
               \]
     \end{enumerate}
@@ -1235,10 +1235,10 @@
                   \hat{t} = \sqrt{n} \cdot \frac{\conj{X} - \mu_0}{S}
               \]
               \[
-                  \abs{\conj{X} - \mu_0}
+                  \abs{\hat{t}}
                   \begin{cases}
-                      \mhl{ < t_{n-1} (\alpha) \cdot \frac{\sigma}{\sqrt{n}}   } & \implies \text{Entscheidung für $H_1$} \\
-                      \mhl{ \geq t_{n-1} (\alpha) \cdot \frac{\sigma}{\sqrt{n}}} & \implies \text{Entscheidung für $H_0$}
+                      \mhl{ < t_{n-1} (\alpha)  }  & \implies \text{Entscheidung für $H_1$} \\
+                      \mhl{ \geq t_{n-1} (\alpha)} & \implies \text{Entscheidung für $H_0$}
                   \end{cases}
               \]
     \end{enumerate}
@@ -1248,13 +1248,13 @@
     \begin{center}
         \begin{tabular}{|c|c|c|}
             \hline
-            $H_0$                          & $H_1$                             & Kritischer Bereich für Signifikanzniveau $\alpha$                                                                          \\
+            $H_0$                          & $H_1$                             & Kritischer Bereich für Signifikanzniveau $\alpha$                                                                     \\
             \hline
-            \multirow{2}{*}{$\mu = \mu_0$} & \multirow{2}{*}{$\mu \neq \mu_0$} & \multirow{2}{*}{$\displaystyle \sqrt{n} \cdot \frac{\abs{\conj{X} - \mu_0}}{\sigma} > t_{n-1} (1 - \nicefrac{\alpha}{2})$} \\
-                                           &                                   &                                                                                                                            \\
+            \multirow{2}{*}{$\mu = \mu_0$} & \multirow{2}{*}{$\mu \neq \mu_0$} & \multirow{2}{*}{$\displaystyle \sqrt{n} \cdot \frac{\abs{\conj{X} - \mu_0}}{S} > t_{n-1} (1 - \nicefrac{\alpha}{2})$} \\
+                                           &                                   &                                                                                                                       \\
             \hline
-            $\mu \geq \mu_0$               & $\mu < \mu_0$                     & \multirow{2}{*}{$\displaystyle \sqrt{n} \cdot \frac{\abs{\conj{X} - \mu_0}}{\sigma} > t_{n-1} (1 - \alpha)$}               \\
-            $\mu \leq \mu_0$               & $\mu > \mu_0$                     &                                                                                                                            \\
+            $\mu \geq \mu_0$               & $\mu < \mu_0$                     & \multirow{2}{*}{$\displaystyle \sqrt{n} \cdot \frac{\abs{\conj{X} - \mu_0}}{S} > t_{n-1} (1 - \alpha)$}               \\
+            $\mu \leq \mu_0$               & $\mu > \mu_0$                     &                                                                                                                       \\
             \hline
         \end{tabular}
     \end{center}
