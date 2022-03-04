@@ -176,14 +176,14 @@
         Eingabe / Ausgabe & E: Altes Team, Modifikation, A: Neues Team                                                         \\\hline
         Nachbedingung     & Pokémon wurden gewählt und getauscht                                                               \\\hline
         Ablauf            & \begin{enumerate}
-            \item ProtagonistIn betritt das Pokémon-Center
-            \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
-            \item Solange ProtagonistIn nicht fertig
-                  \begin{enumerate}
+                                \item ProtagonistIn betritt das Pokémon-Center
+                                \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
+                                \item Solange ProtagonistIn nicht fertig
+                                      \begin{enumerate}
                       \item Wähle auszutauschendes Pokémon
                       \item Wähle einzutauschendes Pokémon
                   \end{enumerate}
-        \end{enumerate}                                                                         \\\hline
+                            \end{enumerate}                                        \\\hline
     \end{tabularx}
 \end{example}
 
@@ -409,6 +409,9 @@
 
     Der Typ wird nach dem kleingeschriebenen Attributnamen mit einem \texttt{:} angegeben.
 
+    Attribute, welche als Fremdschlüssel für andere Klassen dienen, können ebenfalls aufgeführt werden.
+    Alternativ schreibt man die Bezeichnung an die Assoziation.\footnote{Siehe Navigierbarkeit, Erreichbarkeit}
+
     Multiplizitäten für Kollektionen:
 
     \begin{tabular}{>{\ttfamily}l>{\ttfamily}lll}
@@ -507,3 +510,69 @@
               Es kann nicht ohne existieren.
     \end{itemize}
 \end{defi}
+
+\begin{defi}{Pakete}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_class_package.pdf}
+    \end{wrapfigure}
+    In der UML dienen \emph{Pakete} zur hierarchisch geschachtelten Strukturierung großer Modelle.
+    Jedes Modellelement gehört zu höchstens einem Paket, kann jedoch in mehreren Modellen vorkommen.
+
+    So kann man eine angemessen große Menge modular zerlegter Objekte zu einer logisch geschlossenen Einheit zusammenfassen, welche in größeren Diagrammen genutzt wird.
+
+    Pakete verfolgen das Prinzip der \emph{losen Kopplung} und \emph{hohen Kohäsion}.
+\end{defi}
+
+\begin{defi}{Kohäsion}
+    \emph{Kohäsion} beschreibt die Kräfte, die ein Modul im Inneren zusammenhalten.
+
+    Eine gewollte starke Kohäsion bedeutet, dass die Teile des Moduls bzw. Pakets eng Zusammenhängen.
+    Also werden logische Zusammenhänge ebenfalls strukturell verbunden.
+\end{defi}
+
+\begin{defi}{Kopplung}
+    \emph{Kopplung} beschreibt die Bindungen, die verschiedene Pakete zusammenhalten.
+
+    Eine gewollte lose (Daten-) Kopplung bewirkt, dass die Module nicht wissen, welche Daten in anderen Modulen gespeichert bzw. berechnet werden.
+    Dies wird \emph{Information Hiding} genannt.
+
+    Eine strikte Trennung von Paketen nach dem Prinzip der hohen Kohäsion bewirkt ebenfalls eine lose Kopplung.
+    Analog bewirkt lose Kohäsion eine starke Bindung.
+\end{defi}
+
+\begin{example}{Kohäsion und Kopplung}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.25\textwidth]{includes/figures/example_diagrams_class_kohaesion.pdf}
+    \end{wrapfigure}
+    Beispiel für gewollte starke (funktionale) Kohäsion:
+    \begin{itemize}
+        \item Die Klassen Pokémon, Typ, Attacke
+              \begin{itemize}
+                  \item Jedes Pokémon hat mindestens einen Typen.
+                  \item Jedes Pokémon hat zusätzlich bis zu vier Attacken.
+                  \item Jede Attacke hat ebenfalls einen Typen.
+                  \item Jeder Typ ist effektiv gegen andere Typen.
+              \end{itemize}
+
+              Wenn man nun eine Klasse aus dem Paket entnimmt und zu einem eigenen Paket macht, erstellt man automatisch 2 Verbindungen zwischen dem aktuellen und dem neuen Paket.
+              Da dies eine surjektive Assoziation wäre\footnote{Jedes Element der Zielmenge wird getroffen}, ist hier ein Aufteilen nicht sinnvoll.
+    \end{itemize}
+
+    Beispiel für schwache (zufällige) Kohäsion:
+    \begin{itemize}
+        \item \texttt{getter-}, \texttt{setter-} sowie \texttt{print-} Methoden speichern die Daten des jeweiligen Objekts nicht.
+              Dementsprechend kann man diese Methoden im Modell von dem Objekt trennen.
+        \item Die Assoziation zwischen Arena bzw. Orden mit der / dem ProtagonistIn.
+              \begin{itemize}
+                  \item Jede/r ProtagonistIn kann beliebig viele Orden in Arenen freischalten.
+
+                        Hier ist eine Abtrennung eines Arena/Orden-Pakets möglich.
+                  \item zwischen Arena und Orden liegt ein hohes Maß an Kohäsion vor.
+
+                        Hier ist eine weitere Trennung nicht sinnvoll.
+              \end{itemize}
+    \end{itemize}
+\end{example}
+
