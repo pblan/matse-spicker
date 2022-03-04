@@ -1,0 +1,21 @@
+% Säulendiagramm
+\begin{tikzpicture}
+    \begin{axis}[
+        width=\linewidth,
+        height=0.5\linewidth,
+        xlabel=$x$,
+        ylabel=$f(x)$,
+        ymajorgrids,
+        ytick distance={0.1},
+        xtick distance={10},
+        ycomb,
+        samples at={0,...,50},
+        mark options={mark=-,scale=1},
+        clip=false,
+        enlarge x limits={abs=1cm}, % The distance between the center of the first bar and the left edge
+        ]
+        \addplot {hypergeometric(x,150,30,50)}; \addlegendentry{$H(150,30,50)$}
+        \addplot {hypergeometric(x,80,30,50)}; \addlegendentry{$H(80,30,50)$}
+        \addplot {hypergeometric(x,150,100,50)}; \addlegendentry{$H(150,100,50)$}
+    \end{axis}
+\end{tikzpicture}

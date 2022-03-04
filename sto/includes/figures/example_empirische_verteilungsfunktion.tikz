@@ -1,0 +1,13 @@
+\begin{tikzpicture}
+\begin{axis}[%
+    xlabel=$x$,
+    ylabel=$H(x)$,
+    grid=both,
+    axis x line = bottom,
+    axis y line = left,
+    jump mark left,
+    discontinuous,
+    ]
+    \addplot table [y=cumulative distribution]{includes/figures/example_empirische_verteilungsfunktion.csv};
+\end{axis}
+\end{tikzpicture}

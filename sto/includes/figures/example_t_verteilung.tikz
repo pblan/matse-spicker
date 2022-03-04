@@ -1,0 +1,26 @@
+% Säulendiagramm
+\begin{tikzpicture}
+    \begin{axis}[
+        width=\linewidth,
+        height=0.5\linewidth,
+        xlabel=$t$,
+        ylabel=$f(t)$,
+        ymajorgrids,
+        ytick distance={0.1},
+        xtick distance={2},
+        no marks,
+        domain=-4:4, 
+        samples=100,
+        clip=false,
+        enlarge x limits={abs=1cm}, % The distance between the center of the first bar and the left edge
+        ]
+        \addplot {tpdf(x,1)}; \addlegendentry{$n = 1$}
+        \addplot {tpdf(x,2)}; \addlegendentry{$n = 3$}
+        \addplot {tpdf(x,3)}; \addlegendentry{$n = 3$}
+        \addplot {tpdf(x,4)}; \addlegendentry{$n = 4$}
+        \addplot {tpdf(x,5)}; \addlegendentry{$n = 5$}
+        \addplot {tpdf(x,6)}; \addlegendentry{$n = 6$}
+        \addplot {tpdf(x,7)}; \addlegendentry{$n = 7$}
+        \addplot {tpdf(x,8)}; \addlegendentry{$n = 8$}
+    \end{axis}
+\end{tikzpicture}
