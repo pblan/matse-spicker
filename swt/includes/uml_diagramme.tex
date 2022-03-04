@@ -29,7 +29,9 @@
 \end{defi}
 
 \begin{defi}{Use-Case-Diagramm (Aufbau)}
-    \includegraphics[width=\textwidth]{includes/figures/defi_diagrams_use_case_intro.pdf}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_diagrams_use_case_intro.pdf}
+    \end{center}
 
     Anbei findet man eine tabellarische textuelle Beschreibung jedes relevanten Anwendungsfalls:
 
@@ -207,7 +209,9 @@
 \end{defi}
 
 \begin{defi}{Aktivitätsdiagramm (Aufbau)}
-    \includegraphics[width=\textwidth]{includes/figures/defi_diagrams_activity_intro.pdf}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_diagrams_activity_intro.pdf}
+    \end{center}
 \end{defi}
 
 \begin{defi}{Aktivität (Aktivitätsdiagramm)}
@@ -347,8 +351,7 @@
     \begin{itemize}
         \item Klassendiagramm für Analysemodell
               \begin{itemize}
-                  \item Klassen
-                  \item Attribute
+                  \item Klassen mit Attributen
                   \item Assoziationen / Vererbung / Multiplizitäten
                   \item Kompositionen / Aggregationen
               \end{itemize}
@@ -363,6 +366,12 @@
                   \item Klassenarten
                   \item Abhängigkeiten
               \end{itemize}
+    \end{itemize}
+
+    Sie liefern eine Antwort auf die Frage:
+    \begin{itemize}
+        \item \emph{Welche} Datentypen werden in dem System genutzt?
+        \item \emph{Wie} Verhalten sich diese Objekte im Detail?
     \end{itemize}
 \end{defi}
 
@@ -576,3 +585,144 @@
     \end{itemize}
 \end{example}
 
+\subsection{Sequenzdiagramm}
+
+\begin{defi}{Sequenzdiagramm}
+    \emph{Sequenzdiagramme} zeigen den Informationsaustausch via Nachrichten von Kommunikationspartnern zwischen Systemen oder innerhalb eines Systems für \emph{ein} konkretes Szenario.
+
+    Sie liefern Antworten auf die Frage:
+    \emph{Wie} läuft die Kommunikation in meinem System ab?
+\end{defi}
+
+\begin{defi}{Sequenzdiagramm (Aufbau)}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_diagrams_sequenz_intro.pdf}
+    \end{center}
+\end{defi}
+
+\begin{defi}{Interaktion}
+    Eine Interaktion verbindet mehrere kommunizierende Objekte und regelt den Kommunikationsfluss mithilfe ausgetauschter Nachrichten.
+
+    Die beteiligten Objekte treten paarweise in den Rollen Sender und Empfänger auf.
+\end{defi}
+
+\begin{defi}{Lebenslinien (Sequenzdiagramm)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_sequenz_object.pdf}
+    \end{wrapfigure}
+    \emph{Lebenslinien} repräsentieren genau eine teilnehmende Objektinstanz\footnote{Klassen können ebenfalls in verschiedene Lebenslinien für strikt getrennte Operationsbereiche getrennt werden.}.
+    Sie verdeutlichen einen spezifischen zeitlichen Ablauf.
+
+    Ein Kommunikationspartner lebt bis ans Ende des Diagramms oder bis zum expliziten Beenden der Lebenslinie durch ein \enquote{x}.
+
+    Es existieren 3 verschiedene Typen von Objektarten:
+    \begin{itemize}
+        \item \emph{Expliziter Name ohne Typangabe}:
+
+              Gilt für eine feste Instanz, dessen Identität bekannt ist.
+        \item \emph{Expliziter Name mit Typangabe}:
+
+              Gilt für eine feste Instanz, dessen Identität und exakter Typ bekannt ist.
+        \item \emph{Anonyme Instanz mit Typangabe}:
+
+              Gilt für eine feste aber beliebige Instanz des angegebenen Typen, dessen Identität noch nicht bekannt ist.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Aktionssequenzen / Aktivierungsbalken (Sequenzdiagramm)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.025\textwidth]{includes/figures/defi_diagrams_sequenz_aktion.pdf}
+    \end{wrapfigure}
+    \emph{Aktionssequenzen} bzw. \emph{Aktivierungsbalken} verdeutlichen einen Kommunikationsfluss.
+    Sie sind keine Pflicht, jedoch hilfreich.
+
+    Innerhalb dieser Aktivierungsbalken können beispielsweise Operationen bzw. Methoden der Instanz aufgerufen, oder eine Interaktion gestartet werden.
+
+    \vspace{1cm}
+\end{defi}
+
+\begin{defi}{Nachricht (Sequenzdiagramm)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_sequenz_message.pdf}
+    \end{wrapfigure}
+    Die UML unterscheidet bei Nachrichten zwischen asynchroner und synchroner Kommunikation:
+    \begin{itemize}
+        \item \textbf{Synchrone Kommunikation}:
+              \begin{enumerate}
+                  \item Sender versendet synchrone Nachricht und blockiert.
+                  \item Empfänger verarbeitet die Nachricht.
+                  \item Empfänger liefert eine Antwort.
+                  \item Sender empfängt Antwortnachricht und löst Blockade.
+                  \item Sender fährt mit der Bearbeitung seiner Lebenslinie fort.
+              \end{enumerate}
+        \item \textbf{Asynchrone Kommunikation}:
+              \begin{enumerate}
+                  \item Sender verschickt Asynchrone Nachricht.
+                  \item Sender fährt mit der Bearbeitung seiner Lebenslinie fort\footnote{
+                            Im Gegensatz zu der synchronen Kommunikation sperrt der Sender nach der ersten Nachricht nicht.
+                            Er führt die Bearbeitung parallel nebenbei fort.
+                            Dies passiert bei der synchronen Variante erst bei Schritt 5
+                        }.
+                  \item Gleichzeitig verarbeitet der Empfänger die Nachricht.
+                  \item Empfänger liefert eine Antwort\footnote{Diese ist meist ebenfalls asynchron}.
+              \end{enumerate}
+    \end{itemize}
+
+    Es ist ebenfalls möglich, dass Instanzen Nachrichten an sich selber senden.
+    Diese Starten einen neuen Aktionsbalken in dem aktuellen Aktionsbalken.
+
+    \begin{wrapfigure}{r}{0.45\textwidth}
+        \centering
+        \includegraphics[width=0.4\textwidth]{includes/figures/defi_diagrams_sequenz_message_create.pdf}
+    \end{wrapfigure}
+    \textbf{Nachricht als Konstruktoraufruf}:
+
+    Alternativ kann man ebenfalls ein neues Objekt mit einer Nachricht erstellen.
+    Als Nachrichtenparameter dienen hierbei die für den Konstruktor relevanten Attribute.
+
+    Dabei stehen einem natürlich alle unter \emph{Lebenslinien} beschriebenen Optionen für Objekte bzw. Instanzen zur Verfügung.
+\end{defi}
+
+\begin{bonus}{Signale (Sequenzdiagramm)}
+    Asynchrone Nachrichten können \emph{Signale} darstellen.
+    Diese Entsprechen den Signalen in Aktivitätsdiagrammen.
+\end{bonus}
+
+\begin{defi}{Operatoren (Sequenzdiagramm)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_sequenz_operators.pdf}
+    \end{wrapfigure}
+    Für komplexere Abläufe und bedingte Ausführungsfolgen bietet die UML weitere \emph{Operatoren}\footnote{Sollten die Operatoren in verschiedene Regionen aufgeteilt sein, können diese durch das angeben einer weiteren gestrichelten Linie erweitert werden}:
+    \begin{itemize}
+        \item \textbf{ref}:
+
+              Leitet verschiedene Lebenslinien in Untersequenzen weiter.
+              Dabei muss die Anzahl und Typangabe der referenzierten und eingeführten Lebenslinien übereinstimmen.
+        \item \textbf{opt}:
+
+              Ist vergleichbar mit dem \texttt{if}-Statement.
+              Führt alle Aktionen in dem Operator aus, wenn die Bedingung \emph{bed} erfüllt ist.
+        \item \textbf{alt}:
+
+              Ist vergleichbar mit dem \texttt{switch}-Statement.
+              Führt die Aktionen in der ersten Region aus, in der die Bedingung \emph{bed} erfüllt ist.
+              Die Bedingungen müssen disjunkt sein.
+        \item \textbf{loop}:
+
+              Ist vergleichbar mit dem \texttt{while}-Statement.
+              Führt die Aktionen in dem Operator solange aus, bis die Bedingung \emph{bed} verletzt wird.
+              Dabei werden mindestens \emph{i} und maximal \emph{j} Iterationen erzwungen.
+              \emph{i} und \emph{j} sind optional.
+        \item \textbf{break}:
+
+              Ist vergleichbar mit dem \texttt{break}-Statement.
+              Springt aus der aktuellen Sequenz, wenn die Bedingung \emph{bed} erfüllt ist.
+        \item \textbf{par}:
+
+              Führt alle angegeben Regionen parallel aus.
+    \end{itemize}
+\end{defi}
