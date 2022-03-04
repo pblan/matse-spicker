@@ -1,0 +1,119 @@
+\section{Grundlagen}
+
+\subsection{Grundbegriffe}
+
+\begin{defi}{Feature Vector}
+    Ein \emph{Feature Vector} fasst die (numerisch) parametrisierbaren Eigenschaften eines Musters in vektorieller Weise zusammen.
+
+    Verschiedene, für das Muster charakteristische Merkmale, bilden die verschiedenen Dimensionen dieses Vektors.
+
+    Die Gesamtheit der möglichen Merkmalsvektoren nennt man den \emph{Feature Space}.
+
+    Merkmalsvektoren erleichtern eine automatische Klassifikation, da sie die zu klassifizierenden Eigenschaften stark reduzieren.\footnote{Statt eines kompletten Bildes muss zum Beispiel nur ein Vektor aus 10 Zahlen betrachtet werden.}
+\end{defi}
+
+\begin{defi}{Target Function}
+    Eine Funktion $f: \mathcal{X} \to \mathcal{Y}$ heißt \emph{Target Function}, wobei $\mathcal{X}$ einen Feature Space und $\mathcal{Y}$ einen Label Space darstellt.
+
+    $f$ ist dabei eine \emph{unbekannte} (\enquote{perfekte}) \emph{Funktion}, die für jeden Feature Vector $x_i \in \mathcal{X}$ ein Label $y_i \in \mathcal{Y}$ liefert.
+\end{defi}
+
+\begin{example}{Feature Vector und Target Function}
+
+    \begin{center}
+        \begin{tikzpicture}[
+            %  -{Stealth[length = 2.5pt]},
+            start chain = going {right=of \tikzchainprevious.north east},
+            FeatureBlock/.style={minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            LabelBlock/.style={minimum height=12em, outer sep=0pt, on chain},
+            every node/.style={draw, label distance=0.5em},
+            every on chain/.style={anchor=north west},
+            node distance=10em
+            ]
+            {
+            \node [FeatureBlock, label={[align=center]above left:{Eigenschaften (Features) des Kunden: \\ \hl{Feature Vector} $x$}}, label=left:{Alter}] (x0) {};
+            \node [LabelBlock, label={[align=center]above:{Entscheidung: \\ \hl{Label} $y$}}, text width=8em, align=center] (y) {Kredit gewähren: Ja (1), Nein (-1)};
+
+            { [continue chain = going {below=of \tikzchainprevious.south west}, node distance=0]
+            \chainin (x0);
+            \node [FeatureBlock, label=left:{Familienstand}] (x1) {};
+            \node [FeatureBlock, label=left:{Höhe nicht zurückgezahlter Kredite}] (x2) {};
+            \node [FeatureBlock, label=left:{Geschlecht}] (x3) {};
+            \node [FeatureBlock, label=left:{Aufenthaltsdauer am Wohnsitz}] (x4) {};
+            \node [FeatureBlock, label=left:{Jahresgehalt}] (x5) {};
+            }
+
+            \path[->] ([xshift=2ex]x3.north east) edge node[above, draw=none]{\hl{Target Function} $f$} ([xshift=-2ex]y.west);
+            %\draw[->] (x3.north east) +(2em,0) -- (y.west) node [midway, above, draw=none] {Funktion $f$};
+            }
+        \end{tikzpicture}
+    \end{center}
+
+\end{example}
+
+\begin{defi}{Datensatz}
+    Ein Datensatz $\mathcal{D}$ besteht aus einer Menge von Input-Output-Paaren $(x_1, y_1), \ldots, (x_N, y_N)$, die durch die unbekannte Target Function $f$ mit $y_i = f(x_i)$ erzeugt wurden.
+\end{defi}
+
+\begin{defi}{Lernalgorithmus}
+    Ein Lernalgorithmus $\mathcal{A}$ selektiert mithilfe der Daten $\mathcal{D}$ aus einer Menge von Kandidatenfunktionen die Funktion $g$, die $f$ am besten approximiert.
+
+    Der Algorithmus $\mathcal{A}$ selektiert $g$, so dass $g(x_i) \approx f(x_i)$ für alle $(x_i, y_i) \in \mathcal{D}$.
+\end{defi}
+
+\begin{defi}{Kandidatenfunktionen}
+    Die Menge der \emph{Kandidatenfunktionen} (bzw. Hypothesen-Set) $\mathcal{H}$ beschreibt alle Funktionen, die zur Approximation einer Funktion $f$ benutzt werden können.
+
+    Die Hypothese $g \in \mathcal{H}$ mit $g(x_i) \approx f(x_i)$ wird dann \emph{finale Hypothese} genannt.
+\end{defi}
+
+\begin{defi}{Lernmodell}
+    Ein \emph{Lernmodell} besteht aus einem Lernalgorithmus $\mathcal{A}$ und einer Menge von Kandidatenfunktionen bzw. dem Hypothesen-Set $\mathcal{H}$.
+\end{defi}
+
+\begin{bonus}{Darstellung des Lernproblems}
+
+\end{bonus}
+
+\begin{defi}{Zentrale Lernprobleme}
+    \begin{tabularx}{\textwidth}{l|X|X|X}
+                & \bfseries Supervised Learning                                   & \bfseries Unsupervised Learning                                            & \bfseries Reinforcement Learning                                               \\
+        \hline
+        Gesucht & Unbekannte Target Function \[ f: \mathcal{X} \to \mathcal{Y} \] & Unbekannte Funktion, die die Daten beschreibt \[ g: \mathcal{X} \to \ ? \] & Unbekannte Strategie $S$, die eine Belohnung maximiert                         \\
+        \hline
+        Daten   & Input-Output-Paare \[ (x_1, y_1), \ldots, (x_N, y_N) \]         & Input-Daten ohne Labels \[ (x_1, \ldots, x_N) \]                           &
+        \begin{enumerate}
+            \item Input
+            \item möglicher Output
+            \item Bewertung des möglichen Outputs
+        \end{enumerate}                                                                                                                                                                                                               \\
+        \hline
+        Ziel    & Approximiere unbekanntes $f$ mit $g$                            & Finde ein $f$, das die Daten gut beschreibt                                & Finde eine Funktion $\pi$, die die unbekannte beste Strategie $S$ approximiert \\
+    \end{tabularx}
+\end{defi}
+
+\begin{defi}{Supervised Learning}
+    = Predictive Learning (Vorhersagen)
+\end{defi}
+
+\begin{defi}{Unsupervised Learning}
+    = Descriptive Learning (Beschreiben) / Clustering
+\end{defi}
+
+\begin{defi}{Reinforcement Learning}
+    = Lernen, das sich auf eine Zielaktion auswirkt
+\end{defi}
+
+\begin{defi}{Perzeptron}
+    
+\end{defi}
+
+
+
+\subsection{Lineare Klassifikation und Regression}
+
+\subsection{Approximation versus Generalisierung}
+
+\subsection{Regularisierung}
+
+\subsection{Validierung}

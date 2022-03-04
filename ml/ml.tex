@@ -1,0 +1,23 @@
+\documentclass[german]{spicker}
+
+\addbibresource{swt.bib}
+
+\title{Machine Learning}
+\author{Patrick Gustav Blaneck}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{includes/grundlagen.tex}
+\include{includes/supervised_learning.tex}
+\include{includes/unsupervised_learning.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}
