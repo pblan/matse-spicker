@@ -726,3 +726,274 @@
               Führt alle angegeben Regionen parallel aus.
     \end{itemize}
 \end{defi}
+
+\subsection{Zustandsautomaten}
+
+\begin{defi}{Zustandsautomaten}
+    \emph{Zustandsautomaten} visualisieren konkrete (interne) Zustände und Ausprägungen mit ihren Übergängen in einem System.
+    Sie erweitern Use-Case Diagramme und liefern eine Alternative für Aktivitätsdiagramme.
+
+    Liefern Antwort auf die Frage:
+    Wie verhält sich das System in einem Bestimmten Zustand bei gewissen Ereignissen?
+\end{defi}
+
+\begin{defi}{Zustand (Zustandsautomaten)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state.pdf}
+    \end{wrapfigure}
+    Ein \emph{Zustand} beschreibt eine Situation, in der sich das Objekt nicht verändert und ein konstantes Verhalten zeigt.
+
+    Ein Zustand kann ein angegebenes explizites Verhalten besitzen.
+    Dieses beschreibt:
+    \begin{itemize}
+        \item ein Verhalten, welches einmalig beim Eintreten des Zustands ausgeführt wird.
+        \item ein Verhalten, welches dauerhaft ausgeführt wird, solange der Zustand aktiv ist.
+        \item ein Verhalten, welches einmalig beim Austreten des Zustands ausgeführt wird.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Unterzustände (Zustandsautomaten)}
+    Zustände können durch Unterzustände erweitert werden:
+    \begin{itemize}
+        \item Entweder in einen externen Zustand ausgelagert, oder
+        \item direkt in einen Zustand hineingezeichnet.
+    \end{itemize}
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{includes/figures/defi_diagrams_state_substate.pdf}
+    \end{center}
+
+    Unterzustände benötigen einen Startzustand oder ausschließlich eindringende Transition.
+
+    Bei der Angabe von mehreren Unterzuständen, werden alle parallel ausgeführt.
+
+    Obacht: Wenn eine Transition aus dem Unterzustand den Zustand verlässt, jedoch direkt denselben Unterzustand erneut betritt, wird das \emph{entry} bzw \emph{exit} Verhalten des Zustands ausgeführt.
+    Beim Internen Wechsel von Unterzuständen passiert dies nicht
+\end{defi}
+
+\begin{defi}{Transition (Zustandsautomaten)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state_transaktion.pdf}
+    \end{wrapfigure}
+    \emph{Transitionen} bzw. Zustandsübergänge beschreiben Beziehungen zwischen den Einzelzuständen eines Automaten.
+
+    Sie Teilen sich in drei Bereiche auf:
+    \textbf{Trigger}:
+    \begin{itemize}
+        \item stoßen eine Transition an
+        \item Mehrere Trigger werden durch Kommata getrennt
+    \end{itemize}
+
+    \textbf{Guard}:
+    \begin{itemize}
+        \item Boolsche Bedingung, die entscheidet, ob die Transition tatsächlich durchlaufen wird.
+              Ist die Bedingung nicht erfüllt, verfällt der Automat in den Zustand vor der Transition.
+    \end{itemize}
+
+    \textbf{Verhalten}:
+    \begin{itemize}
+        \item Des Verhalten wird beim Durchlaufen der Transition durchgeführt
+        \item Vergleichbar mit dem \texttt{entry}-Verhalten von Zuständen
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Region}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state_region.pdf}
+    \end{wrapfigure}
+    Um sein Zustandsdiagramm genauer zu strukturieren, kann man einen Teil des Diagramms in einer Region zusammenfassen.
+    Diese hat \emph{maximal einen} Eintritts- und \emph{maximal einen} Austrittspunkt.
+
+    Der Eintrittspunkt dient für die Region als Startzustand und folgt dementsprechend den selben Regeln\footnote{
+        Außer bei Unterzuständen.
+        Dort kann dieser Eintrittspunkt ebenfalls \texttt{triggered} sein
+    }.
+
+    Der Austrittspunkt dient für die Region als Endzustand und folgt Dementsprechend den selben Regeln.
+    Offensichtlich ist jedoch eine ausgehende Kante erlaubt, da man die Region sonst nicht verlassen könnte.
+
+    \vspace{1.5cm}
+\end{defi}
+
+\begin{bonus}{Transition in einen Unterzustand (Zustandsautomaten)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.25\textwidth]{includes/figures/bonus_diagrams_state_insert.pdf}
+    \end{wrapfigure}
+    Wenn man in einen bestimmten Unterzustand wechseln möchte, ist es möglich diesen direkt über eine Transition zu erreichen.
+
+    Um eine noch genauere Verwaltung dieses Prozesses zu gewährleisten, kann man erneut \emph{Eintritts-} bzw. \emph{Austritts-Punkte} nutzen.
+
+    Diese blockieren den Objektfluss und benötigen eine externe Freigabe\footnote{Die ausgehenden Transitionen müssen dazu natürlich mit einem Trigger versehen werden}.
+    So ist man in dem äußeren Zustand, ohne direkt einen inneren Startzustand wählen zu müssen (innerer Pseudozustand).
+
+    \emph{Austrittspunkte} können weiterhin genutzt werden, um gebündelt den ganzen Zustand zu verlassen.
+    Wenn man - vor allem bei parallelen Unterzuständen - einfache Kanten nach außen legt, kann es passieren, dass man sich gleichzeitig innerhalb und außerhalb von einem Zustand befindet.
+    Dies kann man verhindern, indem man von dem Austrittspunkt ein Event auslöst, welche alle inneren Zustände verlässt:
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_diagrams_state_exit.pdf}
+    \end{center}
+    Wenn man den linken Zustand \emph{Z1} betritt, befindet man sich gleichzeitig in \emph{Z2} und \emph{Z1 b}\footnote{also auch \emph{Z1}}.
+    Rechts verhindert der Austrittspunkt dies.
+\end{bonus}
+
+\begin{defi}{Kontrollelemente zur Ablaufsteuerung (Zustandsautomaten)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.15\textwidth]{includes/figures/defi_diagrams_state_start.pdf}
+    \end{wrapfigure}
+    Zu den Kontrollelementen zählen sogenannte Pseudozustände.
+    Diese haben keinerlei inhaltlichen Nutzen, sind also keine wirklichen Zustände.
+    Trotzdem werden diese zur Ablaufsteuerung gebraucht.
+
+    \textbf{Startzustand} bzw. initial pseudostate:
+    \begin{itemize}
+        \item vergleichbar mit Startknoten aus dem Aktivitätsdiagramm
+        \item Eindeutigkeit: verweist auf \emph{genau einen} Zielzustand
+        \item Untriggered: darf keine Bedingung beinhalten
+        \item keine eingehende Transition erlaubt
+        \item Global eindeutig: \emph{maximal ein} Startzustand pro Region
+    \end{itemize}
+
+    \textbf{Endzustand} bzw. final pseudostate
+    \begin{itemize}
+        \item vergleichbar mit Endknoten aus dem Aktivitätsdiagramm
+        \item Beendet den gesamten Zustandsautomaten
+        \item Keine ausgehende Transition erlaubt
+        \item Global eindeutig: \emph{Genau einen} Endzustand pro Diagramm erlaubt
+    \end{itemize}
+
+    \textbf{Terminator}
+    \begin{itemize}
+        \item Vergleichbar mit der Objektzerstörung in Sequenzdiagrammen
+        \item erweitert den Endzustand
+        \item löscht bzw. zerstört zusätzlich das gesamte Objekt
+        \item wird in der Regel verwendet, wenn due Objekte dynamisch erstellt / gelöscht werden
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Kontrollelemente zur Ablaufsteuerung zur Strukturierung (Zustandsautomaten)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.1\textwidth]{includes/figures/defi_diagrams_state_crosspoint.pdf}
+    \end{wrapfigure}
+    \emph{Kreuzungspunkte} vereinfachen Transitionspfade, indem sie gemeinsame Teile bündeln.
+
+    Man unterscheidet in drei Verarbeitungsarten:
+    \begin{itemize}
+        \item \textbf{Vereinigung von Triggern}:
+
+              Wenn aus einem Zustand mehrere Transitionen ausgehen, welche mit dem selben Trigger versehen sind, kann man eine Ausgehende Transition mit diesem Trigger erstellen, welche in einen Kreuzungspunkt führt.
+              Aus diesem gehen die verschiedenen Transitionen mit deren unterschiedlichen Verhalten aus.
+        \item \textbf{Vereinigung von Bedingungen \& Verhalten}
+
+              Wenn aus zwei unterschiedlichen Zuständen das selbe Verhalten ausgeht, kann dies kombiniert werden.
+              Die Trigger sind dabei offensichtlich unterschiedlich.
+        \item \textbf{Kombination aus beiden}
+    \end{itemize}
+
+    Die Guards der ausgehenden Transitionen müssen dabei jedoch nicht disjunkt sein.
+\end{defi}
+
+\begin{defi}{Kontrollelemente zur Ablaufsteuerung für Bedingungen (Zustandsautomaten)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state_if.pdf}
+    \end{wrapfigure}
+    \emph{Entscheidungsknoten} entsprechen dem \texttt{switch}-Statement.
+    Die Variable bzw. das Entscheidungskriterium wird in die Raute gezeichnet.
+    Die Bedingungen werden dann in die Guards der ausgehenden Kanten geschrieben.
+    Dabei kann ebenfalls eine wertunabhängige Abfrage genutzt werden (z.B. else, true etc.).
+
+    Alle Bedingungen müssen disjunkt sein und es muss zu jeder Zeit des Programms der gesamte Wertebereich durch die Bedingungen abgedeckt sein.
+    Es muss also jederzeit möglich sein den Zustand vor dem Entscheidungsknoten zu verlassen und den Entscheidungsknoten zu passieren.
+\end{defi}
+
+\begin{bonus}{Unterschiede von Entscheidungsknoten und Kreuzungspunkten (Zustandsautomaten)}
+    Im Gegensatz zu Kreuzungspunkten wird jedoch zuerst das Verhalten der eingehenden Kante ausgeführt, danach die Bedingungen getestet.
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{includes/figures/bonus_diagrams_state_if.pdf}
+    \end{center}
+
+    Wenn man nun in diese Beiden Objekte die Variable \texttt{int x = 1} einführt, unterscheidet sich der Ablauf der Bearbeitung:
+    \begin{itemize}
+        \item \textbf{Entscheidungsknoten}:
+
+              \begin{tabular}{lll}
+                  1. & \texttt{int x = 1}                       & | x = 1                   \\
+                  2. & \texttt{x *= -1}                         & | x = -1                  \\
+                  3. & \texttt{x < 0}                           & | true                    \\
+                     & \textcolor{gray}{\texttt{x >= 0}}        & \textcolor{gray}{| false} \\
+                  4. & verfolge die linke Transition mit x = -1 &
+              \end{tabular}
+        \item \textbf{Kreuzungspunkt}:
+
+              \begin{tabular}{lll}
+                  1. & \texttt{int x = 1}                        & | x = 1  \\
+                  2. & \texttt{x < 0}                            & | false  \\
+                  3. & \texttt{x >= 0}                           & | true   \\
+                  4. & \texttt{x *= 1}                           & | x = -1 \\
+                  5. & verfolge die rechte Transition mit x = -1 &
+              \end{tabular}
+    \end{itemize}
+\end{bonus}
+
+\begin{defi}{Kontrollelemente zur Ablaufsteuerung zur Parallelisierung (Zustandsautomaten)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.1\textwidth]{includes/figures/defi_diagrams_state_parallel.pdf}
+    \end{wrapfigure}
+    Wie bei Aktivitätsdiagrammen kann man ebenfalls bei Zustandsautomaten \emph{parallele Zweige} erstellen.
+
+    Jeder Parallelzweig muss immer in einem eindeutigen Zustand sein.
+    Dementsprechend sind Pseudozustände nicht erlaubt.
+
+    Bei Unterzuständen kann man die Trennlinie weglassen.
+    Dort wird jede Region automatisch parallel gestartet.
+
+    Wenn man jedoch auf einer Ebene Parallelitäten erstellen möchte, muss man Trennlinien und Joins benutzen.
+
+    \vspace{0.5cm}
+\end{defi}
+
+\begin{defi}{Historie (Zustandsautomaten)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state_history.pdf}
+    \end{wrapfigure}
+    Wenn man Zustände speichern möchte, muss man eine Historie anlegen.
+
+    \begin{itemize}
+        \item Bei Verlassen eines Zustands wird sich der letzte Aktive Unterzustand gemerkt.
+        \item Beim erneuten Betreten dieses Zustands wird der gemerkte Unterzustand betreten.
+        \item Sollte kein Zustand gespeichert sein, wird der default Startzustand betreten.
+        \item Dabei darf maximal ein Historienelement pro Zustand auf gleicher Ebene existieren.
+        \item Jedoch ist es natürlich möglich einen Zustand über hierarchische Strukturen mehrfach zu speichern.
+        \item Beim Erreichen eines beliebigen Endzustands wird die gesamte Historie gelöscht.
+    \end{itemize}
+
+    \texttt{H} speichert nur den Zustand der gleichen Ebene.
+    Im Gegensatz dazu speichert \texttt{H*} rekursiv ebenfalls Unterzustände. Dies ist vergleichbar mit \texttt{copy()} bzw \texttt{deepcopy()} von Arrays.
+\end{defi}
+
+\begin{example}{Historie (Zustandsautomaten)}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{includes/figures/example_diagrams_state_history.pdf}
+    \end{center}
+
+    \begin{enumerate}
+        \item In diesem Beispiel wird nach dem Startknoten direkt die Region um \emph{Z1} betreten.
+        \item  Da \emph{H} keinen Zustand gespeichert hat, wird der Startknoten in der Region genutzt.
+        \item \emph{Z1 a} wird betreten.
+        \item \emph{Z1 b} wird betreten.
+        \item Die Region wird verlassen und \emph{H} speichert \emph{Z1 b}.
+              Wir befinden uns in \emph{Z2}
+        \item Beim erneuten Betreten der Region wird der gespeicherte Zustand \emph{Z1 b} betreten
+        \item Also ist es in diesem expliziten Beispiel nicht möglich, \emph{Z1 a} erneut zu betreten.
+    \end{enumerate}
+\end{example}
