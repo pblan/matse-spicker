@@ -28,7 +28,7 @@
     \end{itemize}
 \end{defi}
 
-\begin{defi}{Use-Case-Diagramm (Aufbau)}
+\begin{diag}{Use-Case-Diagramm (Aufbau)}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_diagrams_use_case_intro.pdf}
     \end{center}
@@ -48,15 +48,15 @@
         Nachbedingung     & Eine Bedingung, die erfüllt sein muss, um den Anwendungsfall zu beenden                                                          \\\hline
         Ablauf            & beschreibt den Standardablauf - keine Sonderfälle                                                                                \\\hline
     \end{tabularx}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Akteur (Use-Case-Diagramm)}
+\begin{diag}{Akteur (Use-Case-Diagramm)}
     \begin{wrapfigure}{r}{0.15\textwidth}
         \centering
         \includegraphics[width=0.1\textwidth]{includes/figures/defi_diagrams_use_case_akteur.pdf}
     \end{wrapfigure}
     %
-    Personen oder Rollen werden meist durch Akteure beschreiben.
+    Personen oder Rollen werden meist durch \emph{Akteure} beschreiben.
 
     In Use-Case Diagrammen stoßen diese Akteure Anwendungsfälle an.
 
@@ -65,7 +65,7 @@
     \begin{center}
         \includegraphics[width=0.4\textwidth]{includes/figures/defi_diagrams_use_case_akteur_types.pdf}
     \end{center}
-\end{defi}
+\end{diag}
 
 \begin{bonus}{Spezifischer Akteur (Use-Case-Diagramm)}
     \begin{wrapfigure}{r}{0.35\textwidth}
@@ -73,37 +73,36 @@
         \includegraphics[width=0.3\textwidth]{includes/figures/bonus_diagrams_use_case_akteur_specification.pdf}
     \end{wrapfigure}
     %
-    Wenn Akteure durch bestimmte Eigenschaften erweitert werden müssen, jedoch in ihrer Grundform weiterhin benötigt werden, kann man diese spezifische Rollen durch allgemeinen Rollen generalisieren\footnote{Vergleichbar mit Vererbung in objektorientierter Programmierung}.
+    Wenn Akteure durch bestimmte Eigenschaften erweitert werden müssen, jedoch in ihrer Grundform weiterhin benötigt werden, kann man diese \emph{spezifische Rollen} durch allgemeinen Rollen \emph{generalisieren}.
 
     Dementsprechend wird hier der Akteur \emph{Pokémon} durch \emph{Feuer-} sowie \emph{Wasser-Pokémon} spezialisiert.
 
     \vspace{7em}
 \end{bonus}
 
-\begin{defi}{Use-Case (Use-Case-Diagramm)}
+\begin{diag}{Use-Case (Use-Case-Diagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_use_case.pdf}
     \end{wrapfigure}
+    %
     \emph{Use-Cases} bzw. Anwendungsfälle beschreiben eine Aktivität.
     Dabei besteht der Name aus einem Substantiv und einem Verb.
-
-    z.B. würde \enquote{Pokémon fangen} diese Namenskonvention erfüllen.
 
     Diese werden meist mit einem Oval oder einer Ellipse dargestellt.
     Dabei steht der Name - je nach vorhandenem Platz - entweder in dem Symbol oder darunter.
 
-    \vspace{2.5cm}
-\end{defi}
+    \vspace{8em}
+\end{diag}
 
-\begin{defi}{Systeme und Grenzen (Use-Case-Diagramm)}
+\begin{diag}{Systeme und Grenzen (Use-Case-Diagramm)}
     Um das Gesamtsystem aus fachlicher Sicht einzuordnen, kann man Anwendungsfalls-Gruppen in einem \emph{System} zusammenfügen.
-    Diese Systeme grenzen verschiedene fachliche Teile, Aufgaben und/ oder Verantwortungsbereiche voneinander ab.
+    Diese Systeme grenzen verschiedene fachliche Teile, Aufgaben bzw. Verantwortungsbereiche voneinander ab.
 
     %Dabei dient die Einteilung nicht als technische Analyse!
-\end{defi}
+\end{diag}
 
-\begin{defi}{Kanten bzw. Assoziationen (Use-Case-Diagramm)}
+\begin{diag}{Kanten bzw. Assoziationen (Use-Case-Diagramm)}
     \emph{Kanten bzw. Assoziation} modellieren Interaktionen zwischen:
     \begin{itemize}
         \item Akteur und Akteur
@@ -112,12 +111,12 @@
     \end{itemize}
     und beantworten die Frage, wer mit wem in welcher Beziehung steht.
 
-    Dabei erfolgt die Darstellung über Kanten und Linien, welche ggf. über Zusätzliche Annotationen angereichert werden.
-\end{defi}
+    Dabei erfolgt die Darstellung über Kanten und Linien, welche ggf. über zusätzliche Annotationen angereichert werden.
+\end{diag}
 
-\begin{defi}{Zusammenfassung Assoziationstypen (Use-Case-Diagramm)}
+\begin{diag}{Assoziationstypen (Use-Case-Diagramm)}
     \begin{itemize}
-        \item Binäre Assoziation (ungerichtet)
+        \item \textbf{Binäre Assoziation (ungerichtet)}
 
               Richtung nicht eindeutig, i.d.R. ausgehend von einem der beteiligten Akteuren
 
@@ -126,7 +125,7 @@
                   \includegraphics[width=0.5\textwidth]{includes/figures/defi_diagrams_use_case_assoziation.pdf}
               \end{center}
 
-        \item Import/ Include Beziehung
+        \item \textbf{Import bzw. Include Beziehung}
 
               \emph{A} \emph{umfasst} das Verhalten von \emph{B} vollständig.
               D.h. B ist eine Teilfunktion von A.
@@ -139,7 +138,7 @@
                   \includegraphics[width=0.5\textwidth]{includes/figures/defi_diagrams_use_case_include.pdf}
               \end{center}
 
-        \item Erweiterungsbeziehung
+        \item \textbf{Erweiterungsbeziehung}
 
               \emph{A} \emph{erweitert} \emph{B} unter einer speziellen Voraussetzung
 
@@ -148,7 +147,7 @@
                   \includegraphics[width=0.5\textwidth]{includes/figures/defi_diagrams_use_case_extend.pdf}
               \end{center}
 
-        \item Generalisierungsbeziehung
+        \item \textbf{Generalisierungsbeziehung}
 
               \emph{A} ist ein \emph{B}.
               Interessant bei abstrakten Akteuren und / oder Teilsystemen.
@@ -160,7 +159,7 @@
     \end{itemize}
 
     Obacht: Bei der Angabe mehrerer Assoziationen ist die Reihenfolge nicht festgelegt.
-\end{defi}
+\end{diag}
 
 \begin{example}{Use-Case-Diagramm}
     \includegraphics[width=\textwidth]{includes/figures/example_diagrams_use_case.pdf}
@@ -178,21 +177,21 @@
         Eingabe / Ausgabe & E: Altes Team, Modifikation, A: Neues Team                                                         \\\hline
         Nachbedingung     & Pokémon wurden gewählt und getauscht                                                               \\\hline
         Ablauf            & \begin{enumerate}
-                                \item ProtagonistIn betritt das Pokémon-Center
-                                \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
-                                \item Solange ProtagonistIn nicht fertig
-                                      \begin{enumerate}
+            \item ProtagonistIn betritt das Pokémon-Center
+            \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
+            \item Solange ProtagonistIn nicht fertig
+                  \begin{enumerate}
                       \item Wähle auszutauschendes Pokémon
                       \item Wähle einzutauschendes Pokémon
                   \end{enumerate}
-                            \end{enumerate}                                        \\\hline
+        \end{enumerate}                                                                        \\\hline
     \end{tabularx}
 \end{example}
 
 \subsection{Aktivitätsdiagramm}
 
 \begin{defi}{Aktivitätsdiagramm}
-    Primär beantworten \emph{Aktivitätsdiagramme} die Frage, \emph{wie} etwas realisiert werden soll.
+    Primär beantworten \emph{Aktivitätsdiagramme} die Frage, \emph{wie} eine Aktivität realisiert werden soll.
     Sie stellen konkrete komplexe Abläufe dar, indem sie diese wie folgt zerlegen:
     \begin{itemize}
         \item Nebenläufe
@@ -208,50 +207,45 @@
     \end{itemize}
 \end{defi}
 
-\begin{defi}{Aktivitätsdiagramm (Aufbau)}
+\begin{diag}{Aktivitätsdiagramm (Aufbau)}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_diagrams_activity_intro.pdf}
     \end{center}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Aktivität (Aktivitätsdiagramm)}
-    Gesamtheit aller Abläufe eines Kontexts
-\end{defi}
-
-\begin{defi}{Aktion (Aktivitätsdiagramm)}
+\begin{diag}{Aktion (Aktivitätsdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_activity_aktion.pdf}
     \end{wrapfigure}
+    %
     Eine \emph{Aktion} ist ein Einzelschritt, den ein Ablauf unter Zeitaufwand durchschreitet.
 
     Aktionen können in einem Aktivitätsdiagramm eine weitere Aktivität aufrufen.
     Dies kennzeichnet man durch eine \enquote{stilisierte Harke}.
 
-    In diesen Unteraktivitäten können Eingangs- sowie Ausgangs-Parameter durch Objektknoten festgelegt werden.
-\end{defi}
+    In diesen Unteraktivitäten können Eingangs- sowie Ausgangsparameter durch Objektknoten festgelegt werden.
+\end{diag}
 
-\begin{defi}{Objektknoten (Aktivitätsdiagramm)}
+\begin{diag}{Objektknoten (Aktivitätsdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_activity_objektknoten.pdf}
     \end{wrapfigure}
-    Beteiligte Daten / Schnittstellen einer Aktion
+    %
+    \emph{Objektknoten} beinhalten beteiligte Daten und dienen als Schnittstelle für eine Aktion.
 
-    \vspace{1cm}
-\end{defi}
+    Bei Unterdiagrammen können Objektknoten als Eingangsparameter die Unteraktivität starten.
 
-\begin{defi}{Verbindende Kanten}
-    Verlaufsweg mögl. Programmflüsse.
-    Dient der Übertragung erstellter Tokens sowie Objekten.
-\end{defi}
+    Beim Übergeben von Objektknoten zwischen Aktionen, werden die Objekte als kleines Rechteck vor bzw. hinter der Aktion dargestellt.
+\end{diag}
 
-\begin{defi}{Kontrollelemente zur Ablaufsteuerung (Aktivitätsdiagramm)}
+\begin{diag}{Kontrollelemente zur Ablaufsteuerung (Aktivitätsdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.175\textwidth]{includes/figures/defi_diagrams_activity_start_end.pdf}
     \end{wrapfigure}
-    \textbf{Startknoten:}
+    \textbf{Startknoten}:
     \begin{itemize}
         \item Markiert den Startpunkt eines Ablaufs beim Aktivieren einer Aktivität
         \item Eine Aktivität kann beliebig viele Startknoten haben (Nebenläufige Ausführung an allen Startknoten)
@@ -259,26 +253,26 @@
         \item Jeder Startknoten erstellt ein Token, welches der anliegenden Kante mitgegeben wird.
     \end{itemize}
 
-    \textbf{Endknoten für Kontrollflüsse:}
+    \textbf{Endknoten für Kontrollflüsse}:
     \begin{itemize}
         \item Beendet nur einen einzelnen Ablauf, indem das aktuell anliegende Token gelöscht wird.
         \item Nebenläufig ausgeführte Aktionen werden nicht beendet.
         \item Beendigung der gesamten Aktivität daher nur bei nicht parallelisierten Abläufen
     \end{itemize}
 
-    \textbf{Endknoten für Aktivitäten:}
+    \textbf{Endknoten für Aktivitäten}:
     \begin{itemize}
         \item Beendet sofort die gesamte Aktivität, indem alle Tokens gelöscht werden.
         \item Parallel ausgeführte Aktionen werden ebenfalls beendet
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Kontrollelemente zur Ablaufsteuerung für Bedingungen (Aktivitätsdiagramm)}
+\begin{diag}{Kontrollelemente zur Ablaufsteuerung für Bedingungen (Aktivitätsdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_activity_or.pdf}
     \end{wrapfigure}
-    \textbf{Verzweigungsknoten:}
+    \textbf{Verzweigungsknoten}:
     \begin{itemize}
         \item Spaltet eine Kante in mehrere Alternativen auf.
               Dabei kann der Verzweigungsknoten \emph{maximal einen} Token weitergeben.
@@ -286,19 +280,19 @@
         \item Bei mehreren ausgehenden Kanten müssen alle Bedingungen disjunkt sein.
     \end{itemize}
 
-    \textbf{Verbindungsknoten}
+    \textbf{Verbindungsknoten}:
     \begin{itemize}
         \item Führt mehrere unabhängige Kanten in einem gemeinsamen Programmfluss zusammen.
               Dabei ist es egal, wie viele Token aus welchen Kanten ankommen - jedes Token wird von dem Verbindungsknoten direkt weitergeleitet.
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Kontrollelemente zur Ablaufsteuerung zur Parallelisierung (Aktivitätsdiagramm)}
+\begin{diag}{Kontrollelemente zur Ablaufsteuerung zur Parallelisierung (Aktivitätsdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.1\textwidth]{includes/figures/defi_diagrams_activity_and.pdf}
     \end{wrapfigure}
-    \textbf{Parallelisierungsknoten}
+    \textbf{Parallelisierungsknoten}:
     \begin{itemize}
         \item Teilt den Ablauf einer eingehenden Kante in mehrere parallele Abläufe auf.
               Dabei muss der Parallelisierungsknoten \emph{exakt so viele} Tokens weitergeben, wie ausgehenden Kanten vorhanden sind.
@@ -306,25 +300,25 @@
         \item Kontroll- bzw. Objektfluss muss am Ende wieder zusammengefasst oder getrennt werden.
     \end{itemize}
 
-    \textbf{Synchronisationsknoten:}
+    \textbf{Synchronisationsknoten}:
     \begin{itemize}
         \item Vereint parallele Abläufe.
               Dabei muss aus jeder eingehenden Kante \emph{mindestens ein} Token empfangen werden.
               Diese werden im Anschluss gebündelt weitergeleitet.
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Signale und Ereignisse zur Parallelisierung (Aktivitätsdiagramm)}
+\begin{diag}{Signale und Ereignisse zur Parallelisierung (Aktivitätsdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_activity_signal.pdf}
     \end{wrapfigure}
-    \textbf{Signal Sender:}
+    \textbf{Signal Sender}:
     \begin{itemize}
         \item Löst die Sonderaktion \emph{SendSiganlAction} aus, sobald ein Token das Objekt erreicht.
     \end{itemize}
 
-    \textbf{Ereignisempfänger:}
+    \textbf{Ereignisempfänger}:
     \begin{itemize}
         \item Löst die Sonderaktion \emph{AcceptEventAction} aus, sobald ein Signal gesendet wurde.
         \item Diese Objekte erscheinen in drei Variationen:
@@ -341,25 +335,25 @@
                         Zusätzlich wird der Gruppierungsbereich\footnote{Anliegende gestrichelte Linie} unterbrochen, und der Programmfluss wird am Ende der anliegenden Unterbrechungskante fortgesetzt.
               \end{itemize}
     \end{itemize}
-\end{defi}
+\end{diag}
 
 \subsection{Klassendiagramm}
 
 \begin{defi}{Klassendiagramm}
-    Klassendiagramme existieren in zwei verschiedenen Formen:
+    \emph{Klassendiagramme} existieren in zwei verschiedenen Formen:
 
     \begin{itemize}
-        \item Klassendiagramm für Analysemodell
+        \item \textbf{Klassendiagramm für Analysemodell}
               \begin{itemize}
                   \item Klassen mit Attributen
-                  \item Assoziationen / Vererbung / Multiplizitäten
-                  \item Kompositionen / Aggregationen
+                  \item Assoziationen, Vererbung,  Multiplizitäten
+                  \item Kompositionen, Aggregationen
               \end{itemize}
-        \item Klassendiagramm für Entwurfsmodell (erweitert das Analysemodell)
+        \item \textbf{Klassendiagramm für Entwurfsmodell} (erweitert das Analysemodell)
               \begin{itemize}
-                  \item Operationen bzw. Methoden / Funktionen
+                  \item Operationen bzw. Methoden, Funktionen
                   \item Klassen- und Objekteigenschaften
-                  \item Abgeleitete Eigenschaften Sichtbarkeiten
+                  \item Abgeleitete Eigenschaften, Sichtbarkeiten
                   \item Navigationsrichtungen
                   \item Eigenschaften von Attributen und Assoziationsenden
                   \item Qualifizierte Assoziationen
@@ -371,7 +365,7 @@
     Sie liefern eine Antwort auf die Frage:
     \begin{itemize}
         \item \emph{Welche} Datentypen werden in dem System genutzt?
-        \item \emph{Wie} Verhalten sich diese Objekte im Detail?
+        \item \emph{Wie} verhalten sich diese Objekte im Detail?
     \end{itemize}
 \end{defi}
 
@@ -381,17 +375,18 @@
 %     \end{center}
 % \end{defi}
 
-\begin{defi}{Klasse (Klassendiagramm)}
+\begin{diag}{Klasse (Klassendiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_class_intro.pdf}
     \end{wrapfigure}
+    %
     UML \emph{Klassen} entsprechen den programmatischen Klassen aus bekannten objektorientierten Sprachen.
 
-    Das Symbol besteht aus einem Header mit dem großgeschriebenen fettgedruckten horizontal mittig zentrierten Klassennamen und zwei \enquote{Containern}.
+    Das Symbol besteht aus einem Header mit dem großgeschriebenen, fettgedruckten, horizontal mittig zentrierten Klassennamen und zwei \enquote{Containern}.
     Diese werden mit potentiellen Attributen (oben) und Operationen bzw. Methoden (unten) der Klasse gefüllt.
 
-    Hier werden einige weitere Symbole bzw. Schlüsselworte benötigt\footnote{default ist \texttt{\textasciitilde \{unordered, unique\}}}:
+    Hier werden einige weitere Symbole bzw. Schlüsselworte benötigt\footnote{default ist \texttt{\textasciitilde \ \{unordered, unique\}}}:
     \begin{itemize}
         \item Sichtbarkeit:
               \subitem + : \texttt{public}
@@ -399,22 +394,22 @@
               \subitem \# : \texttt{protected}
               \subitem \textasciitilde\ : \texttt{package}
               \subitem / : Abgeleitetes Attribut
-        \item \texttt{\{id\}} : Attribut entspricht einem Primärschlüssel
+        \item \texttt{\{id\}}: Attribut entspricht einem Primärschlüssel
         \item \texttt{\{readOnly\}}
         \item \texttt{\{frozen\}} bzw. \texttt{\{immutable\}}
         \item \texttt{\{abstract\}}\footnote{alternativ kann man das jeweilige Objekt in kursiv schreiben}
-        \item \texttt{static} : Das jeweilige Objekt muss unterstrichen sein
+        \item \texttt{static}: Das jeweilige Objekt muss unterstrichen sein
         \item \texttt{generic} bzw Parametrisiert : Die Klasse wird mit einem kleinen Kasten gekennzeichnet, indem alle generischen Typen zu finden sind.
         \item Kollektionen
               \subitem \texttt{\{ordered\}} oder \texttt{\{unordered\}}
               \subitem \texttt{\{unique\}} oder \texttt{\{nonunique\}}
         \item \texttt{<<interface>>}
-        \item \texttt{<<utility>>} : Hilfsklassen (diese werden via \texttt{<<use>> genutzt})
+        \item \texttt{<<utility>>}: Hilfsklassen (diese werden via \texttt{<<use>> genutzt})
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Attribut (Klassendiagramm)}
-    Jedes Attribut benötigt eine Typangabe\footnote{Man achte auf die exakte Schreibweise; (Primitive-) Datentypen werden groß- und aus-geschrieben}.
+\begin{diag}{Attribut (Klassendiagramm)}
+    Jedes \emph{Attribut} benötigt eine Typangabe\footnote{Man achte auf die exakte Schreibweise; (Primitive-) Datentypen werden groß- und ausgeschrieben}.
 
     Der Typ wird nach dem kleingeschriebenen Attributnamen mit einem \texttt{:} angegeben.
 
@@ -425,38 +420,43 @@
 
     \begin{tabular}{>{\ttfamily}l>{\ttfamily}lll}
         \multicolumn{1}{l}{Symbol} & \multicolumn{1}{l}{alternativ} & Typ          & {Multiplizität}                       \\
+        \hline
         $[$n..m$]$                 &                                &              & zwischen mindestens n und höchstens m \\
         $[$0..1$]$                 & $[$1$]$                        & optional     & höchstens ein Wert                    \\
         $[$0..*$]$                 & $[$*$]$                        & optional     & beliebig viele Werte                  \\
         $[$1..*$]$                 &                                & erforderlich & beliebig viele Werte
     \end{tabular}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Operation (Klassendiagramm)}
-    Unter Operationen fallen alle Klassen-abhängigen Methoden und Funktionen.
+\begin{diag}{Operation (Klassendiagramm)}
+    Unter \emph{Operationen} fallen alle klassenabhängigen Methoden und Funktionen.
 
     Parametrisierte Konstruktoren müssen dort wie gewöhnliche Operationen aufgeführt werden.
 
     Eine Operation beinhaltet einen Namen, eine Parameterliste und einen Rückgabetyp.
-    Diese folgend folgender Syntax:
+    Diese folgen folgender Syntax:
 
-    \texttt{<Name> ( <Parameterliste> ) [: <Rückgabetyp>]}
+    \begin{center}
+        \texttt{<Name> ( <Parameterliste> ) [: <Rückgabetyp>]}
+    \end{center}
 
     Die Parameterliste ist eine durch Kommata getrennte Aufzählung von Parametern.
     Parameter werden wie folgt dargestellt:
 
-    \texttt{[Richtung] <Name> : <Typ> [Multiplizität][Standardwert]}
+    \begin{center}
+        \texttt{[Richtung] <Name> : <Typ> [Multiplizität][Standardwert]}
+    \end{center}
 
     Unter Richtungen fallen:
     \begin{itemize}
-        \item \texttt{in} : Call-by-Value
-        \item \texttt{inout} : Call-by-Reference
-        \item \texttt{out} : initialisiert den Out-Parameter beim Aufrufen der Operation und stellt diesen in dem Scope, indem die Operation aufgerufen wurde, zur Verfügung.
+        \item \texttt{in}: Call-by-Value
+        \item \texttt{inout}: Call-by-Reference
+        \item \texttt{out}: initialisiert den Out-Parameter beim Aufrufen der Operation und stellt diesen in dem Scope, in dem die Operation aufgerufen wurde, zur Verfügung.
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Navigierbarkeit}
-    Eine Assoziation ist dann \emph{navigierbar}, wenn Objekte der adjazenten Klasse erreichbar sind.
+\begin{diag}{Assoziation}
+    Eine \emph{Assoziation} ist dann navigierbar, wenn Objekte der adjazenten Klasse erreichbar sind.
 
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
@@ -464,20 +464,20 @@
     \end{wrapfigure}
     \textbf{Navigierbarkeit}:
 
-    Dabei hat jede Assoziation eine von drei möglichen Navigationszuständen
+    Dabei hat jede Assoziation eine von drei möglichen Navigationszuständen:
     \begin{itemize}
-        \item Navigierbar
-        \item Unspezifiziert
-        \item Nicht navigierbar
+        \item navigierbar
+        \item unspezifiziert
+        \item nicht navigierbar
     \end{itemize}
 
     \textbf{Erreichbarkeit}:
 
     Sollte die Klasse erreichbar sein, muss man eine Leseoperation zur Verfügung stellen.
-    Des Weiteren muss man sich überlegen. wie man das Objekt erreichen kann:
+    Des Weiteren muss man sich überlegen, wie man das Objekt erreichen kann:
     \begin{itemize}
         \item Als Attribut in einer Klasse (siehe rechts)
-        \item In Datencontainern wie \texttt{Hashtables}
+        \item In Datencontainern, wie \texttt{Hashtables}
         \item \ldots
     \end{itemize}
 
@@ -485,53 +485,57 @@
 
     Man unterscheidet Assoziationen wie folgt:
     \begin{itemize}
-        \item Unidirektional : Ausschließlich eine Klasse ist erreichbar
-        \item Bidirektional : Beide Klassen sind untereinander erreichbar
+        \item Bidirektional: Beide Klassen sind untereinander erreichbar
+        \item Unidirektional: Ausschließlich eine Klasse ist erreichbar
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Generalisierung}
+\begin{diag}{Generalisierung}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_class_vererbung.pdf}
     \end{wrapfigure}
-    Eine Generalisierung in der UML ist eine gerichtete Beziehung zwischen einer speziellen und einer genereller Klasse.
+    %
+    Eine \emph{Generalisierung} in der UML ist eine gerichtete Beziehung zwischen einer speziellen und einer genereller Klasse.
+
     Instanzen der speziellen Klasse sind damit auch Instanzen der generellen Klasse.
 
     Die Klasse \emph{K1} \emph{erbt} z.B. von der Klasse \emph{K2}.
-\end{defi}
+\end{diag}
 
-\begin{defi}{Aggregation und Komposition}
+\begin{diag}{Aggregation und Komposition}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_class_aggregation_composition.pdf}
     \end{wrapfigure}
-    Zwei Spezialfälle der Assoziation bilden eine Teil/Ganzes-Beziehung.
+    %
+    Zwei Spezialfälle der Assoziation bilden eine Teil-Ganzes-Beziehung.
 
     \begin{itemize}
         \item \textbf{Aggregation}:
 
               Ein Objekt (Aggregat) besteht aus mehreren Einzelobjekten.
               Die Lebensdauer der Einzelobjekte kann länger sein als die des Aggregats.
-        \item \textbf{Komposition} oder Aggregationskomposition:
+        \item \textbf{Komposition} bzw. Aggregationskomposition:
 
               Das Teilobjekt ist von der Existenz des Ganzen abhängig.
               Es kann nicht ohne existieren.
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Pakete}
+\begin{diag}{Pakete}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_class_package.pdf}
     \end{wrapfigure}
+    %
     In der UML dienen \emph{Pakete} zur hierarchisch geschachtelten Strukturierung großer Modelle.
     Jedes Modellelement gehört zu höchstens einem Paket, kann jedoch in mehreren Modellen vorkommen.
 
     So kann man eine angemessen große Menge modular zerlegter Objekte zu einer logisch geschlossenen Einheit zusammenfassen, welche in größeren Diagrammen genutzt wird.
 
-    Pakete verfolgen das Prinzip der \emph{losen Kopplung} und \emph{hohen Kohäsion}.
-\end{defi}
+    Pakete verfolgen das Prinzip der \emph{hohen Kohäsion} und \emph{losen Kopplung}.
+\end{diag}
 
 \begin{defi}{Kohäsion}
     \emph{Kohäsion} beschreibt die Kräfte, die ein Modul im Inneren zusammenhalten.
@@ -594,23 +598,24 @@
     \emph{Wie} läuft die Kommunikation in meinem System ab?
 \end{defi}
 
-\begin{defi}{Sequenzdiagramm (Aufbau)}
+\begin{diag}{Sequenzdiagramm (Aufbau)}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_diagrams_sequenz_intro.pdf}
     \end{center}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Interaktion}
-    Eine Interaktion verbindet mehrere kommunizierende Objekte und regelt den Kommunikationsfluss mithilfe ausgetauschter Nachrichten.
+\begin{diag}{Interaktion}
+    Eine \emph{Interaktion} verbindet mehrere kommunizierende Objekte und regelt den Kommunikationsfluss mithilfe ausgetauschter Nachrichten.
 
     Die beteiligten Objekte treten paarweise in den Rollen Sender und Empfänger auf.
-\end{defi}
+\end{diag}
 
-\begin{defi}{Lebenslinien (Sequenzdiagramm)}
+\begin{diag}{Lebenslinien (Sequenzdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_sequenz_object.pdf}
     \end{wrapfigure}
+    %
     \emph{Lebenslinien} repräsentieren genau eine teilnehmende Objektinstanz\footnote{Klassen können ebenfalls in verschiedene Lebenslinien für strikt getrennte Operationsbereiche getrennt werden.}.
     Sie verdeutlichen einen spezifischen zeitlichen Ablauf.
 
@@ -628,27 +633,29 @@
 
               Gilt für eine feste aber beliebige Instanz des angegebenen Typen, dessen Identität noch nicht bekannt ist.
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Aktionssequenzen / Aktivierungsbalken (Sequenzdiagramm)}
+\begin{diag}{Aktionssequenzen bzw. Aktivierungsbalken (Sequenzdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.025\textwidth]{includes/figures/defi_diagrams_sequenz_aktion.pdf}
     \end{wrapfigure}
+    %
     \emph{Aktionssequenzen} bzw. \emph{Aktivierungsbalken} verdeutlichen einen Kommunikationsfluss.
     Sie sind keine Pflicht, jedoch hilfreich.
 
     Innerhalb dieser Aktivierungsbalken können beispielsweise Operationen bzw. Methoden der Instanz aufgerufen, oder eine Interaktion gestartet werden.
 
     \vspace{1cm}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Nachricht (Sequenzdiagramm)}
+\begin{diag}{Nachricht (Sequenzdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_sequenz_message.pdf}
     \end{wrapfigure}
-    Die UML unterscheidet bei Nachrichten zwischen asynchroner und synchroner Kommunikation:
+    %
+    Die UML unterscheidet bei \emph{Nachrichten} zwischen asynchroner und synchroner Kommunikation:
     \begin{itemize}
         \item \textbf{Synchrone Kommunikation}:
               \begin{enumerate}
@@ -674,28 +681,30 @@
     Es ist ebenfalls möglich, dass Instanzen Nachrichten an sich selber senden.
     Diese Starten einen neuen Aktionsbalken in dem aktuellen Aktionsbalken.
 
-    \begin{wrapfigure}{r}{0.45\textwidth}
+    \begin{wrapfigure}{r}{0.35\textwidth}
         \centering
-        \includegraphics[width=0.4\textwidth]{includes/figures/defi_diagrams_sequenz_message_create.pdf}
+        \includegraphics[width=0.3\textwidth]{includes/figures/defi_diagrams_sequenz_message_create.pdf}
     \end{wrapfigure}
+    %
     \textbf{Nachricht als Konstruktoraufruf}:
 
     Alternativ kann man ebenfalls ein neues Objekt mit einer Nachricht erstellen.
     Als Nachrichtenparameter dienen hierbei die für den Konstruktor relevanten Attribute.
 
     Dabei stehen einem natürlich alle unter \emph{Lebenslinien} beschriebenen Optionen für Objekte bzw. Instanzen zur Verfügung.
-\end{defi}
+\end{diag}
 
 \begin{bonus}{Signale (Sequenzdiagramm)}
     Asynchrone Nachrichten können \emph{Signale} darstellen.
     Diese Entsprechen den Signalen in Aktivitätsdiagrammen.
 \end{bonus}
 
-\begin{defi}{Operatoren (Sequenzdiagramm)}
+\begin{diag}{Operatoren (Sequenzdiagramm)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_sequenz_operators.pdf}
     \end{wrapfigure}
+    %
     Für komplexere Abläufe und bedingte Ausführungsfolgen bietet die UML weitere \emph{Operatoren}\footnote{Sollten die Operatoren in verschiedene Regionen aufgeteilt sein, können diese durch das angeben einer weiteren gestrichelten Linie erweitert werden}:
     \begin{itemize}
         \item \textbf{ref}:
@@ -725,7 +734,7 @@
 
               Führt alle angegeben Regionen parallel aus.
     \end{itemize}
-\end{defi}
+\end{diag}
 
 \subsection{Zustandsautomaten}
 
@@ -734,10 +743,10 @@
     Sie erweitern Use-Case Diagramme und liefern eine Alternative für Aktivitätsdiagramme.
 
     Liefern Antwort auf die Frage:
-    Wie verhält sich das System in einem Bestimmten Zustand bei gewissen Ereignissen?
+    Wie verhält sich das System in einem bestimmten Zustand bei gewissen Ereignissen?
 \end{defi}
 
-\begin{defi}{Zustand (Zustandsautomaten)}
+\begin{diag}{Zustand (Zustandsautomaten)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state.pdf}
@@ -751,10 +760,10 @@
         \item ein Verhalten, welches dauerhaft ausgeführt wird, solange der Zustand aktiv ist.
         \item ein Verhalten, welches einmalig beim Austreten des Zustands ausgeführt wird.
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Unterzustände (Zustandsautomaten)}
-    Zustände können durch Unterzustände erweitert werden:
+\begin{diag}{Unterzustände (Zustandsautomaten)}
+    Zustände können durch \emph{Unterzustände} erweitert werden:
     \begin{itemize}
         \item Entweder in einen externen Zustand ausgelagert, oder
         \item direkt in einen Zustand hineingezeichnet.
@@ -766,20 +775,21 @@
 
     Unterzustände benötigen einen Startzustand oder ausschließlich eindringende Transition.
 
-    Bei der Angabe von mehreren Unterzuständen, werden alle parallel ausgeführt.
+    Bei der Angabe von mehreren Unterzuständen werden alle parallel ausgeführt.
 
     Obacht: Wenn eine Transition aus dem Unterzustand den Zustand verlässt, jedoch direkt denselben Unterzustand erneut betritt, wird das \emph{entry} bzw \emph{exit} Verhalten des Zustands ausgeführt.
-    Beim Internen Wechsel von Unterzuständen passiert dies nicht
-\end{defi}
+    Beim Internen Wechsel von Unterzuständen passiert dies nicht.
+\end{diag}
 
-\begin{defi}{Transition (Zustandsautomaten)}
+\begin{diag}{Transition (Zustandsautomaten)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state_transaktion.pdf}
     \end{wrapfigure}
     \emph{Transitionen} bzw. Zustandsübergänge beschreiben Beziehungen zwischen den Einzelzuständen eines Automaten.
 
-    Sie Teilen sich in drei Bereiche auf:
+    Sie teilen sich in drei Bereiche auf:
+
     \textbf{Trigger}:
     \begin{itemize}
         \item stoßen eine Transition an
@@ -794,17 +804,17 @@
 
     \textbf{Verhalten}:
     \begin{itemize}
-        \item Des Verhalten wird beim Durchlaufen der Transition durchgeführt
+        \item Das Verhalten wird beim Durchlaufen der Transition durchgeführt
         \item Vergleichbar mit dem \texttt{entry}-Verhalten von Zuständen
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Region}
+\begin{diag}{Region}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state_region.pdf}
     \end{wrapfigure}
-    Um sein Zustandsdiagramm genauer zu strukturieren, kann man einen Teil des Diagramms in einer Region zusammenfassen.
+    Um sein Zustandsdiagramm genauer zu strukturieren, kann man einen Teil des Diagramms in einer \emph{Region} zusammenfassen.
     Diese hat \emph{maximal einen} Eintritts- und \emph{maximal einen} Austrittspunkt.
 
     Der Eintrittspunkt dient für die Region als Startzustand und folgt dementsprechend den selben Regeln\footnote{
@@ -816,7 +826,7 @@
     Offensichtlich ist jedoch eine ausgehende Kante erlaubt, da man die Region sonst nicht verlassen könnte.
 
     \vspace{1.5cm}
-\end{defi}
+\end{diag}
 
 \begin{bonus}{Transition in einen Unterzustand (Zustandsautomaten)}
     \begin{wrapfigure}{r}{0.25\textwidth}
@@ -841,12 +851,12 @@
     Rechts verhindert der Austrittspunkt dies.
 \end{bonus}
 
-\begin{defi}{Kontrollelemente zur Ablaufsteuerung (Zustandsautomaten)}
+\begin{diag}{Kontrollelemente zur Ablaufsteuerung (Zustandsautomaten)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.15\textwidth]{includes/figures/defi_diagrams_state_start.pdf}
     \end{wrapfigure}
-    Zu den Kontrollelementen zählen sogenannte Pseudozustände.
+    Zu den Kontrollelementen zählen sogenannte \emph{Pseudozustände}.
     Diese haben keinerlei inhaltlichen Nutzen, sind also keine wirklichen Zustände.
     Trotzdem werden diese zur Ablaufsteuerung gebraucht.
 
@@ -874,9 +884,9 @@
         \item löscht bzw. zerstört zusätzlich das gesamte Objekt
         \item wird in der Regel verwendet, wenn due Objekte dynamisch erstellt / gelöscht werden
     \end{itemize}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Kontrollelemente zur Ablaufsteuerung zur Strukturierung (Zustandsautomaten)}
+\begin{diag}{Kontrollelemente zur Ablaufsteuerung zur Strukturierung (Zustandsautomaten)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.1\textwidth]{includes/figures/defi_diagrams_state_crosspoint.pdf}
@@ -897,9 +907,9 @@
     \end{itemize}
 
     Die Guards der ausgehenden Transitionen müssen dabei jedoch nicht disjunkt sein.
-\end{defi}
+\end{diag}
 
-\begin{defi}{Kontrollelemente zur Ablaufsteuerung für Bedingungen (Zustandsautomaten)}
+\begin{diag}{Kontrollelemente zur Ablaufsteuerung für Bedingungen (Zustandsautomaten)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state_if.pdf}
@@ -911,7 +921,7 @@
 
     Alle Bedingungen müssen disjunkt sein und es muss zu jeder Zeit des Programms der gesamte Wertebereich durch die Bedingungen abgedeckt sein.
     Es muss also jederzeit möglich sein den Zustand vor dem Entscheidungsknoten zu verlassen und den Entscheidungsknoten zu passieren.
-\end{defi}
+\end{diag}
 
 \begin{bonus}{Unterschiede von Entscheidungsknoten und Kreuzungspunkten (Zustandsautomaten)}
     Im Gegensatz zu Kreuzungspunkten wird jedoch zuerst das Verhalten der eingehenden Kante ausgeführt, danach die Bedingungen getestet.
@@ -943,7 +953,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{defi}{Kontrollelemente zur Ablaufsteuerung zur Parallelisierung (Zustandsautomaten)}
+\begin{diag}{Kontrollelemente zur Ablaufsteuerung zur Parallelisierung (Zustandsautomaten)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.1\textwidth]{includes/figures/defi_diagrams_state_parallel.pdf}
@@ -959,14 +969,14 @@
     Wenn man jedoch auf einer Ebene Parallelitäten erstellen möchte, muss man Trennlinien und Joins benutzen.
 
     \vspace{0.5cm}
-\end{defi}
+\end{diag}
 
-\begin{defi}{Historie (Zustandsautomaten)}
+\begin{diag}{Historie (Zustandsautomaten)}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[width=0.2\textwidth]{includes/figures/defi_diagrams_state_history.pdf}
     \end{wrapfigure}
-    Wenn man Zustände speichern möchte, muss man eine Historie anlegen.
+    Wenn man Zustände speichern möchte, muss man eine \emph{Historie} anlegen.
 
     \begin{itemize}
         \item Bei Verlassen eines Zustands wird sich der letzte Aktive Unterzustand gemerkt.
@@ -979,7 +989,7 @@
 
     \texttt{H} speichert nur den Zustand der gleichen Ebene.
     Im Gegensatz dazu speichert \texttt{H*} rekursiv ebenfalls Unterzustände. Dies ist vergleichbar mit \texttt{copy()} bzw \texttt{deepcopy()} von Arrays.
-\end{defi}
+\end{diag}
 
 \begin{example}{Historie (Zustandsautomaten)}
     \begin{center}

@@ -1,1 +1,177 @@
 \section{Qualitätssicherung}
+
+\begin{defi}{Qualitätsmanagement}
+    Unter \emph{Qualitätsmanagement} (QM) versteht man \emph{alle Tätigkeiten der Gesamtführungsaufgabe}, welche die \emph{Qualitätspolitik}, \emph{Ziele} und \emph{Verantwortungen festlegen}, sowie diese durch Mittel wie Qualitätsplanung, Qualitätslenkung, Qualitätssicherung und Qualitätsverbesserung im Rahmen des Qualitätsmanagements verwirklichen.
+\end{defi}
+
+\begin{defi}{Qualitätssicherung}
+    Unter \emph{Qualitätssicherung} (QS) versteht man \emph{alle geplanten und systematischen Tätigkeiten}, die innerhalb des Qualitätsmanagementsystems verwirklicht sind, und die wie erforderlich dargelegt werden, um \emph{angemessenes Vertrauen} zu schaffen, dass eine Einheit die \emph{Qualitätsanforderungen erfüllen} wird.
+
+    Jedes Dokument, das im Verlaufe der Softwareerstellung bzw. Softwarewartung erzeugt bzw. verändert wird, sollte einer Qualitätssicherung unterliegen.
+    Dazu zählen alle Produkte und Zwischenergebnisse der jeweiligen Phase (Anforderungsdefinition, Entwurfsspezifikation, Programmcode, Dokumentation, etc.).
+\end{defi}
+
+\begin{defi}{Prinzipien der Qualitätssicherung}
+    \begin{tabularx}{\textwidth}{|>{\bfseries}l|>{- }X|}
+        \hline
+        Prinzip                & \multicolumn{1}{l}{\bfseries Erläuterung}                                                                                                                                                                \\
+        \hline
+        \hline
+        Zielgerichtet          & muss durch projektspezifische Ziele getrieben werden                                                                                                                                                     \\
+                               & Festlegung von Anforderungen für Q-Merkmale                                                                                                                                                              \\
+        \hline
+        Quantitativ            & erfordert Anwendung quantitativer Methoden zur Bewertung der Qualität von Produkten und Prozessen                                                                                                        \\
+                               & Festlegung und Messung von Kennzahlen für objektive Beurteilung                                                                                                                                          \\
+        \hline
+        Maximal konstruktiv    & so viele Fehler wie möglich durch geeignete Sprachen, Methoden, Werkzeuge im Vorfeld verhindern                                                                                                          \\
+                               & Statt mangelhafte Qualität durch analytische Qualitätssicherung a posteriori aufzudecken, werden konstruktive Maßnahmen ergriffen, um die Entwicklung hochqualitativer Software a priori sicherzustellen \\
+        \hline
+        Frühzeitig             & QS muss in den frühen Phasen (so früh wie möglich) eingesetzt werden, um Fehler so früh wie möglich zu erkennen und zu beheben                                                                           \\
+        \hline
+        Integriert             & QS nahtlos in den Softwareprozess integrieren und in allen Phasen einsetzen                                                                                                                              \\
+                               & Nicht erst fertige Dokumente prüfen                                                                                                                                                                      \\
+        \hline
+        Unabhängig bzw. Extern & Analytische QS nicht nur unter Kontrolle der Entwickler durchführen                                                                                                                                      \\
+                               & QS muss (auch) von einer unabhängigen Organisationseinheit durchgeführt werden                                                                                                                           \\
+        \hline
+        Werkzeugunterstützt    & Prüfung soweit möglich automatisieren                                                                                                                                                                    \\
+        \hline
+        Skaliert               & Kosten und Nutzen von QS-Maßnahmen beobachten                                                                                                                                                            \\
+        \hline
+    \end{tabularx}
+\end{defi}
+
+\begin{defi}{Klassifizierung von QS-Verfahren}
+    Qualitätssicherungsmaßnahmen in der Softwareentwicklung beziehen sich auf:
+    \begin{itemize}
+        \item Das \emph{Produkt} Software (produktorientiert)
+        \item Den \emph{Prozess} der Softwareentwicklung (prozessorientiert)
+    \end{itemize}
+
+    Man teilt daher Qualitätssicherungsmaßnahmen (QSM) auf in
+    \begin{itemize}
+        \item \emph{Konstruktive Ansätze}
+              \begin{itemize}
+                  \item Aktivitäten mit positiver Auswirkung auf Qualität
+                  \item \emph{Während} der Erstellung von Software-Produkten
+                  \item Fehlervermeidungsstrategie
+                  \item \enquote{Vorbeugen besser als Heilen}
+              \end{itemize}
+        \item \emph{Analytische Ansätze}
+              \begin{itemize}
+                  \item Testen, Verifikation, Messen (über Qualitätsmerkmale)
+                  \item \emph{Nach} Erstellung von Software-Produkten
+                  \item Fehlerfindungsstrategie
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{Konstruktive QS-Verfahren}
+    \begin{itemize}
+        \item \textbf{Richtlinien}
+              \begin{itemize}
+                  \item Prozessrichtlinien
+                  \item Standards für Dokumente, Coding-Guidelines
+                  \item Gliederungsschema für Lasten- und Pflichtenheft
+              \end{itemize}
+        \item \textbf{Methoden}
+              \begin{itemize}
+                  \item Vorgehensmodelle (SCRUM, etc.)
+                  \item Abarbeitung von Checklisten
+                  \item Schulungen
+              \end{itemize}
+        \item \textbf{Werkzeuge}
+              \begin{itemize}
+                  \item Für Projektmanagement
+                  \item Case-Tools
+              \end{itemize}
+        \item \textbf{Sprachen}
+              \begin{itemize}
+                  \item UML
+              \end{itemize}
+        \item \textbf{Entwurfsmuster} für Softwarearchitektur
+        \item etc.
+    \end{itemize}
+\end{bonus}
+
+\begin{defi}{Review}
+    Unter einem \emph{Review} versteht man einen manuell durchgeführten statischen Prüfprozess.
+    Ein Review wird häufig gleichgesetzt mit dem \enquote{Gegenlesen des eigenen Codes von Kollegen}.
+
+    Man unterscheidet generell zwischen:
+    \begin{itemize}
+        \item Code-Reviews (Fokus: Quelltext)
+        \item Architektur-Reviews (Fokus: Design- und technische Dokumente)
+    \end{itemize}
+
+    Das Hauptziel besteht darin, Probleme an einem Arbeitsergebnis oder Dokument zu erkennen, die nicht werkzeuggestützt erkannt werden können:
+    \begin{itemize}
+        \item semantische bzw. logische Fehler
+        \item fehlende Einhaltung von Standards
+        \item Abweiwchung von Referenzdokumenten
+    \end{itemize}
+
+    Nebenbei erzielen Reviews aber auch:
+    \begin{itemize}
+        \item Verbreitung der Wissensbasis im Team
+        \item Lernen von Arbeitsmethoden der KollegInnen
+        \item Konsenzbildung (Team-Verantwortung)
+    \end{itemize}
+\end{defi}
+
+\subsection{Tests}
+
+\begin{defi}{Klassifikation von Tests}
+    \begin{itemize}
+        \item \textbf{Abstraktion}
+              \begin{itemize}
+                  \item Black-Box-Test (funktional)
+                  \item White-Box-Test (strukturell)
+              \end{itemize}
+        \item \textbf{Granularität}
+              \begin{itemize}
+                  \item Testen im Kleinen (Testen einzelner Komponenten)
+                  \item Testem im Großen (Testen von Teilsystemen oder des gesamten Systems)
+              \end{itemize}
+        \item \textbf{Zeit}
+              \begin{itemize}
+                  \item Komponententest (Unit-Test) (nach der Implementierung einer Komponente)
+                  \item Integrationstest (nach einem Komponententest)
+                  \item Systemtest (vom Auftragnehmenden vor dem Abnahmetest)
+                  \item Abnahmetest (von Auftraggebendem bei der Auslieferung)
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Black-Box-Test}
+    \emph{Black-Box-Test} bezeichnet eine Methode des Softwaretests.
+    Hierbei werden Tests anhand der Spezifikation bzw. Anforderung entwickelt.
+    Dies bedeutet, dass Tests ohne Kenntnisse über die innere Funktionsweise bzw. Implementierung des zu testenden Systems entwickelt werden.
+
+    Das zu testende Programm wird also als Black Box behandelt.
+    Nur nach außen sichtbares Verhalten fließt in den Test ein.
+\end{defi}
+
+\begin{defi}{Äquivalenzklassenbildung}
+    Ziel der Bildung von \emph{Äquivalenzklassen} ist es, eine hohe Fehlerentdeckungsrate mit einer möglichst geringen Anzahl von Testfällen zu erreichen. Die Äquivalenzklassen sind also bezüglich Ein- und Ausgabedaten ähnliche Klassen bzw. Objekte, bei denen erwartet wird, dass sie sich gleichartig verhalten.
+
+    Das Wesen der Äquivalenzklassenbildung besteht darin, die gesamten Eingabedaten und Ausgabedaten eines Programms in Gruppen von Äquivalenzklassen zu unterteilen, so dass man annehmen kann, dass mit jedem beliebigen Objekt einer Klasse die gleichen Fehler wie mit jedem anderen Objekt dieser (Äquivalenz-)Klasse gefunden werden.
+
+    Vorgehen:
+    \begin{enumerate}
+        \item Mögliche Eingaben in Bereiche aufteilen, sogenannte \emph{Klassen}
+              \begin{itemize}
+                  \item Alle Elemente einer klasse zeigen identisches Verhalten
+              \end{itemize}
+        \item Zulässige und unzulässige Klassen trennen
+        \item Für jede Klasse mindestens einen \emph{Repräsentanten} wählen für die Testdaten
+        \item Vereinigung der Äquivalenzklassen sollte der gesamte Wertebereich sein.
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{Grenzwertanalyse}
+    Die \emph{Grenzwertanalyse} ist ein Spezialfall der Äquivalenzklassenanalyse.
+
+    Sie ist aus der Beobachtung entstanden, dass Fehler besonders häufig an den \enquote{Rändern} der Äquivalenzklassen auftreten.
+    Daher werden hier nicht beliebige Werte getestet, sondern sogenannte Randwerte oder Grenzwerte.
+\end{defi}
