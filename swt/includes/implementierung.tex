@@ -1,1 +1,100 @@
 \section{Implementierung}
+
+\begin{bonus}{Komplexität der Implementierungsphase}
+    \begin{itemize}
+        \item Kenntnisse über Algorithmen und Datenstrukturen notwendig
+        \item Viele Notationen und Progammiersprachen mit unterschiedlichen Ansätzen verfügbar
+        \item Viele Werkzeuge zur SDL-Unterstützung
+        \item Zunehmen auch Security-Aspekte
+        \item Technologie sehr schnelllebig, oft komplex
+    \end{itemize}
+\end{bonus}
+
+\begin{defi}{Aufgaben der Implementierungsphase}
+    \begin{enumerate}
+        \item \textbf{Komponenten implementieren}
+              \begin{itemize}
+                  \item Geeignete Datenstrukturen wählen
+                  \item Algorithmen wählen
+                  \item in Programmiersprache formulieren bzw. codieren
+              \end{itemize}
+        \item \textbf{Komponenten dokumentieren}
+              \begin{itemize}
+                  \item Wie erledigt die Komponente ihre Aufgabe? (Problemlösung)
+                  \item Implementierungsentscheidungen begründen
+                  \item Angaben zu Zeit- und Speicherkomplexität
+              \end{itemize}
+        \item \textbf{Komponenten prüfen (vs. Entwurf)}
+              \begin{itemize}
+                  \item Testumgebung einrichten
+                  \item Testdaten erfassen
+                  \item Testläufe durchführen
+                  \item Verifizieren
+              \end{itemize}
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{Code Conventions}
+    \emph{Code Conventions} geben u.a. Vorhaben zu:
+    \begin{itemize}
+        \item \textbf{Formatierung}
+              \begin{itemize}
+                  \item Klammern, Tabs, Blockeinrückung
+              \end{itemize}
+        \item \textbf{Namenskonventionen}
+              \begin{itemize}
+                  \item Bezeichner-Konventionen
+                  \item Typgebunden
+              \end{itemize}
+        \item \textbf{Dokumentierung}
+              \begin{itemize}
+                  \item Inline
+                  \item Javadoc
+              \end{itemize}
+        \item \textbf{Annotationen}
+              \begin{itemize}
+                  \item Reihenfolge
+                  \item Optionale Angaben
+              \end{itemize}
+        \item \textbf{Ausnahmebehandlung}
+              \begin{itemize}
+                  \item Handling
+                  \item Checked vs. Unchecked
+              \end{itemize}
+        \item \textbf{Stil}
+              \begin{itemize}
+                  \item Reihenfolge von Membern, Operationen
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Prinzipien der systematischen Programmierung}
+    \begin{enumerate}
+        \item \emph{Das Prinzip der Verbalisierung}
+        \item \emph{Das Prinzip der problemadäquaten Datentypen}
+        \item Das Prinzip der Verfeinerung
+        \item Das Prinzip der strukturierten Programmierung
+        \item Das Prinzip des defensiven Programmieren
+        \item Das Prinzip der integrierten Dokumentation
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{Das Prinzip der Verbalisierung}
+    Das Ziel des \emph{Prinzips der Verbalisierung} ist es, Ideen und Konzepte des Programmieruns im Programm möglichst \emph{deutlich}, \emph{gut sichtbar} zu machen und zu \emph{dokumentieren}.
+
+    \begin{itemize}
+        \item \textbf{Regel 1:} Ein geeigneter Name sollte die \emph{semantisch funktionale Rolle} des Bezeichners widerspiegeln.
+        \item \textbf{Regel 2:} Ein geeigneter Name sollte \emph{einheitlicher Stil- und Namenskonvention} folgen.
+        \item \textbf{Regel 3:} Ein geeigneter Name sollte \emph{leicht zu merken sein}.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Das Prinzip der problemadäquaten Datentypen}
+    Das Ziel des \emph{Prinzips der problemadäquaten Datentypen} ist es, dass sich Daten- und Kontrollstrukturen eines Problems möglichst in der programmiersprachlichen Lösung \emph{unverfälscht widerspiegeln}.
+
+    \begin{itemize}
+        \item \textbf{Regel 1:} Bereits bestehende Datentypen sollten \emph{wiederverwendet} werden.
+        \item \textbf{Regel 2:} Wertebereiche der Datentypen sollten \emph{festgelegt} und \emph{eingeschränkt} werden.
+        \item \textbf{Regel 3:} Wenn Regel 1 nicht möglich ist, sollten neue, \emph{benutzerdefinierte} Datentypen erstellt werden.
+    \end{itemize}
+\end{defi}

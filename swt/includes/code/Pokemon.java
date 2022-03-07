@@ -1,11 +1,14 @@
 public class Pokemon {
-    private String name = "";
+    protected String name = "";
+    protected List<Attack> attacks = new ArrayList<Attack>();
+    protected int maxHP;
+    protected double height;
+    protected double weight;
+    // more attributes ...
 
     public Pokemon(String name) {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
+    // getters and setters ...
 }
