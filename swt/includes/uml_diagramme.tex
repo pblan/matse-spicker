@@ -5,13 +5,63 @@
         \hline
         \multirow{2}{*}{Strukturdiagramme} & \multicolumn{2}{c|}{Verhaltensdiagramme}                                 \\\cline{2-3}
                                            &                                          & Interaktionsdiagramme         \\\hline
-        Klassendiagramm                    & Use-Case-Diagramm                        & Sequenzdiagramm               \\
-        Paketdiagramm                      & Aktivitätsdiagramm                       & Kommunikationsdiagramm        \\
-        Objektdiagramm                     & Zustandsautomaten                        & Timingdiagramm                \\
+        \emph{Klassendiagramm}             & \emph{Use-Case-Diagramm }                & \emph{Sequenzdiagramm}        \\
+        Paketdiagramm                      & \emph{Aktivitätsdiagramm}                & Kommunikationsdiagramm        \\
+        Objektdiagramm                     & \emph{Zustandsautomaten}                 & Timingdiagramm                \\
         Kompositionsstrukturdiagramm       &                                          & Interaktionsübersichtdiagramm \\
         Komponentendiagramm                &                                          &                               \\
         Verteilungsdiagramm                &                                          &                               \\\hline
     \end{tabular}
+\end{bonus}
+
+\begin{bonus}{Verwendung von Diagrammen}
+    \begin{itemize}
+        \item \textbf{Use-Case-Diagramm}:
+              \begin{itemize}
+                  \item Beschreibung eines Anwendungsfalls
+                  \item \emph{Was} soll mein System machen?
+              \end{itemize}
+        \item \textbf{Aktivitätsdiagramm}:
+              \begin{itemize}
+                  \item Graphisches Programm aus Aktionen und Kontrollstrukturen
+                  \item \emph{Wie} soll mein System dies machen?
+              \end{itemize}
+        \item \textbf{Klassendiagramm}:
+              \begin{itemize}
+                  \item Eigenschaften von, und Beziehungen zwischen Klassen
+                  \item \emph{Welche} Datentypen werden verwendet?
+                  \item \emph{Wie} verhalten sich diese Objekte im Detail?
+              \end{itemize}
+        \item \textbf{Sequenzdiagramm}:
+              \begin{itemize}
+                  \item Sequenzen von Interaktionen und Objekten.
+                  \item \emph{Wie} läuft die Kommunikation in meinem System ab?
+              \end{itemize}
+        \item \textbf{Zustandsautomat}:
+              \begin{itemize}
+                  \item Beschreibung von Objektzuständen, Aktionen und Übergängen
+                  \item \emph{Wie} verhält sich das System in einem bestimmten Zustand bei gewissen Ereignissen?
+              \end{itemize}
+    \end{itemize}
+
+    \begin{tabularx}{\textwidth}{|X||c|c||c|c|c|c|c|}
+        \hline
+        \multirow{2}{*}{\bfseries Art} & \multicolumn{2}{c||}{\bfseries Typ} & \multicolumn{2}{c|}{\bfseries Erstellung} & \multicolumn{3}{c|}{\bfseries Verwendung}                                                                            \\
+        \cline{2-8}
+                                       & \bfseries Struktur                  & \bfseries Verhalten                       & \bfseries Anf.                            & \bfseries Entwurf & \bfseries Impl. & \bfseries Test & \bfseries Betrieb \\
+        \hline
+        \hline
+        Use-Case-Diagramm              &                                     & \checkmark                                & \checkmark                                & \checkmark        & \checkmark      & \checkmark     &                   \\
+        \hline
+        Aktivitätsdiagramm             &                                     & \checkmark                                & \checkmark                                & \checkmark        & \checkmark      & \checkmark     &                   \\
+        \hline
+        Klassendiagramm                & \checkmark                          &                                           & \checkmark                                & \checkmark        & \checkmark      & \checkmark     &                   \\
+        \hline
+        Sequenzdiagramm                &                                     & \checkmark                                &                                           & \checkmark        & \checkmark      & \checkmark     &                   \\
+        \hline
+        Zustandsdiagramm               &                                     & \checkmark                                &                                           & \checkmark        & \checkmark      & \checkmark     &                   \\
+        \hline
+    \end{tabularx}
 \end{bonus}
 
 \subsection{Use-Case-Diagramm}
@@ -37,17 +87,26 @@
 
     \begin{tabularx}{\textwidth}{|>{\bfseries}l|X|}
         \hline
-        \multicolumn{2}{|l|}{Use-Case-Nummer, Use-Case-Name}                                                                                                 \\\hline\hline
-        Kurzbeschreibung  & ein kurzer erklärender strukturierter Satz zur Übersicht                                                                         \\\hline
-        Akteure           & Personen bzw. Rollen oder externe Systeme, die aktiv mit dem System interagieren oder einen Nutzen von dem Anwendungsfall haben.
-        Ein Anwendungsfall kann mit mehreren Akteuren verbunden sein.                                                                                        \\\hline
-        Kategorie         & muss, soll oder kann der Anwendungsfall realisiert werden                                                                        \\\hline
-        Auslösung         & ein Akteur oder eine Funktion, die den Ablauf startet                                                                            \\\hline
-        Vorbedingung      & eine Bedingung, die erfüllt sein muss, damit der Ablauf gestartet wird                                                           \\\hline
-        Eingabe / Ausgabe & für den Ablauf benötigte Informationen / Ergebnis des Ablaufs                                                                    \\\hline
-        Nachbedingung     & Eine Bedingung, die erfüllt sein muss, um den Anwendungsfall zu beenden                                                          \\\hline
-        Ablauf            & beschreibt den Standardablauf - keine Sonderfälle                                                                                \\\hline
+        \multicolumn{2}{|l|}{Use-Case-Nummer, Use-Case-Name}                                                                                                   \\\hline\hline
+        AutorInnen          &                                                                                                                                  \\\hline
+        Version             &                                                                                                                                  \\\hline
+        Kurzbeschreibung    & ein kurzer erklärender strukturierter Satz zur Übersicht                                                                         \\\hline
+        Akteure             & Personen bzw. Rollen oder externe Systeme, die aktiv mit dem System interagieren oder einen Nutzen von dem Anwendungsfall haben.
+        Ein Anwendungsfall kann mit mehreren Akteuren verbunden sein.                                                                                          \\\hline
+        Referenzen          & Genutzte Anwendungsfälle                                                                                                         \\\hline
+        Kategorie           & muss, soll oder kann der Anwendungsfall realisiert werden                                                                        \\\hline
+        Auslösung           & ein Akteur oder eine Funktion, die den Ablauf startet                                                                            \\\hline
+        Vorbedingung        & eine Bedingung, die erfüllt sein muss, damit der Ablauf gestartet wird                                                           \\\hline
+        Nachbedingung       & eine Bedingung, die erfüllt sein muss, damit der Ablauf beendet wird                                                             \\\hline
+        Eingabe / Ausgabe   & für den Ablauf benötigte Informationen / Ergebnis des Ablaufs                                                                    \\\hline
+        Nachbedingung       & Eine Bedingung, die erfüllt sein muss, um den Anwendungsfall zu beenden                                                          \\\hline
+        Typischer Ablauf    & beschreibt den Standardablauf - keine Sonderfälle                                                                                \\\hline
+        Alternative Abläufe & beschreibt alternative Abläufe                                                                                                   \\\hline
+        Kritikalität        & wie relevant ist der Anwendungsfall für das Gesamtsystem                                                                         \\\hline
     \end{tabularx}
+
+    Die Überschriften sind dabei alle optional.
+    Man behandle ausschließlich die Aspekte, die für sein aktuelles Projekt relevant sind.
 \end{diag}
 
 \begin{diag}{Akteur (Use-Case-Diagramm)}
@@ -177,14 +236,14 @@
         Eingabe / Ausgabe & E: Altes Team, Modifikation, A: Neues Team                                                         \\\hline
         Nachbedingung     & Pokémon wurden gewählt und getauscht                                                               \\\hline
         Ablauf            & \begin{enumerate}
-            \item ProtagonistIn betritt das Pokémon-Center
-            \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
-            \item Solange ProtagonistIn nicht fertig
-                  \begin{enumerate}
+                                \item ProtagonistIn betritt das Pokémon-Center
+                                \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
+                                \item Solange ProtagonistIn nicht fertig
+                                      \begin{enumerate}
                       \item Wähle auszutauschendes Pokémon
                       \item Wähle einzutauschendes Pokémon
                   \end{enumerate}
-        \end{enumerate}                                                                        \\\hline
+                            \end{enumerate}                                        \\\hline
     \end{tabularx}
 \end{example}
 
@@ -210,6 +269,15 @@
 \begin{diag}{Aktivitätsdiagramm (Aufbau)}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_diagrams_activity_intro.pdf}
+    \end{center}
+\end{diag}
+
+\begin{diag}{Aktivitätsdiagramm mit Schwimmlinien (Aufbau)}
+    Alternativ kann das Aktivitätsdiagramm auf verschiedene Akteure aufgeteilt werden.
+    Jeder Akteur erhält einen Verantwortungsbereich bzw eine eigene Partition, auf der alle Aktionen des Akteurs ausgeführt werden.
+    Solche Diagramme ebenfalls können von einer Aktivitätsbeschreibung umrandet werden.
+    \begin{center}
+        \includegraphics[width=0.6\textwidth]{includes/figures/defi_diagrams_activity_partitions.pdf}
     \end{center}
 \end{diag}
 
@@ -336,6 +404,10 @@
               \end{itemize}
     \end{itemize}
 \end{diag}
+
+\begin{example}{Aktivitätsdiagramm}
+    \includegraphics[width=\textwidth]{includes/figures/example_diagrams_activity.pdf}
+\end{example}
 
 \subsection{Klassendiagramm}
 
@@ -488,6 +560,12 @@
         \item Bidirektional: Beide Klassen sind untereinander erreichbar
         \item Unidirektional: Ausschließlich eine Klasse ist erreichbar
     \end{itemize}
+
+    \textbf{Multiplizitäten}:
+
+    Man verwendet die selben Multiplizitäten, wie bei Attributen.
+    Die eckigen Klammern können jedoch weggelassen werden.
+    Diese werden direkt an die Klasse geschrieben.
 \end{diag}
 
 \begin{diag}{Generalisierung}
@@ -587,6 +665,10 @@
                         Hier ist eine weitere Trennung nicht sinnvoll.
               \end{itemize}
     \end{itemize}
+\end{example}
+
+\begin{example}{Klassendiagramm}
+    \includegraphics[width=\textwidth]{includes/figures/example_diagrams_class.pdf}
 \end{example}
 
 \subsection{Sequenzdiagramm}
@@ -735,6 +817,12 @@
               Führt alle angegeben Regionen parallel aus.
     \end{itemize}
 \end{diag}
+
+\begin{example}{Sequenzdiagramm}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/example_diagrams_sequenz.pdf}
+    \end{center}
+\end{example}
 
 \subsection{Zustandsautomaten}
 
@@ -1006,4 +1094,10 @@
         \item Beim erneuten Betreten der Region wird der gespeicherte Zustand \emph{Z1 b} betreten
         \item Also ist es in diesem expliziten Beispiel nicht möglich, \emph{Z1 a} erneut zu betreten.
     \end{enumerate}
+\end{example}
+
+\begin{example}{Zustandsautomaten}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/example_diagrams_state.pdf}
+    \end{center}
 \end{example}
