@@ -121,7 +121,7 @@
 
     In Use-Case Diagrammen stoßen diese Akteure Anwendungsfälle an.
 
-    Alternativ stehen neben dem stilisiertem Symbol weitere Rollen-spezifische Symbole zur Verfügung:
+    Alternativ stehen neben dem stilisiertem Symbol weitere Rollen-spezifische Symbole zur Verfügung\footnote{Diese sind jedoch nicht genormt. Theoretisch kann man beliebige Symbole verwenden}:
 
     \begin{center}
         \includegraphics[width=0.4\textwidth]{includes/figures/defi_diagrams_use_case_akteur_types.pdf}
@@ -159,6 +159,8 @@
 \begin{diag}{Systeme und Grenzen (Use-Case-Diagramm)}
     Um das Gesamtsystem aus fachlicher Sicht einzuordnen, kann man Anwendungsfalls-Gruppen in einem \emph{System} zusammenfügen.
     Diese Systeme grenzen verschiedene fachliche Teile, Aufgaben bzw. Verantwortungsbereiche voneinander ab.
+
+    Man sollte immer mindestens ein System haben, indem sich die Use-Cases befinden.
 
     %Dabei dient die Einteilung nicht als technische Analyse!
 \end{diag}
@@ -220,6 +222,8 @@
     \end{itemize}
 
     Obacht: Bei der Angabe mehrerer Assoziationen ist die Reihenfolge nicht festgelegt.
+    Ebenfalls ist nicht festgelegt, ob zuerst die \emph{includes} oder der Use-Case selber ausgeführt wird.
+    Sollte die Reihenfolge relevant sein, sollte man dies in einem Kommentar erwähnen.
 \end{diag}
 
 \begin{example}{Use-Case-Diagramm}
@@ -238,14 +242,14 @@
         Eingabe / Ausgabe & E: Altes Team, Modifikation, A: Neues Team                                                         \\\hline
         Nachbedingung     & Pokémon wurden gewählt und getauscht                                                               \\\hline
         Ablauf            & \begin{enumerate}
-            \item ProtagonistIn betritt das Pokémon-Center
-            \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
-            \item Solange ProtagonistIn nicht fertig
-                  \begin{enumerate}
+                                \item ProtagonistIn betritt das Pokémon-Center
+                                \item ProtagonistIn meldet sich am Pokémon-Lagerungsystem an
+                                \item Solange ProtagonistIn nicht fertig
+                                      \begin{enumerate}
                       \item Wähle auszutauschendes Pokémon
                       \item Wähle einzutauschendes Pokémon
                   \end{enumerate}
-        \end{enumerate}                                                                        \\\hline
+                            \end{enumerate}                                        \\\hline
     \end{tabularx}
 \end{example}
 
@@ -277,7 +281,7 @@
 \begin{diag}{Aktivitätsdiagramm mit Schwimmlinien (Aufbau)}
     Alternativ kann das Aktivitätsdiagramm auf verschiedene Akteure aufgeteilt werden.
     Jeder Akteur erhält einen Verantwortungsbereich bzw eine eigene Partition, auf der alle Aktionen des Akteurs ausgeführt werden.
-    Solche Diagramme ebenfalls können von einer Aktivitätsbeschreibung umrandet werden.
+    Solche Diagramme können ebenfalls von einer Aktivitätsbeschreibung umrandet werden.
     \begin{center}
         \includegraphics[width=0.6\textwidth]{includes/figures/defi_diagrams_activity_partitions.pdf}
     \end{center}
@@ -354,6 +358,9 @@
     \begin{itemize}
         \item Führt mehrere unabhängige Kanten in einem gemeinsamen Programmfluss zusammen.
               Dabei ist es egal, wie viele Token aus welchen Kanten ankommen - jedes Token wird von dem Verbindungsknoten direkt weitergeleitet.
+        \item Wenn mehrere eingehende Kanten in eine Aktion führen, sollte man Verbindungsknoten nutzen.
+              Wenn diese Kanten direkt in der Aktion enden, wird implizit synchronisiert - dementsprechend muss aus jeder Kante ein Token empfangen werden.
+              Analog zu Synchronisationsknoten.
     \end{itemize}
 \end{diag}
 
@@ -367,7 +374,7 @@
         \item Teilt den Ablauf einer eingehenden Kante in mehrere parallele Abläufe auf.
               Dabei muss der Parallelisierungsknoten \emph{exakt so viele} Tokens weitergeben, wie ausgehenden Kanten vorhanden sind.
         \item Ermöglicht Nebenläufigkeit von Aktionen.
-        \item Kontroll- bzw. Objektfluss muss am Ende wieder zusammengefasst oder getrennt werden.
+        \item Kontroll- bzw. Objektfluss muss am Ende wieder zusammengefasst oder beendet werden.
     \end{itemize}
 
     \textbf{Synchronisationsknoten}:
@@ -443,6 +450,20 @@
     \end{itemize}
 \end{defi}
 
+\begin{diag}{Pakete}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_class_package.pdf}
+    \end{wrapfigure}
+    %
+    In der UML dienen \emph{Pakete} zur hierarchisch geschachtelten Strukturierung großer Modelle.
+    Jedes Modellelement gehört zu höchstens einem Paket, kann jedoch in mehreren Modellen vorkommen.
+
+    So kann man eine angemessen große Menge modular zerlegter Objekte zu einer logisch geschlossenen Einheit zusammenfassen, welche in größeren Diagrammen genutzt wird.
+
+    Pakete verfolgen das Prinzip der \emph{hohen Kohäsion} und \emph{losen Kopplung}.
+\end{diag}
+
 % \begin{defi}{Klassendiagramm (Aufbau)}
 %     \begin{center}
 %         \includegraphics[width=0.35\textwidth]{includes/figures/03_class_diagram.pdf}
@@ -471,7 +492,7 @@
         \item \texttt{\{id\}}: Attribut entspricht einem Primärschlüssel
         \item \texttt{\{readOnly\}}
         \item \texttt{\{frozen\}} bzw. \texttt{\{immutable\}}
-        \item \texttt{\{abstract\}}\footnote{alternativ kann man das jeweilige Objekt in kursiv schreiben}
+        \item \texttt{\{abstract\}}\footnote{alternativ kann man das jeweilige Objekt in kursiv schreiben; Dies ist jedoch in der Klausur nicht erwünscht.}
         \item \texttt{static}: Das jeweilige Objekt muss unterstrichen sein
         \item \texttt{generic} bzw Parametrisiert : Die Klasse wird mit einem kleinen Kasten gekennzeichnet, indem alle generischen Typen zu finden sind.
         \item Kollektionen
@@ -485,9 +506,9 @@
 \begin{diag}{Attribut (Klassendiagramm)}
     Jedes \emph{Attribut} benötigt eine Typangabe\footnote{Man achte auf die exakte Schreibweise; (Primitive-) Datentypen werden groß- und ausgeschrieben}.
 
-    Der Typ wird nach dem kleingeschriebenen Attributnamen mit einem \texttt{:} angegeben.
+    Der Typ wird nach dem (kleingeschriebenen) Attributnamen mit einem \texttt{:} angegeben.
 
-    Attribute, welche als Fremdschlüssel für andere Klassen dienen, können ebenfalls aufgeführt werden.
+    Attribute, welche als Referenz für andere Klassen dienen, können ebenfalls aufgeführt werden.
     Alternativ schreibt man die Bezeichnung an die Assoziation.\footnote{Siehe Navigierbarkeit, Erreichbarkeit}
 
     Multiplizitäten für Kollektionen:
@@ -529,6 +550,19 @@
     \end{itemize}
 \end{diag}
 
+\begin{diag}{Generalisierung}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_class_vererbung.pdf}
+    \end{wrapfigure}
+    %
+    Eine \emph{Generalisierung} in der UML ist eine gerichtete Beziehung zwischen einer speziellen und einer genereller Klasse.
+
+    Instanzen der speziellen Klasse sind damit auch Instanzen der generellen Klasse.
+
+    Die Klasse \emph{K1} \emph{erbt} z.B. von der Klasse \emph{K2}.
+\end{diag}
+
 \begin{diag}{Assoziation}
     Eine \emph{Assoziation} ist dann navigierbar, wenn Objekte der adjazenten Klasse erreichbar sind.
 
@@ -550,7 +584,7 @@
     Sollte die Klasse erreichbar sein, muss man eine Leseoperation zur Verfügung stellen.
     Des Weiteren muss man sich überlegen, wie man das Objekt erreichen kann:
     \begin{itemize}
-        \item Als Attribut in einer Klasse (siehe rechts)
+        \item Als Attribut bzw. Rolle in einer Klasse (siehe rechts)
         \item In Datencontainern, wie \texttt{Hashtables}
         \item \ldots
     \end{itemize}
@@ -570,19 +604,6 @@
     Diese werden direkt an die Klasse geschrieben.
 \end{diag}
 
-\begin{diag}{Generalisierung}
-    \begin{wrapfigure}{r}{0.25\textwidth}
-        \centering
-        \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_class_vererbung.pdf}
-    \end{wrapfigure}
-    %
-    Eine \emph{Generalisierung} in der UML ist eine gerichtete Beziehung zwischen einer speziellen und einer genereller Klasse.
-
-    Instanzen der speziellen Klasse sind damit auch Instanzen der generellen Klasse.
-
-    Die Klasse \emph{K1} \emph{erbt} z.B. von der Klasse \emph{K2}.
-\end{diag}
-
 \begin{diag}{Aggregation und Komposition}
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
@@ -599,23 +620,11 @@
         \item \textbf{Komposition} bzw. Aggregationskomposition:
 
               Das Teilobjekt ist von der Existenz des Ganzen abhängig.
-              Es kann nicht ohne existieren.
+              Es kann nicht ohne existieren und ist immer maximal einem Aggregat zugeordnet.
     \end{itemize}
 \end{diag}
 
-\begin{diag}{Pakete}
-    \begin{wrapfigure}{r}{0.25\textwidth}
-        \centering
-        \includegraphics[width=0.25\textwidth]{includes/figures/defi_diagrams_class_package.pdf}
-    \end{wrapfigure}
-    %
-    In der UML dienen \emph{Pakete} zur hierarchisch geschachtelten Strukturierung großer Modelle.
-    Jedes Modellelement gehört zu höchstens einem Paket, kann jedoch in mehreren Modellen vorkommen.
-
-    So kann man eine angemessen große Menge modular zerlegter Objekte zu einer logisch geschlossenen Einheit zusammenfassen, welche in größeren Diagrammen genutzt wird.
-
-    Pakete verfolgen das Prinzip der \emph{hohen Kohäsion} und \emph{losen Kopplung}.
-\end{diag}
+\newpage
 
 \begin{defi}{Kohäsion}
     \emph{Kohäsion} beschreibt die Kräfte, die ein Modul im Inneren zusammenhalten.
@@ -762,6 +771,9 @@
               \end{enumerate}
     \end{itemize}
 
+    Bei Antworten auf Methodenaufrufe sollte man die empfangene Nachricht erneut mitsenden.
+    Um die Parameter nicht wiederholen zu müssen, kann man diese mit \enquote{-} abkürzen.\footnote{Dementsprechend wird auf \texttt{msg(1,"Test", true)} z.B. \texttt{ok = msg(-, -, -)} geantwortet}
+
     Es ist ebenfalls möglich, dass Instanzen Nachrichten an sich selber senden.
     Diese Starten einen neuen Aktionsbalken in dem aktuellen Aktionsbalken.
 
@@ -774,6 +786,7 @@
 
     Alternativ kann man ebenfalls ein neues Objekt mit einer Nachricht erstellen.
     Als Nachrichtenparameter dienen hierbei die für den Konstruktor relevanten Attribute.
+    Diese werden meist mit \texttt{create()} oder \texttt{new()} beschriftet.
 
     Dabei stehen einem natürlich alle unter \emph{Lebenslinien} beschriebenen Optionen für Objekte bzw. Instanzen zur Verfügung.
 \end{diag}
@@ -867,9 +880,39 @@
 
     Bei der Angabe von mehreren Unterzuständen werden alle parallel ausgeführt.
 
-    Obacht: Wenn eine Transition aus dem Unterzustand den Zustand verlässt, jedoch direkt denselben Unterzustand erneut betritt, wird das \emph{entry} bzw \emph{exit} Verhalten des Zustands ausgeführt.
-    Beim Internen Wechsel von Unterzuständen passiert dies nicht.
+    Obacht: Wenn eine Transition aus dem Unterzustand den Oberzustand verlässt und denselben Unterzustand erneut betritt, wird das \emph{entry} bzw \emph{exit} Verhalten des Oberzustands ausgeführt.
 \end{diag}
+
+\begin{example}{Selbstransitionen (Zustandsautomaten)}
+    \begin{wrapfigure}{r}{0.25\textwidth}
+        \centering
+        \includegraphics[width=0.2\textwidth]{includes/figures/example_diagrams_state_entry.pdf}
+    \end{wrapfigure}
+    Beim Wechsel der Zustände wird folgendes ausgeführt:
+    \begin{itemize}
+        \item \textbf{Startzustand in Z1 a}
+              \begin{itemize}
+                  \item \emph{entry} Z1 a
+              \end{itemize}
+        \item \textbf{Z1 a in Z1 b}
+              \begin{itemize}
+                  \item \emph{exit} Z1 a
+                  \item \emph{entry} Z1 b
+              \end{itemize}
+        \item \textbf{Z1 b in Z1 b}
+              \begin{itemize}
+                  \item \emph{exit} Z1 b
+                  \item \emph{entry} Z1 b
+              \end{itemize}
+        \item \textbf{Z1 b in Z1 a}
+              \begin{itemize}
+                  \item \emph{exit} Z1 b
+                  \item \emph{exit} Z1
+                  \item \emph{entry} Z1
+                  \item \emph{entry} Z1 a
+              \end{itemize}
+    \end{itemize}
+\end{example}
 
 \begin{diag}{Transition (Zustandsautomaten)}
     \begin{wrapfigure}{r}{0.25\textwidth}
@@ -884,6 +927,7 @@
     \begin{itemize}
         \item stoßen eine Transition an
         \item Mehrere Trigger werden durch Kommata getrennt
+        \item Es muss immer ein Trigger angegeben sein
     \end{itemize}
 
     \textbf{Guard}:
@@ -1054,11 +1098,9 @@
     Dementsprechend sind Pseudozustände nicht erlaubt.
 
     Bei Unterzuständen kann man die Trennlinie weglassen.
-    Dort wird jede Region automatisch parallel gestartet.
+    Dort wird jede durch gestrichelte Linien getrennte Region automatisch parallel gestartet.
 
     Wenn man jedoch auf einer Ebene Parallelitäten erstellen möchte, muss man Trennlinien und Joins benutzen.
-
-    \vspace{0.5cm}
 \end{diag}
 
 \begin{diag}{Historie (Zustandsautomaten)}
