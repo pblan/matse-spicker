@@ -1,3 +1,4 @@
+// Constructor: BattlePokemon(String name, int hp, int atk)
 BattlePokemon pikachu = new BattlePokemon("Pikachu", 274, 229);
 BattlePokemon charmander = new BattlePokemon("Charmander", 282, 223);
 pikachu.setStatusEffect(new Burn());
