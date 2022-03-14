@@ -1,0 +1,43 @@
+\documentclass[border=5mm]{standalone}
+\usepackage{fontspec}
+\setmainfont{Tex Gyre Pagella}
+\usepackage{luamplib}
+\begin{document}
+\mplibtextextlabel{enable}
+\begin{mplibcode}
+    beginfig(1);
+    numeric s;
+    picture target, hit;
+    s = 24;
+    target = image(for r=4 downto 1:
+    fill fullcircle scaled (r*s) withcolor if r=3: (.6,.7,.8) elseif r=1: (.6,.3,.3) else: white fi;
+    draw fullcircle scaled (r*s);
+    endfor);
+    hit  = image(fill fullcircle scaled 3 withcolor .8 blue;
+    draw fullcircle scaled 3;);
+    picture A, B, C, D;
+    A = target shifted (-2.25s,+2.25s);
+    B = target shifted (+2.25s,+2.25s);
+    C = target shifted (-2.25s,-2.25s);
+    D = target shifted (+2.25s,-2.25s);
+
+    % mark "n" hits centered at "p" with "r" degree of scattering
+    vardef mark_hits(expr n, p, r) =
+    for i=1 upto n:
+    draw hit shifted p shifted (r * normaldeviate, r * normaldeviate);
+    endfor
+    enddef;
+
+    draw A; mark_hits(12, center A, 3);
+    draw B; mark_hits(12, center B, 12);
+    draw C; mark_hits(12, center C shifted (-s/2,s/2), 3);
+    draw D; mark_hits(12, center D shifted (s/2,-s/2),12);
+
+    label.top("\strut Low Variance",  1/2[ulcorner A, urcorner A]);
+    label.top("\strut High Variance", 1/2[ulcorner B, urcorner B]);
+    label.lft(textext("\strut Low Bias")  rotated 90, 1/2[llcorner A, ulcorner A] shifted 12 left);
+    label.lft(textext("\strut High Bias") rotated 90, 1/2[llcorner C, ulcorner C] shifted 12 left);
+
+    endfig;
+\end{mplibcode}
+\end{document}

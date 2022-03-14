@@ -1,5 +1,239 @@
 \section{Unsupervised Learning}
 
-\subsection{Dimensionsreduktionsverfahren: PCA, Kernel-PCA, LDA}
+\subsection{Dimensionsreduktion}
 
-\subsection{Clusteringverfahren: K-Means, Spectral Clustering}
+\begin{defi}{Dimensionsreduktionstechnik}
+    \emph{Dimensionsreduktionstechniken} reduzieren die Anzahl der Features (Merkmalen), die für Supervised oder Unsupervised Learning zur Verfügung stehen.
+    \footnote{
+        Oft mit dem Ziel, wenig Informationen dabei zu verlieren.
+    }
+
+    Ein Risiko besteht darin, dass prädikative Informationen für das Supervised Learning verloren gehen können.
+
+    Chancen sind aber:
+    \begin{itemize}
+        \item Schnellere Berechnungen durch Weglassen irrelevanter Informationen
+        \item Ermöglichung von Visualisierung der Daten (und damit der Gewinnung von Einsichten) im Rahmen einer explorativen Analyse (Data Science)
+        \item Ermöglichung besserer Generalisierung von Lernmodellen durch Entgegenwirken der Curse of Dimensionality (Fluch der Dimensionalität)
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{Curse of Dimensionality}
+    Der \emph{Curse of Dimensionality} im Kontext des Machine Learnings das Phänomen, nach dem das Volumen des Feature-Raumes dramatisch zunimmt mit der Anzahl der Dimensionen, so dass die $N$ Datenpunkte (der Trainingsmenge) nur noch spärlich (sparse) im Raum liegen.
+
+    Typische Folgen sind:
+    \begin{itemize}
+        \item Overfitting-Tendenz steigt
+        \item Rechenzeit steigt
+        \item Lernmodelle generalisieren schlecht
+    \end{itemize}
+
+    Wenn Daten nur noch spärlich den Feature-Raum ausfüllen, dann wird es schwierig, Modelle an die Daten anzupassen, die den Raum adäquat beschreiben
+\end{bonus}
+
+\begin{defi}{Principal Component Analysis}
+    Die \emph{Hauptkomponentenzerlegung} (\emph{Principal Component Analysis}, PCA) zählt zu den bekanntesten Dimensionsreduktionsverfahren.
+
+    PCA findet neue Achsen (Komponenten) für die Daten, so dass die Daten bezüglich dieser Achsen eine \emph{möglichst große Varianz} aufweisen.
+
+    Achsen, bezüglich derer die Daten kaum (oder keine) Varianz anweisen, können später weggelassen werden (Dimensionsreduktion).
+
+    Neue Achsen werden durch orthogonale Transformation erzeugt, d.h. Vektorlängen und Winkel bleiben erhalten.
+    \footnote{
+        Präziser: das innere Produkt bleibt erhalten.
+    }
+
+    Sei die \emph{Kovarianzmatrix} $S$ gegeben mit:
+    \[
+        S = \frac{1}{N} \sum_{n=1}^N (\mathbf{x}_n - \conj{\mathbf{x}_n}) (\mathbf{x}_n - \conj{\mathbf{x}_n})^T
+    \]
+
+    Dann gilt:
+    \begin{itemize}
+        \item Eigenwertzerlegung der Kovarianzmatrix $S$ liefert Eigenwerte $\lambda_j$ und -vektoren $\mathbf{u}_j$.
+        \item Wir sortieren nach Größe der Eigenwerte und erhalten die Richtungen der PCA über die zu den Eigenwerten assoziierten Eigenvektoren von S.
+    \end{itemize}
+
+    PCA kann als Transformation interpretiert werden, die die Achsen des Koordinatensystems so rotiert, dass die Varianz der Projektion der Daten auf der ersten Achse maximiert wird.
+
+    Der Mittelwert der Daten beeinflusst die PCA-Koordinaten:
+    \begin{itemize}
+        \item Daten mit Schwerpunkt (Mittelwert), der nicht dem Koordinatenursprung entspricht, haben nach PCA-Transformation in den neuen Koordinaten typischerweise Offsets, die meist nicht gut interpretierbar sind.
+        \item PCA-Richtungen ändern sich nicht unter Änderung des Schwerpunkts der Daten. Grund: Kovarianzmatrix ist invariant\footnote{Die Kovarianzmatrix verändert sich nicht.} unter Transformation der Mittelwerte.
+        \item Manche Software-Implementierungen nutzen für die PCA nicht die Kovarianzmatrix. Dort kann die PCA von den Mittelwerten der Daten abhängen.
+    \end{itemize}
+
+    \emph{Jedes Merkmal sollte auf den Mittelwert $0$ zentriert werden}:
+    \[
+        \tilde{x}_i = x_i - \conj{x}, \forall i
+    \]
+
+    Die Skalierung der Daten beeinflusst PCA:
+    \begin{itemize}
+        \item Die Skalen, in der ein Merkmal angegeben wird beeinflusst die Varianz dieses Merkmals.
+        \item Die Ergebnisse der PCA ist abhängig von den Varianzen der Merkmale.
+    \end{itemize}
+
+    \emph{Jedes Merkmal sollte auf eine Varianz von $1$ skaliert werden, damit die Ergebnisse der PCA nicht von der (eventuell) willkürlichen Wahl der Skalen der Merkmale abhängig ist}:
+    \[
+        \tilde{x}_i = \frac{x_i}{\sigma}, \forall i
+    \]
+\end{defi}
+
+\begin{bonus}{Standardisierung}
+    \emph{Standardisierung} bzw. \emph{z-scoring} beschreibt die Transformation eines Merkmals $X$, so dass es Mittelwert $0$ und Varianz $1$ aufweist.
+    Das Merkmal wird also \emph{zentriert} und \emph{skaliert}.
+
+    Sei $\conj{X}$ der Mittelwert und $\sigma$ die Standardabweichung von $X$.
+
+    Das \emph{standardisierte Merkmal} bzw. der \emph{z-score} $Z$ wird erzeugt durch:
+    \[
+        Z = \frac{X - \conj{X}}{\sigma}
+    \]
+
+    In der Praxis liegen sind Daten oft in Matrizen organisiert, in denen jede Spalte einem Merkmal entsprechen.
+    In diesem Fall standardisiert man jedes Merkmal, indem jede Spalte separat auf Mittelwert 0 und Varianz 1 transformiert wird.
+\end{bonus}
+
+\begin{defi}{Proportion of Variance Explained}
+    \emph{Proportion of Variance Explained} (PVE) beschreibt den Bruchteil der Gesamtvarianz der Merkmale, die über die PCA-Komponenten repräsentiert wird.
+
+    Die Varianz der $j$-ten Komponente ist:\footnote{Entspricht also dem jeweiligen Eigenwert.}
+    \[
+        \Var(Z_j) = \Var(\mathbf{u}_j^T \mathbf{x}) = \mathbf{u}_j^T \mathbf{S} \mathbf{u}_j = \mathbf{u}_j^T \lambda_j \mathbf{u}_j = \lambda_j
+    \]
+
+    Die Gesamtvarianz über alle Merkmale ist dann:
+    \[
+        \Var_\text{total} = \sum_{j=1}^D \Var(Z_j) = \sum_{j=1}^D \lambda_j
+    \]
+
+    Dann ist die $PVE(j)$ der $j$-ten PCA-Komponente definiert als:
+    \[
+        \PVE(j) = \frac{\Var(Z_j)}{\Var_\text{total}} = \frac{\lambda_j}{\sum_{j=1}^D \lambda_j}
+    \]
+\end{defi}
+
+\begin{defi}{Kernel PCA}
+    PCA ist oft nicht hilfreich, wenn Daten nichtlinear strukturiert sind.
+    Die Idee von \emph{Kernel PCA} ist, dass ähnlich wie bei Support Vector Machines der Kernel Trick angewandt wird.
+
+    Der Vorgang ist wie folgt:
+    \begin{enumerate}
+        \item Wählen eines Kernels, z.B. Gaußscher RBF Kernel:
+              \[
+                  K(\mathbf{x}_i, \mathbf{x}_j) = \exp\left( -\gamma \norm{\mathbf{x}_i - \mathbf{x}_j}^2 \right)
+              \]
+        \item Bestimmen und zentrieren der Kernelmatrix:
+              \[
+                  \tilde{K} = K - \mathbf{1}_N K - K \mathbf{1}_N + \mathbf{1}_N K \mathbf{1}_N \quad \text{mit} \quad (K)_{ij} = K(\mathbf{x}_i, \mathbf{x}_j), \, (\mathbf{1}_N)_{ij} = \frac{1}{N}
+              \]
+        \item Lösen des Eigenwertproblems:
+              \[
+                  \tilde{K} \vec{\alpha}_j = N \lambda_j \vec{\alpha}_j = \tilde{\lambda}_j \vec{\alpha}_j
+              \]
+        \item Normieren der Eigenvektoren:
+              \[
+                  \vec{\alpha}_j \to \tilde{\vec{\alpha}}_j = \frac{1}{\sqrt{\tilde{\lambda}_j}} \frac{\vec{\alpha}_j}{\norm{\vec{\alpha}_j}} \quad \forall j
+              \]
+        \item Projizieren der Daten auf die neue $j$-te kPCA-Achse:
+              \[
+                  \Phi(\mathbf{x})^T \tilde{\mathbf{u}}_j = \sum_l \tilde{\alpha}_{jl} K(\mathbf{x}, \mathbf{x}_l)
+              \]
+    \end{enumerate}
+
+    kPCA erlaubt nichtlinearen Dimensionsreduktion!
+\end{defi}
+
+% \begin{defi}{Kernel PCA}
+%     PCA ist oft nicht hilfreich, wenn Daten nichtlinear strukturiert sind.
+%     Die Idee von \emph{Kernel PCA} ist, dass ähnlich wie bei Support Vector Machines der Kernel Trick angewandt wird.
+
+%     Der Vorgang ist wie folgt:
+%     \begin{enumerate}
+%         \item Umformulieren der PCA mit nichtlinearer Transformation:
+%               \begin{itemize}
+%                   \item $N$ Datensätze mit $D$ Merkmalen
+%                   \item Kovarianzmatrix $S$ wird umformuliert mit $\mathbf{x}_i \to \Phi(\mathbf{x}_i)$. Dann ist $S$:\footnote{Die Differenz mit $\conj{\mathbf{x}}$ bzw. $\conj{\Phi}(\mathbf{x})$ fällt weg, da der Mittelwert $0$ sein wird aufgrund der folgenden Standardisierung.}
+%                         \[
+%                             S = \frac{1}{N} \sum_{i=1}^N (\Phi(\mathbf{x}_i) - \conj{\Phi}(\mathbf{x})) (\Phi(\mathbf{x}_i) - \conj{\Phi}(\mathbf{x}))^T = \frac{1}{N} \sum_{i=1}^N \Phi(\mathbf{x}_i) \Phi(\mathbf{x}_i)^T
+%                         \]
+%               \end{itemize}
+%         \item Darstellung der Eigenvektoren als Linearkombination der transformierten Features:
+%               \begin{itemize}
+%                   \item Wir erhalten die Achsen der (klassischen) PCA durch die Eigenvektoren $u_j$ der Kovarianzmatrix. Es gilt:
+%                         \[
+%                             S \mathbf{u}_j = \lambda_j \mathbf{u}_j \quad \text{und} \quad \mathbf{u}_j = \sum_l \alpha_{jl} \Phi(\mathbf{x}_l)
+%                         \]
+%                   \item[$\implies$] Das Auffinden der PCA-Richtungen entspricht dem Bestimmen der Koeffizienten.
+%               \end{itemize}
+%         \item Finden der Eigenvektoren:
+%               \begin{itemize}
+%                   \item Es gilt ($\tilde{\lambda}_j := N \lambda_j$):
+%                         \[
+%                             K \vec{\alpha}_j = N \lambda_j \vec{\alpha}_j = \tilde{\lambda}_j \vec{\alpha}_j
+%                         \]
+%                   \item Die Koeffizienten $\alpha_{jl}$ entsprechen also den Komponenten der Eigenvektoren der Kernel-Matrix und sind dadurch bestimmbar.
+%               \end{itemize}
+%         \item Normierung der Eigenvektoren:
+%               \begin{itemize}
+%                   \item Aus der Normierung der Eigenvektoren (bei der klassischen PCA) ergibt sich eine Normierungsbedingung für die Koeffizienten $\alpha_{jl}$:
+%                         \[
+%                             \vec{\alpha}_j \to \tilde{\vec{\alpha}}_j = \frac{1}{\sqrt{\tilde{\lambda}_j}} \frac{\vec{\alpha}_j}{\norm{\vec{\alpha}_j}} \quad \forall j
+%                         \]
+%               \end{itemize}
+%         \item Projektion auf kPCA Achsen:
+%               \begin{itemize}
+%                   \item Wir betrachten die Projektion eines beliebigen Featurevektors $\mathbf{x}$ aus dem Featureraum auf die $j$-te Achse der Kernel PCA (kPCA):
+%                         \[
+%                             \Phi(\mathbf{x})^T \tilde{\mathbf{u}}_j = \sum_l \tilde{\alpha}_{jl} K(\mathbf{x}, \mathbf{x}_l)
+%                         \]
+%               \end{itemize}
+%         \item Zentrieren der Features:
+%               \begin{itemize}
+%                   \item Normieren der Features:
+%                         \[
+%                             \tilde{\Phi}(\mathbf{x}_i) = \Phi(\mathbf{x}_i) - \frac{1}{N} \sum_l \Phi(\mathbf{x}_l)
+%                         \]
+%                   \item Zentrieren der Kernelmatrix (mit $\mathbf{1}_N$ $N \times N$ Matrix, in der jeder Eintrag $\nicefrac{1}{N}$ ist):
+%                         \[
+%                             \tilde{K} = K - \mathbf{1}_N K - K \mathbf{1}_N + \mathbf{1}_N K \mathbf{1}_N
+%                         \]
+%               \end{itemize}
+%     \end{enumerate}
+% \end{defi}
+
+\begin{defi}{Linear Discriminant Analysis}
+    Gegeben seien:
+    \begin{itemize}
+        \item Daten $(\mathbf{x}_i, y_i)$ ($i=1,\ldots,N$), wobei $(\mathbf{x}_i)_j$ das $j$-te Feature des $i$-ten Datenpunktes ist.
+        \item Zwei Klassen $\mathcal{C}_1$ und $\mathcal{C}_2$ (Klassifikationsproblem)
+        \item $N_k$ Anzahl der Datenpunkte in Klasse $K$
+    \end{itemize}
+
+    Ziel der \emph{Linear Discriminant Analysis} (LDA) ist es, eine Richtung $\mathbf{u}_1$ zu finden, die die Klassen $C_1$ und $C_2$ gut trennt.
+
+    Sei $\mathbf{u}_1$ ein Richtungsvektor.
+    Die Projektion eines Datenpunktes auf $\mathbf{u}_1$ ist:
+    \[
+        \tilde{\mathbf{x}}_i = \mathbf{u}_1^T \mathbf{x}_i
+    \]
+
+    Sei $\mathbf{m}^{(k)}$ der mittlere Vektor (Mittelpunkt) aller Datenpunkte der Klasse $k$:
+    \[
+        \tilde{\mathbf{m}}^{(k)} = \frac{1}{N_k} \sum_{n \in \mathcal{C}_k}^N \mathbf{x}_n
+    \]
+    Seine Projektion ist dann:
+    \[
+        \tilde{\mathbf{m}}^{(k)} = \mathbf{u}_1^T \tilde{\mathbf{m}}^{(k)}
+    \]
+
+    Die Trennbarkeit der Klassen lässt sich dann quantifizieren durch:
+    \[
+        \Delta \tilde{\mathbf{m}} = \tilde{\mathbf{m}}^{(k)}_1 - \tilde{\mathbf{m}}^{(k)}_2
+    \]
+
+    Gesucht werden soll dann die Richtung $\mathbf{u}_1$, die den Abstand zwischen beiden projizierten Mittelpunkten maximiert.
+\end{defi}
+
+\subsection{Clusteringverfahren}
