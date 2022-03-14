@@ -8,26 +8,34 @@ class BasePokemon implements ContestPokemon {
     }
 }
 
-class SunglassesPokemon implements ContestPokemon {
+abstract class ContestPokemonDecorator implements ContestPokemon {
     protected ContestPokemon pokemon;
 
-    public SunglassesPokemon(ContestPokemon pokemon) {
+    public ContestPokemonDecorator(ContestPokemon pokemon) {
         this.pokemon = pokemon;
     }
 
     public String getDescription() {
-        return this.pokemon + " with sunglasses";
+        return this.pokemon.getDescription();
     }
 }
 
-class HatPokemon implements ContestPokemon {
-    protected ContestPokemon pokemon;
-
-    public HatPokemon(ContestPokemon pokemon) {
-        this.pokemon = pokemon;
+class SunglassesPokemonDecorator extends ContestPokemonDecorator {
+    public SunglassesPokemonDecorator(ContestPokemon pokemon) {
+        super(pokemon);
     }
 
     public String getDescription() {
-        return this.pokemon + " with a hat";
+        return super.getDescription() + " with sunglasses";
+    }
+}
+
+class HatPokemonDecorator extends ContestPokemonDecorator {
+    public HatPokemonDecorator(ContestPokemon pokemon) {
+        super(pokemon);
+    }
+
+    public String getDescription() {
+        return super.getDescription() + " with a hat";
     }
 }

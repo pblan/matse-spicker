@@ -414,6 +414,12 @@
     \end{itemize}
 \end{defi}
 
+\begin{bonus}{Zusammenhang kontrollflussgraphorientierter Testverfahren}
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{includes/figures/bonus_kontrollfluss_test.png}
+    \end{center}
+\end{bonus}
+
 \begin{bonus}{Zusammenfassung kontrollflussorienterte Testverfahren}
     \begin{tabularx}{\textwidth}{|p{4.1cm}|l|X|X|}
         \hline
@@ -459,6 +465,23 @@
     Dieser Zyklus wiederholt sich solange, bis alle JUnit-Tests wieder fehlerfrei durchlaufen.
 
     Dieses Verfahren wird auch \emph{testgetriebene Entwicklung} genannt und ist eine agile Methode.
+\end{bonus}
+
+\begin{bonus}{Test-Driven Development}
+    \emph{Test-Driven Development} TDD bzw. \emph{testgetriebene Entwicklung} ist eine Methode, die häufig bei der agilen Entwicklung von Computerprogrammen eingesetzt wird.
+    Bei der testgetriebenen Entwicklung erstellt der Programmierer Softwaretests konsequent vor den zu testenden Komponenten.
+\end{bonus}
+
+\begin{bonus}{Regressionstest}
+    Unter einem Regressionstest versteht man in der Softwaretechnik die Wiederholung von Testfällen, um sicherzustellen, dass Modifikationen in bereits getesteten Teilen der Software keine neuen Fehler (Regressionen) verursachen.
+    Solche Modifikationen entstehen regelmäßig z. B. aufgrund der Pflege, Änderung und Korrektur von Software.
+    Der Regressionstest gehört zu den dynamischen Testtechniken.
+
+    Aufgrund des Wiederholungscharakters und der Häufigkeit dieser Wiederholungen ist es sinnvoll, wenn für Regressionstests Testautomatisierung zum Einsatz kommt.
+
+    In der Praxis steht der Begriff des Regressionstests für die reine Wiederholung von Testfällen.
+    Die Testfälle selbst müssen spezifiziert und mit einem Soll-Ergebnis versehen sein, welches mit dem Ist-Ergebnis eines Testfalls verglichen wird.
+    Ein direkter Bezug auf die Ergebnisse eines vorherigen Testdurchlaufs findet nicht statt.
 \end{bonus}
 
 \begin{defi}{JUnit-Test-Fixture}
