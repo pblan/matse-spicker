@@ -72,7 +72,28 @@
 \end{defi}
 
 \begin{bonus}{Darstellung des Lernproblems}
+    \begin{center}
+        % https://tex.stackexchange.com/a/224623/243801
+        \begin{tikzpicture}
+            [myBox/.style={rectangle,
+                        draw,
+                        align=center,
+                        inner sep=2.5mm}]
 
+            \node[myBox, fill=blue!20] (unknownTargetFunction) at (-4, 4) {Unbekannte Target Function\\$f: \mathcal{X} \rightarrow \mathcal{Y}$};
+            \node[myBox, fill=blue!20] (trainingExamples) at (-4, 2) {Trainingsdaten\\$\mathcal{D} = (\mathbf{x}_1,y_1),...,(\mathbf{x}_n,y_n)$};
+            \node[myBox, fill=blue!20] (learningAlgorithm) at ( 0, 0) {Lernalgorithmus\\$\mathcal{A}$};
+            \node[myBox, fill=blue!20] (finalHypothesis) at ( 5, 0) {Finale Hypothese\\$g \approx f$};
+            \node[myBox, fill=blue!20] (hypothesisSet) at (-4,-2) {Hypothesenset\\$\mathcal{H}$};
+
+            \draw [->] (unknownTargetFunction) to (trainingExamples);
+            \draw [->] (trainingExamples) to [bend right] (learningAlgorithm.170);
+            \draw [->] (hypothesisSet) to [bend left] (learningAlgorithm.190);
+            \draw [->] (learningAlgorithm) to (finalHypothesis);
+
+            \node[draw,dashed,red,inner sep=2mm,label={[text=red]below:Lernmodell},fit=(learningAlgorithm) (hypothesisSet)] {};
+        \end{tikzpicture}
+    \end{center}
 \end{bonus}
 
 \begin{defi}{Supervised Learning}
@@ -192,7 +213,25 @@
 \end{defi}
 
 \begin{defi}{Pocket-Algorithmus}
+    Der \emph{Pocket-Algorithmus} führt einen Lernschritt mithilfe des Perzeptron-Lern-Algorithmus (PLA) durch und prüft, ob der In-Sample-Fehler nach dem Lernschritt kleiner geworden ist.
+    Falls dem so ist, merkt sich der Pocket-Algorithmus das (er \enquote{steckt den Gewichtsvektor des Perzeptron in seine Tasche} (engl. \emph{pocket})) und führt den nächsten PLA-Schritt durch.
+    Wenn der Prozess am Ende abgebrochen wird, befindet sich in seiner Tasche der Gewichtsvektor (und damit die Gerade), die die Daten am besten (d.h. mit kleinstem In-Sample-Fehler) separiert.
 
+    Der Algorithmus ist wie folgt:
+
+    Sei $\mathbf{\hat{w}}$ der Gewichtsvektor des Pocket-Algorithmus.
+    Sei $t$ eine Laufvariable, die von $0$ bis $(T-1)$ läuft.
+    Sei $\mathbf{{w}}^{(t)}$ der Gewichtsvektor von PLA zum Iterationsschritt $t$.
+    \begin{enumerate}
+        \item Setze $\mathbf{\hat{w}}=\mathbf{w}^{(0)}=\mathbf{0}$. Setze den In-Sample Fehler $E_{\text{in}}(\mathbf{\hat{w}}) = 1$.
+        \item Für $t=0,\ldots,T-1$, führe aus:
+              \begin{enumerate}
+                  \item Starte PLA mit $\mathbf{w}^{(t)}$ und lasse PLA ein einziges Gewichtsupdate durchführen. Erhalte $\mathbf{w}^{(t+1)}$.
+                  \item Ermittle den In-Sample Fehler $E_{\text{in}}(\mathbf{w}^{(t+1)})$ für den Trainingsdatensatz.
+                  \item Wenn $E_{\text{in}}(\mathbf{w}^{(t+1)}) < E_{\text{in}}(\mathbf{\hat{w}})$, dann setze  $\mathbf{\hat{w}}=\mathbf{w}^{(t+1)}$
+              \end{enumerate}
+        \item Gebe $\mathbf{\hat{w}}$ zurück.
+    \end{enumerate}
 \end{defi}
 
 \begin{defi}{Trainings- und Testset}
@@ -231,6 +270,36 @@
 
 \begin{bonus}{Darstellung des Lernproblems}
 
+    \begin{center}
+        % https://tex.stackexchange.com/a/224623/243801
+        \begin{tikzpicture}
+            [myBox/.style={rectangle,
+                        draw,
+                        align=center,
+                        inner sep=2.5mm}]
+
+            \node[myBox, fill=blue!20] (unknownTargetFunction) at (-4, 4) {Unbekannte Target Function\\$f: \mathcal{X} \rightarrow \mathcal{Y}$};
+            \node[myBox, fill=blue!20] (trainingExamples) at (-4, 2) {Trainingsdaten\\$\mathcal{D} = (\mathbf{x}_1,y_1),...,(\mathbf{x}_n,y_n)$};
+            \node[myBox, fill=blue!20] (learningAlgorithm) at ( 0, 0) {Lernalgorithmus\\$\mathcal{A}$};
+            \node[myBox, fill=blue!20] (finalHypothesis) at ( 5, 0) {Finale Hypothese\\$g \approx f$};
+            \node[myBox, fill=blue!20] (hypothesisSet) at (-4,-2) {Hypothesenset\\$\mathcal{H}$};
+
+            \node[myBox, fill=red!20] (probabilityDistribution) at (5,4) {Unbekannte\\Wahrscheinlichkeitsverteilung\\$P(\mathbf{x})$};
+
+            \node[red] (x) at (2, 2) {$\mathbf{x}_1, \ldots, \mathbf{x}_N$};
+
+            \draw [->] (unknownTargetFunction) to (trainingExamples);
+            \draw [->] (trainingExamples) to [bend right] (learningAlgorithm.170);
+            \draw [->] (hypothesisSet) to [bend left] (learningAlgorithm.190);
+            \draw [->] (learningAlgorithm) to (finalHypothesis);
+
+            \draw [->, red] (probabilityDistribution) to [bend left] (x.east);
+            \draw [->, red] (x) to (trainingExamples);
+            \draw [->, red] (probabilityDistribution) to node [midway, right] {$\mathbf{x}$} (finalHypothesis) ;
+
+            %\node[draw,dashed,red,inner sep=2mm,label={[text=red]below:Lernmodell},fit=(learningAlgorithm) (hypothesisSet)] {};
+        \end{tikzpicture}
+    \end{center}
 \end{bonus}
 
 \begin{defi}{Target Verteilung}
@@ -251,6 +320,37 @@
 \end{defi}
 
 \begin{bonus}{Darstellung des Lernproblems}
+
+    \begin{center}
+        % https://tex.stackexchange.com/a/224623/243801
+        \begin{tikzpicture}
+            [myBox/.style={rectangle,
+                        draw,
+                        align=center,
+                        inner sep=2.5mm}]
+
+            \node[myBox, fill=red!20] (unknownTargetDistribution) at (-4, 4) {Unbekannte Target Verteilung\\$P(y \mid \mathbf{x})$};
+            \node[myBox, fill=blue!20] (trainingExamples) at (-4, 2) {Trainingsdaten\\$\mathcal{D} = (\mathbf{x}_1,y_1),...,(\mathbf{x}_n,y_n)$};
+            \node[myBox, fill=blue!20] (learningAlgorithm) at ( 0, 0) {Lernalgorithmus\\$\mathcal{A}$};
+            \node[myBox, fill=blue!20] (finalHypothesis) at ( 5, 0) {Finale Hypothese\\$g \approx f$};
+            \node[myBox, fill=blue!20] (hypothesisSet) at (-4,-2) {Hypothesenset\\$\mathcal{H}$};
+
+            \node[myBox, fill=red!20] (probabilityDistribution) at (5,4) {Unbekannte\\Wahrscheinlichkeitsverteilung\\$P(\mathbf{x})$};
+
+            \node[red] (x) at (2, 2) {$\mathbf{x}_1, \ldots, \mathbf{x}_N$};
+
+            \draw [->] (unknownTargetDistribution) to (trainingExamples);
+            \draw [->] (trainingExamples) to [bend right] (learningAlgorithm.170);
+            \draw [->] (hypothesisSet) to [bend left] (learningAlgorithm.190);
+            \draw [->] (learningAlgorithm) to (finalHypothesis);
+
+            \draw [->, red] (probabilityDistribution) to [bend left] (x.east);
+            \draw [->, red] (x) to (trainingExamples);
+            \draw [->, red] (probabilityDistribution) to node [midway, right] {$\mathbf{x}$} (finalHypothesis) ;
+
+            %\node[draw,dashed,red,inner sep=2mm,label={[text=red]below:Lernmodell},fit=(learningAlgorithm) (hypothesisSet)] {};
+        \end{tikzpicture}
+    \end{center}
 
 \end{bonus}
 
@@ -292,8 +392,6 @@
 \end{defi}
 
 \begin{defi}{Lineare Regression}
-    Gegeben sei ein Datensatz $\mathcal{D}: (\mathbf{x}_1, y_1), \ldots, (\mathbf{x}_N, y_N)$, mit Feature Vectors $\mathbf{x}_i$ und Targets $y_i$.
-
     Die unbekannte Target Function sei eine bedingte Wahrscheinlichkeitsverteilung $P(y \mid x)$ statt einer deterministischen Target Function $y = f(\mathbf{x})$.
 
     Wir nehmen an, dass eine \emph{lineare Kombination} der Features $\mathbf{x}$ die Target Function approximiert.
@@ -315,10 +413,10 @@
         E_\text{in}(\mathbf{w}) = \frac{1}{N} \sum_{i=1}^N ( \mathbf{w}^T \mathbf{x}_i) - y_i)^2 = \frac{1}{N} \cdot \norm{\mathbf{X} \mathbf{w} - \mathbf{y}}^2
     \]
 
-    Gefunden werden soll also ein $\mathbf{w}$, sodass $E_\text{in}$ minimal ist:
-    \[
-        \mathbf{w}_\text{lin} = \arg\min_\mathbf{w} E_\text{in}(\mathbf{w})
-    \]
+    Gefunden werden soll also ein $\mathbf{w}$, sodass $E_\text{in}$ minimal ist.\footnote{$\mathbf{w}_\text{lin} = \arg\min_\mathbf{w} E_\text{in}(\mathbf{w})$}
+    % \[
+    %     \mathbf{w}_\text{lin} = \arg\min_\mathbf{w} E_\text{in}(\mathbf{w})
+    % \]
 
     Es gilt (wobei $\mathbf{X}^\dagger$ die Pseudoinverse von $\mathbf{X}$ ist):
     \[

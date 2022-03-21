@@ -25,6 +25,39 @@
 
 \begin{bonus}{Darstellung des Lernproblems}
 
+    \begin{center}
+        % https://tex.stackexchange.com/a/224623/243801
+        \begin{tikzpicture}
+            [myBox/.style={rectangle,
+                        draw,
+                        align=center,
+                        inner sep=2.5mm}]
+
+            \node[myBox, fill=blue!20] (unknownTargetFunction) at (-4, 4) {Unbekannte Target Function\\$f: \mathcal{X} \rightarrow \mathcal{Y}$};
+            \node[myBox, fill=blue!20] (trainingExamples) at (-4, 2) {Trainingsdaten\\$\mathcal{D} = (\mathbf{x}_1,y_1),...,(\mathbf{x}_n,y_n)$};
+            \node[myBox, fill=blue!20] (learningAlgorithm) at ( 0, 0) {Lernalgorithmus\\$\mathcal{A}$};
+            \node[myBox, fill=blue!20] (finalHypothesis) at ( 5, 0) {Finale Hypothese\\$g \approx f$};
+            \node[myBox, fill=blue!20] (hypothesisSet) at (-4,-2) {Hypothesenset\\$\mathcal{H}$};
+
+            \node[myBox, fill=red!20] (probabilityDistribution) at (5,4) {Unbekannte\\Wahrscheinlichkeitsverteilung\\$P(\mathbf{x})$};
+
+            \node (x) at (2, 2) {$\mathbf{x}_1, \ldots, \mathbf{x}_N$};
+
+            \draw [->] (unknownTargetFunction) to (trainingExamples);
+            \draw [->] (trainingExamples) to [bend right] (learningAlgorithm.170);
+            \draw [->] (hypothesisSet) to [bend left] (learningAlgorithm.190);
+            \draw [->] (learningAlgorithm) to (finalHypothesis);
+
+            \draw [->] (probabilityDistribution) to [bend left] (x.east);
+            \draw [->] (x) to (trainingExamples);
+            \draw [->] (probabilityDistribution) to node [midway, right] {$\mathbf{x}$} (finalHypothesis);
+
+            \begin{scope}[on background layer]
+                \node[draw=none,opacity=.2,rounded rectangle,fill=red!50,fit=(finalHypothesis.north) (probabilityDistribution.south) (x.east)] {};
+            \end{scope}
+
+        \end{tikzpicture}
+    \end{center}
 \end{bonus}
 
 \begin{defi}{Data Snooping}
@@ -439,7 +472,66 @@
 \end{defi}
 
 \begin{example}{Information Gain}
+    \begin{center}
+        \includegraphics[width=0.6\textwidth]{includes/figures/example_information_gain.png}
+    \end{center}
 
+    % \begin{enumerate}[a)]
+    %     \item Bestimmen Sie die Entropie für \enquote{Wandern gehen} (und geben Sie ihren Wert hier an).
+    %     \item Bestimmen Sie die bedingten Entropien für \enquote{Wandern gehen} bezüglich der Features und geben Sie die Werte, die Sie erhalten haben, an.
+    %     \item Bestimmen Sie den Information Gain für jedes Feature und geben sie die Werte hier an.
+    % \end{enumerate}
+
+    % \exampleseparator
+
+    a) Bestimmen Sie die Entropie für \enquote{Wandern} (und geben Sie ihren Wert hier an).
+    \[
+        H(X) = - \sum_{k=1}^{C} p_k \log_2 p_k = - p_1 \log_2 p_1 - p_2 \log_2 p_2 = \frac{2}{5} \cdot \log_2 \frac{2}{5} - \frac{3}{5} \cdot \log_2 \frac{3}{5} \approx 0.97
+    \]
+
+    b) Bestimmen Sie die bedingten Entropien für \enquote{Wandern} bezüglich der Features und geben Sie die Werte, die Sie erhalten haben, an.
+    \[
+        H(Y \mid X) = - \sum_j p(x_j) \left( \sum_i p(y_i \mid x_j) \log_2 p(y_i \mid x_j) \right)
+    \]
+
+    Damit gilt:
+    \[
+        H(\text{Wandern} \mid \text{Wetter})
+        = - \underbrace{\frac{3}{5} \left( \underbrace{\frac{2}{3} \log_2 \frac{2}{3}}_{\text{Wandern Ja}} + \underbrace{\frac{1}{3} \log_2 \frac{1}{3}}_{\text{Wandern Nein}} \right)}_{\text{Sonne}}
+        - \underbrace{\frac{2}{5} \left( \underbrace{\frac{0}{2} \log_2 \frac{0}{2}}_{\text{Wandern Ja}} + \underbrace{\frac{2}{2} \log_2 \frac{2}{2}}_{\text{Wandern Nein}} \right)}_{\text{Regen}}
+        \approx 0.55
+    \]
+    \[
+        H(\text{Wandern} \mid \text{Temp.})
+        = - \underbrace{\frac{3}{5} \left( \underbrace{\frac{1}{3} \log_2 \frac{1}{3}}_{\text{Wandern Ja}} + \underbrace{\frac{2}{3} \log_2 \frac{2}{3}}_{\text{Wandern Nein}} \right)}_{\text{Hoch}}
+        - \underbrace{\frac{2}{5} \left( \underbrace{\frac{1}{2} \log_2 \frac{1}{2}}_{\text{Wandern Ja}} + \underbrace{\frac{1}{2} \log_2 \frac{1}{2}}_{\text{Wandern Nein}} \right)}_{\text{Mild}}
+        \approx 0.95
+    \]
+    \[
+        H(\text{Wandern} \mid \text{Wind})
+        = - \underbrace{\frac{3}{5} \left( \underbrace{\frac{1}{3} \log_2 \frac{1}{3}}_{\text{Wandern Ja}} + \underbrace{\frac{2}{3} \log_2 \frac{2}{3}}_{\text{Wandern Nein}} \right)}_{\text{Wind Ja}}
+        - \underbrace{\frac{2}{5} \left( \underbrace{\frac{1}{2} \log_2 \frac{1}{2}}_{\text{Wandern Ja}} + \underbrace{\frac{1}{2} \log_2 \frac{1}{2}}_{\text{Wandern Nein}} \right)}_{\text{Wind Nein}}
+        \approx 0.95
+    \]
+
+    c) Bestimmen Sie den Information Gain für jedes Feature und geben sie die Werte hier an.
+    \[
+        \text{IG}(Y, X) = H(Y) - H(Y \mid X)
+    \]
+
+    Damit gilt:
+    \[
+        \text{IG}(\text{Wandern}, \text{Wetter}) = H(\text{Wandern}) - H(\text{Wandern} \mid \text{Wetter})
+        = 0.97 - 0.55 = 0.42
+    \]
+    \[
+        \text{IG}(\text{Wandern}, \text{Temperatur}) = \ldots
+        = 0.97 - 0.95 = 0.02
+    \]
+    \[
+        \text{IG}(\text{Wandern}, \text{Wind}) = \ldots
+        = 0.97 - 0.95 = 0.02
+    \]
 \end{example}
 
 \begin{bonus}{Gini Unreinheit vs. Information Gain}
@@ -631,7 +723,16 @@
 \end{defi}
 
 \begin{defi}{Stützvektor}
+    \emph{Stützvektoren} sind diejenigen Datenpunkte, die auf dem Rand der von der SVM bestimmten Hyperebene liegen oder in diese eindringen.
 
+    Dabei gilt, dass für alle Stützvektoren $\mathbf{x}_i$ gilt:\footnote{Beweis: \href{https://stats.stackexchange.com/a/488799}{https://stats.stackexchange.com/a/488799}}
+    \[
+        \alpha_i \neq 0
+    \]
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{includes/figures/defi_support_vector.png}
+    \end{center}
 \end{defi}
 
 \begin{bonus}{Hard Margin SVM vs. Soft Margin SVM}
@@ -731,7 +832,7 @@
     \end{itemize}
 
     Nur bestimmte Funktionen können das Skalarprodukt ersetzen.
-    Es gilt die \emph{Mercer-Bedingung}:\footnote{Hier vereinfacht auf $\R$ beschränkt.}
+    Es gilt die \emph{Mercer-Bedingung}:
 
     $K$ ist ein \emph{Kernel}, wenn die Kernelmatrix $K$ positiv semi-definit ist, wenn also für jedes $\mathbf{x}$ gilt:
     \[
