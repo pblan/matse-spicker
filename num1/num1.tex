@@ -1,0 +1,32 @@
+\documentclass[german]{spicker}
+
+\addbibresource{num1.bib}
+
+\title{Numerik 1}
+\author{Patrick Gustav Blaneck}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{includes/einleitung.tex}
+\include{includes/lineare_gleichungssysteme_direkte_loeser_1.tex}
+\include{includes/fehlerbetrachtung.tex}
+\include{includes/lineare_gleichungssysteme_direkte_loeser_2.tex}
+\include{includes/iterative_loeser_fuer_lineare_gleichungssysteme.tex}
+\include{includes/eigenwerte.tex}
+\include{includes/nichtlineare_gleichungen.tex}
+\include{includes/interpolation.tex}
+\include{includes/approximation.tex}
+\include{includes/numerische_integration.tex}
+\include{includes/optimierung_ohne_nebenbedingungen.tex}
+\include{includes/diskrete_fourier_und_wavelettransformation.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}
