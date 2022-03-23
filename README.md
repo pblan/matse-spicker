@@ -15,7 +15,7 @@
 [![Kommunikationssysteme](https://github.com/pblan/matse-spicker/actions/workflows/kosy.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/kosy.yml)
 
 # Compulsory Courses
-[![Einführung Data Science](https://github.com/pblan/matse-spicker/actions/workflows/ds.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/ds.yml)
+[![Einführung in Data Science](https://github.com/pblan/matse-spicker/actions/workflows/ds.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/ds.yml)
 
 [![Einführung in die Künstliche Intelligenz](https://github.com/pblan/matse-spicker/actions/workflows/ki.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/ki.yml)
 
