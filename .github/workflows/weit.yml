@@ -1,0 +1,48 @@
+name: Web-Engineering und Internettechnologien
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+    paths:
+      - weit/**
+  pull_request:
+    branches: [ main ]
+    paths:
+      - weit/**
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Git repository
+        uses: actions/checkout@v1
+        
+      - name: Download MATSE-Spicker class
+        run: |
+          curl -OL https://raw.githubusercontent.com/pblan/latex-docker/main/local/spicker.cls
+          curl -OL  https://raw.githubusercontent.com/pblan/latex-docker/main/local/mymacros.sty
+          mv spicker.cls weit/spicker.cls
+          mv mymacros.sty weit/mymacros.sty
+          
+      - name: Compiling LaTeX
+        uses: xu-cheng/latex-action@v2
+        #env:
+        #  TEXINPUTS: ".:./custom_template//:"
+        with:
+          #pre_compile: "tlmgr update --self && tlmgr update --all"    
+          #post_compile: "latexmk -c"
+          latexmk_shell_escape: true
+          working_directory: weit
+          root_file: |
+            weit.tex
+            
+      - name: Uploading artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: weit
+          path: weit/weit.pdf
