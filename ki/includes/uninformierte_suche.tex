@@ -1,0 +1,97 @@
+\section{Uninformierte Suche}
+
+\begin{defi}{Einfacher Problemlösungsagent}
+    Ein \emph{Problemlösungsagent} ist ein Agent, der Entscheidungen in Form einer Folge von Aktionen trifft, um einen gewünschten Zielzustand zu erreichen.
+
+    Ein einfacher Problemlösungsagent mit \emph{formulate-search-execute} Design verfährt nach folgendem Schema:
+    \begin{enumerate}
+        \item Zunächst wird das Ziel formuliert.
+        \item Anschließend transformiert der Agent die Zielformulierung in eine adäquate Problemformulierung, bei der die möglichen Zustände und Aktionen festgelegt werden.
+              Sowohl Ziel- als auch Problemformulierung gehören zur \emph{formulate}-Phase des Agenten.
+        \item In der search-Phase sucht der Agent eine Sequenz von Aktionen, die angewendet auf den Anfangszustand in den Zielzustand führen.
+        \item Schließlich wird in der \emph{execute}-Phase die gefundene Lösung ausgeführt.
+    \end{enumerate}
+\end{defi}
+
+\begin{algo}{Simple-Problem-Solving-Agent}
+    \begin{algorithmic}
+        \Function{Simple-Problem-Solving-Agent}{\textit{percept}} \State\Return an action
+        To Do
+        \EndFunction
+    \end{algorithmic}
+\end{algo}
+
+\begin{defi}{Problemtypen}
+    Wir unterscheiden zwischen folgenden Problemtypen:
+    \begin{itemize}
+        \item \emph{Single State-Problem}:
+              \begin{itemize}
+                  \item Probleme mit Einfach-Zuständen
+                  \item Agent weiß genau, in welchem Zustand er ist (zugängliche Umgebung)
+                  \item Agent weiß genau, was seine Aktionen tun (deterministische Umgebung)
+              \end{itemize}
+        \item \emph{Conformant Problem}:
+              \begin{itemize}
+                  \item Probleme mit Mehrfach-Zuständen
+                  \item teilweise unzugängliche \emph{oder} indeterministische Umgebung
+                  \item Agent weiß Zustand in Umgebung \emph{oder} die Effekte seiner Aktionen nicht genau
+              \end{itemize}
+        \item \emph{Contigency Problem}:
+              \begin{itemize}
+                  \item Zufall-Probleme
+                  \item teilweise unzugängliche \emph{und} indeterministische Umgebung
+                  \item Agent kann nur lokale Informationen erkennen
+              \end{itemize}
+        \item \emph{Exploration Problem}:
+              \begin{itemize}
+                  \item Agent muss erst lernen, welche Zustände es gibt und was seine Aktionen bewirken
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Formulierung Single-State Problem}
+    Ein \emph{Single-State Problem} besteht aus vier Komponenten:
+    \begin{itemize}
+        \item \emph{Anfangszustand}:
+              \begin{itemize}
+                  \item Aktueller Zustand, in dem sich der Agent befindet
+              \end{itemize}
+        \item \emph{Nachfolgefunktion}:
+              \begin{itemize}
+                  \item $S(x)$ besteht aus Aktions-Zustands-Paaren
+              \end{itemize}
+        \item \emph{Zieltest}:
+              \begin{itemize}
+                  \item auf einen Zustand anwendbarer Test, der das Ziel erkennt
+                  \item kann explizit (\texttt{x = goal}) oder implizit (\texttt{isGoal(x)}) definiert werden
+              \end{itemize}
+        \item \emph{Pfad-Kosten}:
+              \begin{itemize}
+                  \item $c(x,a,y) \geq 0$ beschreibt die Kosten für einen Schritt von $x$ nach $y$ mit der Aktion $a$
+                  \item akkumulierte Kosten eines Pfades
+              \end{itemize}
+    \end{itemize}
+
+    Eine \emph{Lösung} ist eine Sequenz von Aktionen, die vom Anfangszustand zum Zielzustand führen.
+\end{defi}
+
+\begin{bonus}{Wahl eines Zustandsraums}
+    Die reale Welt ist sehr komplex.
+    Ein Zustandsraum muss diese \emph{abstrahieren} um ein gegebenes Problem zu lösen.
+\end{bonus}
+
+\begin{example}{Single-State Problem}
+
+\end{example}
+
+\begin{defi}{Formulierung Conformant Problem}
+
+\end{defi}
+
+\begin{defi}{Formulierung Contigency Problem}
+
+\end{defi}
+
+\begin{defi}{Formulierung Exploration Problem}
+
+\end{defi}

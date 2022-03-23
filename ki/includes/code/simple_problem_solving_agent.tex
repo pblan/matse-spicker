@@ -1,0 +1,17 @@
+\code{
+    \func{Simple-Problem-Solving-Agent}{{\ts}\var{p}}{an action}
+    \firstinputs{p}{a percept}
+    \firststatic{s}{an action sequence, initially empty}
+    \static{state}{some description of the current world state}
+    \static{g}{a goal, initially null}
+    \static{problem}{a problem formulation}
+    \bodysep
+    \setq{\var{state}}{\prog{Update-State}(\var{state{\ac}p})}
+    \key{if} \var{s} is empty \key{then}
+    \setq{\var{g}}{\prog{Formulate-Goal}(\var{state})}
+    \setq{\var{problem}}{\prog{Formulate-Problem}(\var{state{\ac}g})}
+    \setq{\var{s}}{\prog{Search}({\ts}\var{problem})}
+    \setq{\var{action}}{\prog{Recommendation}(\var{s{\ac}state})}
+    \setq{\var{s}}{\prog{Remainder}(\var{s{\ac}state})}
+    \key{return} \var{action}
+}

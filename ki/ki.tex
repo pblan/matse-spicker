@@ -1,0 +1,26 @@
+\documentclass[german]{spicker}
+
+\addbibresource{ki.bib}
+
+\title{Einführung in die Künstliche Intelligenz}
+\author{Patrick Gustav Blaneck}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{includes/uninformierte_suche.tex}
+\include{includes/informierte_suche.tex}
+\include{includes/lokale_suche.tex}
+\include{includes/adversarielle_suche.tex}
+\include{includes/bedingungserfuellung.tex}
+\include{includes/koordination.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}
