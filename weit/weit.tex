@@ -1,0 +1,26 @@
+\documentclass[german]{spicker}
+
+\addbibresource{weit.bib}
+
+\title{Web-Engineerung und Internettechnologien}
+\author{Patrick Gustav Blaneck, Tim Wende}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{includes/einfuehrung.tex}
+\include{includes/php.tex}
+\include{includes/javascript.tex}
+\include{includes/server.tex}
+\include{includes/java.tex}
+\include{includes/sicherheit.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}
