@@ -1,1 +1,130 @@
 \section{Einleitung}
+
+\begin{defi}{Numerik}
+    Lloyd Trefethen 1992:
+    \begin{displayquote}
+        Numerical analysis is the study of algorithms for the problems of continuous mathematics.
+    \end{displayquote}
+
+    \enquote{continuous mathematics} heißt, dass reelle oder komplexe Zahlen beteiligt sind, in Abgrenzung zur diskreten Mathematik.
+    Dies umfasst die Analysis und Teile der linearen Algebra.
+
+    Die \emph{Numerik} beschäftigt sich mit der Entwicklung von (effizienten) Berechnungsmethoden, da viele mathematische Objekte zwar wohldefiniert sind, aber nicht endlich berechenbar.
+\end{defi}
+
+\begin{example}{Auswertung der Exponentialfunktion}
+    Zu berechnen sei $e^{\frac{1}{2}}$, wie Exponentialfunktion bekanntermaßen wie folgt definiert ist:
+    \[
+        e^x = \sum_{k=0}^\infty \frac{x^k}{k!}
+    \]
+
+    Die unendliche Summe ist nicht direkt berechenbar, daher wird ein Ersatzproblem gelöst:
+    \[
+        e^x \approx \sum_{k=0}^n \frac{x^k}{k!}
+    \]
+    Dabei ist $n$ ein neuer freier Parameter.
+    Es gilt:
+    \begin{itemize}
+        \item kleines $n$ $\implies$ eventuell zu viel vernachlässigt, Wert ungenau approximiert.
+        \item großes $n$ $\implies$ Berechnung aufwändig, Gewinn an Genauigkeit potentiell gering.
+    \end{itemize}
+
+    Ein weiteres Problem kann durch eine nicht-exakte Arithmetik aufkommen.
+    Seien die beiden Summationsreihenfolgen $s_1(x)$ und $s_2(x)$ gegeben:
+    \[
+        s_1(x) = 1 + x + \frac{x^2}{2} + \ldots + \frac{x^n}{n!}
+    \]
+    \[
+        s_2(x) = \frac{x^n}{n!} + \ldots + \frac{x^2}{2} + x + 1
+    \]
+
+    Bei einer Floating-Point-Rechnung mit 3 Stellen Genauigkeit gilt:
+    \begin{center}
+        \begin{tabular}{|C||C|C|C|C|C|}
+            \hline
+            n        & 1   & 2    & 3    & 4    & 5    \\
+            \hline
+            \hline
+            s_1(0.5) & 1.5 & 1.62 & 1.64 & 1.64 & 1.64 \\
+            \hline
+            s_2(0.5) & 1.5 & 1.62 & 1.65 & 1.65 & 1.65 \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    Die Summationsreihenfolge beeinflusst also das Ergebnis.
+
+    Ein Abbruch bei $n=4$ ist für $x = \nicefrac{1}{2}$ angemessen.
+\end{example}
+
+
+\begin{example}{Rechteckregel und Trapezregel}
+    Zu approximieren sei die Funktion
+    \[
+        f(x) = \int_{0}^{1} \frac{1}{1+x^2} \diff x
+    \]
+
+    \emph{Rechteckregel} und \emph{Trapezregel} approximieren diese Funktion wie folgt:
+
+    % Rechteckregel
+    \begin{tikzpicture}
+        \begin{axis}[
+                axis lines = left,
+                %xlabel = $x$,
+                %ylabel = $f(x)$,
+                xmin = 0,
+                xmax = 1.05,
+                ymin = 0,
+                ymax = 1.05,
+            ]
+
+            \addplot[name path=f,domain = 0:1.05,samples = 100] { 1/(1+x^2) };
+
+            \addplot[dashed] coordinates{(1,0) (1,1)};
+
+            \path[name path=axis] (axis cs:0,0) -- (axis cs:1,0);
+            \path[name path=approx] (axis cs:0,1) -- (axis cs:1,1);
+
+            \addplot[fill=red,fill opacity=0.1] fill between[of=approx and axis,soft clip={domain=0:1}];
+        \end{axis}
+    \end{tikzpicture}
+    % Trapezregel
+    \begin{tikzpicture}
+        \begin{axis}[
+                axis lines = left,
+                %xlabel = $x$,
+                %ylabel = $f(x)$,
+                xmin = 0,
+                xmax = 1.05,
+                ymin = 0,
+                ymax = 1.05,
+            ]
+
+            \addplot[name path=f,domain = 0:1.05,samples = 100] { 1/(1+x^2) };
+
+            \addplot[dashed] coordinates{(1,0) (1,1)};
+
+            \path[name path=axis] (axis cs:0,0) -- (axis cs:1,0);
+            \path[name path=approx] (axis cs:0,1) -- (axis cs:1,0.5);
+
+            \addplot[fill=blue,fill opacity=0.1] fill between[of=approx and axis,soft clip={domain=0:1}];
+        \end{axis}
+    \end{tikzpicture}
+
+    TO DO
+\end{example}
+
+\begin{defi}{Numerische Simulation}
+    \emph{Numerische Simulation} beschreibt die Verhaltensvorhersage eines physikalischen Systems durch mathematische Modelle und numerische Verfahren.
+
+    Numerische Simulationen sind z.B. anwendbar in physikalischen Systemen (beliebige Bauteile) und daher sehr wichtig für die Produktentwicklung in der Industrie.
+
+    Das Vorgehen ist wie folgt:
+    \begin{itemize}
+        \item virtueller Prototyp: vollständige Analyse durch numerische Simulation
+        \item davon ausgehend: endgültige Auslegung der Konstruktion
+        \item am Ende: Validierung durch einen realen Prototypen
+    \end{itemize}
+
+    In der Regel spart numerische Simulation Geld und Zeit.
+\end{defi}
