@@ -136,34 +136,7 @@
 
 \subsection{Fehlerquellen}
 
-\begin{defi}{Eingabefehler}
-    Wegen der Umwandlung der Eingabedaten $x$ in Floating-Point-Darstellung $\tilde{x}$ tritt der \emph{Eingabefehler} immer auf und wird deshalb auch als \emph{unvermeidbarer Fehler} bezeichnet:
-    \[
-        f(\tilde{x}) - f(x)
-    \]
-
-    Die Größe dieses Fehleranteils hängt davon ab, wie empfindlich das Originalproblem $f$ auf Störungen in den Eingabedaten reagiert.
-\end{defi}
-
-\begin{defi}{Verfahrensfehler}
-    Beim \emph{Verfahrensfehler} wird das in exakter Arithmetik gerechnete Ersatzproblem $\hat{f}$ mit dem Originalproblem $f$ für den selben Input $\tilde{x}$ verglichen:
-    \[
-        \hat{f}(\tilde{x}) - f(\tilde{x})
-    \]
-
-    Die Größe dieses Fehleranteils hängt von der Qualität des Ersatzproblems ab.
-\end{defi}
-
-\begin{defi}{Akkumulierter Rundungsfehler}
-    Das Ersatzproblem $\hat{f}$ besteht aus einer endlichen Anzahl von Elementaroperationen (Additionen, Multiplikationen etc.), die bei der Floating-Point-Implementierung $\tilde{f}$ durch ihre Floating-Point-Äquivalente ersetzt werden.
-
-    Jede Floating-Point-Operation erzeugt in der Regel Rundungsfehler, die sich akkumulieren.
-
-    Die Größe dieses Fehleranteils hängt davon ab, wie robust das Ersatzproblem auf eine Floating-Point-Implementierung reagiert:
-    \[
-        \tilde{f}(\tilde{x}) - \hat{f}(\tilde{x})
-    \]
-\end{defi}
+\subsubsection{Floating-Point-Darstellung von Zahlen}
 
 \begin{defi}{Fließkommazahl}
     Eine \emph{Fließkommazahl} zur Basis $b$ hat die Darstellung
@@ -215,6 +188,18 @@
     \end{itemize}
 \end{defi}
 
+\subsubsection{Eingabefehler, Kondition}
+
+\begin{defi}{Eingabefehler}
+    Wegen der Umwandlung der Eingabedaten $x$ in Floating-Point-Darstellung $\tilde{x}$ tritt der \emph{Eingabefehler} immer auf und wird deshalb auch als \emph{unvermeidbarer Fehler} bezeichnet:
+    \[
+        f(\tilde{x}) - f(x)
+    \]
+
+    Die Größe dieses Fehleranteils hängt davon ab, wie empfindlich das Originalproblem $f$ auf Störungen in den Eingabedaten reagiert.
+    Der Eingabefehler ist im Wesentlichen nicht änderbar. 
+\end{defi}
+
 \begin{defi}{Kondition}
     Sei $f: X \to Y$.
     Die kleinsten Konstanten $\varkappa_a$, $\varkappa_r$ mit
@@ -233,6 +218,8 @@
     Die Konditionszahlen beschreiben, wie stark $f$ Störungen in $x$ schlimmstenfalls verstärkt.
 
     Kleine Konditionszahlen deuten auf ein gut konditioniertes, große auf ein schlecht konditioniertes Problem hin.
+
+    Gut gestellte aber schlecht konditionierte Probleme können sich genauso verhalten wie schlecht gestellte Probleme.
 
     Werden die Störungen in $x$ durch die Umwandlung in ein Floating-Point-Format verursacht, d.h. $x' =  \tilde{x}$, so gilt:
     \[
@@ -281,5 +268,140 @@
 \end{bonus}
 
 \begin{defi}{Fehlerfortpflanzungsformeln der differentiellen Fehleranalyse}
-    TODO
+    Da die Abschätzung des Maximums oft recht aufwändig ist, ersetzt man sie häufig durch eine einfachere Näherung. 
+
+    Für zweimal stetig differenzierbares $f$ folgt aus der Taylor-Entwicklung von $f$ um $x$
+    \[
+        f(x') = f(x) + f'(x)(x' - x) + R, \quad \bigo(|x' - x|^2)    
+    \]
+
+    Für kleine $|x' - x|$ vernachlässigt man das Restglied $R$ und erhält Näherung (Linearisierung)
+    \[ 
+        f(x') \approx f(x) + f'(x' - x)
+    \]
+
+    Somit ist 
+    \[
+        |f(x') - f(x)| \approx |f'(x)| |x' - x|    
+    \]
+    
+    und damit
+    \[
+        \varkappa_a \approx |f'(x)|    
+    \]
+    
+    Analog erhält man für die Verstärkung des relativen Fehlers:
+    \[ 
+        \varkappa_r \approx \frac{|x|}{|f(x)|} |f'(x)|
+    \]
+
+    Diese Näherungen bezeichnet man als \emph{Fehlerfortpflanzungsformeln der differentiellen Fehleranalyse}.
+
+    Für allgemeines $f: \R^n \to \R^m$ mit Normen $\| \cdot \|_X$ bzw. $\| \cdot \|_Y$ als Vektornormen und $\| \cdot \|_{X, Y}$ als zugehörige Matrixnorm geht man analog vor und erhält: 
+    \[
+        \varkappa_a \approx \|f'(x)\|_{X, Y}, \quad \varkappa_r \approx \frac{\|x\|_X}{\|f(x)\|_Y} \|f'(x)\|_{X, Y}
+    \]
+\end{defi}
+
+\subsubsection{Verfahrensfehler}
+
+\begin{defi}{Verfahrensfehler}
+    Beim \emph{Verfahrensfehler} wird das in exakter Arithmetik gerechnete Ersatzproblem $\hat{f}$ mit dem Originalproblem $f$ für den selben Input $\tilde{x}$ verglichen:
+    \[
+        \hat{f}(\tilde{x}) - f(\tilde{x})
+    \]
+
+    Die Größe dieses Fehleranteils hängt von der Qualität des Ersatzproblems ab.
+\end{defi}
+
+\begin{defi}{Diskretisierungsparameter}
+    In der Regel hängen Qualität und Aufwand des Ersatzproblems von einem \emph{Diskretisierungsparameter} $h > 0$ ab. 
+
+    Ein vernünftig gewähltes Ersatzproblem geht für $h \to 0$ in das Originalproblem über, d. h. der Verfahrensfehler geht für $h \to 0$ gegen 0 und der Aufwand in der Regel gegen unendlich.
+
+    Das genaue Verhalten des Verfahrensfehlers wird im Einzelfall für jedes Ersatzproblem separat untersucht, insbesondere das asymptotische Verhalten für $h \to 0$ (\emph{Konvergenzuntersuchung}).
+\end{defi}
+
+\begin{example}{Diskretisierungsparameter}
+    \begin{itemize}
+    \item Die LU-Zerlegung zum Lösen linearer Gleichungssysteme liefert in \emph{endlich} vielen Schritten die exakte Lösung, d.h. es kann $\hat{f} = f$ benutzt werden, weshalb der Verfahrensfehler hier 0 ist.
+    \item Für das Originalproblem
+    \[
+        f(x) = e^x = \sum_{k=0}^{\infty} \frac{x^k}{k!}    
+    \]
+    
+    benutzen wir das Ersatzproblem 
+    \[ 
+        \hat{f}(x) = \sum_{k=0}^{n_h} \frac{x^k}{k!} = 1 + x + \frac{x^2}{2} + \ldots + \frac{x^{n_h}}{n_h!}, \quad n_h = \left\lfloor \frac{1}{h} \right\rfloor
+    \]
+
+    Mit $h \to 0$ gilt $n_h \to \infty$, also auch 
+    \[
+        \hat{f}(x) \to f(x)    
+    \]
+    \item Für das Originalproblem
+    \[
+        f(x) = \int_0^1 g(t) \diff t, \quad g \ \text{stetig}
+    \]
+    
+    benutzen wir als Ersatzproblem einmal die linksseitige Rechteckregel
+    \[ 
+        \hat{f}_1(g) = \sum_{k=0}^{n_h - 1} \frac{1}{n_h} \cdot g \left( \frac{k}{n_h} \right), \quad n_h = \left\lfloor \frac{1}{h} \right\rfloor
+    \]
+
+    bzw. die Trapezregel
+    \[
+        \hat{f}_2(g) = \sum_{k=0}^{n_h - 1} \frac{1}{2n_h} \cdot \left( g \left( \frac{k}{n_h} \right) + g \left( \frac{k+1}{n_h} \right) \right), \quad n_h = \left\lfloor \frac{1}{h} \right\rfloor
+    \]
+
+    Mit $h \to 0$ gilt $n_h \to \infty$, also auch 
+    \[
+        \hat{f}_1(x) \to f(x) \quad \text{und} \quad \hat{f}_2(x) \to f(x)
+    \]
+    \end{itemize}
+\end{example}
+
+\subsubsection{Akkumulierter Rundungsfehler, Floating-Point-Arithmetik}
+
+\begin{defi}{Akkumulierter Rundungsfehler}
+    Das Ersatzproblem $\hat{f}$ besteht aus einer endlichen Anzahl von Elementaroperationen (Additionen, Multiplikationen etc.), die bei der Floating-Point-Implementierung $\tilde{f}$ durch ihre Floating-Point-Äquivalente ersetzt werden.
+
+    Jede Floating-Point-Operation erzeugt in der Regel Rundungsfehler, die sich akkumulieren.
+
+    Die Größe dieses Fehleranteils hängt davon ab, wie robust das Ersatzproblem auf eine Floating-Point-Implementierung reagiert:
+    \[
+        \tilde{f}(\tilde{x}) - \hat{f}(\tilde{x})
+    \]
+
+    Zu einem Ersatzproblem kann es mehrere Floating-Point-Implementierung geben, die mathematisch äquivalent (d.h. in exakter Arithmetik identisch) sind, aber unterschiedliche Floating-Point-Ergebnisse liefern.
+\end{defi}
+
+\begin{defi}{Lokaler Fehler}
+    Der \emph{lokale Fehler} entsteht durch das Runden des Ergebnisses bei der $i$-ten Floating-Point-Operation $\tilde{f}_i$, da bei der Ersatzproblem-Operation $\hat{f}_i$ derselbe Input $\tilde{x}$ benutzt wird:
+    \[
+        \tilde{f}_i (\tilde{x}_{i-1}) - \hat{f}_i (\tilde{x}_{i-1})
+    \]
+
+    Für die erste Operation gilt: 
+    \[ 
+        \tilde{x}_1 - \hat{x}_1 = \tilde{f}_1 (\tilde{x}) - \hat{f}_1 (\tilde{x})
+    \]
+\end{defi}
+
+\begin{defi}{Fehlerverstärkung}
+    Der Term 
+    \[
+        \hat{f}_2 (\tilde{x}_1) - \hat{f}_2 (\hat{x}_1)   
+    \]
+    beschreibt die \emph{Fehlerverstärkung} des Fehlers $\tilde{x}_1 - \hat{x}_1$ aus dem ersten Schritt.
+
+    Alle weiteren Schritte verlaufen analog.
+
+    In jedem Schritt wird also der vorherige Fehler verstärkt und ein neuer lokaler Fehler hinzuaddiert.
+    Deswegen bezeichnet man diesen Fehlertyp als \emph{akkumulierten Rundungsfehler}.
+
+    Falls Rundungsfehler das Ergebnis stark verfälschen (d. h. der akkumulierte Fehler sehr groß ist) nennt man eine Implementierung \emph{instabil}, ansonsten ist sie \emph{stabil}.
+    Stabile Implementierungen sind also robust gegenüber Rundungsfehlereffekten.
+
+    Ein hoher akkumulierter Rundungsfehler kann durch eine \enquote{günstigere} Floating-Point-Implementierung des Ersatzproblems verändert werden (Summationsreihenfolgen, Vermeidung von Auslöschungen, etc.).
 \end{defi}
