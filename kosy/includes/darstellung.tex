@@ -483,7 +483,7 @@
 \end{bonus}
 
 \begin{example}{XML Schemata}
-    Fassen wir nun einmal alle Beispiele zusammen und ergänzen Team:
+    Fassen wir nun einmal alle Beispiele zusammen und ergänzen \texttt{Team}:
 
     % [language=xml]
     \begin{lstlisting}
@@ -496,7 +496,7 @@
             <xs:minInclusive value="905" />
         </xs:simpleType>
 
-        <xs:complexType name="pokemonTyp" xmlns:typ="https://kosy.paddel.xyz/pokemontyp">
+        <xs:complexType name="pokemonTyp" xmlns:typ="https://kosy.paddel.xyz/typ">
             <xs:attribute name="nummer" type="pokemonNummer" />
             <xs:sequence>
                 <xs:element name="name" type="xs:string" />
@@ -520,25 +520,134 @@
         <team>
             <pokemon nummer="4">
                 <name>Glumanda</name>
+                <primaertyp>Feuer</name>
             </pokemon>
             <pokemon nummer="25">
                 <name>Pikachu</name>
+                <primaertyp>Elektro</name>
             </pokemon>
         </team>
     \end{lstlisting}
 \end{example}
 
-% \subsection{Objektserialisierung in Java}
+\begin{bonus}{Objekt Mappings}
+    XML Strukturen werden genutzt um Objekte zu verknüpfen.
 
-% \begin{bonus}{Objektserialisierung in Java}
-%     Mit Hilfe der Klasse \texttt{ObjectInputStream} bzw. \texttt{ObjectOutputStream} kann man Objekte serialisieren bzw. deserialisieren.
+    So verschwimmen die Grenzen zwischen XML, Programmiersprachen und Datenbanken:
 
-%     \begin{itemize}
-%         \item \texttt{writeObject()} wandelt ein Objekt in einen Byte-Stream um.
-%         \item \texttt{readObject()} wandelt einen Byte-Stream in ein Objekt um.
-%     \end{itemize}
+    % [language=xml]
+    \begin{lstlisting}
+        <pokemon nummer="4">
+            <name>Glumanda</name>
+        </pokemon>
+    \end{lstlisting}
 
-%     Im Unterschied zu allgemeinen I/O- bzw. Streaming-Konzepten beruht die Objektkommunikation auf Interfaces.
-%     Somit ist ebenfalls eine komplett eingencodierte Serialisierung möglich.
-% \end{bonus}
+    \begin{lstlisting}[language=java]
+        public class Pokemon {
+            int nummer;
+            String name;
 
+            public Pokemon (int nummer, String name) {
+                this.nummer = nummer;
+                this.name = name;
+            }
+        }
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=mysql]
+        CREATE TABLE pokemon {
+            nummer int,
+            name varchar(255)
+        };
+    \end{lstlisting}
+\end{bonus}
+
+\begin{bonus}{SOAP}
+    \emph{SOAP} (ursprünglich für \emph{Simple Object Access Protocol}) ist ein Netzwerkprotokoll mit dessen Hilfe Daten zwischen Systemen ausgetauscht und Remote Procedure Calls durchgeführt werden können.
+    Es ist ein industrieller Standard des WWW-Consortiums (W3C), welcher ein XML definiertes, anwendungsunabhängiges Nachrichtenformat darstellen soll.
+    Zusätzlich definiert SOAP, wie Anwendungsdaten kodiert werden sollen.
+
+    SOAP stellt einige feste Regeln auf:
+    \begin{itemize}
+        \item Erlaubte Tags und Attribute werden eingeschränkt.
+        \item Es legt fest, wie Daten abzubilden oder zu interpretieren sind.
+        \item Konventionen für Prozeduren bzw. Methodenaufrufe werden dargestellt
+        \item Existierende, jedoch nicht festgelegte, Transportprotokolle werden genutzt.
+    \end{itemize}
+\end{bonus}
+
+\subsection{Objektserialisierung in Java}
+
+\begin{bonus}{Objektserialisierung in Java}
+    Mit Hilfe der Klasse \texttt{ObjectInputStream} bzw. \texttt{ObjectOutputStream} kann man Objekte serialisieren bzw. deserialisieren.
+
+    \begin{itemize}
+        \item \texttt{writeObject()} wandelt ein Objekt in einen Byte-Stream um.
+        \item \texttt{readObject()} wandelt einen Byte-Stream in ein Objekt um.
+    \end{itemize}
+
+    Im Unterschied zu allgemeinen I/O- bzw. Streaming-Konzepten beruht die Objektkommunikation auf Interfaces.
+    Somit ist ebenfalls eine komplett eingencodierte Serialisierung möglich.
+\end{bonus}
+
+\subsection{JSON (JavaScript Object Notation)}
+
+\begin{defi}{JSON (JavaScript Object Notation)}
+    JSON-Dokumente beinhalten gültiges JavaScript.
+    Sie haben eine einfache Struktur und sind typisiert aufgebaut.
+
+    Mögliche Typen sind:
+    \begin{itemize}
+        \item \emph{Number}
+        \item \emph{String}: " \ldots "
+        \item \emph{Boolean}: \texttt{true} / \texttt{false}
+        \item \emph{Array}: [ \ldots ]
+        \item \emph{Object}: \{ \ldots \}
+        \item \texttt{null}
+    \end{itemize}
+
+    Obacht: JSON deckt nicht alle möglichen JavaScript-Werte ab.\\
+    \texttt{NaN}, \texttt{Infinity} werden zu \texttt{null} serialisiert.\\
+    \emph{Function}- und \emph{RegeExp}-Objekte werden verworfen.
+\end{defi}
+
+\begin{example}{JSON (JavaScript Object Notation)}
+    % [language=json]
+    \begin{lstlisting}
+        {
+            "pokemonTeam" : [
+                {
+                    "nummer" : 4,
+                    "name" : "Glumanda"
+                },
+                {
+                    "nummer" : 25,
+                    "name" : "Pikachu"
+                }
+            ]
+        }
+    \end{lstlisting}
+\end{example}
+
+\begin{bonus}{JSON Serialisierung}
+    Meistens verwendet man automatische Marshaller / Unmarshaller wie Jackson (Java) oder Json.NET bzw. System.Text.Json (.NET).
+
+    Alternativ kann man sich Objekte selber erstellen:
+    \begin{lstlisting}[language=java]
+        public class Pokemon {
+            int nummer;
+            String name;
+        }
+        Pokemon p = new Pokemon(4, "Glumanda");
+
+        JSONObject json = new JSONObject(p);
+    \end{lstlisting}
+
+    % [language=json]
+    \begin{lstlisting}
+        {"name":"Glumanda","nummer":4}
+    \end{lstlisting}
+
+    Dabei werden alle Attribute alphabetisch sortiert.\\
+    Eine Formatierung mit Zeilenumbrüchen oder Einrückung findet nicht statt.
+\end{bonus}
