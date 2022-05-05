@@ -1,1 +1,366 @@
 \section{Lineare Gleichungssysteme - Direkte Löser II}
+
+\subsection{Fehlerbetrachtung für lineare Gleichungssysteme}
+
+\begin{defi}{Konditionszahl einer Matrix}
+    Sei $\| \cdot \|$ eine Norm auf $\R^n$, $A$ regulär und $\| \Delta A \| < \nicefrac{1}{\| A^{-1} \|}$, wobei die durch $\| \cdot \|$ induzierte Matrixnorm benutzt wird.
+
+    Dann ist $\tilde{A}$ regulär und es gilt
+    \[
+        \frac{\| \Delta x \|}{\| x \|} \leq \frac{\varkappa(A)}{1 - \varkappa(A) \frac{\| \Delta A \|}{\| A \|}} \cdot \left( \frac{\| \Delta A \|}{\| A \|} + \frac{\| \Delta b \|}{\| b \|} \right)
+    \]
+
+    mit $\varkappa(A) = \| A \| \| A^{-1} \|$.
+
+    $\varkappa(A)$ heißt \emph{Konditionszahl der Matrix} $A$ und hat folgende Eigenschaften:
+    \begin{itemize}
+        \item $\varkappa$ hängt von der verwendeten Norm ab
+        \item ist $\alpha \| B \|' \leq \| B \| \leq \beta \| B \|'$ so gilt $\alpha^2 \varkappa'(B) \leq \varkappa(B) \leq \beta^2 \varkappa' (B)$, d.h. die Äquivalenz der Normen überträgt sich
+        \item $\varkappa(A) \geq 1$, denn $1 = \| I \| = \| AA^{-1} \| \leq \|A^{-1}A \| = \varkappa(A)$
+        \item $\varkappa(A) = \varkappa(A^{-1})$
+        \item $\varkappa(AB) \leq \varkappa(A)\varkappa(B)$
+    \end{itemize}
+
+    $\| \Delta A \|$ ist üblicherweise sehr viel kleiner als $\| A \|$, d. h. der Zähler der Gleichung oben dominiert, so dass der Eingangsfehler im wesentlichen mit $\varkappa(A)$ verstärkt wird.
+    Daher sollte $\varkappa(A)$ so klein wie möglich sein.
+\end{defi}
+
+\begin{defi}{Vorkonditioniertes System}
+    $\varkappa(A) = \| A \| \| A^{-1} \|$ ist wegen $\| A^{-1} \|$ in der Regel nicht berechenbar.
+
+    Generell sollte man vor der Berechnung versuchen, die Kondition des Problems zu verbessern.
+
+    Betrachte $Ax = b$ und $U$, $V$ regulär:
+    \[
+        Ax = b \quad \iff \quad \underbrace{UAV}_{\tilde{A}} \underbrace{V^{-1}x}_{\tilde{x}} = \underbrace{Ub}_{\tilde{b}}
+    \]
+
+    $\tilde{A} \tilde{x} = \tilde{b}$ heißt \emph{vorkonditioniertes System}.
+\end{defi}
+
+\begin{example}{Vorkonditioniertes System}
+    Ein optimales, aber nicht praktikables, vorkonditioniertes System für $Ax = b$ ist z. B.:
+    \[
+        U = A^{-1}, V = I \quad \implies \quad \tilde{A} = I \quad \implies \quad \varkappa(\tilde{A}) = 1
+    \]
+    \[
+        Ax = b \quad \iff \quad \underbrace{UAV}_{\tilde{A}} \underbrace{V^{-1}x}_{\tilde{x}} = \underbrace{Ub}_{\tilde{b}} \quad \iff \quad I x = A^{-1} b
+    \]
+\end{example}
+
+\begin{bonus}{Äquilibrieren}
+    In der Praxis werden für $U$ bzw. $V$ Näherungen für $A^{-1}$ gesucht, die billig zu berechnen sind.
+
+    Ein einfacher Ansatz ist Skalieren von Zeilen und Spalten.
+    Dafür können
+    \begin{itemize}
+        \item Zeilen skaliert werden:
+              \[
+                  U =
+                  \begin{pmatrix}
+                      u_1    & 0      & \cdots & 0      \\
+                      0      & \ddots & \ddots & \vdots \\
+                      \vdots & \ddots & \ddots & 0      \\
+                      0      & \cdots & 0      & u_n
+                  \end{pmatrix},
+                  \quad V = I
+              \]
+        \item Spalten skaliert werden:
+              \[
+                  U = I,
+                  \quad V =
+                  \begin{pmatrix}
+                      v_1    & 0      & \cdots & 0      \\
+                      0      & \ddots & \ddots & \vdots \\
+                      \vdots & \ddots & \ddots & 0      \\
+                      0      & \cdots & 0      & v_n
+                  \end{pmatrix}
+              \]
+        \item Zeilen und Spalten skaliert werden:
+              \[
+                  U =
+                  \begin{pmatrix}
+                      u_1    & 0      & \cdots & 0      \\
+                      0      & \ddots & \ddots & \vdots \\
+                      \vdots & \ddots & \ddots & 0      \\
+                      0      & \cdots & 0      & u_n
+                  \end{pmatrix},
+                  \quad V =
+                  \begin{pmatrix}
+                      v_1    & 0      & \cdots & 0      \\
+                      0      & \ddots & \ddots & \vdots \\
+                      \vdots & \ddots & \ddots & 0      \\
+                      0      & \cdots & 0      & v_n
+                  \end{pmatrix}
+              \]
+    \end{itemize}
+
+    Eine vernünftige Skalierung sollte erfüllen:
+    \begin{itemize}
+        \item alle Gleichungen sollten Koeffizienten gleicher Größenordnung haben $\implies$ Zeilen gleicher Norm
+        \item alle Unbekannten sollten mit gleichem Gewicht auftauchen $\implies$ Spalten gleicher Norm
+    \end{itemize}
+
+    Spalten bzw. Zeilen auf gleiche Norm bringen nennt man \emph{Äquilibrieren}.
+
+    Spalten und Zeilen gleichzeitig zu äquilibrieren ist sehr aufwendig, deswegen werden in der Regel entweder Zeilen oder Spalten äquilibriert.
+\end{bonus}
+
+\begin{example}{Äquilibrieren}
+    TODO
+\end{example}
+
+\begin{defi}{Prager-Oettli}
+    Wir betrachten dabei das folgende Szenario:
+    \begin{itemize}
+        \item $A$ und $b$ sind nur bis auf Störungen $B$ bzw. $c$ bekannt
+        \item $Ax = b$ ist also mit \enquote{gewisser Unschärfe} gegeben
+        \item für vorgelegte Näherungslösung $\tilde{x}$ soll \emph{Plausabilitätsprüfung} durchgeführt werden
+    \end{itemize}
+
+    Für $x \in \R^n$, $A \in \R^{n \times n}$ seien
+    \[
+        |x| =
+        \begin{pmatrix}
+            |x_1| \\ \vdots \\ |x_n|
+        \end{pmatrix}, \quad
+        |A| =
+        \begin{pmatrix}
+            |a_{11}| & \cdots & |a_{1n}| \\
+            \vdots   & \ddots & \vdots   \\
+            |a_{n1}| & \cdots & |a_{nn}|
+        \end{pmatrix}
+    \]
+
+    Ist $\det(A) \neq 0$ und $\tilde{x}$ eine Näherungslösung von $Ax = b$ mit \emph{Residuum}
+    \[
+        \tilde{r} = b - A\tilde{x}
+    \]
+    sowie
+    \[
+        B \in \R^{n \times n}, c \in \R^n, \quad \forall i, j: b_{ij} \geq 0, c_i \geq 0
+    \]
+    mit
+    \[
+        |\tilde{r}| \leq B |\tilde{x}| + c
+    \]
+
+    Dann gibt es $|\Delta A| \leq B$ und $|\Delta b| \leq c$ so, dass $\tilde{x}$ exakte Lösung von
+    \[
+        (A + \Delta A)\tilde{x} = b + \Delta b
+    \]
+    ist.\footnote{Die Ungleichheitszeichen sind jeweils komponentenweise anzuwenden.}
+
+    \begin{itemize}
+        \item kennt man $B$, $c$ so ist $\tilde{x}$ exakte Lösung eines gestörten Ausgangsproblems
+        \item über $B$, $c$ weiß man auch, wie weit das gestörte Problem höchstens vom Ausgangsproblem entfernt ist
+        \item sind $B$, $c$ komponentenweise klein, ist $\tilde{x}$ eine gute Näherung von $x$
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Prager-Oettli}
+    TODO
+\end{example}
+
+\subsection{LU-Zerlegung mit Pivot-Strategie}
+
+\begin{defi}{LU-Zerlegung mit Pivot-Strategie}
+    Sei $A \in \R^{n \times n}$ regulär.
+    Es lässt sich zeigen, dass eine LU-Zerlegung die geringste Kondition (und damit die geringste Fehleranfälligkeit) hat, wenn die \emph{betragsgrößten Elemente} der Spalte nach einem Schritt der Zerlegung auf die Diagonale sind.
+
+    Das heißt nach jedem Zeilentausch gilt:
+    \[
+        | \tilde{a}_{kk}^{(k-1)} | \geq | \tilde{a}_{ik}^{(k-1)} | \quad \forall i > k
+    \]
+
+    Dieses Verfahren nennt sich \emph{Spalten-Pivot-Suche}.
+\end{defi}
+
+\begin{example}{LU-Zerlegung mit Pivot-Strategie}
+    TODO
+\end{example}
+
+\subsection{Orthogonale Transformationen}
+
+\begin{bonus}{Orthonormalität}
+    $Q \in \R^{n \times n}$ heißt \emph{orthonormal}, falls die Spaltenvektoren $q_i$ paarweise senkrecht stehen und Länge $1$ haben, d. h.
+    \[
+        \langle q_i, q_j \rangle = \delta =
+        \begin{cases}
+            1 & \text{für} \ i = j, \\
+            0 & \text{sonst}
+        \end{cases}
+    \]
+
+    Sind $Q, \tilde{Q} \in \R^{n \times n}$ orthonormal, dann gilt:
+    \begin{enumerate}
+        \item $QQ^T = Q^TQ = I \quad \iff \quad Q^{-1} = Q^T$
+        \item $\varkappa_2(Q) = 1$
+        \item $Q\tilde{Q}$ ist orthonormal
+    \end{enumerate}
+\end{bonus}
+
+\begin{defi}{Spaltentransformation mithilfe von Drehungen}
+    Es gilt:
+    \begin{itemize}
+        \item Spaltentransformation auf Vielfaches des Einheitsvektors ist Elementaroperation bei der Matrixzerlegung
+        \item für orthonormales $Q$ ist $\varkappa_2(Q) = 1$ (minimal) und damit $\varkappa_2(U) \leq \varkappa_2(A)$
+        \item Drehungen und Spiegelungen sind orthonormal
+        \item im $\R^2$ können Spalten mit Drehungen eliminiert werden
+    \end{itemize}
+
+    TODO Grafik von Folie 202/203
+\end{defi}
+
+\begin{bonus}{Verfahren von Givens (Idee)}
+    \setcounter{MaxMatrixCols}{20}
+
+    Sei ein Vektor $u$ gegeben mit
+    \[
+        u =
+        \begin{pmatrix}
+            u_1 & \cdots & u_{i-1} & u_{i} & u_{i-1} & \cdots & u_{n}
+        \end{pmatrix}^T
+        \in \R^n
+    \]
+
+    Die Eliminierung des Eintrags $u_{j}$ mithilfe des Eintrags $u_{i}$ erfolgt dann wie folgt:\footnote{später ist wird ein Eintrag $u_{ij}$ mithilfe des zugehörigen Diagonalelements $u_{ii}$ eliminiert.}
+    \begin{itemize}
+        \item sei $w = \sqrt{u_i^2 + u_j^2}$ mit $j > i$
+              \begin{itemize}
+                  \item $w = 0$: setze $Q_{ij} = I$
+                  \item $w \neq 0$: setze
+                        \[
+                            Q_{ij} =
+                            \begin{pmatrix}
+                                1 &        &   &    &   &        &   &   &   &        &   \\
+                                  & \ddots &   &    &   &        &   &   &   &        &   \\
+                                  &        & 1 &    &   &        &   &   &   &        &   \\
+                                  &        &   & c  &   &        &   & s &   &        &   \\
+                                  &        &   &    & 1 &        &   &   &   &        &   \\
+                                  &        &   &    &   & \ddots &   &   &   &        &   \\
+                                  &        &   &    &   &        & 1 &   &   &        &   \\
+                                  &        &   & -s &   &        &   & c &   &        &   \\
+                                  &        &   &    &   &        &   &   & 1 &        &   \\
+                                  &        &   &    &   &        &   &   &   & \ddots &   \\
+                                  &        &   &    &   &        &   &   &   &        & 1
+                            \end{pmatrix},
+                            \quad
+                            c = \pm \frac{u_i}{w},
+                            \quad
+                            s = \pm \frac{u_j}{w}
+                        \]
+              \end{itemize}
+        \item dann ist $Q_{ij}$ orthonormal und es werden nur $u_i$ und $u_j$ verändert:
+              \[
+                  Q_{ij}u =
+                  \begin{pmatrix}
+                      u_1 & \cdots & u_{i-1} & \pm w & u_{i+1} & \cdots & u_{j-1} & 0 & u_{j-1} & \cdots & u_{n}
+                  \end{pmatrix}^T
+              \]
+    \end{itemize}
+\end{bonus}
+
+\begin{defi}{Verfahren von Givens}
+    In der Praxis wird das \emph{Givens-Verfahren} wie folgt durchgeführt:
+    \begin{itemize}
+        \item Analog zur LU-Zerlegung:\footnote{Handhabung von $Q$ ist komplizierter, da $Q$ keine untere Dreiecksmatrix.}
+              \[
+                  Ax = b, \quad A = QR \quad \iff \quad Qy = b, \quad Rx = y
+              \]
+        \item Elimination des Koeffizienten an Position $i$, $j$:
+              \begin{itemize}
+                  \item alle vorhergehenden Koeffizienten sind schon eliminiert ($A \to \tilde{A}$)
+                  \item benutze $Q_{ij}$ mit geeignetem $c$ bzw. $s$
+                  \item $Q_{ij} \tilde{A}$ verändert nur die $i$-te und die $j$-te Zeile von $\tilde{A}$:\footnote{Bei der LU-Zerlegung wurde nur eine Zeile verändert.}
+                        \[
+                            \tilde{a}_{jk} \to c \cdot \tilde{a}_{jk} + s \cdot \tilde{a}_{ik}, \quad \tilde{a}_{ik} \to - s \cdot \tilde{a}_{jk} + c \cdot \tilde{a}_{ik}
+                        \]
+                  \item $Q_{ij}$ eliminiert $\tilde{a}_{ij}$, d.h. $\tilde{a}_{ij} \to 0$
+                  \item $Q_{ij}$ ist durch reelle Zahl (Drehwinkel) $\rho_{ij}$ definiert
+                  \item wähle Vorzeichen so, dass $c \geq 0$, d.h. $\rho_{ij} \in \left[ -\nicefrac{\pi}{2}, \nicefrac{\pi}{2} \right]$
+                  \item speichere $\rho_{ij} = s$ an der Stelle von $\tilde{a}_{ij}$
+                  \item wir erhalten untere Dreiecksmatrix mit Drehwinkeln $\rho_{ij}$ aus denen Matrizen $Q_{ij}$ rekonstruiert werden können
+              \end{itemize}
+        \item Lösen von $Qy = b$:
+              \begin{itemize}
+                  \item Es gilt
+                        \[
+                            y = Q^Tb =  Q_{n-1} \cdot \ldots \cdot Q_1 b = Q_{nn-1} \cdot \ldots \cdot Q_{21} b
+                        \]
+                  \item betrachte $\rho_{ij}$ in Eliminationsreihenfolge und rekonstruiere $Q_{ij}$ über
+                        \[
+                            s = \rho_{ij}, \quad c = \sqrt{1 - s^2}
+                        \]
+                  \item führe Matrix-Vektor-Produkte aus\footnote{Dabei verändert $Q_{ij} v$, $v \in \R^n$ nur $v_i$ und $v_j$.}
+              \end{itemize}
+        \item Auflösen von $Rx = y$ erfolgt durch Rückwärtseinsetzen
+    \end{itemize}
+
+    Der Aufwand des Verfahrens von Givens ist etwa viermal höher als der einer LU-Zerlegung.
+\end{defi}
+
+\begin{example}{Verfahren von Givens}
+    TODO
+\end{example}
+
+\begin{bonus}{Verfahren von Givens (stabilisierte Variante)}
+    Für $|s| \approx 1$ liefert $c = \sqrt{1 - s^2}$ sehr schlechte Werte für $c$ durch Auslöschung. 
+    Deswegen benutzt man folgende stabilisierte Variante, um die Informationen zu den Drehmatrizen zu speichern: 
+    \begin{itemize}
+        \item es sei $\alpha$ der Drehwinkel, $c = \cos(\alpha)$ und $s = \sin(\alpha)$
+        \item wähle freies Vorzeichen wieder so, dass $c \geq 0$, d. h. $\alpha \in \left[ -\nicefrac{\pi}{2}, \nicefrac{\pi}{2} \right]$
+        \item Fallunterscheidung:
+        \begin{enumerate}
+            \item $\alpha \in \left[ -\nicefrac{\pi}{4}, \nicefrac{\pi}{4} \right]$:
+            \begin{itemize}
+                \item hier gilt: 
+                \[
+                    |s| \leq \frac{\sqrt{2}}{2} \leq c
+                \]
+                \item Auslöschungen wegen $|s| \leq \nicefrac{\sqrt{2}}{2} < 0.8$ bei $c = \sqrt{1 - s^2}$ unkritisch 
+                \item wir speichern: 
+                \[
+                    \rho = s    
+                \]
+                \item $c$ und $s$ berechnen sich durch 
+                \[
+                    s = \rho, \quad c = \sqrt{1 - s^2}    
+                \]
+            \end{itemize}
+            \item $\alpha \in \left( -\nicefrac{\pi}{2}, -\nicefrac{\pi}{4} \right) \cup \left( \nicefrac{\pi}{4}, \nicefrac{\pi}{2} \right)$:
+            \begin{itemize}
+                \item hier gilt: 
+                \[
+                    |s| > \frac{\sqrt{2}}{2} > c > 0
+                \]
+                \item Auslöschungen wegen $0 < c < \nicefrac{\sqrt{2}}{2} < 0.8$ bei $|s| = \sqrt{1 - c^2}$ unkritisch 
+                \item damit günstiger $c$ statt $s$ abzuspeichern
+                \item $c$ legt nur den Betrag von $s$ fest, das Vorzeichen muss separat behandelt werden
+                \item um zusätzlich diesen Fall vom vorherigen zu unterscheiden benutzen wir:\footnote{Der Fall ist unterscheidbar, da $|p| = \nicefrac{1}{c} > \nicefrac{2}{\sqrt{2}} = \sqrt{2} > 1$, sonst ist $\rho \leq 1$.}
+                \[
+                    \rho = \frac{\sign(s)}{c}
+                \]
+                \item $c$ und $s$ berechnen sich durch 
+                \[
+                    c = \frac{1}{\rho}, \quad s = \sign(\rho) \cdot \sqrt{1 - c^2}    
+                \]
+            \end{itemize}
+            \item $\alpha \in \{ -\nicefrac{\pi}{2}, \nicefrac{\pi}{2} \}$:
+            \begin{itemize}
+                \item hier gilt: 
+                \[
+                    s = \pm 1, \quad c = 0    
+                \]
+                \item wir speichern: 
+                \[
+                    \rho = s    
+                \]
+                \item $c$ und $s$ berechnen sich durch 
+                \[
+                    s = \rho, \quad c = \sqrt{1 - s^2} = 0  
+                \]
+            \end{itemize}
+        \end{enumerate}
+    \end{itemize}
+\end{bonus}
