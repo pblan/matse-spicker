@@ -4,14 +4,14 @@
 
 \begin{defi}{Konditionszahl einer Matrix}
     Sei $\| \cdot \|$ eine Norm auf $\R^n$, $A$ regulär und $\| \Delta A \| < \nicefrac{1}{\| A^{-1} \|}$, wobei die durch $\| \cdot \|$ induzierte Matrixnorm benutzt wird.
-
+    
     Dann ist $\tilde{A}$ regulär und es gilt
     \[
         \frac{\| \Delta x \|}{\| x \|} \leq \frac{\varkappa(A)}{1 - \varkappa(A) \frac{\| \Delta A \|}{\| A \|}} \cdot \left( \frac{\| \Delta A \|}{\| A \|} + \frac{\| \Delta b \|}{\| b \|} \right)
     \]
-
+    
     mit $\varkappa(A) = \| A \| \| A^{-1} \|$.
-
+    
     $\varkappa(A)$ heißt \emph{Konditionszahl der Matrix} $A$ und hat folgende Eigenschaften:
     \begin{itemize}
         \item $\varkappa$ hängt von der verwendeten Norm ab
@@ -20,21 +20,21 @@
         \item $\varkappa(A) = \varkappa(A^{-1})$
         \item $\varkappa(AB) \leq \varkappa(A)\varkappa(B)$
     \end{itemize}
-
+    
     $\| \Delta A \|$ ist üblicherweise sehr viel kleiner als $\| A \|$, d. h. der Zähler der Gleichung oben dominiert, so dass der Eingangsfehler im wesentlichen mit $\varkappa(A)$ verstärkt wird.
     Daher sollte $\varkappa(A)$ so klein wie möglich sein.
 \end{defi}
 
 \begin{defi}{Vorkonditioniertes System}
     $\varkappa(A) = \| A \| \| A^{-1} \|$ ist wegen $\| A^{-1} \|$ in der Regel nicht berechenbar.
-
+    
     Generell sollte man vor der Berechnung versuchen, die Kondition des Problems zu verbessern.
-
+    
     Betrachte $Ax = b$ und $U$, $V$ regulär:
     \[
         Ax = b \quad \iff \quad \underbrace{UAV}_{\tilde{A}} \underbrace{V^{-1}x}_{\tilde{x}} = \underbrace{Ub}_{\tilde{b}}
     \]
-
+    
     $\tilde{A} \tilde{x} = \tilde{b}$ heißt \emph{vorkonditioniertes System}.
 \end{defi}
 
@@ -50,7 +50,7 @@
 
 \begin{bonus}{Äquilibrieren}
     In der Praxis werden für $U$ bzw. $V$ Näherungen für $A^{-1}$ gesucht, die billig zu berechnen sind.
-
+    
     Ein einfacher Ansatz ist Skalieren von Zeilen und Spalten.
     Dafür können
     \begin{itemize}
@@ -94,15 +94,15 @@
                   \end{pmatrix}
               \]
     \end{itemize}
-
+    
     Eine vernünftige Skalierung sollte erfüllen:
     \begin{itemize}
         \item alle Gleichungen sollten Koeffizienten gleicher Größenordnung haben $\implies$ Zeilen gleicher Norm
         \item alle Unbekannten sollten mit gleichem Gewicht auftauchen $\implies$ Spalten gleicher Norm
     \end{itemize}
-
+    
     Spalten bzw. Zeilen auf gleiche Norm bringen nennt man \emph{Äquilibrieren}.
-
+    
     Spalten und Zeilen gleichzeitig zu äquilibrieren ist sehr aufwendig, deswegen werden in der Regel entweder Zeilen oder Spalten äquilibriert.
 \end{bonus}
 
@@ -110,14 +110,14 @@
     TODO
 \end{example}
 
-\begin{defi}{Prager-Oettli}
+\begin{defi}{Verfahren von Prager-Oettli}
     Wir betrachten dabei das folgende Szenario:
     \begin{itemize}
         \item $A$ und $b$ sind nur bis auf Störungen $B$ bzw. $c$ bekannt
         \item $Ax = b$ ist also mit \enquote{gewisser Unschärfe} gegeben
         \item für vorgelegte Näherungslösung $\tilde{x}$ soll \emph{Plausabilitätsprüfung} durchgeführt werden
     \end{itemize}
-
+    
     Für $x \in \R^n$, $A \in \R^{n \times n}$ seien
     \[
         |x| =
@@ -131,7 +131,7 @@
             |a_{n1}| & \cdots & |a_{nn}|
         \end{pmatrix}
     \]
-
+    
     Ist $\det(A) \neq 0$ und $\tilde{x}$ eine Näherungslösung von $Ax = b$ mit \emph{Residuum}
     \[
         \tilde{r} = b - A\tilde{x}
@@ -144,13 +144,13 @@
     \[
         |\tilde{r}| \leq B |\tilde{x}| + c
     \]
-
+    
     Dann gibt es $|\Delta A| \leq B$ und $|\Delta b| \leq c$ so, dass $\tilde{x}$ exakte Lösung von
     \[
         (A + \Delta A)\tilde{x} = b + \Delta b
     \]
     ist.\footnote{Die Ungleichheitszeichen sind jeweils komponentenweise anzuwenden.}
-
+    
     \begin{itemize}
         \item kennt man $B$, $c$ so ist $\tilde{x}$ exakte Lösung eines gestörten Ausgangsproblems
         \item über $B$, $c$ weiß man auch, wie weit das gestörte Problem höchstens vom Ausgangsproblem entfernt ist
@@ -158,7 +158,7 @@
     \end{itemize}
 \end{defi}
 
-\begin{example}{Prager-Oettli}
+\begin{example}{Verfahren von Prager-Oettli}
     TODO
 \end{example}
 
@@ -167,12 +167,12 @@
 \begin{defi}{LU-Zerlegung mit Pivot-Strategie}
     Sei $A \in \R^{n \times n}$ regulär.
     Es lässt sich zeigen, dass eine LU-Zerlegung die geringste Kondition (und damit die geringste Fehleranfälligkeit) hat, wenn die \emph{betragsgrößten Elemente} der Spalte nach einem Schritt der Zerlegung auf die Diagonale sind.
-
+    
     Das heißt nach jedem Zeilentausch gilt:
     \[
         | \tilde{a}_{kk}^{(k-1)} | \geq | \tilde{a}_{ik}^{(k-1)} | \quad \forall i > k
     \]
-
+    
     Dieses Verfahren nennt sich \emph{Spalten-Pivot-Suche}.
 \end{defi}
 
@@ -191,7 +191,7 @@
             0 & \text{sonst}
         \end{cases}
     \]
-
+    
     Sind $Q, \tilde{Q} \in \R^{n \times n}$ orthonormal, dann gilt:
     \begin{enumerate}
         \item $QQ^T = Q^TQ = I \quad \iff \quad Q^{-1} = Q^T$
@@ -200,21 +200,23 @@
     \end{enumerate}
 \end{bonus}
 
-\begin{defi}{Spaltentransformation mithilfe von Drehungen}
+\subsubsection{Verfahren von Givens}
+
+\begin{defi}{Spaltentransformation mithilfe von Drehungen und Spiegelungen}
     Es gilt:
     \begin{itemize}
         \item Spaltentransformation auf Vielfaches des Einheitsvektors ist Elementaroperation bei der Matrixzerlegung
         \item für orthonormales $Q$ ist $\varkappa_2(Q) = 1$ (minimal) und damit $\varkappa_2(U) \leq \varkappa_2(A)$
         \item Drehungen und Spiegelungen sind orthonormal
-        \item im $\R^2$ können Spalten mit Drehungen eliminiert werden
+        \item im $\R^2$ können Spalten mit Drehungen und Spiegelungen eliminiert werden
     \end{itemize}
-
-    TODO Grafik von Folie 202/203
 \end{defi}
 
 \begin{bonus}{Verfahren von Givens (Idee)}
     \setcounter{MaxMatrixCols}{20}
-
+    
+    TODO Grafik von Folie 202/203
+    
     Sei ein Vektor $u$ gegeben mit
     \[
         u =
@@ -223,7 +225,7 @@
         \end{pmatrix}^T
         \in \R^n
     \]
-
+    
     Die Eliminierung des Eintrags $u_{j}$ mithilfe des Eintrags $u_{i}$ erfolgt dann wie folgt:\footnote{später ist wird ein Eintrag $u_{ij}$ mithilfe des zugehörigen Diagonalelements $u_{ii}$ eliminiert.}
     \begin{itemize}
         \item sei $w = \sqrt{u_i^2 + u_j^2}$ mit $j > i$
@@ -296,7 +298,7 @@
               \end{itemize}
         \item Auflösen von $Rx = y$ erfolgt durch Rückwärtseinsetzen
     \end{itemize}
-
+    
     Der Aufwand des Verfahrens von Givens ist etwa viermal höher als der einer LU-Zerlegung.
 \end{defi}
 
@@ -311,56 +313,181 @@
         \item es sei $\alpha$ der Drehwinkel, $c = \cos(\alpha)$ und $s = \sin(\alpha)$
         \item wähle freies Vorzeichen wieder so, dass $c \geq 0$, d. h. $\alpha \in \left[ -\nicefrac{\pi}{2}, \nicefrac{\pi}{2} \right]$
         \item Fallunterscheidung:
-        \begin{enumerate}
-            \item $\alpha \in \left[ -\nicefrac{\pi}{4}, \nicefrac{\pi}{4} \right]$:
-            \begin{itemize}
-                \item hier gilt: 
-                \[
-                    |s| \leq \frac{\sqrt{2}}{2} \leq c
-                \]
-                \item Auslöschungen wegen $|s| \leq \nicefrac{\sqrt{2}}{2} < 0.8$ bei $c = \sqrt{1 - s^2}$ unkritisch 
-                \item wir speichern: 
-                \[
-                    \rho = s    
-                \]
-                \item $c$ und $s$ berechnen sich durch 
-                \[
-                    s = \rho, \quad c = \sqrt{1 - s^2}    
-                \]
-            \end{itemize}
-            \item $\alpha \in \left( -\nicefrac{\pi}{2}, -\nicefrac{\pi}{4} \right) \cup \left( \nicefrac{\pi}{4}, \nicefrac{\pi}{2} \right)$:
-            \begin{itemize}
-                \item hier gilt: 
-                \[
-                    |s| > \frac{\sqrt{2}}{2} > c > 0
-                \]
-                \item Auslöschungen wegen $0 < c < \nicefrac{\sqrt{2}}{2} < 0.8$ bei $|s| = \sqrt{1 - c^2}$ unkritisch 
-                \item damit günstiger $c$ statt $s$ abzuspeichern
-                \item $c$ legt nur den Betrag von $s$ fest, das Vorzeichen muss separat behandelt werden
-                \item um zusätzlich diesen Fall vom vorherigen zu unterscheiden benutzen wir:\footnote{Der Fall ist unterscheidbar, da $|p| = \nicefrac{1}{c} > \nicefrac{2}{\sqrt{2}} = \sqrt{2} > 1$, sonst ist $\rho \leq 1$.}
-                \[
-                    \rho = \frac{\sign(s)}{c}
-                \]
-                \item $c$ und $s$ berechnen sich durch 
-                \[
-                    c = \frac{1}{\rho}, \quad s = \sign(\rho) \cdot \sqrt{1 - c^2}    
-                \]
-            \end{itemize}
-            \item $\alpha \in \{ -\nicefrac{\pi}{2}, \nicefrac{\pi}{2} \}$:
-            \begin{itemize}
-                \item hier gilt: 
-                \[
-                    s = \pm 1, \quad c = 0    
-                \]
-                \item wir speichern: 
-                \[
-                    \rho = s    
-                \]
-                \item $c$ und $s$ berechnen sich durch 
-                \[
-                    s = \rho, \quad c = \sqrt{1 - s^2} = 0  
-                \]
-            \end{itemize}
-        \end{enumerate}
+              \begin{enumerate}
+                  \item $\alpha \in \left[ -\nicefrac{\pi}{4}, \nicefrac{\pi}{4} \right]$:
+                        \begin{itemize}
+                            \item hier gilt:
+                                  \[
+                                      |s| \leq \frac{\sqrt{2}}{2} \leq c
+                                  \]
+                            \item Auslöschungen wegen $|s| \leq \nicefrac{\sqrt{2}}{2} < 0.8$ bei $c = \sqrt{1 - s^2}$ unkritisch
+                            \item wir speichern:
+                                  \[
+                                      \rho = s    
+                                  \]
+                            \item $c$ und $s$ berechnen sich durch
+                                  \[
+                                      s = \rho, \quad c = \sqrt{1 - s^2}
+                                  \]
+                        \end{itemize}
+                  \item $\alpha \in \left( -\nicefrac{\pi}{2}, -\nicefrac{\pi}{4} \right) \cup \left( \nicefrac{\pi}{4}, \nicefrac{\pi}{2} \right)$:
+                        \begin{itemize}
+                            \item hier gilt:
+                                  \[
+                                      |s| > \frac{\sqrt{2}}{2} > c > 0
+                                  \]
+                            \item Auslöschungen wegen $0 < c < \nicefrac{\sqrt{2}}{2} < 0.8$ bei $|s| = \sqrt{1 - c^2}$ unkritisch
+                            \item damit günstiger $c$ statt $s$ abzuspeichern
+                            \item $c$ legt nur den Betrag von $s$ fest, das Vorzeichen muss separat behandelt werden
+                            \item um zusätzlich diesen Fall vom vorherigen zu unterscheiden benutzen wir:\footnote{Der Fall ist unterscheidbar, da $|p| = \nicefrac{1}{c} > \nicefrac{2}{\sqrt{2}} = \sqrt{2} > 1$, sonst ist $\rho \leq 1$.}
+                                  \[
+                                      \rho = \frac{\sign(s)}{c}
+                                  \]
+                            \item $c$ und $s$ berechnen sich durch
+                                  \[
+                                      c = \frac{1}{\rho}, \quad s = \sign(\rho) \cdot \sqrt{1 - c^2}
+                                  \]
+                        \end{itemize}
+                  \item $\alpha \in \{ -\nicefrac{\pi}{2}, \nicefrac{\pi}{2} \}$:
+                        \begin{itemize}
+                            \item hier gilt:
+                                  \[
+                                      s = \pm 1, \quad c = 0    
+                                  \]
+                            \item wir speichern:
+                                  \[
+                                      \rho = s    
+                                  \]
+                            \item $c$ und $s$ berechnen sich durch
+                                  \[
+                                      s = \rho, \quad c = \sqrt{1 - s^2} = 0  
+                                  \]
+                        \end{itemize}
+              \end{enumerate}
     \end{itemize}
 \end{bonus}
+
+\subsubsection{Verfahren von Householder}
+
+\begin{bonus}{Verfahren von Householder (Idee)}
+    Sei eine Matrix $A \in \R^{n \times n}$ gegeben. 
+    Wir versuchen die erste Spalte $a = \begin{pmatrix} a_{11} & a_{12} & \cdots & a_{n1} \end{pmatrix}^T$ von $A$ auf einen Einheitsvektor $\pm \|a\|_2 e_1$ zu spiegeln.\footnote{Zunächst wird nur $+\|a\| e_1$ betrachtet. Negatives Vorzeichen funktioniert analog.}
+    
+    $a$ legt die Spiegelebene $E_a$ fest, da $E_a$ senkrecht auf $v$ steht mit
+    \[
+        v = a - \|a\|_2 e_1
+    \]
+    Um ein beliebiges $x$ an $E_a$ zu spiegeln, wird:
+    \begin{itemize}
+        \item der Anteil von $x$ senkrecht $E_a$ bestimmt:
+              \[
+                  p = w \langle w, x \rangle, \quad w = \frac{v}{\|v\|_2}
+              \]
+        \item $p$ zweimal von $x$ subtrahiert:
+              \[ 
+                  x' = x - 2 p = x - 2 w \langle w, x \rangle = x - 2 ww^T x = \underbrace{(I - 2 ww^T)}_{Q_+} x = Q_+ x
+              \]
+    \end{itemize}
+    
+    Insgesamt ist eine Spiegelung an der Spiegelebene $E_a$ also eine lineare Abbildung mit Matrix:
+    \[ 
+        Q_+ = I - 2 ww^T, \quad w = \frac{v}{\|v\|_2}, \quad v = a - \|a\|_2 e_1
+    \]
+    
+    bzw. für die Spiegelung auf $-\|a\|_2 e_1$:
+    \[
+        Q_- = I - 2 ww^T, \quad w = \frac{v}{\|v\|_2}, \quad v = a + \|a\|_2 e_1  
+    \]
+    
+    Betrachten wir $Q_1 = Q_+$ bzw. $Q_1 = Q_-$ zu $a = a_1$. 
+    Es gilt: 
+    \begin{itemize}
+        \item $Q_1$ mit $\|w\|_2 = 1$ definiert eine Spiegelung an der Hyperebene $\langle w, x \rangle = 0$
+        \item $Q_1 = Q_1^T = Q_1^{-1}$ $\implies$ $Q_1$ orthonormal $\implies$ $\varkappa_2(Q_1) = 1$
+    \end{itemize}
+    
+    Multiplizieren beider Seiten von $Ax = b$ mit $Q_1$ ergibt:
+    \[
+        Q_1 A = Q_1 b, \quad Q_1 A = 
+        \begin{pmatrix}
+            *      & *      & \cdots & *      \\
+            0      & *      & \cdots & *      \\
+            \vdots & \vdots &        & \vdots \\
+            0      & *      & \cdots & *
+        \end{pmatrix}
+    \]
+    
+    Wiederholung auf die jeweilige $(n-1) \times (n-1)$-Untermatrix ergibt schließlich
+    \[ 
+        Q_{n-1} \cdot \ldots \cdot Q_1 Ax = Q_{n-1} \cdot \ldots \cdot Q_1 b \quad \text{mit} \quad Q_{n-1} \cdot \ldots \cdot Q_1 A = R
+    \]
+    
+    Damit ist auch 
+    \[
+        A = QR, \quad Q = (Q_{n-1} \cdot \ldots \cdot Q_1)^{-1} = Q_1 \cdot \ldots \cdot Q_{n-1}
+    \]
+\end{bonus}
+
+\begin{defi}{Verfahren von Householder}
+    In der Praxis wird das \emph{Householder-Verfahren} wie folgt durchgeführt: 
+    \begin{itemize}
+        \item Analog zum LU und Givens-Verfahren:\footnote{$Q = (Q_{n-1} \cdot \ldots \cdot Q_1)^{-1} = Q_1 \cdot \ldots \cdot Q_{n-1}$}
+              \[
+                  Ax = b, \quad A = QR \quad \iff \quad Qy = b, \quad Rx = y \quad \iff \quad Rx = Q^T b
+              \]
+        \item Betrachte $A = \begin{pmatrix} a_1 & \ldots & a_n \end{pmatrix} \in \R^{n \times n}$.
+        \item Berechnen und Speichern der $Q_i$ am Beispiel von $Q_1$:
+              \begin{itemize}
+                  \item berechne $\|a_1\|_2$ und speichere Ergebnis zwischen
+                  \item bestimme
+                        \[
+                            v = a_1 \mp \|a_1\|_2 e_1 = 
+                            \begin{pmatrix}
+                                a_{11} \mp \|a_1\|_2 \\ 
+                                a_{21}               \\ 
+                                \vdots               \\
+                                a_{n1}
+                            \end{pmatrix}
+                        \]
+                  \item $v$ unterscheidet sich nur in der erste Komponente von der ersten Spalte der Ausgangsmatrix $\implies$ speichere $v$ über erste Spalte
+                  \item wähle freies Vorzeichen, so dass Auslöschungen vermieden werden:
+                        \[
+                            a_{11} < 0 \quad \implies \quad - \quad \implies \quad Q_1a_1 = \|a_1\|_2 e_1 
+                        \]
+                        \[
+                            a_{11} \geq 0 \quad \implies \quad + \quad \implies \quad Q_1a_1 = - \|a_1\|_2 e_1
+                        \]
+                  \item für $Q_1$ brauchen wir auch $\|v\|_2$:
+                        \begin{alignat*}{1}
+                            \|v\|_2^2 & = ( \mp | a_{11} \mp \|a_1\|_2 )^2 + a_{21}^2 + \cdots + a_{n1}^2                                         \\ 
+                                      & = \|a_1\|_2^2 + 2 |a_{11}| \|a_1\|^2 + \underbrace{a_{11}^2 + a_{21}^2 + \cdots + a_{n1}^2}_{\|a_1\|_2^2} \\ 
+                                      & = 2 (\|a_1\|_2^2 + |a_{11}| \|a_1\|_2)
+                        \end{alignat*}
+              \end{itemize}
+        \item die Produkte $Q_1z$ werden wie folgt effizient berechnet:
+              \begin{itemize}
+                  \item betrachte
+                        \[
+                            Q_1z = \left( I - \frac{2}{\|v\|_2^2} vv^T \right) z = z - \frac{2}{\|v\|_2^2} v \underbrace{v^Tz}_{\langle v, z \rangle} = z - \frac{2 \langle v, z \rangle}{\|v\|_2^2} v
+                        \]
+                  \item berechne zuerst $\langle v, z \rangle$ und dann
+                        \[ 
+                            \alpha = \frac{2 \langle v, z \rangle}{\|v\|_2^2}
+                        \]
+                  \item schließlich ist
+                        \[ 
+                            Q_1 z = z - \alpha v
+                        \]
+              \end{itemize}
+        \item Speicherproblem:
+              \begin{itemize}
+                  \item $v$ belegt ganze Spalte ab Diagonalelement abwärts
+                  \item auf Diagonale sollte aber $\pm \|a_1\|_2$ stehen
+                  \item speichere Diagonale in seperatem Vektor ab
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Householder-Verfahren}
+    TODO
+\end{example}
