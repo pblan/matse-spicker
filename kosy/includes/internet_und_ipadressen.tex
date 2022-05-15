@@ -72,6 +72,26 @@
     In der Vermittlungsschicht wird größtenteils das IP-Protokoll genutzt, um die Pakete zu adressieren und Regeln zur Paketbehandlung aufzustellen.
 \end{bonus}
 
+\begin{defi}{Kapselung von Protokoll-Headern}
+    Zur erfolgreichen Nachrichtenzustellung erweitern die verschiedenen Protokollinstanzen ein von einer Anwendung produziertes Datenpaket um verschiedene fest definierte Header.
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_header_kapselung.pdf}
+    \end{center}
+
+    \begin{itemize}
+        \item TCP bzw. UDP-Header dienen zur eindeutigen Prozessadressieren durch Ports.
+        \item TCP sichert darüber hinaus die Datenübertragung
+        \item IP-Header identifizieren ein eindeutiges Quell und Zielsystem
+    \end{itemize}
+
+    Demnach entsteht folgendes versandfertiges Datagramm:
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_datagramm.pdf}
+    \end{center}
+\end{defi}
+
 \begin{defi}{Das Internet-Protokoll (IP)}
     \emph{IP} bietet eine Ende-zu-Ende Kommunikation zwischen Endgeräten im Internet.
     Derzeit wird flächendeckend \emph{IPv4} bzw. \emph{IPv6} eingesetzt.
@@ -86,4 +106,151 @@
     \end{itemize}
 
     \emph{Sitzungen} werden durch einen exklusiven Kommunikationskanal über TCP simuliert.
+\end{defi}
+
+\begin{defi}{Wegwahl im Internet-Protokoll}
+    Die IP-Implementierung eines Rechners oder Routers entscheidet eigenständig, wohin dieser ein Datagramm übertragen soll.
+
+    Diese Entscheidung wird auf Basis von Routing bzw. Forwarding-Tabellen getroffen\footnote{Wie Routingtabellen aufgebaut werden, wird zu einem späteren Zeitpunkt erwähnt.}.
+    Dazu werden die Informationen, normalerweise ausschließlich die Zieladresse des Pakets, aus dem IP-Header in der jeweiligen Tabelle abgefragt.
+
+    Router sind dabei meist an mehreren Netzen angeschlossen.
+    Sie müssen zusätzlich noch überprüfen, ob sich das Zielgerät in einem anderen Netz befindet als das Quellgerät bzw. wie dieses Netz erreicht werden kann.
+\end{defi}
+
+\begin{example}{Wegwahl im Internet Protokoll}
+    In folgendem Beispiel möchte \emph{Rechner A} an Paket an \emph{Rechner F} senden.
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/example_ip_routing.pdf }
+    \end{center}
+
+    \begin{minipage}{0.25\textwidth}
+        \begin{center}
+            \emph{Rechner A}
+
+            \begin{tabular}{|c|l|}
+                \hline
+                \textbf{Ziel} & \textbf{Next Hop} \\\hline
+                > * <         & R1                \\\hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.25\textwidth}
+        \begin{center}
+            \emph{R1}
+
+            \begin{tabular}{|c|l|}
+                \hline
+                \textbf{Ziel} & \textbf{Next Hop} \\\hline
+                A             & A                 \\
+                B             & B                 \\
+                C             & R4                \\
+                D             & R2                \\
+                E             & R2                \\
+                > F <         & R2                \\\hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.25\textwidth}
+        \begin{center}
+            \emph{R2}
+
+            \begin{tabular}{|c|l|}
+                \hline
+                \textbf{Ziel} & \textbf{Next Hop} \\\hline
+                A             & R1                \\
+                B             & R1                \\
+                C             & R4                \\
+                D             & R3                \\
+                E             & R3                \\
+                > F <         & R5                \\\hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}{0.25\textwidth}
+        \begin{center}
+            \emph{R5}
+
+            \begin{tabular}{|c|l|}
+                \hline
+                \textbf{Ziel} & \textbf{Next Hop} \\\hline
+                A             & R2                \\
+                B             & R2                \\
+                C             & R4                \\
+                D             & R3                \\
+                E             & R3                \\
+                > F <         & F                 \\\hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+\end{example}
+
+\begin{defi}{IPv4-Adresse}
+    IP-Adressen sind 32 bit bzw. 4 Byte lang.
+
+    Sie sind unterteilt in einen Bereich um das Netz zu adressieren und einen Bereich um diesen Rechner in dem angegebenen Netz zu identifizieren.
+    In Kombination ist die IP-Adresse (theoretisch) Weltweit eindeutig.
+
+    Zur einfachen und übersichtlichen Darstellung werden IP-Adressen in vier Blöcke je ein Byte aufgeteilt, von denen jeder eine dezimale Zahl darstellt\footnote{Führende Nullen können bei der Visualisierung weggelassen werden.}:
+
+    z.B. \texttt{192.168.0.1}
+\end{defi}
+
+\begin{bonus}{Probleme IPv4}
+    Da nur ca. 4.3 Mrd. ($2^{32}$) Adressen zur Verfügung stehen, kann nicht jedes Gerät eine eigene weltweit eindeutige IP-Adresse erhalten.
+
+    Um dieses Problem zu lösen, bzw. die resultierenden Auswirkungen aufzuschieben, wurden Adressklassen definiert.
+
+    \begin{enumerate}[label=Class \Alph*:, leftmargin=*]
+        \item Für Netze mit bis zu 16 Mio Knoten (Knoten-ID: $0_{10}\text{-}127_{10}$)
+    \end{enumerate}
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_class_a.pdf}
+    \end{center}
+
+    \begin{enumerate}[label=Class \Alph*:, leftmargin=*, start=2]
+        \item Für Netze mit bis zu 65.536 Knoten (Knoten-ID: $128_{10}\text{-}191_{10}$)
+    \end{enumerate}
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_class_b.pdf}
+    \end{center}
+
+    \begin{enumerate}[label=Class \Alph*:, leftmargin=*, start=3]
+        \item Für Netze mit bis zu 256 Knoten (Knoten-ID: $192_{10}\text{-}223_{10}$)
+    \end{enumerate}
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_class_c.pdf}
+    \end{center}
+
+    \begin{enumerate}[label=Class \Alph*:, leftmargin=*, start=4]
+        \item Für Gruppenkommunikation (Knoten-ID: $224_{10}\text{-}239_{10}$)
+    \end{enumerate}
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_class_d.pdf}
+    \end{center}
+
+    \begin{enumerate}[label=Class \Alph*:, leftmargin=*, start=5]
+        \item Reserviert für zukünftige Anwendungen (Knoten-ID: $240_{10}\text{-}255_{10}$)
+    \end{enumerate}
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_class_e.pdf}
+    \end{center}
+
+    In allen Netzen ist die Koten-ID 0..0 ($0_{10}$) für das Netz selber reserviert.
+
+    Des weiteren wird für Broadcast Nachrichten an alle teilnehmenden Geräte im Netz die Knoten-ID 1..1 ($\text{A: } 127_{10} \text{ bzw. B: } 191_{10} \text{ bzw. C: } 223_{10} \text{ bzw.  D:} 239_{10} \text{ bzw. E: } 255_{10}$) genutzt
+\end{bonus}
+
+\begin{defi}{IP-Header}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_ip_header_kapselung.pdf}
+
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_ip_header.pdf}
+    \end{center}
 \end{defi}
