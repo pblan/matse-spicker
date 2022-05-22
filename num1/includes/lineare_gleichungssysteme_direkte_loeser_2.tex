@@ -273,7 +273,10 @@
         \item Elimination des Koeffizienten an Position $i$, $j$:
               \begin{itemize}
                   \item alle vorhergehenden Koeffizienten sind schon eliminiert ($A \to \tilde{A}$)
-                  \item benutze $Q_{ij}$ mit geeignetem $c$ bzw. $s$
+                  \item benutze $Q_{ij}$ mit geeignetem $c$ bzw. $s$:
+                        \[
+                            c = \pm \frac{u_i}{w} = \pm \frac{u_i}{\sqrt{u_i^2 + u_j^2}}, \quad s = \pm \frac{u_j}{w} = \pm \frac{u_j}{\sqrt{u_i^2 + u_j^2}}
+                        \]
                   \item $Q_{ij} \tilde{A}$ verändert nur die $i$-te und die $j$-te Zeile von $\tilde{A}$:\footnote{Bei der LU-Zerlegung wurde nur eine Zeile verändert.}
                         \[
                             \tilde{a}_{jk} \to c \cdot \tilde{a}_{jk} + s \cdot \tilde{a}_{ik}, \quad \tilde{a}_{ik} \to - s \cdot \tilde{a}_{jk} + c \cdot \tilde{a}_{ik}

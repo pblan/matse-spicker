@@ -1,1 +1,600 @@
 \section{Iterative Löser für lineare Gleichungssysteme}
+
+\subsection{Grundlagen}
+
+\begin{defi}{Iteratives Verfahren}
+    Unter einem \emph{iterativem Verfahren} versteht man ein Verfahren zur schrittweisen Annäherung an die Lösung einer Gleichung unter Anwendung eines sich wiederholenden Rechengangs.
+
+    Ein allgemeines iteratives Verfahren funktioniert wie folgt:
+    \begin{itemize}
+        \item starte mit Anfangsnäherung $x_0$ von $x$
+        \item erzeuge Folge von Näherungen
+              \[
+                  x_0 \to x_1 \to \ldots \to x_k \to \ldots
+              \]
+              so lange bis $x_k$ nahe genug an $x$ liegt
+    \end{itemize}
+
+    Erzeugung von $x_k$:
+    \begin{itemize}
+        \item benutzt man zur Berechnung von $x_{k+1}$ nur den direkten Vorgänger $x_k$, so heißt das Verfahren \emph{einstufig}, sonst \emph{mehrstufig}
+        \item wir betrachten nur einstufige Verfahren, d. h.
+              \[
+                  x_{k+1} = \Phi_k(x_k)
+              \]
+              mit \emph{Verfahrensvorschrift} $\Phi_k: \R^n \to \R^n$
+        \item ist $\Phi_k = \Phi$, d. h. wird in jedem Schritt die selbe Vorschrift benutzt, so heißt das Verfahren \emph{stationär}, sonst \emph{instationär}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Fehler und Residuum}
+    Ist $x_{k+1} = \Phi_k(x_k)$ ein iteratives Verfahren zur Lösung von $Ax = b$, dann sind der \emph{Fehler} $e_k$ und das \emph{Residuum} $r_k$ im $k$-ten Schritt gegeben durch:\footnote{$Ae_k = A(x - x_k) = Ax - Ax_k = b - Ax_k = r_k$}
+    \[
+        e_k = x - x_k = A^{-1} r_k
+    \]
+    \[
+        r_k = b - A x_k = A e_k
+    \]
+
+    Von einem guten Verfahren $\Phi_k$ erwartet man, dass $e_k$ für große $k$ klein wird und zwar unabhängig vom Startwert $x_0$.
+
+    $\Phi_k$ heißt \emph{konvergent}, falls $\lim_{k \to \infty} e_k = 0$ für alle $x_0 \in \R^n$.
+\end{defi}
+
+\subsection{Lineare stationäre Verfahren}
+
+\begin{bonus}{Residueniteration mit Vorkonditionierer (Idee)}
+    Für ein $\Phi$ gilt:
+    \[
+        e_k = x - x_k = A^{-1} r_k
+    \]
+    d. h. aus $x_k$ und $r_k$ kann $x$ durch
+    \[
+        x = x_k + A^{-1} r_k
+    \]
+    bestimmt werden.
+
+    Aber:
+    \begin{itemize}
+        \item $A^{-1}$ ist unbekannt
+        \item $A^{-1}$ zu Berechnen ist genauso aufwendig wie das Lösen des Ausgangsproblems $Ax = b$
+    \end{itemize}
+
+    Die Idee ist nun $A^{-1}$ durch ein $M^{-1}$ mit $M \approx A$ zu ersetzen, welches aber \enquote{einfach} berechenbar ist.
+\end{bonus}
+
+\begin{defi}{Residueniteration mit Vorkonditionierer}
+    Die \emph{Residueniteration} mit \emph{Vorkonditionierer} $M$ ist gegeben durch
+    \[
+        x_{k+1} = x_k + M^{-1} r_k
+    \]
+
+    $M$ wird \emph{Vorkonditionierer} genannt, da
+    \[
+        x_{k+1} = x_k + M^{-1} r_k = x_k + M^{-1} A e_k = x_k + M^{-1} A (x - x_k)
+    \]
+    Mit $M^{-1} A \approx I$ folgt
+    \[
+        x_{k+1} \approx x_k + k - x_k = x
+    \]
+
+    In der Praxis wird das Verfahren wie folgt durchgeführt:
+    \begin{itemize}
+        \item Berechne pro Schritt:\footnote{Der Aufwand besteht im Matrix-Vektor=Produkt $Ax_k$ und dem Invertieren von $M$, wobei $M$ aber einfach invertierbar sein soll.}
+              \begin{itemize}
+                  \item $r_k = b - Ax_k$
+                  \item löse $M p_k = r_k$, d.h. $p_k = M^{-1} r_k$
+                  \item $x_{k+1} = x_k + p_k$
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Stationäres lineares Iterationsverfahren (Einstufig)}
+    Ein \emph{einstufiges, stationäres lineares Iterationsverfahren} ist gegeben durch
+    \[
+        x_{k+1} = \Phi(x_k) = B x_k + d
+    \]
+
+    wobei $B$ die \emph{Iterationsmatrix} und $d$ der \emph{Iterationsvektor} ist.
+\end{defi}
+
+\begin{bonus}{Residueniteration mit Vorkonditionierer als einstufiges, stationäres lineares Iterationsverfahren}
+    Bringen wir die Formel für die Residueniteration mit Vorkonditionierer $M$ in die Standardform, so erhalten wir:
+    \begin{alignat*}{2}
+        x_{k+1} & = x_k + M^{-1} r_k                                                \\
+                & = x_k + M^{-1} A e_k                                              \\
+                & = x_k + M^{-1} A (x - x_k)                                        \\
+                & = x_k + M^{-1} (b - A x_k)                                        \\
+                & = x_k + M^{-1} b - M^{-1} A x_k                                   \\
+                & = x_k - M^{-1} A x_k + M^{-1} b                                   \\
+                & = \underbrace{(I - M^{-1} A)}_{B} x_k + \underbrace{M^{-1} b}_{d} \\
+                & = B x_k + d                                                       \\
+                & = \Phi(x_k)
+    \end{alignat*}
+
+    Damit ist die Residueniteration mit Vorkonditionierer $M$ ein Spezialfall eines einstufigen, stationären linearen Iterationsverfahrens.
+\end{bonus}
+
+\begin{defi}{Fixpunkteigenschaft}
+    Alle Residueniterationen $\Phi(x)$ mit Vorkonditionierer $M$ besitzen die \emph{Fixpunkteigenschaft}:
+    \[
+        x = \Phi(x) \quad \iff \quad Ax = b
+    \]
+\end{defi}
+
+\begin{defi}{Konvergenz}
+    % Für die Fehlerfortpflanzung gilt:
+    % \begin{alignat*}{1}
+    %     e_{k+1} & = x - x_{k+1}             \\
+    %             & = \Phi(x) - x_{k+1}       \\
+    %             & = Bx + d - (Bx_{k+1} + d) \\
+    %             & = B(x - x_{k+1})          \\
+    %             & = Be_k
+    % \end{alignat*}
+
+    % und damit:
+    % \[
+    %     e_k = B^k e_0, \quad e_0 = x - x_0
+    % \]
+    Für \emph{Konvergenz} muss gelten:\footnote{Wir erkennen, dass das $d$ in $\Phi(x)$ die Konvergenz nicht beeinflusst. Es stellt nur die Fixpunkteigenschaft sicher.}
+    \[
+        e_k \xrightarrow{k \to \infty} 0, \quad \forall x_0 \in \mathbb{R}^n \quad \iff \quad B^k e_0 \xrightarrow{k \to \infty} 0, \quad \forall e_0 \in \mathbb{R}^n
+    \]
+
+    Sei $\| \cdot \|$ eine belieblige Vektornorm auf $\R^n$ und $\| \cdot \|_M$ eine beliebige Matrixnorm auf $\R^{n \times n}$.
+    Für
+    \[
+        x_{k+1} = \Phi(x_k) = Bx_k + d
+    \]
+
+    gilt dann\footnote{Die Konvergenz des Verfahrens ist also unabhängig von der benutzten Matrix- und Vektornorm.}
+    \[
+        \lim_{k \to \infty} \|e_k\| = 0 \quad \forall e_0 \in \mathbb{R}^n \quad \iff \quad \lim_{k \to \infty} \|B^k\|_M = 0
+    \]
+
+    Für den Spektralradius $\rho(A) = \max \{ | \lambda | \}$ (betragsgrößter Eigenwert) gilt:
+    \begin{itemize}
+        \item $\rho(A) \leq \|A\|$ für alle induzierten Matrixnormen
+        \item $\forall \epsilon > 0$ existiert eine induzierte Matrixnorm mit $\rho(A) \leq \|A\| \leq \rho(A) + \epsilon$
+        \item Für jede Matrixnorm gilt
+              \[
+                  \rho(A) = \lim_{k \to \infty} \| A^k \|^{\frac{1}{k}}
+              \]
+    \end{itemize}
+
+    Sei $A$ regulär, $x_{k+1} = \Phi(x_k) = Bx_k + d$.
+    $\Phi$ \emph{konvergiert} genau dann, wenn $\rho(B) < 1$.
+
+    $\Phi$ konvergiert monoton, wenn $\|B\| < 1$.
+
+    Je nach Matrixnorm kann $\| B \| \geq 1$ gelten, obwohl $\rho(B) < 1$.
+    Das Verfahren konvergiert hier auch, aber nicht notwendig monoton.
+\end{defi}
+
+\begin{example}{Konvergenz}
+    TODO
+\end{example}
+
+\begin{defi}{Jacobi-Verfahren (Gesamtschritt-Verfahren)}
+    Das \emph{Jacobi-Verfahren} ist ein lineares, stationäres Iterationsverfahren.
+    Die Matrix $A$ des linearen Gleichungssystems $Ax = b$ wird hierzu in einer Diagonalmatrix $D$, eine strikte untere Dreiecksmatrix $E$ und eine strikte obere Dreiecksmatrix $F$ zerlegt, so dass gilt:
+    \[
+        A = D - E - F
+    \]
+
+    Ausführlich heißt das:
+    \[
+        \begin{pmatrix}
+            a_{11} & a_{12} & \cdots & a_{1n} \\
+            a_{21} & a_{22} & \cdots & a_{2n} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            a_{n1} & a_{n2} & \cdots & a_{nn}
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            a_{11} & 0      & \cdots & 0      \\
+            0      & a_{22} & \cdots & 0      \\
+            \vdots & \vdots & \ddots & \vdots \\
+            0      & 0      & \cdots & a_{nn}
+        \end{pmatrix}
+        -
+        \begin{pmatrix}
+            0      & a_{12} & \cdots & a_{1n} \\
+            a_{21} & 0      & \cdots & a_{2n} \\
+            \vdots & \vdots & \ddots & \vdots \\
+            a_{n1} & a_{n2} & \cdots & 0
+        \end{pmatrix}
+    \]
+    Die komponentenweise Iterationsvorschrift lässt sich dann folgendermaßen für den kompletten Vektor darstellen (wir benutzen $M = D$):
+    \begin{alignat*}{1}
+        x^{(k+1)} & = x^{(k)} + M^{-1} r^{(k)}                                                   \\
+                  & = x^{(k)} + D^{-1} \left( b - (D - E - F) x^{(k)} \right)                    \\
+                  & = x^{(k)} + D^{-1} \left( b + \left( E + F \right) x^{(k)} \right) - x^{(k)} \\
+                  & = D^{-1} \left( b + (E + F) x^{(k)} \right)
+    \end{alignat*}
+
+    Wegen
+    \[
+        D^{-1} =
+        \begin{pmatrix}
+            \frac{1}{a_{11}} & 0                & \cdots & 0                \\
+            0                & \frac{1}{a_{22}} & \cdots & 0                \\
+            \vdots           & \vdots           & \ddots & \vdots           \\
+            0                & 0                & \cdots & \frac{1}{a_{nn}}
+        \end{pmatrix}
+    \]
+    erhalten wir komponentenweise
+    \[
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j \neq i} a_{ij} x_j^{(k)} \right), \quad i = 1, \ldots, n
+    \]
+
+    Wir erhalten die Iterationsmatrix bzw. -vektor
+    \[
+        B_{J} = I - M^{-1} A = I - D^{-1} (D - E - F) = D^{-1} (E + F), \quad d_{J} = M^{-1} b = D^{-1} b
+    \]
+\end{defi}
+
+\begin{example}{Jacobi-Verfahren (Gesamtschritt-Verfahren)}
+    TODO
+\end{example}
+
+\begin{defi}{Diagonaldominante Matrix}
+    Eine Matrix $A \in \R^{n \times n}$ heißt \emph{streng diagonaldominant}, falls die Beträge ihrer Diagonalelemente $a_{ii}$ jeweils größer sind als die Summe der Beträge der restlichen jeweiligen Zeileneinträge $a_{ij}$, d.h.
+    \[
+        |a_{ii}| > \sum_{j \neq i} |a_{ij}|, \quad \forall i = 1, \ldots, n
+    \]
+
+    Bei einigen Verfahren zum Lösen von Gleichungssystemen (z. B. Gauß-Seidel-, Jacobi-Verfahren) bietet die Diagonaldominanz der Systemmatrix, ein hinreichendes Kriterium für die Konvergenz des Verfahrens.
+
+    Eine Matrix $A \in \R^{n \times n}$ heißt \emph{schwach diagonaldominant}, falls die Beträge ihrer Diagonalelemente $a_{ii}$ jeweils größer oder gleich der Summe der Beträge der restlichen jeweiligen Zeileneinträge $a_{ij}$ sind, d.h.
+    \[
+        |a_{ii}| \geq \sum_{j \neq i} |a_{ij}|, \quad \forall i = 1, \ldots, n
+    \]
+
+    Reelle, symmetrische, schwach diagonaldominante Matrizen mit nichtnegativen Diagonaleinträgen sind positiv semidefinit (spd).
+\end{defi}
+
+\begin{defi}{Gauß-Seidel-Verfahren (Einzelschritt-Verfahren)}
+    Das \emph{Gauß-Seidel-Verfahren} ist ein lineares, stationäres Iterationsverfahren.
+    Gegeben ist ein lineares Gleichungssystem in $n$ Variablen mit den $n$ Gleichungen
+    \[
+        \begin{matrix}
+            a_{11} x_1 & + & \ldots & + & a_{1n} x_n & =      & b_1 \\
+            a_{21} x_1 & + & \ldots & + & a_{2n} x_n & =      & b_2 \\
+                       &   &        &   &            & \vdots &     \\
+            a_{n1} x_1 & + & \ldots & + & a_{nn} x_n & =      & b_n
+        \end{matrix}
+    \]
+
+    Um dieses zu lösen, wird ein Iterationsverfahren durchgeführt.
+    Gegeben sei ein Näherungsvektor $x^{(k)}$ an die exakte Lösung.
+    Nun wird die $k$-te Gleichung nach der $k$-ten Variablen $x_k$ aufgelöst, wobei die vorher berechneten Werte des aktuellen Iterationsschritts mit verwendet werden, im Gegensatz zum Jacobi-Verfahren, bei dem nur die Werte des letzten Iterationsschrittes verwendet werden.
+
+    Das heißt für den $(k+1)$-ten Iterationsschritt:
+    \[
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j < i} a_{ij} x_j^{(k+1)} - \sum_{j > i} a_{ij} x_j^{(k)} \right), \quad i = 1, \ldots, n
+    \]
+
+    Das Ergebnis der Rechnung ist ein neuer Näherungsvektor $x^{(k+1)}$ für den gesuchten Lösungsvektor $x$.
+    Wiederholt man diesen Vorgang, gewinnt man eine Folge von Werten, die sich dem Lösungsvektor im Falle der Konvergenz immer mehr annähern:
+    \[
+        x^{(0)}, x^{(1)}, x^{(2)}, \ldots \to x
+    \]
+
+    Wir erhalten die Iterationsmatrix bzw. -vektor (wir verwenden $M = D - E$)
+    \[
+        B_{GS} = I - M^{-1} A = I - (D - E)^{-1} (D - E - F) = (D - E)^{-1} F, \quad d_{GS} = M^{-1} b = (D - E)^{-1} b
+    \]
+
+    Ist A spd, so konvergiert das Gauß-Seidel-Verfahren.\footnote{Die Konvergenz ist monoton in der Norm $\| \cdot \|_A$.}
+\end{defi}
+
+\begin{example}{Gauß-Seidel-Verfahren (Einzelschritt-Verfahren)}
+    TODO
+\end{example}
+
+\begin{defi}{Satz von Stein und Rosenberg}
+    Die Iterationsmatrizen vom Jacobi- und Gauß-Seidel-Verfahren sind gegeben durch
+    \[
+        B_{J} = D^{-1} (E + F), \quad B_{GS} = (D - E)^{-1} F
+    \]
+
+    Sei $A = D - E - F$, $D$ invertierbar, $E + F > 0$ (komponentenweise) und $\rho(B_{J}) < 1$.
+    Dann gilt:
+    \[
+        \rho(B_{GS}) < \rho(B_{J})
+    \]
+
+    Für allgemeines $A$ gibt es Gegenbeispiele mit:
+    \begin{itemize}
+        \item Jacobi konvergent, Gauß-Seidel nicht
+        \item Gauß-Seidel konvergent, Jacobi nicht
+        \item Jacobi schneller als Gauß-Seidel
+        \item Gauß-Seidel schneller als Jacobi
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Nachiteration}
+    Je besser $M$ die Matrix $A$ approximiert desto schneller konvergiert die Residueniteration.
+
+    Wir betrachten einen direkten Löser, wie z.B. die LU-Zerlegung.
+    Wegen Rundungsfehlern wird eine ungenaue Zerlegung $\tilde{L} \tilde{U} \approx A$ bestimmt und $\tilde{x}$ mit $A \tilde{x} \approx b$ berechnet.
+
+    Wir erzeugen eine lineare stationäre Iteration mit $M = \tilde{L} \tilde{U}$, die sogenannte \emph{Nachiteration}, die die Qualität von $\tilde{x}$ verbessert.
+
+    In der Praxis wird das Verfahren wie folgt durchgeführt:
+    \begin{enumerate}
+        \item Bestimme mit LU-Zerlegung $\tilde{x}$, $\tilde{L}$,  $\tilde{U}$
+        \item Setze $x_0 = \tilde{x}$
+        \item Wiederhole, bis $\frac{\| p_k \|}{\|x_{k+1} \|} < \epsilon$:
+              \begin{enumerate}
+                  \item $r_k = b - A \tilde{x}_k$
+                  \item $p_k = M^{-1} r_k$, d. h. $\tilde{L} \tilde{U} p_k = r_k$
+                  \item $x_{k+1} = x_k + p_k$
+              \end{enumerate}
+    \end{enumerate}
+
+    Ohne Rundungsfehler wäre $M = LU = A$ und $M^{-1} = A^{-1}$ d.h. nach einem Schritt hätten wir die exakte Lösung.
+
+    Mit Rundungsfehlern können wir das nicht erwarten, aber trotzdem ist in der Regel
+    \[
+        B = I - M^{-1} A = I - (\tilde{L} \tilde{U})^{-1} A
+    \]
+    nahe an der Nullmatrix und damit $\rho(B) \ll 1$, d.h. der Iterationsprozess sollte sehr schnell konvergieren.
+
+    Eine schlechte Konvergenz ist ein Indikator für schlechte Kondition des Ausgangsproblems $Ax = b$.
+
+    $r_k$ liegt nahe bei $0$, d.h. Fehler durch Auslöschung spielen eventuell eine große Rolle, deswegen wird $r_k$ oft in höherer Genauigkeit berechnet.
+
+    Ein $r_k$ mit hoher Genauigkeit führt dazu, dass eine Iteration ausreicht.
+
+    Ein $r_k$ mit leicher Genauigkeit wie LU-Zerlegung lohnt sich ebenfalls, da die Stabilitätseigenschaften verbessert werden.
+\end{defi}
+
+\subsubsection{Relaxationsverfahren}
+
+\begin{defi}{Relaxiertes Jacobi-Verfahren}
+    Nach dem Jacobi-Verfahren gilt:
+    \[
+        x^{(k+1)} = x^{(k)} + D^{-1} r^{(k)}
+    \]
+
+    Fügen wir vor dem Korrekturterm einen Parameter $\omega \in \R$ ein und versuchen darüber die Konvergenz günstig zu beeinflussen so erhalten wir das \emph{relaxierte Jacobi-Verfahren} $J_{\omega}$
+    \[
+        x^{(k+1)} = x^{(k)} + \omega D^{-1} r^{(k)}
+    \]
+
+    Wir erhalten die Iterationsmatrix bzw. -vektor analog zum Jacobi-Verfahren:
+    \[
+        B_{J_{\omega}} = (1 - \omega) I + \omega B_{J} =  (1 - \omega) I + \omega D^{-1} (E + F), \quad d_{J_{\omega}} = \omega d_{J} = \omega D^{-1} b
+    \]
+
+    Komponentenweise gilt dann
+    \[
+        x_i^{(k+1)} = (1 - \omega) x_i^{(k)} + \frac{\omega}{a_{ii}} \left( b_i - \sum_{j \neq i} a_{ij} x_j^{(k)} \right), \quad i = 1, \ldots, n
+    \]
+
+    Die Konvergenz wird durch $\rho(B_{J_{\omega}})$ bestimmt.
+    Es gilt:
+    \[
+        B_{J_{\omega}} = (1 - \omega) I + \omega B_{J} \quad \implies \quad \lambda_i(B_{J_{\omega}}) = 1 - \omega + \omega \lambda_i(B_{J})
+    \]
+
+    Ist $\omega \in \left(0, 1\right]$, und konvergiert das Jacobi-Verfahren, dann konvergiert auch das relaxierte Jacobi-Verfahren.
+
+    Wähle $\omega$ so, dass $\rho(B_{J_{\omega}})$ möglichst klein ist, d. h. $\omega_{\text{opt}}$ ist die Lösung von
+    \[
+        \max_{i = 1, \ldots, n} | 1 - \omega + \omega \lambda_i(B_{J}) | \to \min
+    \]
+
+    Hat $B_{J}$ reelle Eigenwerte $-1 < \lambda_1 \leq \ldots \leq \lambda_n < 1$, so ist $\rho(B_{J_{\omega}})$ minimal für
+    \footnote{Die Eigenwerte $\lambda_i$ sind in der Regel nicht bekannt, sie werden deswegen entweder abgeschätzt oder $\omega$ wird empirisch bestimmt.}
+    \[
+        \omega_{\text{opt}} = \frac{2}{2 - \lambda_1 - \lambda_n}
+    \]
+\end{defi}
+
+\begin{defi}{SOR-Verfahren}
+    Das \emph{Successive Over-Relaxation}-Verfahren (Überrelaxationsverfahren) oder \emph{SOR-Verfahren} ist ein Algorithmus der numerischen Mathematik zur näherungsweisen Lösung von linearen Gleichungssystemen.
+
+    Wendet man den Gauß-Seidel-Trick auf das relaxierte Jacobi-Verfahren an, so erhält man das SOR-Verfahren mit
+    \[
+        x_i^{(k+1)} = (1 - \omega) x_i^{(k)} + \frac{\omega}{a_{ii}} \left( b_i - \sum_{j < i} a_{ij} x_j^{(k+1)} - \sum_{j > i} a_{ij} x_j^{(k)} \right), \quad i = 1, \ldots, n
+    \]
+
+    Für das SOR-Verfahren gilt also:
+    \[
+        M_{SOR} = \frac{D - E}{\omega}
+    \]
+    und damit
+    \[
+        B_{SOR} = (I - \omega D^{-1}E)^{-1} ((1 - \omega) I + \omega D^{-1} F), \quad d_{SOR} = \omega M_{SOR}^{-1} b
+    \]
+\end{defi}
+
+\begin{defi}{Satz von Kahan}
+    Es gilt
+    \[
+        \rho(B_{SOR}) \geq |\omega - 1|
+    \]
+    d. h. das SOR-Verfahren kann für $\omega \notin (0, 2)$ \emph{nicht konvergent} sein.
+\end{defi}
+
+\begin{defi}{Satz von Ostrowski und Reich}
+    Ist $A$ spd dann konvergiert das SOR-Verfahren genau dann wenn $\omega \in (0, 2)$.
+
+    Die Konvergenz ist monoton in $\| \cdot \|_A$.
+\end{defi}
+
+\subsubsection{Symmetrische Varianten}
+
+\begin{bonus}{Symmetrisches Jacobi-Verfahren}
+    Für das Jacobi-Verfahren hatten wir:
+    \[
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j \neq i} a_{ij} x_j^{(k)} \right), \quad i = 1, \ldots, n
+    \]
+
+    Durchlaufen wir den Index $i$ in umgekehrter Reihenfolge, so ändert sich nichts.
+
+    Das Jacobi-Verfahren ist also symmetrisch.
+\end{bonus}
+
+\begin{defi}{Symmetrisches Gauß-Seidel-Verfahren}
+    Für das Gauß-Seidel-Verfahren hatten wir:
+    \[
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j < i} a_{ij} x_j^{(k+1)} - \sum_{j > i} a_{ij} x_j^{(k)} \right), \quad i = 1, \ldots, n
+    \]
+
+    Durchlaufen wir den Index $i$ von $1$ bis $n$, so benutzen wir für $x_i^{(k+1)}$ alle $x_j^{(k+1)}$ mit $j < i$ und erhalten die Gleichung oben.
+
+    Durchlaufen wir den Index $i$ von $n$ bis $1$, so benutzen wir für $x_i^{(k+1)}$ alle $x_j^{(k+1)}$ mit $j > i$ und erhalten als neues Verfahren das \emph{Rückwärts-Gauß-Seidel-Verfahren}:
+    \[
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j < i} a_{ij} x_j^{(k)} - \sum_{j > i} a_{ij} x_j^{(k+1)} \right), \quad i = n, \ldots, 1
+    \]
+
+    Vorkonditionierer, Iterationsmatrix und Iterationsvektor sind dann gegeben durch:
+    \[
+        M_{RGS} = D - F, \quad B_{RGS} = (D - F)^{-1} E, \quad d_{RGS} = M_{RGS}^{-1} b
+    \]
+
+    Für das \emph{symmetrische Gauß-Seidel-Verfahren (SGS)} führt man zunächst einen Gauß-Seidel Schritt und dann einen Rückwarts-Gauß-Seidel Schritt durch:
+    \[
+        x^{(k)} \xrightarrow{GS} B_{GS} x^{(k)} + d_{GS} \xrightarrow{RGS} \underbrace{ B_{RGS} ( B_{GS} x^{(k)} + d_{GS} ) + d_{RGS} }_{x^{(k+1)}}
+    \]
+    \[
+        \implies x^{(k+1)} = \underbrace{ B_{RGS} B_{GS} }_{B_{SGS}} x^{(k)} + \underbrace{ B_{RGS} d_{GS} + d_{RGS} }_{d_{SGS}}
+    \]
+
+    Damit erhalten wir:
+    \[
+        B_{SGS} = (D - F)^{-1} E (D-E)^{-1} F, \quad M_{SGS} = (D - E) D^{-1} (D-F), \quad d_{SGS} = M^{-1}_{SGS} b
+    \]
+
+    Ist $A$ symmetrisch und $a_{ii} > 0$, $i = 1, \ldots, n$ so ist $M_{SGS}$ spd.
+\end{defi}
+
+\subsection{Nichtstationäre Iterationen}
+
+\subsubsection{Steepest-Descent-Verfahren}
+
+\begin{defi}{Steepest-Descent-Verfahren}
+    Das \emph{Steepest-Descent-Verfahren} generiert ausgehend von einem Startpunkt $x_0 \in \R^n$ eine Folge von Punkten $x_k \in \R^n$ gemäß der Iterationsvorschrift
+    \[
+        x_{k+1} = x_k + \alpha_k r_k, \quad r_k = - \nabla f(x_k)
+    \]
+    d. h. man geht von $x_k$ in Richtung des steilsten Abstiegs $-\nabla f(x_k)$, bis $\| e_{k+1} \|_A$ minimal wird, also die Folge zu einem stationären Punkt von $f$ konvergiert.\footnote{Wählt man $f$ entsprechend, kann damit auch die Lösung für ein $Ax = b$ gefunden werden. Siehe \emph{Konjugierte Gradienten}.}
+\end{defi}
+
+\begin{bonus}{Vorkonditionierte Steepest-Descent-Verfahren}
+    Im Steepest-Descent-Verfahren gilt $M = I$.
+
+    Für ein $M \neq I$ spd erhalten wir das \emph{vorkonditionierte Steepest-Descent-Verfahren} mit:
+    \[
+        x_{k+1} = M x_k + \alpha_k r_k, \quad r_k = - \nabla f(x_k)
+    \]
+\end{bonus}
+
+\subsubsection{Konjugierte Gradienten}
+
+\begin{defi}{CG-Verfahren}
+    Das \emph{CG-Verfahren} (\enquote{conjugate gradients}) bzw. das Verfahren der konjugierten Gradienten ist eine effiziente numerische Methode zur Lösung von großen linearen Gleichungssystemen der Form $A x = b$ mit spd Systemmatrix $A$.
+
+    Die Idee des CG-Verfahrens besteht darin, dass für $A$ spd das Minimieren der quadratischen Form
+    \[
+        f(x) = \frac{1}{2} \langle Ax, x \rangle - \langle b, x \rangle
+    \]
+    äquivalent zum Lösen von $A x = b$ ist.
+
+    Das Verfahren funktioniert wie folgt:
+    \begin{enumerate}
+        \item $x_0$ gegeben, $p_0 = r_o = b - Ax_0$
+        \item Wiederhole für $k \geq 0$:
+              \[ x_{k+1} = x_k + \alpha_k p_k \]
+              \[ r_{k+1} = r_k - \alpha_k A p_k, \quad \alpha_k = \frac{\langle r_k, r_k \rangle}{\langle p_k, A p_k \rangle} \]
+              \[ p_{k+1} = r_{k+1} + \beta_k p_k, \quad \beta_k = \frac{\langle r_{k+1}, r_{k+1} \rangle}{\langle r_k, r_k \rangle}\]
+    \end{enumerate}
+
+    Nach höchstens $n$ Schritten ist $e_k = 0$.
+\end{defi}
+
+\begin{example}{CG-Verfahren}
+
+\end{example}
+
+\begin{defi}{Vorkonditioniertes CG-Verfahren}
+    Die Rekursionsvorschrift für $M \neq I$ ist etwas aufwendiger und liefert das \emph{vorkonditionierte CG-Verfahren} bzw. PCG-Verfahren (\enquote{preconditioned conjugate gradient}) für $M$, $A$ spd:
+
+    \begin{enumerate}
+        \item $x_0$ gegeben, $r_o = b - Ax_0$, $p_0 = q_0 = M^{-1} r_0$
+        \item Wiederhole für $k \geq 0$:
+              \[ x_{k+1} = x_k + \alpha_k p_k \]
+              \[ r_{k+1} = r_k - \alpha_k A p_k, \quad \alpha_k = \frac{\langle q_k, r_k \rangle}{\langle p_k, A p_k \rangle} \]
+              \[ p_{k+1} = q_{k+1} + \beta_k p_k, \quad \beta_k = \frac{\langle q_{k+1}, r_{k+1} \rangle}{\langle q_k, r_k \rangle}\]
+    \end{enumerate}
+
+    Als Vorkonditionierer $M$ benutzt man unter anderem:
+    \begin{itemize}
+        \item $M = \diagonal(A) = M_J$
+        \item $M$ aus einem symmetrischen, stationären Verfahren (z. B. symmetrisches Gauß-Seidel-Verfahren):
+              \[
+                  M = M_{SGS} = (D-E)D^{-1} (D-E)^T
+              \]
+        \item unvollständige Cholesky Zerlegung
+    \end{itemize}
+
+    PCG ist (neben Multigrid) \emph{das} Verfahren für große, dünn besetzte spd Matrizen A.
+\end{defi}
+
+\subsection{Dünn besetzte Matrizen}
+
+\begin{bonus}{Problem dünn besetzter Matrizen}
+    Bei (fast) allen Iterationsverfahren besteht der wesentliche Aufwand in einem Matrix-Vektor-Produkt und dieser ist proportional zu der Anzahl der Matrixelemente.
+
+    Bei vollbesetzten Matrizen in $\R^{n \times n}$ erhalten wir also $\bigo(n^2)$.
+
+    Geht man davon aus, das man höchstens $n$ Iterationen durchführt, so erhält man wieder, wie bei den direkten Lösern, einen Gesamtaufwand von $\bigo(n^3)$.
+
+    In Anwendungen treten aber oft Gleichungssysteme auf, deren Matrix dünn besetzt ist (\enquote{sparse}), d.h. die Anzahl $n_{nz}$ der Elemente ungleich $0$ ist sehr gering (deutlich unter 1\%).
+
+    Berücksichtigt man bei Matrix-Vektor-Produkten die dünne Besetzungsstruktur der Matrix, so reduziert sich der Aufwand auf $\bigo(n_{nz})$.
+    In vielen realen Anwendungen ist $n_{nz} \approx n$, so dass der Aufwand dann nur $\bigo(n)$ ist.
+
+    Dünn besetzte Matrizen werden nicht im Standardformat als zweidimensionales Array abgelegt, sondern in einem angepassten Format, das einerseits das einfache Implementieren von Matrix-Vektor-Produkten zulässt und andererseits möglichst wenig Speicherplatz benötigt.
+\end{bonus}
+
+\begin{defi}{Compressed Sparse Row}
+    Ein gängiges Datenformat für dünn besetzte Matrizen (\enquote{sparse matrices}) ist \emph{Compressed Sparse Row (CSR)}.
+
+    Bei CSR werden nur die Nichtnullelemente der Matrix abgelegt, sowie entsprechende Indexinformationen:
+    \begin{itemize}
+        \item im Vektor \texttt{val} stehen alle Nichtnullelemente der Matrix in zeilenweiser Anordnung (deshalb \emph{Compressed Sparse Row})
+        \item der Vektor \texttt{col\_ind} enthält für jedes Element in \texttt{val} den zugehörigen Spaltenindex $j$
+        \item die Einträge in \texttt{row\_ind} geben an, ab dem wievielten Element in \texttt{val} jeweils eine neue Zeile beginnt ($i$-Index)
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Compressed Sparse Row}
+    Betrachten wir die Matrix
+    \[
+        \begin{pmatrix}
+            1 & 0 & 7 & 0 & 8 \\
+            6 & 3 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 2 & 0 \\
+            4 & 5 & 0 & 0 & 0
+        \end{pmatrix}
+    \]
+
+    In CSR werden dafür folgende Daten gespeichert:
+
+    \begin{center}
+        \begin{tabular}{|T|TTTTTTTT|}
+            \hline
+            val      & 1 & 7 & 8 & 6 & 3 & 2 & 4 & 5 \\
+            \hline
+            col\_ind & 1 & 3 & 5 & 1 & 2 & 4 & 1 & 2 \\
+            \hline
+            row\_ind & 1 & 4 & 6 & 7 & 9 &   &   &   \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{example}
