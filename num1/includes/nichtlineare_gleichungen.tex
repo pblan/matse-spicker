@@ -224,6 +224,8 @@
 \begin{defi}{Konvergenzgeschwindigkeit}
     \index{Lineare Konvergenz}
     \index{Konvergenzordnung}
+    \index{a-priori Abschätzung}
+    \index{a-posteriori Abschätzung}
     %
     Die Iteration $x_{k+1} = \Phi(x_k)$ heißt
     \begin{itemize}
@@ -242,7 +244,7 @@
     \end{itemize}
 \end{defi}
 
-\begin{bonus}{Konvergenzgeschwindigkeit stetig differenzierbarer Funktionen}
+\begin{bonus}{Konvergenzgeschwindigkeit stetig differenzierbarer Funktionen I}
     Ist $m \geq 2$, $x$ ein Fixpunkt von $\Phi: \R \to \R$ und $\Phi$ $m$-mal stetig differenzierbar in $x$ mit
     \[
         \Phi'(x) = \Phi''(x) = \cdots = \Phi^{(m-1)}(x) = 0
@@ -251,9 +253,10 @@
     \[
         x_{k+1} = \Phi(x_k)
     \]
-    für alle $x_0 \in X$ \text{mindestens mit Ordnung $m$ konvergiert}.
+    für alle $x_0 \in X$ \emph{mindestens mit Ordnung $m$ konvergiert}.
+\end{bonus}
 
-
+\begin{bonus}{Konvergenzgeschwindigkeit stetig differenzierbarer Funktionen II}
     Ist $m \geq 2$, $x$ ein Fixpunkt von $\Phi: \R \to \R$ und $\Phi$ $(m-1)$-mal stetig differenzierbar in $x$ mit
     \[
         \Phi'(x) = \Phi''(x) = \cdots = \Phi^{(m-1)}(x) = 0, \quad \Phi^{(m)} \neq 0
@@ -262,7 +265,83 @@
     \[
         x_{k+1} = \Phi(x_k)
     \]
-    für alle $x_0 \in X$ \text{genau mit Ordnung $m$ konvergiert}.
+    für alle $x_0 \in X$ \emph{genau mit Ordnung $m$ konvergiert}.
+\end{bonus}
+
+\begin{bonus}{Konvergenzgeschwindigkeiten relevanter Verfahren}
+    \begin{itemize}
+        \item Das Bisektions-Verfahren ist linear konvergent mit $c = \nicefrac{1}{2}$.
+        \item Das Regula-Falsi-Verfahren ist linear konvergent.
+        \item Das Sekanten-Verfahren hat die Konvergenzordnung $m = \frac{1 + \sqrt{5}}{2} \approx 1.618$.
+    \end{itemize}
 \end{bonus}
 
 \subsection{Newton-Verfahren}
+
+\begin{defi}{Konvergenzgeschwindigkeit des Newton-Verfahrens (einfache Nullstellen)}
+    $f: \R \to \R$ sei zweimal stetig differenzierbar mit $f(x) = 0$, $f'(x) \neq 0$, d. h. $x$ ist eine \emph{einfache Nullstelle} von $f$. 
+
+    Liegt $x_0$ nahe genug an $x$, dann konvergiert das Newton-Verfahren \emph{quadratisch} gegen $x$.
+\end{defi}
+
+\begin{defi}{Konvergenzgeschwindigkeit des Newton-Verfahrens (mehrfache Nullstellen)}
+    Für \emph{mehrfache Nullstellen} ist das Newton-Verfahren wohldefiniert und konvergiert nur \emph{linear} in einer Umgebung von $x$.
+
+    Verbesserte Variante 1: 
+    \begin{itemize}
+        \item Setze 
+        \[ 
+            \tilde{\Phi}(y) = y - q \cdot \frac{f(y)}{f'(y)}
+        \]
+        und iteriere 
+        \[
+            x_{k-1} = \tilde{\Phi}(x_k)    
+        \]
+        \item Durch Ausrechnen erhält man $\tilde{\Phi}(x) = 0$ und damit (mind.) quadratische Konvergenz. 
+        \item Nachteil: Vielfachheit von $q$ muss bekannt sein.
+    \end{itemize}
+
+    Verbesserte Variante 2:
+    \begin{itemize}
+        \item $x$ ist $q$-fache Nullstelle, daher erhalten wir aus einer Taylorentwicklung von $f$ 
+        \[ 
+            f(y) = \frac{1}{q!} (y - x)^q f^{(q)} (\zeta), \quad f'(y) = \frac{1}{(q-1)!} (y - x)^{q-1} f^{(q)} (\eta)
+        \]
+        \item Da $f^{(q)} (x) \neq 0$ ist, folgt für $y$ nahe $x$, dass $f^{(q)} (\zeta) \neq 0$ und $f^{(q)} (\eta) \neq 0$ und damit 
+        \[ 
+            \tilde{f} (y) = \frac{f(y)}{f'(y)} = \frac{\frac{1}{q!} (y - x)^q f^{(q)} (\zeta)}{\frac{1}{(q-1)!} (y - x)^{q-1} f^{(q)} (\eta)} = \frac{1}{q} \cdot (y - x) \cdot \frac{f^{(q)} (\zeta)}{f^{(q)} (\eta)}
+        \] 
+        d. h. $x$ ist einfache Nullstelle von $\tilde{f} = \frac{f}{f'}$
+        \item wird das Newton-Verfahren auf $\tilde{f}$ angewandt, konvergiert es quadratisch 
+        \item Vielfachheit $q$ wird hier nicht explizit benutzt
+        \item Nachteil: komplizierte Iterationsvorschrift: 
+        \[
+            \Phi(y) = y - \frac{\tilde{f}(y)}{\tilde{f}'(y)} = \ldots = y - \frac{f(y) f'(y)}{\left( f'(y) \right)^2 - f(y) f''(y)}
+        \]
+        in der pro Schritt neben $f$ und $f'$ auch noch $f''$ auszuwerten ist.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Newton-Verfahren (mehrdimensional)}
+    Für ein $f: \R \to \R$ erhalten wir die Taylorentwicklung 
+    \[
+        f(y) = f(x_k) + J(x_k) (y - x_k) + R
+    \]
+    mit der Jacobi-Matrix $J$ von $f$ in $x_k$
+    \[
+        J = \begin{pmatrix}
+            \partial_1 f_1 (x_k) & \cdots & \partial_n f_1 (x_k) \\ 
+            \vdots & & \vdots \\ 
+            \partial_1 f_n (x_k) & \cdots & \partial_n f_n (x_k) 
+        \end{pmatrix}    
+    \]
+
+    Dann gilt für reguläres $J(x_k)$ direkt\footnote{Eine reguläre Jacobi-Matrix entspricht einer einfachen Nullstelle im eindimensionalen Fall.} 
+    \[
+        x_{k+1} = x_k - \left( J(x_k) \right)^{-1} f(x_k)    
+    \]
+
+    In diesem Fall konvergiert das Newton-Verfahren quadratisch.
+
+    Die Behandlung für eine singuläre Jacobi-Matrix ist etwas komplizierter als im skalaren Fall.\footnote{Eine singuläre Jacobi-Matrix entspricht einer mehrfachen Nullstelle im eindimensionalen Fall.} 
+\end{defi}
