@@ -1,1 +1,124 @@
 \section{Interpolation}
+
+\subsection{Einleitung}
+
+\begin{defi}{Interpolation}
+    Der Begriff \emph{Interpolation} bescheibt eine Klasse von Problemen und Verfahren. 
+    
+    Zu gegebenen diskreten Daten (z. B. Messwerten) soll eine stetige Funktion (die sogenannte \emph{Interpolante} oder \emph{Interpolierende}) gefunden werden, die diese Daten abbildet. 
+    
+    Man sagt dann, die Funktion \emph{interpoliert} die Daten. 
+\end{defi}
+
+\subsection{Polynominterpolation}
+
+\begin{defi}{Vandermonde-Matrix}
+    Die \emph{Vandermonde-Matrix} spielt bei der Interpolation von Funktionen eine wichtige Rolle: 
+    
+    Wenn an den Stützstellen $(x_0, x_1, \ldots, x_n)$ die Funktionswerte $(y_0, y_1, \ldots, y_n)$ durch ein Polynom $p$ vom Grad $n$ (oder kleiner) interpoliert werden sollen, dann führt der Ansatz 
+    \[
+        p_n(x) = a_0 + a_1 x^1 + a_2 x^2 + \ldots + a_{n} x^{n}
+    \]
+    auf das lineare Gleichungssystem 
+    \[
+        \underbrace{\begin{pmatrix}
+            1 & x_0 & \cdots & x_0^n \\ 
+            \vdots & \vdots & & \vdots \\ 
+            1 & x_n & \cdots & x_n^n 
+        \end{pmatrix}}_{V(x_0, \ldots, x_n)}
+        \underbrace{\begin{pmatrix}
+            a_0 \\ \vdots \\ a_n
+        \end{pmatrix}}_{\alpha}
+        =
+        \underbrace{\begin{pmatrix}
+            y_0 \\ \vdots \\ y_n     
+        \end{pmatrix}}_{y}
+    \]
+    mit einer Vandermonde-Matrix $Vx_0, \ldots, x_n)$ als Koeffizientenmatrix.\footnote{Beachte: Für ein Polynom vom Grad $n$ haben wir $n+1$ Koeffizienten!}
+
+    Ist $x_i \neq x_j$ ($\forall i \neq j$) so gibt es genau ein Polynom $p_n(x)$ mit Grad $\leq n$, das $(x_0, y_0), \ldots, (x_n, y_n)$ interpoliert. 
+\end{defi}
+
+\begin{defi}{Vandermonde-Determinante}
+    Die Determinante der Vandermonde-Matrix wird auch \emph{Vandermonde-Determinante} genannt.
+    Sie hat den Wert 
+    \[
+        \det V(x_0, \ldots, x_n) = \prod_{1 \leq i < j \leq n} (x_j - x_i) 
+    \]
+
+    Insbesondere ist die Vandermonde-Matrix genau dann regulär, wenn die $x_i$ paarweise verschieden sind. 
+\end{defi}
+
+\begin{defi}{Horner-Schema}
+    Um Zwischenstellen eines Polynoms $p_n(x)$ auszuwerten, nutzt man in der Regel nicht direkt die Form 
+    \[
+        p_n(x) = a_0 + a_1 x + \ldots + a_n x^n    
+    \]
+    Diese Auswertung ist teuer und durch die vielen Summationen sehr anfällig für Rundungsfehler.
+
+    Besser ist hier das \emph{Horner-Schema}: 
+    \begin{itemize}
+        \item $p_n(x)$ wird wie folgt umgeformt: 
+        \begin{alignat*}{1}
+            p_n (x) & = a_0 + a_1 x + a_2 x^2 + \ldots + a_n x^n \\ 
+            & = a_0 + x \left( a_1 + a_2 x + \ldots + a_n x^{n-1} \right) \\ 
+            & = a_0 + x \left( a_1 + x \left( a_2 + \ldots + a_n x^{n-2} \right) \right) \\ 
+            & = \ \ldots \\ 
+            & = \underbrace{a_0 + x \underbrace{( a_1 + x \underbrace{( a_2 + x \underbrace{( \ldots + x \underbrace{( a_{n-1} + x \underbrace{a_n}_{q_0} )}_{q_1} )}_{\ldots} )}_{q_{n-2}} )}_{q_n-1}}_{q_n}
+        \end{alignat*}
+        \item Berechne schrittweise von innen nach außen: 
+        \begin{alignat*}{1}
+            q_0 & = a_n \\ 
+            q_1 & = a_{n-1} + x \cdot q_0 \\
+            q_2 & = a_{n-2} + x \cdot q_1 \\
+            & \ldots
+        \end{alignat*}
+        also
+        \[ 
+            q_0 = a_n, \quad q_k = a_{n-k} + x \cdot q_{k-1}, \quad k = 1, \ldots, n
+        \] 
+        und damit 
+        \[ 
+            p_n(x) = q_n
+        \] 
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Lagrange-Polynom}
+    Wir betrachten $x_0, \ldots, x_n$ und definieren das $j$-te \emph{Lagrange-Polynom} als 
+    \[ 
+    L_j(x) = \frac{x - x_0}{x_j - x_0} \cdot \frac{x - x_{j-1}}{x_j - x_{j-1}} \cdot \frac{x - x_{j+1}}{x_j - x_{j+1}} \cdot \ldots \cdot \frac{x - x_n}{x_j - x_n}
+    \] 
+    
+    $L_j$ ist wohldefiniert, wenn die $x_i$ paarweise verschieden sind und hat Grad $n$.
+
+    Außerdem gilt 
+    \[
+        L_j(x_i) = 
+        \begin{cases}
+            1 & \text{für} \ i = j \\ 
+            0 & \text{sonst}
+        \end{cases}    
+    \]
+
+    Mit den Lagrange-Polynomen $L_j$ können wir das Interpolationspolynom einfach ermitteln mit 
+    \[
+        p_n(x) = \sum_{j = 0}^{n} y_j \cdot L_j(x)    
+    \]
+
+    Bei der Benutzung der Lagrange-Polynome muss kein Gleichungssystem gelöst werden, allerdings müssen sämtliche $L_j$ verändert werden, wenn ein weiterer Datenpunkt hinzukommt.
+\end{defi}
+
+\begin{example}{Lagrange-Polynom}
+    TODO
+\end{example}
+
+\begin{defi}{Newton-Interpolationspolynom}
+
+\end{defi}
+
+\subsection{Splines}
+
+\subsection{B-Splines}
+
+\subsection{Interpolierende Kurven}     
