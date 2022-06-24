@@ -21,6 +21,29 @@
     Wir hatten bereits geklärt, dass IPv4 nur $2^{32}$ IP-Adressen zur Verfügung hat.
 
     Da bereits relativ zeitnah nach dem Anpassen der Subnetzgrößen klar wurde, dass die gewonnene Anzahl der daraus resultieren IP-Adressen nicht ausreicht, hat man sich eine provisorische Lösung überlegt.
-
-    Diese
 \end{bonus}
+
+\begin{defi}{NAT}
+    \emph{NAT} (Network Adress Translation) verfolgt die Idee, dass KundInnen jeweils lediglich eine eindeutige öffentliche IPv4-Adresse erhalten.
+    Dementsprechend existiert für jedes Netz ebenfalls nur einen Zugangspunkt (Gateway) zu diesem Netz.
+    Das Gateway hat dabei mindestens 2 Netzwerkkarten, um in das große Internet, sowie das lokale Netz zu senden.
+
+    Das private Netz hat nutzt meist einen der folgenden IP-Adressblöcke:\\
+    \begin{tabular}{llcl}
+        \texttt{10.0.0.0/8:}     & \texttt{10.0.0.0}    & - & \texttt{10.255.255.255}  \\
+        \texttt{172.16.0.0/12:}  & \texttt{172.16.0.0}  & - & \texttt{172.31.255.255}  \\
+        \texttt{192.168.0.0/16:} & \texttt{192.168.0.0} & - & \texttt{192.168.255.255}
+    \end{tabular}
+\end{defi}
+
+\begin{example}{NAT}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_nat.pdf}
+    \end{center}
+
+    In diesem Beispiel \enquote{verbrauchen} wir 2 globale IP-Adressen, können jedoch bis zu $(2^{16} - 3)$ Adressen in jeweils 2 Netzen anbinden.
+\end{example}
+
+\begin{defi}{Adressübersetzung (NAT)}
+
+\end{defi}
