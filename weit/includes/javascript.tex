@@ -228,10 +228,13 @@
         a()
     \end{lstlisting}
 
+    \includegraphics[width=\textwidth]{includes/figures/example_stanb_1.pdf}
+
     \begin{enumerate}
         \item \texttt{main()} \emph{(Call Stack)}
         \item \texttt{a()} wird in den \emph{Call Stack} eingefügt.
         \item \texttt{console.log('a')} \emph{(Call Stack)}
+        \item Alle Methoden im \emph{Call Stack} werden entfernt
     \end{enumerate}
 \end{example}
 
@@ -243,6 +246,8 @@
 
         console.log('b')
     \end{lstlisting}
+
+    \includegraphics[width=\textwidth]{includes/figures/example_stanb_2.pdf}
 
     \begin{enumerate}
         \item \texttt{main()} \emph{(Call Stack)}
@@ -263,10 +268,12 @@
         console.log('block')
     \end{lstlisting}
 
+    \includegraphics[width=\textwidth]{includes/figures/example_stanb_3.pdf}
+
     \begin{enumerate}
         \item \texttt{main()} \emph{(Call Stack)}
-        \item Dem HTMLElement mit der id \texttt{btn} wird ein EventListener hinzugefügt (CallStack).
-        \item In den \emph{Web APIs} befindet sich nun ein EventListener.
+        \item Dem HTMLElement mit der ID \texttt{btn} wird ein \texttt{EventListener} hinzugefügt \emph{(Call Stack)}.
+        \item In den \emph{Web APIs} befindet sich nun ein \texttt{EventListener}.
         \item \texttt{console.log('block')} \emph{(Call Stack)}
         \item Wenn nun irgendwann der Button gedrückt wird, fügt die \emph{Web API} ein \texttt{Event} der \emph{Callback Queue} hinzu.
         \item Wenn 3. erfolgreich ausgeführt wurde, ist der \emph{Call Stack} leer.
