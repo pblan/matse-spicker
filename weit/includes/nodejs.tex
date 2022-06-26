@@ -234,8 +234,8 @@
 \begin{example}{app.js (Node.js)}
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
+        
         const app = express()
-
         const port = 3000
 
         app.get('/', (req, res) => {
@@ -419,4 +419,184 @@
         \item wird geloggt: \texttt{/pokemon}
         \item wird erhält man z. B.: \texttt{Glumanda [4]}
     \end{enumerate}
+\end{example}
+
+\subsubsection{Cookies}
+
+\begin{defi}{Cookie}
+    Der Zustand eines Node.js-Skriptes geht nach der Ausführung verloren.
+    Clients wollen nicht immer alle Daten im Aufruf aktiv mitsenden und der Server möchte auch keine Daten zwischenspeichern.
+
+    Deswegen lässt der Server Daten auf dem Client zwischenspeichern, die der Server nochmal benötigen könnte, damit der Client sie nicht nochmal aktiv senden muss.
+
+    Cookies werden z. B. genutzt damit sich der Client einmalig anmelden kann, und dann angemeldet bleibt oder um das Nutzungsverhalten zu analysieren.
+
+    Die Syntax um Cookies zu erstellen sieht wie folgt aus:
+    \begin{lstlisting}[language=JavaScript]
+        res.cookie('<name>', '<value>', options)
+    \end{lstlisting}
+
+    \begin{itemize}
+        \item \texttt{name}: key des cookies
+        \item \texttt{value}: value
+        \item \texttt{options}: z. B.: \texttt{expires}, \texttt{path}, \texttt{domain} etc.
+    \end{itemize}
+\end{defi}
+
+\begin{example}{set cookie (Node.js)}
+    In einer Route wird folgende Zeile ausgeführt:
+
+    \begin{lstlisting}[language=JavaScript]
+        res.cookie('lieblings_pokemon', 'Glumanda')
+    \end{lstlisting}
+
+    Bei der nächsten Anfrage existiert nun ein Cookie, in dem das Lieblings-Pokemon gespeichert ist.
+\end{example}
+
+\begin{bonus}{Cookie Parser}
+    Um den gesetzten Cookie bei der nächsten Anfrage zu lesen, benötigt man einen Cookie-Parser.
+
+    Im weiteren nutzen wir das Modul \emph{cookie-parser}.
+\end{bonus}
+
+\begin{example}{Cookie Parser}
+    \texttt{app.js}:
+    \begin{lstlisting}[language=JavaScript]
+        const express = require('express')
+        const cookie_parser = require('cookie-parser')
+
+        const app = express()
+
+        /* middlewares */
+        app.use(cookie-parser)
+        app.use('/pokemon', require('./middlewares/cookie.js'))
+        
+        /* routes */
+        app.use('/pokemon', require('./modules/pokemon.js'))
+
+        app.listen(3000)
+    \end{lstlisting}
+
+    \texttt{middlewares/cookie.js}:
+    \begin{lstlisting}[language=JavaScript]
+        const express = require('express')
+        
+        module.exports = express.Router()
+            .get('/', (req, res, next()) => {
+                res.cookie('lieblings_pokemon', 'Glumanda')
+                next()
+            })
+    \end{lstlisting}
+
+    \texttt{modules/pokemon.js}:
+    \begin{lstlisting}[language=JavaScript]
+        const Pokemon = require('./../modules/pokemon.js')
+        const express = require('express')
+        
+        module.exports = express.Router()
+            .get('/', (req, res) => {
+                res.send(req.cookies.lieblings_pokemon)
+            })
+    \end{lstlisting}
+
+    Wenn man nun die Webseite \texttt{http://localhost:3000/pokemon} zwei mal aufruft:
+    \begin{enumerate}
+        \item Wird der cookie \emph{lieblings\_pokemon} gesetzt, jedoch eine leere Antwort zurückgegeben, da cookies erst bei der nächsten Anfrage gesetzt sind.
+        \item Wird \emph{lieblings\_pokemon} erneuert und \texttt{Glumanda} zurückgegeben.
+    \end{enumerate}
+\end{example}
+
+\subsubsection{Sessions}
+
+\begin{defi}{Session}
+    Wenn man vertrauliche Daten serverseitig speichern möchte, kann man Sessions nutzen.
+    Die Session-ID wird clientseitig als Cookie gespeichert.
+\end{defi}
+
+\begin{example}{Session}
+    \begin{lstlisting}[language=JavaScript]
+        const express = require('express')
+        const session = require('express-session')
+        
+        const app = express()
+        
+        /* middlewares */
+        app.use(session({ secret: 'pok3mon' }))
+    \end{lstlisting}
+\end{example}
+
+\begin{example}{Session beenden}
+    \begin{lstlisting}[language=JavaScript]
+        req.session.destroy()
+    \end{lstlisting}
+\end{example}
+
+\subsection{views}
+
+\begin{bonus}{views (Node.js)}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_middlewares.pdf}
+    \end{center}
+\end{bonus}
+
+\begin{defi}{Template Engine}
+    Wenn man Webseiten dynamisch aufbauen möchte, ist es sinnvoll, Darstellung und Inhalt sauber zu trennen.
+    Eine erste Idee ist, dass man leere \texttt{html} Seiten schreibt und in der Route füllt.
+
+    Im weiteren nutzen wir das Modul \emph{mustache-express}
+\end{defi}
+
+\begin{example}{views (Node.js)}
+    \texttt{views/pokemon.html}:
+    \begin{lstlisting}[language=HTML5]
+        <!DOCTYPE html>
+        <html>
+        <head> <title>Pokemon</title> </head>
+
+        <body>
+            <table>
+                <tr> <th>ID</th> <th>Name</th> </tr>
+                <tr>
+                    <td>^{{id}}^</td>
+                    <td>^{{name}}^</td>
+                </tr>
+            </table>
+        </body>
+        </html>
+    \end{lstlisting}
+
+    \texttt{routes/pokemon.js}:
+    \begin{lstlisting}[language=JavaScript]
+        const Pokemon = require('./../modules/pokemon.js')
+        const express = require('express')
+        
+        module.exports = express.Router()
+            .get('/', (req, res) => {
+                const pokemon = Pokemon.get_rand()
+
+                // render mit json Objekt, key -> Platzhalter
+                res.render('pokemon.html', {
+                    ^'id'^: pokemon.id,
+                    ^'name'^: pokemon.name 
+                })
+            })
+    \end{lstlisting}
+
+    \texttt{app.js}:
+    \begin{lstlisting}[language=JavaScript]
+        const express = require('express')
+        const mustache = require('mustache-express')
+
+        const app = express()
+        const port = 3000
+
+        /* middlewares */
+        ^app.engine('html', mustache)^           // default engine, die von res.render() genutzt wird
+        ^app.set('views', __dirname + '/views')^ // Ordner, in dem die engine nach html Dateien sucht
+
+        /* routes */
+        app.use('/pokemon', require('routes/pokemon.js'))
+        
+        app.listen(port)
+    \end{lstlisting}
 \end{example}
