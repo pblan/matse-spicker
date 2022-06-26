@@ -158,7 +158,7 @@
     \end{lstlisting}
 \end{example}
 
-\begin{example}{JavaScript}
+\begin{example}{JavaScript Vererbung}
     \begin{lstlisting}[language=JavaScript]
         class Pokemon {
             id, name, typ // nicht notwendig, jedoch sinnvoll
@@ -191,6 +191,31 @@
     \end{lstlisting}
 \end{example}
 
+\begin{bonus}{Klassenlose Vererbung (JavaScript)}
+    Jede Instanz einer Klasse hat ein verstecktes Attribut \texttt{\_\_proto\_\_}.
+
+    Jede Klasse hat ein verstecktes Attribut \texttt{prototype}.
+
+    Wenn man auf ein Attribut eines Objektes zugreifen möchte, welches dort nicht direkt gefunden wird, schaut die Engine in dem jeweiligen Prototypen nach.
+    Sollte es dort nicht gefunden werden, wird rekursiv eine Ebene höher geschaut.
+\end{bonus}
+
+\begin{example}{Klassenlose Vererbung (JavaScript)}
+    \begin{lstlisting}[language=JavaScript]
+        let glumanda = {
+            id: 4
+            name: 'Glumanda'
+        }
+        glumanda.__proto__.typ = 'Feuer'
+        glumanda.__proto__.name = 'Philipp'
+
+        console.log(glumanda.name)           // Glumanda
+        console.log(glumanda.__proto__.name) // Philipp
+        console.log(glumanda.typ)            // Feuer (aus __proto__)
+        console.log(glumanda.brennen)        // undefined
+    \end{lstlisting}
+\end{example}
+
 \begin{defi}{Call Stack (JavaScript)}
     Der \emph{Call Stack} führt Methoden synchron aus.
 
@@ -208,16 +233,15 @@
 \end{defi}
 
 \begin{defi}{JavaScript Runtime Environment}
+    JavaScript blockiert dem Main Thread nicht.
+    Alle Funktionen werden aus dem Source Code direkt in den \emph{Call Stack} aufgenommen und ausgeführt.
+
+    Deswegen nennt man JavaScript \emph{Single-Threaded and Non-Blocking}.
+
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_js_runtime_environment.pdf}
     \end{center}
 \end{defi}
-
-\begin{bonus}{Single-Threaded and Non-Blocking (JavaScript)}
-    JavaScript Code blockiert den Main Thread nicht.
-    Um Auf die Ausführung eines Befehls zu warten, werden Callbacks genutzt.
-    Diese werden nacheinander dem \emph{Call Stack} hinzugefügt und dort abgearbeitet.
-\end{bonus}
 
 \begin{example}{Single-Threaded and Non-Blocking (JavaScript)}
     \begin{lstlisting}[language=JavaScript]
@@ -281,6 +305,179 @@
         \item Ansonsten warten alle Elemente der \emph{Callback Queue} darauf, dass der \emph{Event Loop} sie \enquote{abholt}
     \end{enumerate}
 \end{example}
+
+\begin{defi}{Callbacks (JavaScript)}
+    Wenn man nun trotzdem auf die Rückgabe von Funktionen warten möchte, die eine längere Laufzeit benötigen, als der Event Loop ihnen zur Verfügung stellt, muss man auf asynchrone Methoden zurückgreifen.
+
+    Ein erster Ansatz dazu waren \emph{Callbacks}.
+
+    Die Idee hinter Callbacks ist, dass man Methoden eine weitere Methode mitgibt, welche nach Ablauf der eigentlichen Methode mit der Rückgabe dieser als Parameter, die mitgegebene Methode ausführt.
+    Callbacks haben den großen Vorteil, dass man sich die Methoden modular aufbauen kann.
+    Bisher kann man nicht die tiefere Methode zur Laufzeit austauschen.
+\end{defi}
+
+\begin{example}{Callbacks (JavaScript)}
+    Die folgenden Methoden erstellen einen Timer und rufen dann die Callback-Methode mit dem \enquote{passenden} Buchstaben auf.
+
+    Die bisherige Implementierung sieht wie folgt aus:
+    \begin{lstlisting}[language=JavaScript]
+        function a(s) {
+            /* sleep */
+            b(s + 'a')
+        }
+
+        ...
+
+        function c(s) {
+            /* sleep */
+            console.log(s + 'c')
+        }
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=JavaScript]
+        a('') // abc
+    \end{lstlisting}
+
+    Die Callback-Implementierung sähe z. B. wie folgt aus:
+    \begin{lstlisting}[language=JavaScript]
+        function a(s, callback) {
+            /* sleep */
+            callback(s + 'a')
+        }
+
+        ...
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=JavaScript]
+        a('',
+            s => b(s,
+                s => c(s, 
+                    console.log // abc
+                )
+            )
+        )
+    \end{lstlisting}
+
+    Die untere Variante ist zwar modularer und offen für Erweiterungen, jedoch nicht sonderlich lesbar.
+    Einen potentiellen Ausweg aus dieser Callback-Hell bietet das Promise-Interface.
+\end{example}
+
+\begin{defi}{Promise (JavaScript)}
+    Ein Promise ist ein Platzhalter für eine Variable.
+    Es gibt drei interne Zustände:
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{includes/figures/defi_promise.pdf}
+    \end{center}
+
+    Bei der Erstellung eines Promises übergibt man zwei Callbacks\footnote{Diese werden den \emph{Web APIs} hinzugefügt}:
+    \begin{lstlisting}[language=JavaScript]
+        const p = new Promise((resolve, reject) => { ... })
+    \end{lstlisting}
+
+    Wenn der Promise in \texttt{Fulfilled} wechselt, kann man direkt eine weitere \texttt{then()} Methode mit dem \texttt{value} aufrufen.
+    \texttt{then()} erstellt im Hintergrund einen weiteren Promise.
+
+    Wenn der Promise in \texttt{Rejected} wechselt, springt der Promise in die \texttt{catch()} Methode.
+
+    Zum Schluss kann man eine \texttt{finally()} Methode ausführen lassen.
+\end{defi}
+
+\begin{example}{Promise (JavaScript)}
+    Um auf unser Beispiel zurück zu kommen:
+    \begin{lstlisting}[language=JavaScript]
+        function a(s) {
+            return new Promise((resolve, reject) => {
+                /* sleep */
+                resolve(s + 'a')
+            })
+        }
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=JavaScript]
+        a('')
+            .then(s => b(s))
+            .then(s => c(s))
+            .then(console.log) // abc
+    \end{lstlisting}
+\end{example}
+
+\begin{example}{Promise Error (JavaScript)}
+    Sollte \texttt{b} einen Fehler werfen, können wir diesen Fehler am Ende der \texttt{then()}-Kette mit \texttt{catch()} abfangen.
+    Ab der Methode, in der der Fehler geworfen wird, werden nur noch \texttt{catch()} sowie \texttt{finally()} beachtet.
+
+    % TODO .then() weniger Deckkraft
+    \begin{lstlisting}[language=JavaScript]
+        a('')
+            ^.then(s => b(s))^                     // error
+            .then(s => c(s))                     // skip
+            .then(console.log)                   // skip
+            ^.catch(err => console.log('Fehler'))^ // Fehler
+    \end{lstlisting}
+\end{example}
+
+\begin{defi}{Asynchronität (JavaScript)}
+    Da, je nach Komplexität, auch \texttt{.then()}-Ketten unübersichtlich werden.
+    Um dort Abhilfe zu schaffen, wurden \texttt{async}-Methoden hinzugefügt.
+    In dieser Methode kann man mit \texttt{await} darauf warten, dass ein Promise in den Fulfilled Zustand wechseln.
+\end{defi}
+
+\begin{example}{Asynchronität (JavaScript)}
+    \begin{lstlisting}[language=JavaScript]
+        function a(s) {
+            return new Promise((resolve, reject) => {
+                /* sleep */
+                resolve(s + 'a')
+            })
+        }
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=JavaScript]
+        ^async^ function abc() {
+            // console.log(a(''))       // Promise
+            // console.log(await a('')) // a
+            let s = ''
+            s = ^await^ a('')
+            s = ^await^ b(s)
+            s = ^await^ c(s)
+            console.log(s) // abc
+        }
+        abc()
+    \end{lstlisting}
+\end{example}
+
+\begin{bonus}{Asynchronität mehrerer unabhängiger Promises (JavaScript)}
+    Asynchrone Methoden sollten trotzdem möglichst schnell sein.
+    Wenn verschiedene Promises unabhängig sind, sollten diese nicht aufeinander warten müssen.
+
+    \begin{lstlisting}[language=JavaScript]
+        async function abc() {
+            const s1 = await a('')
+            const s2 = await b('')
+            const s3 = await c('')
+
+            console.log(s1 + s2 + s3) // abc
+        }
+        abc()
+    \end{lstlisting}
+    In diesem Beispiel ist nur \texttt{console.log} abhängig von den vorherigen Methoden.
+    Trotzdem muss \texttt{b()} auf \texttt{a()} warten.
+
+    Besser und schneller\footnote{
+        Die Methoden geschehen nicht gleichzeitig, da JavaScript ausschließlich auf einem Thread läuft.
+        Jedoch stückelt die Engine die Methoden in kleinere Stücke, die abwechselnd ausgeführt werden.
+    } ist:
+    \begin{lstlisting}[language=JavaScript]
+        async function abc() {
+            const [s1, s2, s3] = await Promise.all([
+                a(''), b(''), c('')
+            ])
+
+            console.log(s1 + s2 + s3) // abc
+        }
+        abc()
+    \end{lstlisting}
+\end{bonus}
 
 \begin{defi}{DOM-Manipulation (JavaScript)}
     Zur Manipulation von DOM-Objekten stehen zwei globale Variablen zur Verfügung:
