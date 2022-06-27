@@ -102,7 +102,7 @@
 
     \texttt{app.js}
     \begin{lstlisting}[language=JavaScript]
-        const ^Pokemon^ = require('./modules/pokemon.js')
+        const ^Pokemon^ = require('modules/pokemon.js')
 
         const glumanda = ^new Pokemon(4, 'Glumanda')^
         console.log(glumanda.to_string()) // Glumanda [4]
@@ -121,7 +121,7 @@
 
     \texttt{app.js}
     \begin{lstlisting}[language=JavaScript]
-        const ^glumanda^ = require('./modules/pokemon.js')
+        const ^glumanda^ = require('modules/pokemon.js')
 
         console.log(glumanda.to_string()) // Glumanda [4]
     \end{lstlisting}
@@ -146,7 +146,7 @@
 
     \texttt{app.js}
     \begin{lstlisting}[language=JavaScript]
-        const pokemon_module = require('./modules/pokemon.js')
+        const pokemon_module = require('modules/pokemon.js')
 
         pokemon_module.brennen(new pokemon_module.Pokemon(4, 'Glumanda'))
     \end{lstlisting}
@@ -164,13 +164,81 @@
 
     \texttt{app.js}
     \begin{lstlisting}[language=JavaScript]
-        const [Pokemon, Attacke, brennen] = require('./modules/pokemon.js')
+        const [Pokemon, Attacke, brennen] = require('modules/pokemon.js')
 
         brennen(new Pokemon(4, 'Glumanda'))
     \end{lstlisting}
 
     Man sieht, dass man in der ersten Variante deutlich mehr schreiben muss, da man den \enquote{namespace} vor jedes Objekt des Modules schreiben muss.
     Jedoch hat sie den deutlichen Vorteil, dass man nicht alle imports anpassen muss, wenn man einen export hinzufügt.
+\end{example}
+
+\subsubsection{Websockets (Node.js)}
+
+\begin{defi}{Websocket}
+    \emph{Websockets} ermöglichen Kommunikation mittels bestimmter Kommunikationsprotokolle.
+
+    Generell kann man unterscheiden zwischen:
+    \begin{itemize}
+        \item \emph{Stream-Sockets}:
+              \begin{itemize}
+                  \item kommunizieren über einen Zeichen-Datenstrom
+                  \item verwenden meist TCP
+              \end{itemize}
+        \item \emph{Datagramm-Sockets}:
+              \begin{itemize}
+                  \item kommunizieren über einzelne Nachrichten
+                  \item verwenden meist UDP
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Websocket}
+    \texttt{app.js}:
+    \begin{lstlisting}[language=JavaScript]
+        const express = require('express')
+        const app = express()
+
+        const port = 3000
+
+        app.use('/', express.static(__dirname + '/public')))
+
+        const server = app.listen(port)
+
+        const ws = new require('ws').Server({ server }) // alternativ 'noServer: true'
+        ws.on('connection', require('./modules/connection.js'))
+    \end{lstlisting}
+
+    \texttt{modules/connection.js}
+    \begin{lstlisting}[language=JavaScript]
+        module.exports = (socket, req) =>
+            socket.on('message', massage => socket.send('GGAAWWRRR'))
+    \end{lstlisting}
+
+    \texttt{public/index.html}:
+    \begin{lstlisting}[language=HTML5]
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Pokemon</title>
+            <script src="/js/ws.js"></script>
+        </head>
+
+        <body> <button id="btn_talk">talk</button> </body>
+        </html>
+    \end{lstlisting}
+
+    \texttt{public/js/ws.js}
+    \begin{lstlisting}[language=JavaScript]
+        let socket = new WebSocket('wss://localhost:3000/') // wss = web socket ^secure^
+        socket.onopen = () => console.log('CLIENT: connected')
+        socket.onmessage = message => console.log(`CLIENT: ${message.data}`)
+
+        window.onload = () =>
+            document.getElementById('btn_talk').addEventListener('click', event =>
+                socket.send('Mache ein Geraeusch')
+            )
+    \end{lstlisting}
 \end{example}
 
 \subsection{node\_modules}
@@ -333,14 +401,14 @@
         const app = express()
 
         /* routes */
-        app.use(^'/pokemon'^, require('./modules/pokemon.js'))
+        app.use(^'/pokemon'^, require('modules/pokemon.js'))
 
         app.listen(3000)
     \end{lstlisting}
 
     \texttt{routes/pokemon.js}:
     \begin{lstlisting}[language=JavaScript]
-        const Pokemon = require('./../modules/pokemon.js')
+        const Pokemon = require('../modules/pokemon.js')
         const express = require('express')
         
         module.exports = express.Router()
@@ -370,11 +438,10 @@
 \begin{defi}{Middleware}
     Middlewares sind ein Stack von Funktionen mit beliebigem Inhalt.
     Sie werden zwischen dem Eingehen eines Requests un dessen Bearbeitung durch einen Handler (z. B. Route) geschaltet.
-
-    Sie haben Zugriff auf \emph{Request}, \emph{Response}, sowie die direkt folgende \emph{Middleware}.
-
     In Middlewares können z. B. Eingaben geparsed werden, geloggt werden oder Fehler abgefangen werden.
     Anmeldungen werden ebenfalls über Middlewares geregelt.
+
+    Sie haben Zugriff auf \emph{Request}, \emph{Response}, sowie die direkt folgende \emph{Middleware}.
 \end{defi}
 
 \begin{example}{middlewares (Node.js)}
@@ -383,24 +450,19 @@
         const express = require('express')
         const app = express()
 
-        /* middlewares */
-        app.use(^'/'^, require('./middlewares/logging.js')) // 1.
-        
-        /* routes */
-        app.use(^'/pokemon'^, require('./modules/pokemon.js')) // 2.
+        /* middlewares */ app.use(^'/'^, require('middlewares/logging.js')) // 1.
+        /* routes */ app.use(^'/pokemon'^, require('modules/pokemon.js')) // 2.
 
         app.listen(3000)
     \end{lstlisting}
 
     \texttt{modules/pokemon.js}:
     \begin{lstlisting}[language=JavaScript]
-        const Pokemon = require('./../modules/pokemon.js')
+        const Pokemon = require('../modules/pokemon.js')
         const express = require('express')
         
         module.exports = express.Router()
-            .get(^'/'^, (req, res) => {
-                res.send(Pokemon.get_rand().to_string())
-            })
+            .get(^'/'^, (req, res) => res.send(Pokemon.get_rand().to_string()) )
     \end{lstlisting}
 
     \texttt{middlewares/logging.js}:
@@ -469,10 +531,10 @@
 
         /* middlewares */
         app.use(cookie-parser)
-        app.use('/pokemon', require('./middlewares/cookie.js'))
+        app.use('/pokemon', require('middlewares/cookie.js'))
         
         /* routes */
-        app.use('/pokemon', require('./modules/pokemon.js'))
+        app.use('/pokemon', require('modules/pokemon.js'))
 
         app.listen(3000)
     \end{lstlisting}
@@ -490,7 +552,7 @@
 
     \texttt{modules/pokemon.js}:
     \begin{lstlisting}[language=JavaScript]
-        const Pokemon = require('./../modules/pokemon.js')
+        const Pokemon = require('../modules/pokemon.js')
         const express = require('express')
         
         module.exports = express.Router()
@@ -514,20 +576,95 @@
 \end{defi}
 
 \begin{example}{Session}
+    \texttt{app.js}:
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
         const session = require('express-session')
         
         const app = express()
-        
+        const port = 3000
+
         /* middlewares */
-        app.use(session({ secret: 'pok3mon' }))
+        app.use(session({ secret: 'pok3mon' })) // Cookies signieren
+
+        /* routes */
+        app.use('/', require('routes/pokemon.js'))
+
+        app.listen(port)
+    \end{lstlisting}
+
+    \texttt{routes/pokemon.js}:
+    \begin{lstlisting}[language=JavaScript]
+        const express = require('express')
+        
+        module.exports = express.Router()
+            .get((req, res) => {
+                req.session.count = (req.session.count ?? 0) + 1
+            })
     \end{lstlisting}
 \end{example}
 
 \begin{example}{Session beenden}
     \begin{lstlisting}[language=JavaScript]
         req.session.destroy()
+    \end{lstlisting}
+\end{example}
+
+\subsubsection{Dynamische Webseiten}
+
+\begin{example}{Dynamische Webseiten}
+    \texttt{app.js}:
+    \begin{lstlisting}[language=JavaScript]
+        const express = require('express')
+        const app = express()
+        const { check } = require('express-validator')
+
+        const port = 3000
+
+        /* middlewares */
+        app.use(express.urlencoded({ extended: true })) // post parser
+        app.use('/pokemon', [                           // check pokemon
+            check('pokemon').isLength({ min: 3 }),      // min. length 3 chars (z. B. Mew)
+            check('Pokemon').escape()                   // '<Glumanda%>' -> '&lt;Glumanda%&gt;'
+        ])
+
+        /* routes */
+        app.get('/pokemon', require('routes/pokemon.js'))
+        app.use('/', express.static(__dirname + '/public')) // static index.html, js/*, css/* etc.
+
+        app.listen(3000)
+    \end{lstlisting}
+
+    \texttt{routes/pokemon.js}
+    \begin{lstlisting}[language=JavaScript]
+        const Pokemon = require('../modules/pokemon.js')
+        const express = require('express')
+
+        module.exports = express.Router()
+            .get('/', (req, res) => {
+                console.log(`GET: ${^req.query^}`) // z. B. { pokemon: 'Glumanda' } bei GET
+                res.send(Pokemon.get(req.query.pokemon))
+            })
+            .post('/', (req, res) => {
+                console.log(`GET: ${^req.body^}`) // z. B. { pokemon: 'Glumanda' } bei POST
+                res.send(Pokemon.get(req.body.pokemon))
+            })
+    \end{lstlisting}
+
+    \texttt{public/index.html}:
+    \begin{lstlisting}[language=HTML5]
+        <!DOCTYPE html>
+        <html>
+        <head> <title>Pokemon</title> </head>
+
+        <body>
+            <!-- Leite den Client auf /pokemon mit dem Parameter Pokemon weiter -->
+            <form action="/pokemon" method="post">
+                <input type="text" name="pokemon" />
+                <button type="submit">send</button>
+            </form>
+        </body>
+        </html>
     \end{lstlisting}
 \end{example}
 
@@ -567,7 +704,7 @@
 
     \texttt{routes/pokemon.js}:
     \begin{lstlisting}[language=JavaScript]
-        const Pokemon = require('./../modules/pokemon.js')
+        const Pokemon = require('../modules/pokemon.js')
         const express = require('express')
         
         module.exports = express.Router()
