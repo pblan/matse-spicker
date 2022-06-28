@@ -102,12 +102,15 @@
 \end{defi}
 
 \begin{bonus}{Slow-Start}
-    TODO
+    Zu Beginn einer Datenübertragung dient der Slow-Start-Algorithmus zur Bestimmung des congestion window, um einer möglichen Überlastsituation vorzubeugen.
+    Man möchte Staus vermeiden, und da die momentane Auslastung des Netzes nicht bekannt ist, wird mit zunächst kleinen Datenmengen begonnen. Der Algorithmus startet mit einem kleinen Fenster von einer MSS (Maximum Segment Size), in dem Datenpakete vom Sender zum Empfänger übertragen werden.
+    Mit jedem empfangen ACK wird die Größe des congestion windows verdoppelt.
+
+    Wenn man jedoch bei jedem Verbindungsaufbau erst testet, wie schnell man senden kann, kann es zu längeren Übertragungsgeschwindigkeiten führen.
 \end{bonus}
 
 \begin{defi}{TCP-Verbindungsmanagement (Verbindungsaufbau)}
     Der Client, der eine Verbindung aufbauen will, sendet dem Server ein \texttt{SYN}-Paket mit einer Sequenznummer $x$.
-
     Die Sequenznummern sind dabei für die Sicherstellung einer vollständigen Übertragung in der richtigen Reihenfolge und ohne Duplikate wichtig.
 
     Die Start-Sequenznummer ist eine beliebige Zahl, deren Generierung von der jeweiligen TCP-Implementierung abhängig ist.
@@ -122,7 +125,7 @@
     Aus Sicherheitsgründen sendet der Client den Wert $y+1$ im \texttt{ACK}-Segment zurück.
 
     \centering
-    \includegraphics[width=0.6\textwidth]{includes/figures/defi_tcp_verbindungsaufbau.pdf}
+    \includegraphics[width=0.5\textwidth]{includes/figures/defi_tcp_verbindungsaufbau.pdf}
 \end{defi}
 
 \begin{defi}{TCP-Verbindungsmanagement (Verbindungsende)}
@@ -132,7 +135,7 @@
     Der Empfänger des \texttt{FIN}-Pakets sendet zuletzt seinerseits ein \texttt{FIN}-Paket, das ihm ebenfalls bestätigt wird.
 
     \centering
-    \includegraphics[width=0.6\textwidth]{includes/figures/defi_tcp_verbindungsabbau.pdf}
+    \includegraphics[width=0.5\textwidth]{includes/figures/defi_tcp_verbindungsabbau.pdf}
 \end{defi}
 
 \begin{defi}{Flusskontrolle}
