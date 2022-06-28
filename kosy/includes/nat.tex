@@ -45,5 +45,18 @@
 \end{example}
 
 \begin{defi}{Adressübersetzung (NAT)}
+    Zur Identifikation des Absenders bzw. Empfängers müssen im IP-Header freie Felder gefunden werden.
+    Im IP-Header steht jedoch nur noch 1 freies Bit zur Verfügung.
 
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_ip_header.pdf}
+    \end{center}
+
+    Zweite Idee: Nutze TCP bzw UDP Header.
+    Hier kann man die 16 bit Portnummern nutzen um Clients eindeutig zu Adressieren.
+    Hierbei wird jedoch die Schichten Architektur verletzt, da Layer 3 Details über Layer 4 hat.
+
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_tcp_header.pdf}
+    \end{center}
 \end{defi}
