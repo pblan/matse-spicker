@@ -57,6 +57,101 @@
     Hierbei wird jedoch die Schichten Architektur verletzt, da Layer 3 Details über Layer 4 hat.
 
     \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/defi_tcp_header.pdf}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_tcp_header_port.pdf}
+
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_udp_header_port.pdf}
     \end{center}
+
+    Bei TCP bzw. UDP wird sowohl der Destination Port als auch der Source Port mitgesendet.
+    Der \emph{Destination Port} darf dabei von der sendenden Anwendung nicht verändert werden, da er definiert auf welchen Service Zugegriffen wird.
+    Der \emph{Source Port} wird von Betriebssystem vergeben und ist ggf. nicht eindeutig (z. B. zwei Webserver mit jeweils Port \texttt{443}).
+
+    Daher ersetzen Nat-Router den Source Port durch eine ID, die den privaten Rechner bzw. die Verbindung identifiziert.
+
+    Im Antwortpaket muss der Destination Port extrahiert werden, und der NAT Router ersetzt die Ziel-IP mit der entsprechenden privaten IP und den Zielport mit dem ursprünglichen Port.
 \end{defi}
+
+\begin{example}{Adressübersetzung (NAT)}
+    In folgendem Beispiel sendet der Rechner \texttt{192.168.0.2} in \texttt{LAN1} über den Port \texttt{4} ein Paket an den Rechner \texttt{192.168.0.2} in \texttt{LAN2} an den Port \texttt{22}.
+    Dieser \enquote{versteckt} sich jedoch hinter dem öffentlichen Router \texttt{10.0.0.2} und dem Port \texttt{7000}.
+
+    \includegraphics[width=\textwidth]{includes/figures/example_nat.pdf}
+
+    \begin{minipage}[t]{0.5\textwidth}
+        \begin{center}
+            \emph{Übersetzungstabelle Router (10.0.0.2)}
+
+            \begin{tabular}{|c|c||c|}
+                \hline
+                IP-Adresse  & Port & NAT-Port \\\hline\hline
+                192.168.0.2 & 4    & 6000     \\\hline
+                192.168.0.2 & 591  & 6001     \\\hline
+                192.168.0.3 & 4    & 6002     \\\hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+    \begin{minipage}[t]{0.5\textwidth}
+        \begin{center}
+            \emph{Übersetzungstabelle Router (10.0.0.2)}
+
+            \begin{tabular}{|c|c||c|}
+                \hline
+                IP-Adresse  & Port & NAT-Port \\\hline\hline
+                192.168.0.2 & 22   & 7000     \\\hline
+                192.168.0.3 & 22   & 7001     \\\hline
+            \end{tabular}
+        \end{center}
+    \end{minipage}
+\end{example}
+
+\begin{bonus}{NAT Nachteile}
+    \begin{itemize}
+        \item Nicht jeder Rechner ist eindeutig per IP identifizierbar
+        \item Verletzung des Schichtenmodells
+        \item Übersetzungstabelle kann i. d. R. nur aufgebaut werden, wenn ein interner Knoten die Kommunikation initiiert
+        \item Was ist, wenn nicht \emph{TCP} oder \texttt{UDP} verwendet wird?
+        \item Was passiert, wenn übergeordnete Protokolle die IP als Payload übertragen?
+        \item Was passiert bei verschlüsselten Verbindungen?
+    \end{itemize}
+\end{bonus}
+
+\begin{bonus}{Sicherheitsstufen (NAT)}
+    NAT kennt unterschiedliche \emph{Sicherheitsstufen}:
+    \begin{itemize}
+        \item \emph{Full Cone NAT}:
+
+              Ein Port wird unbegrenzt nach au0en freigegeben.
+              Dadurch kann auch von außen ein Rechner die Kommunikation initiieren.
+        \item \emph{Restricted Cone NAT}:
+
+              Ein Port wird nur nach dem Start der internen Kommunikation freigegeben.
+              Die Quell-IP-Adresse wird bei Antworten überprüft.
+        \item \emph{Port Restricted Cone NAT}:
+
+              Die Rückpakete werden zusätzlich auf den Source Port hin überprüft
+    \end{itemize}
+\end{bonus}
+
+\begin{bonus}{Full Cone NAT}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_full_cone_nat.pdf}
+    \end{center}
+\end{bonus}
+
+\begin{bonus}{Restricted Cone NAT}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_restricted_cone_nat.pdf}
+    \end{center}
+\end{bonus}
+
+\begin{bonus}{Port Restricted Cone NAT}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_port_restricted_cone_nat.pdf}
+    \end{center}
+\end{bonus}
+
+\begin{bonus}{Symmetric NAT}
+    Beim \emph{Symmetric NAT} wird für jeden Datenstrom aus dem internen Netz eine eigene Abbildung durchgeführt.
+    Wenn der Quell-Rechner z. B. vom selben Quell-Port aus mit zwei unterschiedlichen Ziel-Rechnern kommuniziert, wird für jede Verbindung eine eigene NAT-Tabelle angelegt.
+    Nut der jeweilige Zielrechner darf jeweils mit den eingetragenen Portnummern antworten.
+\end{bonus}
