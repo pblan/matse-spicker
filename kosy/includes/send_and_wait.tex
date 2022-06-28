@@ -1,19 +1,17 @@
 \section{Send and Wait}
 
-\begin{defi}{Send and Wait}
-    \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/defi_iso_osi_transport_und_vermittlung.pdf}
-    \end{center}
+\includegraphics[width=0.75\textwidth]{includes/figures/defi_iso_osi_transport_und_vermittlung.pdf}
 
+\begin{bonus}{Probleme unsicherer Datenkanäle}
     Bei unsicheren Übertragungskanälen (wie z. B. IP) können folgende Fehler auftreten:
     \begin{itemize}
         \item Pakete können verloren gehen
         \item Die Reihenfolge kann vertauscht werden
         \item Pakete können Fehlerhaft empfangen werden
     \end{itemize}
-\end{defi}
+\end{bonus}
 
-\begin{defi}{Zuverlässige Transportprotokolle}
+\begin{bonus}{Zuverlässige Transportprotokolle}
     Wir wollen einen kontinuierlichen Datenstrom in Nachrichteneinheiten (Segmente) unterteilen, die eindeutig identifizierbar sind und im Anschluss sicher versenden.
     Wir können davon ausgehen, dass sich die beiden Geräte bereits kennen und eine Verbindung aufgebaut haben.
 
@@ -33,14 +31,15 @@
         \item Neuübertragung:
               \begin{itemize}
                   \item Sender überträgt Fehlerhafte Segmente erneut
-                  \item Timer- und/oder NAK-gesteuert
+                  \item Timer- bzw. \texttt{NAK}-gesteuert
               \end{itemize}
     \end{itemize}
-\end{defi}
+\end{bonus}
 
-\begin{defi}{Automatic-Repeat-Request Protokoll}
-    Das \emph{Automatic-Repeat-Request}-Protokoll (ARQ) auch \emph{Send and Wait}-Protokoll besteht daraus, dass Empfänger Bestätigungen (\texttt{ACK}s) bei korrektem Empfang versenden.
-    Fehlerhafte Übertragungen werden durch ausbleiben der Bestätigung erkannt und durch wiederholtes versenden behoben.
+\begin{defi}{ARQ-Protokoll}
+    Das \emph{Automatic-Repeat-Request-Protokoll (ARQ)}, auch \emph{Send and Wait-Protokoll}, besteht daraus, dass Empfänger Bestätigungen (\texttt{ACK}s) bei korrektem Empfang versenden.
+
+    Fehlerhafte Übertragungen werden durch Ausbleiben der Bestätigung erkannt und durch wiederholtes Versenden behoben.
 \end{defi}
 
 \begin{defi}{Einfaches ARQ-Protokoll}
@@ -55,11 +54,13 @@
 
     Der Datenstrom ist begrenzt auf ein Paket pro Zyklus.
 
-    Sie die Länge eines Segments (L) in bits und die Übertragungsrate eines Kanals in $\nicefrac{bits}{s}$ gegeben, so wird die genutzte Übertragungszeit mit $L / R$ errechnet.
+    Sei die Länge eines Segments (L) in bits und die Übertragungsrate eines Kanals in $\nicefrac{\text{bits}}{s}$ gegeben, so wird die genutzte Übertragungszeit mit $\nicefrac{L}{R}$ errechnet.
+
     Die Wartezeit bzw. der Timeout (RTT) ist durch die genutzte Übertragungsart in Sekunden gegeben.
 
+    Der Nutzungsgrad $\rho$ wird wie folgt berechnet:
     \[
-        \text{Nutzungsgrad}: \rho := \frac{(\text{genutze Übertragungszeit})}{(\text{genutze Übertragungszeit} + \text{Wartezeit})} = \frac{\nicefrac{L}{R}}{\nicefrac{L}{R} + RTT}
+        \rho := \frac{\text{genutze Übertragungszeit}}{\text{genutze Übertragungszeit} + \text{Wartezeit}} = \frac{\frac{L}{R}}{\frac{L}{R} + RTT}
     \]
 \end{defi}
 
@@ -74,8 +75,8 @@
         \includegraphics[width=0.5\textwidth]{includes/figures/bonus_arq_error.pdf}
     \end{center}
 
-    Wenn wir länger als erwartet brauchen um das Paket zu versenden, wird immer vor Erhalt der Bestätigung neu Versendet.
-    Der Empfänger weiß nicht welches Segment empfangen wurde und der Sender weiß nicht für welches Paket er eine Bestätigung erhalten hat.
+    Wenn wir länger als erwartet brauchen um das Paket zu versenden, wird immer vor Erhalt der Bestätigung neu versendet.
+    Der Empfänger weiß nicht, welches Segment empfangen wurde und der Sender weiß nicht, für welches Paket er eine Bestätigung erhalten hat.
 
     Um das Problem zu lösen versehen wir jedes Paket mit einer eindeutigen ID.
     Diese entspricht entweder dem 1. Byte der Nachricht oder wird zyklisch durchnummeriert:
@@ -86,32 +87,18 @@
 \end{bonus}
 
 \begin{defi}{Pipelining}
-    Um das Netz besser auszulasten nutzt man Pipelining:
+    Um das Netz besser auszulasten nutzt man \emph{Pipelining}:
     \begin{itemize}
-        \item Senden weiterer Segmente oder vorheriges ACK
-        \item Die Fensterbreite beim Sender richtet sich an der Anzahl der Segmente, die ohne Bestätigung gesendet werden.
-        \item Die Fensterbreite beim Empfänger richtet sich nach der Anzahl der Segmente, doe auch bei Lücken oder Fehlern zwischengespeichert werden.
+        \item Senden weiterer Segmente ohne vorheriges \texttt{ACK}
+        \item Die Fensterbreite beim Sender richtet sich nach der Anzahl der Segmente, die ohne Bestätigung gesendet werden.
+        \item Die Fensterbreite beim Empfänger richtet sich nach der Anzahl der Segmente, die auch bei Lücken oder Fehlern zwischengespeichert werden.
     \end{itemize}
 
-    Sei n die Fensterbreite des Senders:
+    Sei $n$ die Fensterbreite des Senders.
+    Dann wird der Nutzungsgrad $\rho$ wie folgt berechnet:
 
     \[
-        \text{Nutzungsgrad}: \rho := \frac{n \cdot \nicefrac{L}{R}}{n \cdot \nicefrac{L}{R} + RTT + \nicefrac{L}{R} - n \cdot \nicefrac{L}{R}} = \frac{n \cdot \nicefrac{L}{R}}{\nicefrac{L}{R} + RTT}
-    \]
-\end{defi}
-
-\begin{defi}{Pipelining}
-    Um das Netz besser auszulasten nutzt man Pipelining:
-    \begin{itemize}
-        \item Senden weiterer Segmente oder vorheriges ACK
-        \item Die Fensterbreite beim Sender richtet sich an der Anzahl der Segmente, die ohne Bestätigung gesendet werden.
-        \item Die Fensterbreite beim Empfänger richtet sich nach der Anzahl der Segmente, doe auch bei Lücken oder Fehlern zwischengespeichert werden.
-    \end{itemize}
-
-    Sei n die Fensterbreite des Senders:
-
-    \[
-        \text{Nutzungsgrad}: \rho := \frac{n \cdot \nicefrac{L}{R}}{n \cdot \nicefrac{L}{R} + RTT + \nicefrac{L}{R} - n \cdot \nicefrac{L}{R}} = \frac{n \cdot \nicefrac{L}{R}}{\nicefrac{L}{R} + RTT}
+        \rho := \frac{n \cdot \frac{L}{R}}{n \cdot \frac{L}{R} + RTT + \frac{L}{R} - n \cdot \frac{L}{R}} = \frac{n \cdot \frac{L}{R}}{\frac{L}{R} + RTT}
     \]
 \end{defi}
 
@@ -123,7 +110,9 @@
 
 \begin{defi}{Go-Back-N}
     \emph{Go-Back-N} ist ein Verfahren um nach Fehlern das Senden sinnvoll fortzusetzen.
+
     Sobald der Sender kein \texttt{ACK} erhält, läuft er in einen Timeout (Fensterbreite) und springt danach hinter das Paket, welches als letztes erfolgreich versendet wurde.
+
     Alle direkt nach dem Fehler versendeten Segmente werden verworfen.
 \end{defi}
 

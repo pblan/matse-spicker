@@ -24,15 +24,17 @@
 \end{bonus}
 
 \begin{defi}{NAT}
-    \emph{NAT} (Network Adress Translation) verfolgt die Idee, dass KundInnen jeweils lediglich eine eindeutige öffentliche IPv4-Adresse erhalten.
+    \emph{NAT (Network Adress Translation)} verfolgt die Idee, dass KundInnen jeweils lediglich eine eindeutige öffentliche IPv4-Adresse erhalten.
+
     Dementsprechend existiert für jedes Netz ebenfalls nur einen Zugangspunkt (Gateway) zu diesem Netz.
     Das Gateway hat dabei mindestens 2 Netzwerkkarten, um in das große Internet, sowie das lokale Netz zu senden.
 
-    Das private Netz hat nutzt meist einen der folgenden IP-Adressblöcke:\\
+    Das private Netz nutzt meist einen der folgenden IP-Adressblöcke:
+
     \begin{tabular}{llcl}
-        \texttt{10.0.0.0/8:}     & \texttt{10.0.0.0}    & - & \texttt{10.255.255.255}  \\
-        \texttt{172.16.0.0/12:}  & \texttt{172.16.0.0}  & - & \texttt{172.31.255.255}  \\
-        \texttt{192.168.0.0/16:} & \texttt{192.168.0.0} & - & \texttt{192.168.255.255}
+        \texttt{10.0.0.0/8:}     & \texttt{10.0.0.0}    & bis & \texttt{10.255.255.255}  \\
+        \texttt{172.16.0.0/12:}  & \texttt{172.16.0.0}  & bis & \texttt{172.31.255.255}  \\
+        \texttt{192.168.0.0/16:} & \texttt{192.168.0.0} & bis & \texttt{192.168.255.255}
     \end{tabular}
 \end{defi}
 
@@ -53,8 +55,9 @@
     \end{center}
 
     Zweite Idee: Nutze TCP bzw UDP Header.
-    Hier kann man die 16 bit Portnummern nutzen um Clients eindeutig zu Adressieren.
-    Hierbei wird jedoch die Schichten Architektur verletzt, da Layer 3 Details über Layer 4 hat.
+    Hier kann man die 16 bit Portnummern nutzen um Clients eindeutig zu adressieren.
+
+    Hierbei wird jedoch die Schichtenarchitektur verletzt, da Layer 3 Details über Layer 4 kennt.
 
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_tcp_header_port.pdf}
@@ -63,10 +66,12 @@
     \end{center}
 
     Bei TCP bzw. UDP wird sowohl der Destination Port als auch der Source Port mitgesendet.
-    Der \emph{Destination Port} darf dabei von der sendenden Anwendung nicht verändert werden, da er definiert auf welchen Service Zugegriffen wird.
+
+    Der \emph{Destination Port} darf dabei von der sendenden Anwendung nicht verändert werden, da er definiert auf welchen Services zugegriffen wird.
+
     Der \emph{Source Port} wird von Betriebssystem vergeben und ist ggf. nicht eindeutig (z. B. zwei Webserver mit jeweils Port \texttt{443}).
 
-    Daher ersetzen Nat-Router den Source Port durch eine ID, die den privaten Rechner bzw. die Verbindung identifiziert.
+    Daher ersetzen NAT-Router den Source Port durch eine ID, die den privaten Rechner bzw. die Verbindung identifiziert.
 
     Im Antwortpaket muss der Destination Port extrahiert werden, und der NAT Router ersetzt die Ziel-IP mit der entsprechenden privaten IP und den Zielport mit dem ursprünglichen Port.
 \end{defi}
@@ -79,7 +84,7 @@
 
     \begin{minipage}[t]{0.5\textwidth}
         \begin{center}
-            \emph{Übersetzungstabelle Router (10.0.0.2)}
+            \emph{Übersetzungstabelle Router (10.0.0.1)}
 
             \begin{tabular}{|c|c||c|}
                 \hline
@@ -109,7 +114,7 @@
         \item Nicht jeder Rechner ist eindeutig per IP identifizierbar
         \item Verletzung des Schichtenmodells
         \item Übersetzungstabelle kann i. d. R. nur aufgebaut werden, wenn ein interner Knoten die Kommunikation initiiert
-        \item Was ist, wenn nicht \emph{TCP} oder \texttt{UDP} verwendet wird?
+        \item Was ist, wenn nicht TCP oder UDP verwendet wird?
         \item Was passiert, wenn übergeordnete Protokolle die IP als Payload übertragen?
         \item Was passiert bei verschlüsselten Verbindungen?
     \end{itemize}
@@ -120,7 +125,7 @@
     \begin{itemize}
         \item \emph{Full Cone NAT}:
 
-              Ein Port wird unbegrenzt nach au0en freigegeben.
+              Ein Port wird unbegrenzt nach außen freigegeben.
               Dadurch kann auch von außen ein Rechner die Kommunikation initiieren.
         \item \emph{Restricted Cone NAT}:
 
@@ -132,26 +137,28 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Full Cone NAT}
+\begin{example}{Full Cone NAT}
     \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_full_cone_nat.pdf}
+        \includegraphics[width=0.5\textwidth]{includes/figures/bonus_full_cone_nat.pdf}
     \end{center}
-\end{bonus}
+\end{example}
 
-\begin{bonus}{Restricted Cone NAT}
+\begin{example}{Restricted Cone NAT}
     \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_restricted_cone_nat.pdf}
+        \includegraphics[width=0.5\textwidth]{includes/figures/bonus_restricted_cone_nat.pdf}
     \end{center}
-\end{bonus}
+\end{example}
 
-\begin{bonus}{Port Restricted Cone NAT}
+\begin{example}{Port Restricted Cone NAT}
     \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_port_restricted_cone_nat.pdf}
+        \includegraphics[width=0.5\textwidth]{includes/figures/bonus_port_restricted_cone_nat.pdf}
     \end{center}
-\end{bonus}
+\end{example}
 
 \begin{bonus}{Symmetric NAT}
-    Beim \emph{Symmetric NAT} wird für jeden Datenstrom aus dem internen Netz eine eigene Abbildung durchgeführt.
+    Bei \emph{Symmetric NAT} wird für jeden Datenstrom aus dem internen Netz eine eigene Abbildung durchgeführt.
+
     Wenn der Quell-Rechner z. B. vom selben Quell-Port aus mit zwei unterschiedlichen Ziel-Rechnern kommuniziert, wird für jede Verbindung eine eigene NAT-Tabelle angelegt.
-    Nut der jeweilige Zielrechner darf jeweils mit den eingetragenen Portnummern antworten.
+
+    Nur der jeweilige Zielrechner darf jeweils mit den eingetragenen Portnummern antworten.
 \end{bonus}

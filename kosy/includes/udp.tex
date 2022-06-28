@@ -1,1 +1,43 @@
 \section{UDP}
+
+\includegraphics[width=\textwidth]{includes/figures/defi_iso_osi_transport.pdf}
+
+\begin{defi}{UDP}
+    Das \emph{User Datagram Protocol (UDP)} ist ein \emph{verbindungsloses, nicht-zuverlässiges und ungesichertes wie auch ungeschütztes} Netzwerkprotokoll, das zur Transportschicht der Internetprotokollfamilie gehört.
+
+    UDP ermöglicht den Versand von Datagrammen in IP-basierten Rechnernetzen.
+
+    UDP verwendet Ports, um versendete Daten dem richtigen Programm auf dem Zielrechner zukommen zu lassen.
+    Dazu enthält jedes Datagramm die Portnummer des Dienstes, der die Daten erhalten soll.
+
+    Zusätzlich bietet UDP die Möglichkeit einer Integritätsüberprüfung an, indem eine Prüfsumme mitgesendet wird.
+    Dadurch können fehlerhaft übertragene Datagramme erkannt und verworfen werden.
+
+    Daneben bietet die ungesicherte Übertragung den Vorteil von geringen Übertragungsverzögerungsschwankungen: Geht bei einer TCP-Verbindung ein Paket verloren, wird es automatisch neu angefordert.
+    Das braucht Zeit, die Übertragungsdauer kann daher schwanken, was für Multimediaanwendungen schlecht ist.
+    Bei VoIP (Discord, MS Teams) oder Streaming (Netflix, YouTube) z. B. käme es zu plötzlichen Aussetzern, bzw. die Wiedergabepuffer müssten größer angelegt werden. Bei verbindungslosen Kommunikationsdiensten bringen verlorengegangene Pakete dagegen nicht die gesamte Übertragung ins Stocken, sondern vermindern lediglich die Qualität.
+\end{defi}
+
+\begin{defi}{UDP-Header}
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_tcp_header_kapselung.pdf}
+
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_udp_header.pdf}
+    \end{center}
+\end{defi}
+
+\begin{bonus}{Abtastung}
+
+\end{bonus}
+
+\begin{defi}{Sampling Rate}
+
+\end{defi}
+
+\begin{bonus}{Quantisierung und Kodierung}
+
+\end{bonus}
+
+\begin{defi}{RTP}
+
+\end{defi}

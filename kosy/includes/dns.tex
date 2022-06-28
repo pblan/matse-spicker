@@ -1,16 +1,17 @@
 \section{DNS}
 
-\begin{defi}{Domain Name System (DNS)}
-    Socket-Basierte Kommunikation nutzt IP-Adressen.
+\begin{defi}{DNS}
+    Socket-basierte Kommunikation nutzt IP-Adressen.
 
     Im Gegensatz dazu wollen Endanwender sprechende Bezeichnungen, die leicht zu merken sind und Rückschlüsse auf ihre Bedeutung haben.
     Des Weiteren können sich IP-Adressen ändern, wenn z. B. ein Dienst umzieht.
 
-    Um diese Anforderungen zu erfüllen wurde ein System entwickelt, um Namen zu übersetzen bzw. aufzulösen.
+    Um diese Anforderungen zu erfüllen, wurde ein System entwickelt um Namen zu übersetzen bzw. aufzulösen.
 
-    DNS ist eine verteilte Datenbank, welche als Serverprozess auf UDP Port 53 reagiert.
+    \emph{Domain Name System (DNS)} ist eine verteilte Datenbank, welche als Serverprozess auf UDP Port 53 reagiert.
     Jeder Namensraum ist verantwortlich für sein Segment.
-    Zur Geschwindigkeitsoptimierung werden Angefragte Daten von Clients zwischengespeichert, wenn der DNS Server bei übergeordneten DNS Servern anfragt.
+
+    Zur Geschwindigkeitsoptimierung werden angefragte Daten von Clients zwischengespeichert, wenn der DNS Server bei übergeordneten DNS Servern anfragt.
 
     Die IP-Adresse des DNS-Servers muss in jeden Host manuell oder via DHCP eingetragen werden.
 \end{defi}
@@ -22,12 +23,12 @@
 \end{example}
 
 \begin{defi}{Domäne}
-    Symbolische Namen bestehen aus dem Host Namen und der Domäne.
-    Die Domäne besteht aus der Top Level Domain und potentiellen Subdomänen.
+    Symbolische Namen bestehen aus dem Hostnamen und der Domäne.
+    Die Domäne besteht aus der \emph{Top Level Domain} und potentiellen \emph{Subdomains}.
 
-    Zur Strukturierung lassen sich die Informationen als Baum darstellen.
-    Die einzelnen Labels haben eine Länge von einem bis 63 Bytes.
-    Der gesamte Name (Full Qualified Domain-Name (FQDN)) darf dabei die Länge von 255 Bytes nicht überschreiten.
+    Zur Strukturierung lassen sich die Informationen als Baum darstellen.\footnote{Die einzelnen Labels haben eine Länge von einem bis 63 Bytes.}
+
+    Der gesamte Name (\emph{Full Qualified Domain-Name (FQDN)}) darf dabei die Länge von 255 Bytes nicht überschreiten.
 
     Jedes Blatt besitzt eine eindeutige IP-Adresse.
 \end{defi}
@@ -38,8 +39,9 @@
     \end{center}
 \end{example}
 
-\begin{defi}{Zone (DNS)}
-    Eine Zone ist ein autarker und gemeinsam administrierter Bereich im DNS-Namensraum.
+\begin{defi}{Zone}
+    Eine \emph{Zone} ist ein autarker und gemeinsam administrierter Bereich im DNS-Namensraum mit eigener Datenbank.
+
     Jede Zone hat einen primären und beliebig viele sekundäre Nameserver.
 
     \begin{itemize}
@@ -49,15 +51,14 @@
         \item Der primäre Namensserver kennt den vollständigen Datenbestand.
     \end{itemize}
 
-    Zur Einrichtung einer Zone muss man den übergeordneten Knoten davon überzeugen die Verwaltung zu delegieren.
-    Eine Zone ist ein Namensraum mit eigener Datenbank.
+    Zur Einrichtung einer Zone muss man den übergeordneten Knoten davon überzeugen, die Verwaltung zu delegieren.
 \end{defi}
 
-\begin{defi}{Root-Nameserver (DNS)}
+\begin{defi}{Root-Nameserver}
     \emph{Root-Nameserver} bilden die Wurzel der hierarchischen DNS-Struktur.
     Es gibt Weltweit 13 Root-Nameserver.
 
-    z. Zt. \{a-m\}.root-server.net
+    z. Zt. \texttt{\{a-m\}.root-server.net}
 \end{defi}
 
 \begin{defi}{Namensauflösung}
@@ -68,6 +69,8 @@
 \end{defi}
 
 \begin{example}{Namensauflösung}
+    \emph{Beispiel 1:}
+
     Ein Client fragt bei seinem lokalen DNS die IP-Adresse des Hosts \texttt{glumanda.pokemon.jp} an.
 
     Da der DNS-Server keine Daten gespeichert hat, fragt er den Root-Nameserver nach der IP-Adresse.
@@ -77,9 +80,9 @@
     Dieser kennt den Host und antwortet mit der IP-Adresse \texttt{10.0.1.4}.
 
     Die IP-Adresse wird von dem DNS an den Client weitergeleitet.
-\end{example}
 
-\begin{example}{Namensauflösung}
+    \emph{Beispiel 2:}
+
     Nach dem ersten Beispiel fragt ein zweiter Client nach der IP-Adresse von \texttt{pikachu.pokemon.jp}.
 
     Da unser DNS-Server den Nameserver von \texttt{pokemon.jp} zwischengespeichert hat, fragt er direkt dort an und erhält die IP-Adresse \texttt{10.0.1.22}.
@@ -138,24 +141,24 @@
 
 \begin{bonus}{DNS-Attacken}
     DNS ist ein zentraler Bestandteil eines Netzwerks und ein kritischer Dienst.
+
     Da er nur UDP verwendet, ist er häufig Angriffsziel.
 
     \begin{itemize}
         \item \emph{DNS Spoofing}:
-
               Durch Manipulation (Maskierung) werden Benutzer für Phishing-Attacken auf falsche Webseiten gelenkt.
         \item \emph{Cache Poisoning}:
-
               Der Cache des DNS Servers wird vergiftet, in der Hoffnung, dass Clients den Cache unhinterfragt in ihren Cache übernehmen.
         \item \emph{DDoS}
     \end{itemize}
 
-    Um diese Angriffe zu verhindern gibt es verschiedene Sicherheitserweiterungen, z. B. \enquote{DNS over TLS}.
+    Um diese Angriffe zu verhindern gibt es verschiedene Sicherheitserweiterungen\footnote{z. B. \emph{DNS over TLS}}.
 \end{bonus}
 
 \begin{bonus}{DNS-Filter}
-    DNS-Anfragen können mit einem Proxy gefiltert werden, im z. B. unerwünschte Anfragen abzubrechen (z. B. auf Werbeseiten).
+    DNS-Anfragen können mit einem Proxy gefiltert werden, um z. B. unerwünschte Anfragen abzubrechen (z. B. auf Werbeseiten).
 
     Beispielsweise lässt sich ein Raspberry Pi mittels \emph{Pi-Hole} zu solch einem DNS-Proxy umfunktionieren.
-    \enquote{Erwünschte} Anfragen könnte man z. B. auf den Google-DNS-Server \texttt{8.8.8.8} weiterleiten oder seinen Lokalen Nameserver des Routers nutzen.
+
+    Erwünschte Anfragen könnte man z. B. auf den Google-DNS-Server \texttt{8.8.8.8} weiterleiten, oder seinen lokalen Nameserver des Routers nutzen.
 \end{bonus}

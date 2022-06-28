@@ -1,1 +1,70 @@
 \section{Sockets}
+
+\begin{defi}{Socket}
+    \emph{Sockets} bilden eine plattformunabhängige standardisierte Schnittstelle (API) zwischen der Netzwerkprotokoll-Implementierung des Betriebssystems und der eigentlichen Anwendungssoftware.
+
+    Ein Computerprogramm fordert einen Socket vom Betriebssystem an.
+    Das Betriebssystem hat die Aufgabe, alle benutzten Sockets sowie die zugehörigen Verbindungsinformationen zu verwalten.
+\end{defi}
+
+\begin{defi}{Internet-Socket}
+    \emph{Internet-Sockets} ermöglichen Kommunikation mittels bestimmter Kommunikationsprotokolle.
+
+    Generell kann man unterscheiden zwischen:
+    \begin{itemize}
+        \item \emph{Stream-Sockets}:
+              \begin{itemize}
+                  \item kommunizieren über einen Zeichen-Datenstrom
+                  \item verwenden meist TCP
+              \end{itemize}
+        \item \emph{Datagramm-Sockets}:
+              \begin{itemize}
+                  \item kommunizieren über einzelne Nachrichten
+                  \item verwenden meist UDP
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Socket-Kommunikation (Stream-Socket)}
+    Client-seitig:
+    \begin{enumerate}
+        \item Socket erstellen
+        \item erstellten Socket mit einer Server-Adresse verbinden, von welcher Daten angefordert werden sollen
+        \item Senden und Empfangen von Daten
+        \item evtl. Socket herunterfahren
+        \item Verbindung trennen, Socket schließen
+    \end{enumerate}
+
+    Server-seitig:
+    \begin{enumerate}
+        \item Server-Socket erstellen
+        \item Binden des Sockets an eine Adresse (Port), über welche Anfragen akzeptiert werden
+        \item auf Anfragen warten
+        \item Anfrage akzeptieren und damit ein neues Socket-Paar für diesen Client erstellen
+        \item Bearbeiten der Client-Anfrage auf dem neuen Client-Socket
+        \item Client-Socket wieder schließen
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{Socket-Kommunikation (Datagramm-Socket)}
+    Client-seitig:
+    \begin{enumerate}
+        \item Socket erstellen
+        \item An Adresse senden
+    \end{enumerate}
+
+    Server-seitig:
+    \begin{enumerate}
+        \item Socket erstellen
+        \item Socket binden
+        \item warten auf Pakete
+    \end{enumerate}
+\end{defi}
+
+\begin{example}{Socket (Client)}
+    TODO
+\end{example}
+
+\begin{example}{Socket (Server)}
+    TODO
+\end{example}
