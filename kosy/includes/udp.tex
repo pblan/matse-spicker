@@ -49,6 +49,13 @@
     \end{itemize}
 
     Nach den \emph{Nyquist-Shannon-Abtasttheorem} soll gelten: $\text{Abtastrate} > 2 \cdot \text{max. Frequenz}$
+
+    Die Qualität des resultierenden Digitalsignals ist dabei abhängig von der Abtastrate und Auflösung.
+
+    Die Bitrate ($\nicefrac{\text{bit}}{s}$) sei definiert als:
+    \[
+        \text{Bitrate} := \text{Kanäle} \cdot \text{Abtastrate (Hz)} \cdot \text{Auflösung (bit)}
+    \]
 \end{defi}
 
 \begin{bonus}{Quantisierung und Kodierung}
@@ -69,4 +76,20 @@
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_rtp.pdf}
     \end{center}
+\end{defi}
+
+\begin{defi}{Streaming}
+    Multimediale Netzanwendungen werden kategorisiert in:
+    \begin{enumerate}
+        \item Streaming gespeicherter Audio- und Video-Daten
+        \item Streaming von Live-Audio und -Video
+        \item Interaktive Audio- und Video-Nutzung
+    \end{enumerate}
+
+    Insbesondere beim Streaming werden die Daten vorzeitig vom Client verwendet, bevor diese vollständig übertragen wurden.
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_streaming.pdf}
+    \end{center}
+
+    In der Theorie ist Vorspulen nicht möglich, da die Daten noch nicht empfangen wurden, beim Rückspulen bzw. Pausieren kann man jedoch auf seinen lokalen Puffer zurückgreifen.
 \end{defi}
