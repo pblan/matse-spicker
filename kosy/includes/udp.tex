@@ -27,17 +27,46 @@
 \end{defi}
 
 \begin{bonus}{Abtastung}
+    Analoge Signale werden regelmäßig gemessen.
 
+    Dabei wird der Wert zu dem n-ten Zeitpunkten $t_n = n \cdot \Delta t$ gemessen.
+
+    Bei dem \texttt{Hold}-Verfahren wird der letzte gemessene Wert gehalten:
+
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{includes/figures/defi_abtastrate.pdf}
+    \end{center}
 \end{bonus}
 
 \begin{defi}{Sampling Rate}
+    \begin{itemize}
+        \item Wird zu selten abgetastet, erhalten wir eine sehr ungenaue Approximation des ursprünglichen analogen Signals
 
+              \begin{center}
+                  \includegraphics[width=0.5\textwidth]{includes/figures/defi_sampling_rate_error.pdf}
+              \end{center}
+        \item Wird zu häufig abgetastet, verbrachen wir Ressourcen, die eventuell für unseren Anwendungsfall nicht genutzt werden müssten
+    \end{itemize}
+
+    Nach den \emph{Nyquist-Shannon-Abtasttheorem} soll gelten: $\text{Abtastrate} > 2 \cdot \text{max. Frequenz}$
 \end{defi}
 
 \begin{bonus}{Quantisierung und Kodierung}
+    \includegraphics[width=\textwidth]{includes/figures/defi_quantisierung.pdf}
 
+    Das Analoge Signal wird \emph{quantisiert} (umgewandelt) und danach in digitale Werte kodiert.
 \end{bonus}
 
 \begin{defi}{RTP}
+    Das RTP-Protokoll liefert Transportschnittstellen, die UDP erweitern:
+    \begin{itemize}
+        \item UDP liefert Port-Nummern
+        \item IP die Adressen der Endpunkte
+        \item \texttt{RTCP} liefert Statistiken auf UDP-Basis
+        \item \texttt{RTSP} ist die \enquote{Fernbedienung}
+    \end{itemize}
 
+    \begin{center}
+        \includegraphics[width=0.75\textwidth]{includes/figures/defi_rtp.pdf}
+    \end{center}
 \end{defi}
