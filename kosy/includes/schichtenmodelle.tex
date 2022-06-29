@@ -37,7 +37,7 @@
     \includegraphics[width=\textwidth]{includes/figures/defi_header_kapselung.pdf}
 \end{defi}
 
-\begin{defi}{Schicht 7 - Anwendungsschicht (Application Layer)}
+\begin{defi}{Anwendungsschicht (Application Layer)}
     Dienste, Anwendungen und Netzmanagement.
 
     Die \emph{Anwendungsschicht} stellt Funktionen für die Anwendungen zur Verfügung.
@@ -48,7 +48,7 @@
     Die Anwendungen selbst gehören nicht zur Schicht.
 \end{defi}
 
-\begin{defi}{Schicht 6 - Darstellungsschicht (Presentation Layer)}
+\begin{defi}{Darstellungsschicht (Presentation Layer)}
     Die \emph{Darstellungsschicht} setzt die systemabhängige Darstellung der Daten (z. B. ASCII, Unicode) in eine unabhängige Form um und ermöglicht somit den syntaktisch korrekten Datenaustausch zwischen unterschiedlichen Systemen.
 
     Auch Aufgaben wie die Datenkompression und die Verschlüsselung gehören zur Schicht 6.
@@ -58,20 +58,20 @@
     Falls erforderlich, agiert die Darstellungsschicht als Übersetzer zwischen verschiedenen Datenformaten, indem sie ein für beide Systeme verständliches Datenformat, die ASN.1 (Abstract Syntax Notation One), verwendet.
 \end{defi}
 
-\begin{defi}{Schicht 5 - Sitzungsschicht (Session Layer)}
+\begin{defi}{Sitzungsschicht (Session Layer)}
     Die \emph{Sitzungsschicht} sorgt für die Prozesskommunikation zwischen zwei Systemen.
 
     Um Zusammenbrüche der Sitzung und ähnliche Probleme zu beheben, stellt die Sitzungsschicht Dienste für einen organisierten und synchronisierten Datenaustausch zur Verfügung.
     Zu diesem Zweck werden Wiederaufsetzpunkte, so genannte Fixpunkte (Check Points) eingeführt, an denen die Sitzung nach einem Ausfall einer Transportverbindung wieder synchronisiert werden kann, ohne dass die Übertragung wieder von vorne beginnen muss.
 \end{defi}
 
-\begin{defi}{Schicht 4 - Transportschicht (Transport Layer)}
+\begin{defi}{Transportschicht (Transport Layer)}
     Zu den Aufgaben der \emph{Transportschicht} zählt die Segmentierung des Datenstroms, die Stauvermeidung (congestion avoidance) und die Sicherstellung einer fehlerfreien Übertragung.
 
     Die Transportschicht bietet den anwendungsorientierten Schichten 5 bis 7 einen einheitlichen Zugriff, so dass diese die Eigenschaften des Kommunikationsnetzes nicht zu berücksichtigen brauchen.
 \end{defi}
 
-\begin{defi}{Schicht 3 - Vermittlungsschicht (Network Layer)}
+\begin{defi}{Vermittlungsschicht (Network Layer)}
     Die \emph{Vermittlungsschicht} sorgt bei leitungsorientierten Diensten für das Schalten von Verbindungen und bei paketorientierten Diensten für die Weitervermittlung von Datenpaketen sowie die Stauvermeidung (congestion avoidance).
 
     Die Datenübertragung geht in beiden Fällen jeweils über das gesamte Kommunikationsnetz hinweg und schließt die Wegsuche (Routing) zwischen den Netzwerkknoten ein.
@@ -84,7 +84,7 @@
     Das Internet Protocol gehört zu dieser Schicht.
 \end{defi}
 
-\begin{defi}{Schicht 2 - Sicherungsschicht (Data Link Layer)}
+\begin{defi}{Sicherungsschicht (Data Link Layer)}
     Aufgabe der \emph{Sicherungsschicht} ist es, eine zuverlässige, das heißt weitgehend fehlerfreie Übertragung zu gewährleisten und den Zugriff auf das Übertragungsmedium zu regeln. Dazu dient das Aufteilen des Bitdatenstromes in Blöcke (Frames) und das Hinzufügen von Prüfsummen im Rahmen der Kanalkodierung.
     So können fehlerhafte Blöcke vom Empfänger erkannt und entweder verworfen oder sogar korrigiert werden.
 
@@ -93,7 +93,7 @@
     Das Ethernet-Protokoll beschreibt sowohl Schicht 1 als auch Schicht 2, wobei auf dieser als Zugriffskontrolle CSMA/CD zum Einsatz kommt.
 \end{defi}
 
-\begin{defi}{Schicht 1 - Bitübertragungsschicht (Physical Layer)}
+\begin{defi}{Bitübertragungsschicht (Physical Layer)}
     Die \emph{Bitübertragungsschicht} ist die unterste Schicht.
 
     Diese Schicht stellt mechanische, elektrische, physikalische und weitere funktionale Hilfsmittel zur Verfügung, um physische Verbindungen zu aktivieren bzw. zu deaktivieren, sie aufrechtzuerhalten und Bits darüber zu übertragen. Das können zum Beispiel elektrische Signale, optische Signale (Lichtleiter, Laser), elektromagnetische Wellen (drahtlose Netze) oder Schall sein.
@@ -109,16 +109,24 @@
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_tcp_ip.pdf}
     \end{center}
+\end{defi}
 
-    Die einzelnen Schichten erfüllen folgende Funktionen:
-    \begin{itemize}
-        \item Die \emph{Netzzugangsschicht} ist im TCP/IP-Referenzmodell spezifiziert, enthält jedoch keine Protokolle der TCP/IP-Familie.
-              Sie ist vielmehr als Platzhalter für verschiedene Techniken zur Datenübertragung von Punkt zu Punkt zu verstehen.
-        \item Die \emph{Internetschicht} ist für die Weitervermittlung von Paketen und die Wegwahl (Routing) zuständig.
-              Auf dieser Schicht und der darunterliegenden Schicht werden Direktverbindungen betrachtet.
-              Die Aufgabe dieser Schicht ist es, zu einem empfangenen Paket das nächste Zwischenziel zu ermitteln und das Paket dorthin weiterzuleiten.
-              Kern dieser Schicht ist das Internet Protocol (IP) in der Version 4 oder 6.
-        \item Die \emph{Transportschicht} ermöglicht eine Ende-zu-Ende-Kommunikation. Das wichtigste Protokoll dieser Schicht ist das Transmission Control Protocol (TCP), das Verbindungen zwischen jeweils zwei Netzwerkteilnehmern zum zuverlässigen Versenden von Datenströmen herstellt.
-        \item Die \emph{Anwendungsschicht} umfasst alle Protokolle, die mit Anwendungsprogrammen zusammenarbeiten und die Netzwerkinfrastruktur für den Austausch anwendungsspezifischer Daten nutzen.
-    \end{itemize}
+\begin{defi}{Anwendungsschicht (Application Layer)}
+    Die \emph{Anwendungsschicht} umfasst alle Protokolle, die mit Anwendungsprogrammen zusammenarbeiten und die Netzwerkinfrastruktur für den Austausch anwendungsspezifischer Daten nutzen.
+\end{defi}
+
+\begin{defi}{Transportschicht (Transport Layer)}
+    Die \emph{Transportschicht} ermöglicht eine Ende-zu-Ende-Kommunikation. Das wichtigste Protokoll dieser Schicht ist das Transmission Control Protocol (TCP), das Verbindungen zwischen jeweils zwei Netzwerkteilnehmern zum zuverlässigen Versenden von Datenströmen herstellt.
+\end{defi}
+
+\begin{defi}{Internetschicht (Internet Layer)}
+    Die \emph{Internetschicht} ist für die Weitervermittlung von Paketen und die Wegwahl (Routing) zuständig.
+    Auf dieser Schicht und der darunterliegenden Schicht werden Direktverbindungen betrachtet.
+    Die Aufgabe dieser Schicht ist es, zu einem empfangenen Paket das nächste Zwischenziel zu ermitteln und das Paket dorthin weiterzuleiten.
+    Kern dieser Schicht ist das Internet Protocol (IP) in der Version 4 oder 6.
+\end{defi}
+
+\begin{defi}{Netzzugangsschicht (Network Access Layer)}
+    Die \emph{Netzzugangsschicht} ist im TCP/IP-Referenzmodell spezifiziert, enthält jedoch keine Protokolle der TCP/IP-Familie.
+    Sie ist vielmehr als Platzhalter für verschiedene Techniken zur Datenübertragung von Punkt zu Punkt zu verstehen.
 \end{defi}

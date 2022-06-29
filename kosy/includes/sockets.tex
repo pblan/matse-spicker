@@ -62,9 +62,79 @@
 \end{defi}
 
 \begin{example}{Socket (Client)}
-    TODO
+    \begin{lstlisting}[language=Java]
+        import java.io.*;
+        import java.net.*;
+
+        class TCPClient {
+            public static void main(String args[]) throws Exception {
+                BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+
+                // Erstelle Client-Socket, baue Verbindung auf
+                Socket socket = new Socket("192.168.0.1", 591);
+
+                // Erstelle Datenstrom fuer den Socket
+                DataOutputStream sender = new DataOutputStream(
+                    socket.getOutputStream()
+                );
+
+                // Erstelle Datenstrom aus dem Socket
+                BufferedReader receiver = new BufferedReader(
+                    new InputStreamReader(socket.getInputStream())
+                );
+
+                String msg = input.readLine();
+
+                // Sende an den Server
+                sender.writeBytes(msg + '\n');
+
+                // Empfange vom Server
+                String modified_msg = receiver.readLine();
+
+                System.out.println("FROM SERVER: " + modified_msg);
+
+                socket.close();
+            }
+        }
+    \end{lstlisting}
 \end{example}
 
 \begin{example}{Socket (Server)}
-    TODO
+    \begin{lstlisting}[language=Java]
+        import java.io.*;
+        import java.net.*;
+
+        class TCPServer {
+            public static void main(String args[]) throws Exception {
+                // Erstelle Socket
+                ServerSocket socket = new ServerSocket(591);
+
+                while (true){
+                    // Warte auf eingehende Verbindungswuensche
+                    Socket connection = socket.accept();
+
+                    // Starte Thread um auf weitere Anfragen reagieren zu koennen.
+                    new Thread() {
+                        public void run() {
+                            // Verknuepfe Buffer mit dem Socket
+                            BufferedReader receiver = new BufferedReader(
+                                new InputStreamReader(connection.getInputStream())
+                            );
+        
+                            // Verknuepfe Datenstrom mit dem Socket
+                            DataOutputStream sender = new DataOutputStream(
+                                connection.getOutputStream()
+                            );
+        
+                            // Lesen vom Socket
+                            String msg = receiver.readLine();
+        
+                            // Schreiben auf den Socket
+                            sender.writeBytes(msg.toUpperCase() + '\n');
+                        }
+                    }.start();
+                }
+            }
+        }
+    \end{lstlisting}
 \end{example}
