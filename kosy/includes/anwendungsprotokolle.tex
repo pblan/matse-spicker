@@ -225,12 +225,35 @@
 \end{bonus}
 
 \begin{defi}{Signatur}
-    TODO
+    Eine \emph{digitale Signatur} ist ein asymmetrisches Kryptosystem, bei dem ein Sender mit Hilfe eines geheimen Signaturschlüssels (dem Private Key) zu einer digitalen Nachricht (d. h. zu beliebigen Daten) einen Wert berechnet, der ebenfalls digitale Signatur genannt wird.
+    Dieser Wert ermöglicht es jedem, mit Hilfe des öffentlichen Verifikationsschlüssels (dem Public Key) die nichtabstreitbare Urheberschaft und Integrität der Nachricht zu prüfen.
+
+    Um eine mit einem Signaturschlüssel erstellte Signatur einer Person zuordnen zu können, muss der zugehörige Verifikationsschlüssel dieser Person zweifelsfrei zugeordnet sein.
+
+    Bei einer digitalen Signatur wird der private Schlüssel in der Regel nicht direkt auf die Nachricht angewendet, sondern auf deren Hash-Wert, der mittels einer Hashfunktion (wie z. B. SHA-1) aus der Nachricht berechnet wird.
+
+    Um Angriffe zu verhindern, muss diese Hashfunktion kollisionsresistent sein, d. h., es muss praktisch unmöglich sein, zwei unterschiedliche Nachrichten zu finden, deren Hash-Wert identisch ist.
 \end{defi}
 
-\begin{bonus}{Diffie-Hellmann-Schlüsselaustausch}
-    TODO
-\end{bonus}
+\begin{defi}{Diffie-Hellmann-Schlüsselaustausch}
+    Der \emph{Diffie-Hellman-Schlüsselaustausch} ist ein Verfahren, mit dem sich ein gemeinsamer Sitzungsschlüssel zwischen zwei Kommunikationspartnern sicher über ein potenziell unsicheres Übertragungsmedium vereinbaren lässt.\footnote{Streng genommen findet kein Schlüsselaustausch statt, da der gemeinsame Sitzungsschlüssel niemals übertragen wird. Die Schlüssel werden über andere übermittelte Informationen berechnet. Für externe Angreifer, die das Medium abhören, ist das Berechnen des gemeinsamen Sitzungsschlüssel mit vertretbarem Aufwand mathematisch nicht möglich.}
+
+    Haben sich die Kommunikationspartner auf einen gemeinsamen Sitzungsschlüssel geeignet, verwenden sie diesen zum Ver- und Entschlüsseln der Daten. Der Diffie-Hellman-Schlüsselaustausch kommt häufig zusammen mit Digitalen Signaturen zum Einsatz.
+
+    Ablauf:
+    \begin{enumerate}
+        \item Die beiden Kommunikationspartner einigen sich auf eine große öffentliche Primzahl $p$ und eine kleinere Zahl $g$.
+        \item Gleichzeitig wählen beide jeweils eine zufällig Zahl $x$ und $y$.\footnote{Es handelt sich um persönliche Schlüssel, die dem anderen Kommunikationspartner nicht bekannt sind.} $x$ und $y$ werden niemals zwischen den Kommunikationspartnern ausgetauscht.
+        \item Aus ihrer zufälligen Zahl und den beiden öffentlichen Zahlen berechnen beide eine neue Zahl $A$ und $B$. Diese sind quasi öffentliche Schlüssel.
+        \item Die Zahlen $A$ und $B$ tauschen die beiden Kommunikationspartner aus.
+        \item Aus den Zahlen $A$ und $B$ können sie den gemeinsame Schlüssel $k$ jeweils mit ihren zufälligen Zahlen $x$ und $y$ berechnen.
+        \item Den Schlüssel $k$ können die Teilnehmer anschließend für das Ver- und Entschlüsseln der Daten verwenden.
+    \end{enumerate}
+\end{defi}
+
+\begin{example}{Diffie-Hellmann-Schlüsselaustausch}
+
+\end{example}
 
 \subsection{FTP}
 

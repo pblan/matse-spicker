@@ -160,10 +160,10 @@
     \end{itemize}
 \end{example}
 
-\subsection{ASN.1 (Abstract Syntax Notation)}
+\subsection{ASN.1}
 
-\begin{defi}{ASN.1 (Abstract Syntax Notation)}
-    \emph{ASN.1} ist eine von der ISO genormte Beschreibungssprache zu darstellungsunabhängige Spezifikationen von Datentypen und Werten.
+\begin{defi}{ASN.1}
+    \emph{Abstract Syntax Notation (ASN.1)} ist eine von der ISO genormte Beschreibungssprache zu darstellungsunabhängige Spezifikationen von Datentypen und Werten.
     Diese Notation findet z.B. zur Definition von Managementobjekten bei SNMP Verwendung.
     
     Elementare Datentypen:\\
@@ -180,7 +180,7 @@
     \end{itemize}
 \end{defi}
 
-\begin{example}{ASN.1 (Abstract Syntax Notation)}
+\begin{example}{ASN.1}
     % [language=asn.1]
     \begin{lstlisting}
         Pokemon ::= Sequence {
@@ -232,7 +232,7 @@
     \end{itemize}
 \end{defi}
 
-\begin{example}{ASN.1 (Abstract Syntax Notation)}
+\begin{example}{ASN.1}
     Fassen wir nun einmal unsere Beispiele zusammen erhalten wir:
     
     \begin{lstlisting}[language=java]
@@ -276,7 +276,7 @@
     \includegraphics[width=\textwidth]{includes/figures/example_asn1.pdf}
 \end{example}
 
-\subsection{XML (eXtensible Markup Language)}
+\subsection{XML}
 
 \begin{bonus}{Probleme von HTML}
     HTML wurde zur Darstellung von Informationen für Menschen und nicht für die Informationsverarbeitung in Programmen entwickelt.
@@ -287,7 +287,7 @@
     Aus diesen Gründen sollte eine offene, textbasierte Auszeichnungsspache (Markup Language) entwickelt werden.
 \end{bonus}
 
-\begin{defi}{XML (eXtensible Markup Language)}
+\begin{defi}{XML}
     \emph{XML (eXtensible Markup Language)} ist eine Metasprache zur Strukturierung von Dokumenten und Daten.
     
     Basis von XML sind beliebige Auszeichnungselemente, die geringen syntaktischen Regeln zu folgen haben.
@@ -312,27 +312,25 @@
     Für XML-Dokumente gelten folgende Syntaxregeln:
     
     \begin{itemize}
-        \item Jeder Starttag muss einen Endtag haben
+        \item Jeder Starttag muss einen Endtag haben:
               
-              \begin{lstlisting}
-<pokemon> ... </pokemon>
-<pokemon />
-\end{lstlisting}
-        \item Verschachtlung nur mit vollständigen Tags möglich.
+              \begin{lstlisting}[language=XML]
+                <pokemon> ... </pokemon>
+                <pokemon />
+            \end{lstlisting}
+        \item Verschachtelung nur mit vollständigen Tags möglich.
               
-              \begin{lstlisting}
-<pokemon> <name> Glumanda </name> </pokemon> <!-- OK -->
-<pokemon> <name> Glumanda </pokemon> </name>  <!-- NOT OK -->
-\end{lstlisting}
+              \begin{lstlisting}[language=XML]
+            <pokemon> <pokemonname> Glumanda </pokemonname> </pokemon> <!-- OK -->
+            <pokemon> <pokemonname> Glumanda </pokemon> </pokemonname>  <!-- NOT OK -->
+            \end{lstlisting}
     \end{itemize}
 \end{defi}
 
-\begin{example}{XML (eXtensible Markup Language)}
-    % [language=xml]
-    \begin{lstlisting}
+\begin{example}{XML}
+    \begin{lstlisting}[language=XML]
         <?xml version="1.0" encoding="UTF-8"?>
         <pokemon nummer="4">
-            <!-- Glumanda ist besser als Bisasam -->
             <name>Glumanda</name>
         </pokemon>
     \end{lstlisting}
@@ -346,10 +344,10 @@
 \end{defi}
 
 \begin{example}{XML-Namespace}
-    % [language=xml]
-    \begin{lstlisting}
+    % [language=XML]
+    \begin{lstlisting}[language=XML]
         <pokemon nummer="4" xmlns:typ="https://kosy.paddel.xyz/pokemontyp">
-            <name>Glumanda</name>
+            <pokemonname>Glumanda</pokemonname>
             <typ:primaertyp>Feuer</typ:primaertyp>
             <typ:sekundaertyp />
         </pokemon>
@@ -367,17 +365,15 @@
 \begin{example}{XML-Schema (primitive Datentypen)}
     Um primitive Datentypen zu nutzen, kann man sie wie folgt referenzieren:
     
-    % [language=xml]
-    \begin{lstlisting}
-        <!-- Schema -->
+    Schema:
+    \begin{lstlisting}[language=XML]
         <xs:element name="pokemonNummer" type="xs:integer" />
     \end{lstlisting}
     
     Alternativ kann man von primitiven Datentypen erben, um diese um weitere Eigenschaften zu erweitern:
     
-    % [language=xml]
-    \begin{lstlisting}
-        <!-- Schema -->
+    Schema:
+    \begin{lstlisting}[language=XML]
         <xs:simpleType name="pokemonNummer" base="xs:integer">
             <xs:minInclusive value="1" />
             <xs:minInclusive value="905" />
@@ -386,9 +382,8 @@
     
     Diesen Typ können wir nun nutzen, jedoch zusätzlich den eigentlichen primitiven Datentypen dahinter jederzeit austauschen:
     
-    % [language=xml]
-    \begin{lstlisting}
-        <!-- Dokument -->
+    Dokument:
+    \begin{lstlisting}[language=XML]
         <pokemonNummer>4</pokemonNummer>
     \end{lstlisting}
 \end{example}
@@ -396,9 +391,8 @@
 \begin{example}{XML-Schema (Elementdeklaration)}
     Um einfache Typen mit Attributen vorzugeben, deklariert man ein Element wie folgt:
     
-    % [language=xml]
-    \begin{lstlisting}
-        <!-- Schema -->
+    Schema:
+    \begin{lstlisting}[language=XML]
         <xs:element name="pokemon" type="pokemonTyp" />
 
         <xs:complexType name="pokemonTyp">
@@ -408,19 +402,17 @@
     
     Nun können wir bereits erste Pokemon anlegen:
     
-    % [language=xml]
-    \begin{lstlisting}
-        <!-- Dokument -->
+    Dokument:
+    \begin{lstlisting}[language=XML]
         <pokemon nummer="4" />
     \end{lstlisting}
 \end{example}
 
 \begin{example}{XML Schemata (komplexe Typen)}
-    Da wir für unser vollwertiges Pokemon noch einen Namen brauchen, müssen wir unserem erstellten Pokemon weiter Kinderobjekte hinzufügen:
+    Da wir für unser vollwertiges Pokemon noch einen Namen brauchen, müssen wir unserem erstellten Pokemon weiter Kinderobjekte hinzufügen.
     
-    % [language=xml]
-    \begin{lstlisting}
-        <!-- Schema -->
+    Schema:
+    \begin{lstlisting}[language=XML]
         <xs:element name="pokemon" type="pokemonTyp" />
 
         <xs:complexType name="pokemonTyp">
@@ -431,13 +423,12 @@
         </xs:complexType>
     \end{lstlisting}
     
-    Jetzt ist unser anfänglich erstelltes Pokemon komplett typisiert:
+    Jetzt ist unser anfänglich erstelltes Pokemon komplett typisiert.
     
-    % [language=xml]
-    \begin{lstlisting}
-        <!-- Dokument -->
+    Dokument:
+    \begin{lstlisting}[language=XML]
         <pokemon nummer="4">
-            <name>Glumanda</name>
+            <pokemonname>Glumanda</pokemonname>
         </pokemon>
     \end{lstlisting}
 \end{example}
@@ -484,9 +475,8 @@
 \begin{example}{XML Schema}
     Fassen wir nun einmal alle Beispiele zusammen und ergänzen \texttt{Team}:
     
-    % [language=xml]
-    \begin{lstlisting}
-        <!-- Schema -->
+    Schema:
+    \begin{lstlisting}[language=XML]
         <xs:element name="pokemon" type="pokemonTyp" />
         <xs:element name="team" type="teamTyp" />
 
@@ -498,7 +488,7 @@
         <xs:complexType name="pokemonTyp" xmlns:typ="https://kosy.paddel.xyz/typ">
             <xs:attribute name="nummer" type="pokemonNummer" />
             <xs:sequence>
-                <xs:element name="name" type="xs:string" />
+                <xs:element name="pokemonname" type="xs:string" />
                 <xs:element name="primaertyp" type="typ" default="Normal" />
                 <xs:element name="sekundaertyp" type="typ" minOccurs="0" />
             </xs:sequence>
@@ -511,19 +501,19 @@
         </xs:complexType>
     \end{lstlisting}
     
-    % [language=xml]
-    \begin{lstlisting}
+    % [language=XML]
+    \begin{lstlisting}[language=XML]
         <!-- Dokument -->
         <xs:include schemaLocation="./pokemon-types.xs">
 
         <team>
             <pokemon nummer="4">
-                <name>Glumanda</name>
-                <primaertyp>Feuer</name>
+                <pokemonname>Glumanda</pokemonname>
+                <primaertyp>Feuer</primaertyp>
             </pokemon>
             <pokemon nummer="25">
-                <name>Pikachu</name>
-                <primaertyp>Elektro</name>
+                <pokemonname>Pikachu</pokemonname>
+                <primaertyp>Elektro</primaertyp>
             </pokemon>
         </team>
     \end{lstlisting}
@@ -534,10 +524,10 @@
     
     So verschwimmen die Grenzen zwischen XML, Programmiersprachen und Datenbanken:
     
-    % [language=xml]
-    \begin{lstlisting}
+    % [language=XML]
+    \begin{lstlisting}[language=XML]
         <pokemon nummer="4">
-            <name>Glumanda</name>
+            <pokemonname>Glumanda</pokemonname>
         </pokemon>
     \end{lstlisting}
     
@@ -591,9 +581,9 @@
     Somit ist ebenfalls eine komplett eingencodierte Serialisierung möglich.
 \end{bonus}
 
-\subsection{JSON (JavaScript Object Notation)}
+\subsection{JSON}
 
-\begin{defi}{JSON (JavaScript Object Notation)}
+\begin{defi}{JSON}
     \emph{JSON}-Dokumente beinhalten gültiges JavaScript.
     Sie haben eine einfache Struktur und sind typisiert aufgebaut.
     
@@ -614,9 +604,9 @@
     \texttt{Function}- und \texttt{RegeExp}-Objekte werden verworfen.
 \end{defi}
 
-\begin{example}{JSON (JavaScript Object Notation)}
+\begin{example}{JSON}
     % [language=json]
-    \begin{lstlisting}
+    \begin{lstlisting}[language=JSON]
         {
             "pokemonTeam" : [
                 {
@@ -646,9 +636,11 @@
         JSONObject json = new JSONObject(p);
     \end{lstlisting}
     
-    % [language=json]
-    \begin{lstlisting}
-        {"name":"Glumanda","nummer":4}
+    \begin{lstlisting}[language=JSON]
+        {
+            "name" : "Glumanda", 
+            "nummer" : 4
+        }
     \end{lstlisting}
     
     Dabei werden alle Attribute alphabetisch sortiert.
