@@ -102,7 +102,6 @@
 \end{defi}
 
 \begin{bonus}{Slow-Start}
-<<<<<<< HEAD
     Zu Beginn einer Datenübertragung dient der \emph{Slow-Start-Algorithmus} zur Bestimmung des Überlastfenster (\emph{congestion window}), um einer möglichen Überlastsituation vorzubeugen.
 
     Der Algorithmus startet mit einem kleinen Fenster von einer MSS (Maximum Segment Size), in dem Datenpakete vom Sender zum Empfänger übertragen werden.
@@ -121,13 +120,6 @@
 
     Kommt es zu einem Timeout, wird das congestion window wieder auf 1 zurückgesetzt, und der slow-start threshold wird auf die Hälfte der \emph{Flight Size}\footnote{Flight Size ist die Anzahl an Paketen, die verschickt, aber noch nicht quittiert wurden.} herabgesetzt.
     Die Phase des exponentiellen Wachstums wird also verkürzt, so dass das Fenster bei häufigen Paketverlusten nur langsam wächst.
-=======
-    Zu Beginn einer Datenübertragung dient der Slow-Start-Algorithmus zur Bestimmung des congestion window, um einer möglichen Überlastsituation vorzubeugen.
-    Man möchte Staus vermeiden, und da die momentane Auslastung des Netzes nicht bekannt ist, wird mit zunächst kleinen Datenmengen begonnen. Der Algorithmus startet mit einem kleinen Fenster von einer MSS (Maximum Segment Size), in dem Datenpakete vom Sender zum Empfänger übertragen werden.
-    Mit jedem empfangen ACK wird die Größe des congestion windows verdoppelt.
-
-    Wenn man jedoch bei jedem Verbindungsaufbau erst testet, wie schnell man senden kann, kann es zu längeren Übertragungsgeschwindigkeiten führen.
->>>>>>> fa54b9f706154acc67d57fd48d43c49c6b2670bf
 \end{bonus}
 
 \begin{defi}{TCP-Verbindungsmanagement (Verbindungsaufbau)}
