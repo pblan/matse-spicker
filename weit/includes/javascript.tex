@@ -479,6 +479,15 @@
     \end{lstlisting}
 \end{bonus}
 
+\subsection{Fetch}
+
+\begin{defi}{DOM}
+    Eine HTML Webseite ist als Baumstruktur im \emph{Document Object Model (DOM)}-Format gespeichert.
+
+    Die Wurzel stellt dabei immer das \texttt{HTML}-Objekt dar.
+    In JavaScript kann man durch den Baum navigieren und die Objekte manipulieren.
+\end{defi}
+
 \begin{defi}{DOM-Manipulation (JavaScript)}
     Zur Manipulation von DOM-Objekten stehen zwei globale Variablen zur Verfügung:
     \begin{itemize}
@@ -539,5 +548,79 @@
                 document.getElementByClassName('...') // HTMLCollection
             )
             .foreach(element => ...)
+    \end{lstlisting}
+\end{example}
+
+\begin{bonus}{Ajax}
+    Neben einfacher DOM-Manipulation bietet JavaScript einem die Möglichkeit in den clientseitig ausgeführten Skripten mit dem Server zu kommunizieren.
+    Der Datenaustausch findet dabei in XML oder JSON statt.
+
+    Die erhaltenen Daten werden dann clientseitig in das DOM Dokument eingebunden.
+
+    Vorteile:
+    \begin{itemize}
+        \item Verringerte Serverlast
+        \item Erhöhte Benutzungsfreundlichkeit
+    \end{itemize}
+
+    Nachteile
+    \begin{itemize}
+        \item Bruch mit klassischen Technologien
+        \item Komplexität der URL-Ressource hoch
+        \item Suchmaschinenlesbarkeit erschwert
+    \end{itemize}
+\end{bonus}
+
+\begin{example}{Ajax (Deprecated)}
+    \begin{lstlisting}[language=JavaScript]
+        const xmlHttp = new XMLHttpRequest()
+
+        xml.onreadystatechange = () => {
+            if (xml.readyState = XMLRequest.DONE)
+                console.log(xmlHttp.responseText)
+        }
+
+        xmlHttp.open('GET', 'http://paddel.xyz', true)
+        xmlHttp.send(null)
+    \end{lstlisting}
+
+    xmlHttp funktioniert zwar, jedoch gelingt man schnell in eine Callback-Hell und ist gezwungen mit XML arbeiten.
+
+    Moderne Schnittstellen arbeiten mit \texttt{fetch}.
+    \texttt{fetch} arbeitet mit Promises und gibt JSON Objekte zurück.
+\end{example}
+
+\begin{example}{Ajax}
+    \begin{lstlisting}[language=JavaScript]
+        fetch(url)
+            .then(res => res.json()) // parsed Erhaltene response in Json
+            .then(data => {
+                ...
+            })
+            .catch(err => {
+                ...
+            })
+    \end{lstlisting}
+\end{example}
+
+\begin{example}{Ajax (GET)}
+    \begin{lstlisting}[language=JavaScript]
+        fetch('https://paddel.xyz/pokemon?id=4')
+            .then(res => res.json())
+            .then(console.log) // Glumanda [4]
+    \end{lstlisting}
+\end{example}
+
+\begin{example}{Ajax (POST)}
+    \begin{lstlisting}[language=JavaScript]
+        fetch('https://paddel.xyz/pokemon',
+            {
+                'method': 'POST',
+                'body': { 'id': 4 },
+                'headers': { 'Content-Type': 'application/json' }
+            }
+        )
+            .then(res => res.json())
+            .then(console.log) // Glumanda [4]
     \end{lstlisting}
 \end{example}
