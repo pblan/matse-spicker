@@ -46,7 +46,7 @@
     In diesem Beispiel \enquote{verbrauchen} wir 2 globale IP-Adressen, können jedoch bis zu $(2^{16} - 3)$ Adressen in jeweils 2 Netzen anbinden.
 \end{example}
 
-\begin{defi}{Adressübersetzung (NAT)}
+\begin{defi}{Adressübersetzung}
     Zur Identifikation des Absenders bzw. Empfängers müssen im IP-Header freie Felder gefunden werden.
     Im IP-Header steht jedoch nur noch 1 freies Bit zur Verfügung.
 
@@ -76,7 +76,7 @@
     Im Antwortpaket muss der Destination Port extrahiert werden, und der NAT Router ersetzt die Ziel-IP mit der entsprechenden privaten IP und den Zielport mit dem ursprünglichen Port.
 \end{defi}
 
-\begin{example}{Adressübersetzung (NAT)}
+\begin{example}{Adressübersetzung}
     In folgendem Beispiel sendet der Rechner \texttt{192.168.0.2} in \texttt{LAN1} über den Port \texttt{4} ein Paket an den Rechner \texttt{192.168.0.2} in \texttt{LAN2} an den Port \texttt{22}.
     Dieser \enquote{versteckt} sich jedoch hinter dem öffentlichen Router \texttt{10.0.0.2} und dem Port \texttt{7000}.
 
@@ -120,7 +120,7 @@
     \end{itemize}
 \end{bonus}
 
-\begin{bonus}{Sicherheitsstufen (NAT)}
+\begin{bonus}{Sicherheitsstufen}
     NAT kennt unterschiedliche \emph{Sicherheitsstufen}:
     \begin{itemize}
         \item \emph{Full Cone NAT}:

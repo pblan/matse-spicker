@@ -102,11 +102,24 @@
 \end{defi}
 
 \begin{bonus}{Slow-Start}
-    Zu Beginn einer Datenübertragung dient der Slow-Start-Algorithmus zur Bestimmung des congestion window, um einer möglichen Überlastsituation vorzubeugen.
-    Man möchte Staus vermeiden, und da die momentane Auslastung des Netzes nicht bekannt ist, wird mit zunächst kleinen Datenmengen begonnen. Der Algorithmus startet mit einem kleinen Fenster von einer MSS (Maximum Segment Size), in dem Datenpakete vom Sender zum Empfänger übertragen werden.
-    Mit jedem empfangen ACK wird die Größe des congestion windows verdoppelt.
+    Zu Beginn einer Datenübertragung dient der \emph{Slow-Start-Algorithmus} zur Bestimmung des Überlastfenster (\emph{congestion window}), um einer möglichen Überlastsituation vorzubeugen.
 
-    Wenn man jedoch bei jedem Verbindungsaufbau erst testet, wie schnell man senden kann, kann es zu längeren Übertragungsgeschwindigkeiten führen.
+    Der Algorithmus startet mit einem kleinen Fenster von einer MSS (Maximum Segment Size), in dem Datenpakete vom Sender zum Empfänger übertragen werden.
+
+    Der Empfänger sendet nun eine Bestätigung (\texttt{ACK}) an den Sender zurück.
+    Für jedes empfangene \texttt{ACK} wird die Größe des congestion window um eine MSS erhöht.
+    Da für jedes versandte Paket bei erfolgreicher Übertragung ein \texttt{ACK} geschickt wird, führt dies innerhalb einer Roundtrip-Zeit zu einer Verdopplung des Congestion Windows.
+    In dieser Phase gibt es also ein exponentielles Wachstum.
+
+    Dieses exponentielle Wachstum wird so lange fortgesetzt, bis der sogenannte \emph{Slow-Start Threshold} erreicht wird.\footnote{Die Phase des exponentiellen Wachstums wird auch Slow Start Phase genannt.}
+
+    Danach wird das Congestion Window nur noch um eine MSS erhöht, wenn alle Pakete aus dem Fenster erfolgreich übertragen wurden.\footnote{Es wächst also pro Roundtrip-Zeit nur noch um eine MSS, also nur noch linear. }
+    Diese Phase wird als Congestion Avoidance Phase bezeichnet.
+
+    Das Wachstum wird beendet, wenn das vom Empfänger festgelegte Empfangsfenster erreicht worden ist.
+
+    Kommt es zu einem Timeout, wird das congestion window wieder auf 1 zurückgesetzt, und der slow-start threshold wird auf die Hälfte der \emph{Flight Size}\footnote{Flight Size ist die Anzahl an Paketen, die verschickt, aber noch nicht quittiert wurden.} herabgesetzt.
+    Die Phase des exponentiellen Wachstums wird also verkürzt, so dass das Fenster bei häufigen Paketverlusten nur langsam wächst.
 \end{bonus}
 
 \begin{defi}{TCP-Verbindungsmanagement (Verbindungsaufbau)}
