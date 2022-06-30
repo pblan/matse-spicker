@@ -1,1 +1,174 @@
 \section{HTML}
+
+\begin{defi}{HTML}
+    \emph{HyperText Markup Language (HTML)} ist die Beschreibungssprache des WWWs.
+
+    Hypertext bedeutet, dass die Dokumente sich gegenseitig aufeinander verwiesen.
+    Es ist eine universelle, plattformunabhängige Markup-Sprache.
+
+    HTML besteht aus:
+    \begin{itemize}
+        \item Elementen (text, button, Überschriften etc.)
+        \item Strukturen (div, span etc.)
+        \item Verweise (Hyperlink)
+        \item referenzierte Elemente (Grafiken, Multimedia etc.)
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Funktionsweise HTML}
+    Auszeichnungselemente sind hierarchisch gegliedert.
+    Sie können ineinander Verschachtelt sein, müssen jedoch in einer eindeutigen Eltern-Kind-Beziehung stehen.
+
+    z. B.:
+
+    \begin{lstlisting}[language=HTML5]
+        <h1> Pokemon </h1>
+        <ul>
+            <li> Glumanda </li>
+            <li> Pikachu </li>
+            <li> ... </li>
+        </ul>
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=HTML5]
+        <div> <h1> Glumanda </h1> </div>  <!-- OK -->
+        <div> <h1> Glumanda </div> </h1>  <!-- NOT OK -->
+    \end{lstlisting}
+
+    Man kann einen Baum als Repräsentation des Dokumentes nutzen (DOM-Baum).
+\end{defi}
+
+\begin{defi}{HTML Tags}
+    HTML-Elemente werden durch sogenannte \emph{Tags} markiert.
+
+    z. B.: \texttt{<h1> ... </h1>} oder \texttt{<h1 />} ohne Inhalt
+
+    Tags können mittels Attributen präzisiert werden:
+
+    z. B.: \texttt{<img src="glumanda.png" />}
+\end{defi}
+
+\begin{example}{HTML}
+    \begin{lstlisting}[language=HTML5]
+        <!DOCTYPE html>
+        <html>
+        <title>
+            <meta charset="utf-8">
+            <title> Pokemon </title>
+        </title>
+
+        <body>
+            <h1> pokemon </h1>
+            <p> Glumanda </p>
+        </body>
+        </html>
+    \end{lstlisting}
+\end{example}
+
+\begin{bonus}{Logisch vs. Physisch}
+    HTML wird genutzt um Elemente mit logischen Auszeichnungen voneinander zu unterscheiden:
+
+    \begin{lstlisting}[language=HTML5]
+        <h{1-8}> Ueberschrift <h{1-8}>
+        <p> Absatz </p>
+        <strong> stark betont </strong>
+        <em> betont (emphasized) </em>
+        <code> Quellcode </code>
+        <samp> Beispiel </samp>
+        <cite> Zitat </cite>
+        <dfn> Definition </dfn>
+        <abbr> abgekuerzte Schreibweise </abbr>
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=HTML5]
+        <ul> <!-- unordered List -->
+            <li> ... </li>
+        </ul>
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=HTML5]
+        <ol> <!-- ordered List -->
+            <li> ... </li>
+        </ol>
+    \end{lstlisting}
+
+    \begin{lstlisting}[language=HTML5]
+        <table>
+            <tr> <th> ID </th> <th> Name </th> </tr>
+            <tr> <td> 4 </td> <td> Glumanda </td> </tr>
+            <tr> <td> ... </td> <td> ... </td> </tr>
+        </table>
+    \end{lstlisting}
+
+    HTML kann aber \textbf{soll nicht} genutzt werden, um physische Auszeichnungen zu setzten:
+
+    \begin{lstlisting}[language=HTML5]
+        <br> <!-- Zeilenumbruch -->
+        <b> fett </b>
+        <i> kursiv </i>
+        <u> unterstrichen </u>
+        <strike> durchgestrichen </strike>
+        <big> groesser </big>
+        <small> kleiner </small>
+        <sup> hochgestellt </sup>
+        <sub> tiefgestellt </sub>
+    \end{lstlisting}
+\end{bonus}
+
+\begin{bonus}{Eingebettete Elemente}
+    \begin{lstlisting}[language=HTML5]
+        <img src="path/name.{JPEG, GIF, PNG, BMP}" alt="Beschreibung">
+        
+        <a href="pokemon.html"> Verweistext </a>
+        <a href="https://paddel.xyz/pokemon.html"> Ein absoluter Link </a>
+        <a href="mailto:pokeverteiler@paddel.xyz"> E-Mail </a>
+
+        <h1 id="h_glumanda"> Glumanda </h1>
+        <a href="#h_glumanda"> Link zu Glumanda </a>
+    \end{lstlisting}
+\end{bonus}
+
+\begin{bonus}{Container}
+    Container werden genutzt um Elemente zu gruppieren oder zu stylen.
+    Meist sollten aussagekräftigere Alternativen verwendet werden, wenn solche Verfügbar sind.
+
+    \begin{lstlisting}[language=HTML5]
+        <div> Generischer block-Container </div>
+        <span> Generischer inline-Container </span>
+    \end{lstlisting}
+\end{bonus}
+
+\begin{bonus}{Formulare}
+    Formulare dienen zum Versenden von Informationen an einen Server.
+    Die Informationen entstammen meist aus Eingabefeldern.
+
+    \begin{lstlisting}[language=HTML5]
+        <form action="path" method="post">
+            <label for="name"> Name: </label>
+            <input type="text" id="name" name="name">
+            <label for="pw"> Passwort: </label>
+            <input type="password" id="pw" name="pw">
+            <button type="submit">
+        </form>
+    \end{lstlisting}
+
+    \begin{itemize}
+        \item \texttt{text}: Einfaches Eingabefeld
+        \item \texttt{password}: Eingabefeld, was die Eingabe verschleiert
+        \item \texttt{number}: Eingabefeld für eine Zahl
+        \item \texttt{date}: Eingabefeld für ein Datum
+        \item \texttt{datetime}: Eingabefeld für ein Datum und eine Uhrzeit
+        \item \texttt{email}: Eingabefeld für eine email
+        \item \texttt{url}: Eingabefeld für eine URL
+        \item \texttt{submit}: Button zum Absenden
+        \item \texttt{radio}
+        \item \texttt{checkbox}
+        \item \texttt{select}: Dropdown Auswahlbox
+              \begin{itemize}
+                  \item \texttt{option}
+              \end{itemize}
+        \item \texttt{range}: Slider zur Auswahl in einem festgelegten Bereich
+        \item \texttt{file}
+        \item \texttt{hidden}: Versteckt
+    \end{itemize}
+\end{bonus}
