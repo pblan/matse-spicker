@@ -427,6 +427,81 @@
     \texttt{896}
 \end{example}
 
+\subsubsection{REST}
+
+\begin{defi}{REST}
+    \emph{REpresentational State Transfer (REST)} dient als Architektur unter dem HTTP Transportprotokoll um mit Ressourcen zu interagieren.
+
+    REST ist zustandslos.
+    Der Server behandelt jeden Aufruf als in sich abgeschlossenen Auftrag ohne impliziten Bezug auf vorgehende Operationen.
+\end{defi}
+
+\begin{defi}{Hypermedia}
+    Letztendlich wollen wir nicht nur mit einzelnen Ressourcen arbeiten, sondern mit untereinander vernetzten Prozessen, die u. a. Ressourcen abbilden.
+    Ressourcen \enquote{pflegen} also die Verlinkung mit anderen Ressourcen.
+\end{defi}
+
+\begin{defi}{CRUD}
+    Alle REST Interaktionen lassen sich mittels einfachen Abbildungen auf die HTTP-Verben beschreiben.
+    Dazu nutzen wird die bekannten \emph{CRUD (Create, Read, Update, Delete)}-Operationen.
+\end{defi}
+
+\begin{example}{REST (GET)}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{includes/figures/example_rest_get.pdf}
+    \end{center}
+\end{example}
+
+\begin{example}{REST (POST)}
+    \begin{center}
+        \includegraphics[width=0.5\textwidth]{includes/figures/example_rest_post.pdf}
+    \end{center}
+\end{example}
+
+\begin{bonus}{Rückgabetypen}
+    In \texttt{express} Routen ist es bei einer REST Schnittstelle sinnvoll anstatt \texttt{res.send()} in einem Switch für das Format \texttt{res.format()} zu nutzen.
+    Dadurch kann man sinnvoll auf das gewünschte Format des Clients reagieren.
+
+    \begin{lstlisting}[language=JavaScript]
+        res.format({
+            text: () => res.send('Glumanda [4]')
+            html: () => res.send('<p> Glumanda [4] </p>')
+            json: () => res.send({ 'id': 4, 'name': 'Glumanda'})
+        })
+    \end{lstlisting}
+\end{bonus}
+
+\begin{bonus}{Parameterübergabe}
+    \begin{itemize}
+        \item Wiederholung: \texttt{GET}:
+
+              \begin{lstlisting}[language=JavaScript]
+                  // URL z. B.: https://paddel.xyz/pokemon?id=4&name=Glumanda
+                  module.exports = express.Router()
+                      .^get^('/', (req, res) => {
+                          console.log(req.^query^) // { 'id': 4, 'name': 'Glumanda' }
+                      })
+              \end{lstlisting}
+        \item Wiederholung: \texttt{POST}:
+
+              \begin{lstlisting}[language=JavaScript]
+                // reminder: bodyParser
+                module.exports = express.Router()
+                    .^post^('/', (req, res) => {
+                        console.log(req.^body^) // { 'id': 4, 'name': 'Glumanda' }
+                    })
+            \end{lstlisting}
+        \item \texttt{params}:
+
+              \begin{lstlisting}[language=JavaScript]
+                module.exports = express.Router()
+                    .get(^'/:id/:name'^, (req, res) => {
+                        console.log(req.^params^) // { 'id': 4, 'name': 'Glumanda' }
+                    })
+            \end{lstlisting}
+    \end{itemize}
+\end{bonus}
+
 \subsection{middlewares}
 
 \begin{bonus}{middlewares (Node.js)}
