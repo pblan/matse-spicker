@@ -22,15 +22,15 @@
     Auf dem Server existiert potentiell keine Datei \texttt{index.html}, sondern wird immer neu erstellt.
 \end{defi}
 
-\begin{example}{Ordnerstruktur (Node.js)}
+\begin{example}{Ordnerstruktur}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/example_nodejs_ordnerstruktur.pdf}
     \end{center}
 \end{example}
 
-\subsection{package.json}
+\subsection{Projekt}
 
-\begin{bonus}{package.json (Node.js)}
+\begin{bonus}{package.json}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_package.pdf}
     \end{center}
@@ -39,9 +39,9 @@
     Enthält der Ordner diese \texttt{package.json} wird sie von Node als Projekt erkannt und kann mit \texttt{node .} ausgeführt werden.
 \end{bonus}
 
-\subsection{modules}
+\subsection{Module}
 
-\begin{defi}{Module}
+\begin{defi}{Modul}
     Ein Module ist eine Funktionalität, die in eine eigene JavaScript Datei ausgelagert wurde.
 
     Man unterteilt JavaScript Module in drei Arten:
@@ -68,7 +68,7 @@
     \end{lstlisting}
 \end{defi}
 
-\begin{bonus}{modules (Node.js)}
+\begin{bonus}{modules}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_module.pdf}
     \end{center}
@@ -79,7 +79,7 @@
     \end{lstlisting}
 \end{bonus}
 
-\begin{example}{modules (Node.js)}
+\begin{example}{modules}
     Um Klassen direkt zu exportieren, kann man \texttt{module.exports} überschreiben.
 
     \texttt{modules/pokemon.js}
@@ -109,7 +109,7 @@
     \end{lstlisting}
 \end{example}
 
-\begin{example}{modules (Node.js)}
+\begin{example}{modules}
     Alternativ kann man direkt Instanzen exportieren (z. B. für Singleton etc.):
 
     \texttt{modules/pokemon.js}
@@ -127,7 +127,7 @@
     \end{lstlisting}
 \end{example}
 
-\begin{example}{modules (Node.js)}
+\begin{example}{modules}
     Um mehrere Objekte zu exportieren, kann man entweder \texttt{module.exports}\footnote{
         Wenn man nur das Objekt anpasst, kann man \texttt{exports = ...} nutzen, da \texttt{exports} ein pointer auf \texttt{module.exports} ist.
         Beim Überschreiben der Variable wird nur die Referenz auf \texttt{module.exports} gelöscht.
@@ -241,7 +241,7 @@
     \end{lstlisting}
 \end{example}
 
-\subsection{node\_modules}
+\subsection{Öffentliche Module}
 
 \begin{defi}{Node Package Manager}
     Node Package Manager (npm) ist ein Projektmanager für Node.js.
@@ -258,11 +258,17 @@
 
     Wenn eine fremde \texttt{package.json} eingebunden hat und alle Module laden möchte, von denen das Projekt abhängig ist, nutzt man:
     \texttt{npm install}
+
+    Einige relevante Module sind:
+    \begin{itemize}
+        \item Mustache, zum Rendern von HTML-Vorlagen
+        \item Sequelize, für den Zugriff auf eine (Lite-) Datenbank
+    \end{itemize}
 \end{bonus}
 
-\subsection{app.js}
+\subsection{Einstiegspunkt}
 
-\begin{bonus}{app.js (Node.js)}
+\begin{bonus}{app.js}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_app.pdf}
     \end{center}
@@ -273,7 +279,7 @@
     Der Server wird mit \texttt{node .} gestartet.
 \end{bonus}
 
-\begin{example}{app.js (Node.js)}
+\begin{example}{app.js}
     Ein reiner Webserver kann wie folgt erstellt werden.
     Es wird ausschließlich das vorinstallierte Modul \emph{http} benötigt.
 
@@ -294,12 +300,12 @@
     \texttt{/test: hello}
 \end{example}
 
-\begin{defi}{express (Node.js)}
+\begin{defi}{express}
     \emph{express} ist das meistgenutzte Web-Framework für Node.js.
     Es erweitert Node.js um Werkzeuge, mit denen das Entwickeln moderner Webanwendungen einfacher gestaltet wird
 \end{defi}
 
-\begin{example}{app.js (Node.js)}
+\begin{example}{app.js}
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
         
@@ -322,9 +328,9 @@
     \end{lstlisting}
 \end{example}
 
-\subsection{routes}
+\subsection{Routen}
 
-\begin{bonus}{routes (Node.js)}
+\begin{bonus}{routes}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_routes.pdf}
     \end{center}
@@ -394,7 +400,7 @@
     \end{lstlisting}
 \end{example}
 
-\begin{example}{routes (Node.js)}
+\begin{example}{routes}
     \texttt{app.js}:
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
@@ -446,13 +452,13 @@
     Dazu nutzen wird die bekannten \emph{CRUD (Create, Read, Update, Delete)}-Operationen.
 \end{defi}
 
-\begin{example}{REST (GET)}
+\begin{example}{GET}
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/example_rest_get.pdf}
     \end{center}
 \end{example}
 
-\begin{example}{REST (POST)}
+\begin{example}{POST}
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/example_rest_post.pdf}
     \end{center}
@@ -502,9 +508,9 @@
     \end{itemize}
 \end{bonus}
 
-\subsection{middlewares}
+\subsection{Middlewares}
 
-\begin{bonus}{middlewares (Node.js)}
+\begin{bonus}{middlewares}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_middlewares.pdf}
     \end{center}
@@ -519,7 +525,7 @@
     Sie haben Zugriff auf \emph{Request}, \emph{Response}, sowie die direkt folgende \emph{Middleware}.
 \end{defi}
 
-\begin{example}{middlewares (Node.js)}
+\begin{example}{middlewares}
     \texttt{app.js}:
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
@@ -580,7 +586,7 @@
     \end{itemize}
 \end{defi}
 
-\begin{example}{set cookie (Node.js)}
+\begin{example}{set cookie}
     In einer Route wird folgende Zeile ausgeführt:
 
     \begin{lstlisting}[language=JavaScript]
@@ -743,9 +749,9 @@
     \end{lstlisting}
 \end{example}
 
-\subsection{views}
+\subsection{HTML Vorlagen}
 
-\begin{bonus}{views (Node.js)}
+\begin{bonus}{views}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_middlewares.pdf}
     \end{center}
@@ -758,7 +764,7 @@
     Im weiteren nutzen wir das Modul \emph{mustache-express}
 \end{defi}
 
-\begin{example}{views (Node.js)}
+\begin{example}{views}
     \texttt{views/pokemon.html}:
     \begin{lstlisting}[language=HTML5]
         <!DOCTYPE html>
