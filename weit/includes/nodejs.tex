@@ -16,7 +16,7 @@
     Der Haupt-Thread wird dabei jedoch nicht blockiert.
     Jeder Worker-Thread läuft dabei in einer eigenen JavaScript Engine.
 
-    Ein erster Ansatz sieht wie folgt aus\footnote{Node.js erstellt einen Worker Thread (hier blau)}:
+    Ein erster Ansatz sieht wie folgt aus\footnote{Node.js erstellt einen Worker-Thread (hier blau)}:
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/defi_js_server.pdf}
     \end{center}
@@ -512,13 +512,13 @@
     Dazu nutzen wir die bekannten \emph{CRUD (Create, Read, Update, Delete)}-Operationen.
 \end{defi}
 
-\begin{example}{GET}
+\begin{example}{GET (REST)}
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/example_rest_get.pdf}
     \end{center}
 \end{example}
 
-\begin{example}{POST}
+\begin{example}{POST (REST)}
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/example_rest_post.pdf}
     \end{center}
@@ -626,7 +626,7 @@
 
 \subsubsection{Cookies}
 
-\begin{defi}{Cookie}
+\begin{defi}{Cookie (JavaScript)}
     Der Zustand eines Node.js-Skripts geht nach der Ausführung verloren.
     Clients wollen nicht immer alle Daten im Aufruf aktiv mitsenden und der Server möchte auch keine Daten zwischenspeichern.
 
@@ -646,7 +646,7 @@
     \end{itemize}
 \end{defi}
 
-\begin{example}{Cookie}
+\begin{example}{Cookie (JavaScript)}
     In einer Route wird folgende Zeile ausgeführt:
 
     \begin{lstlisting}[language=JavaScript]
@@ -711,13 +711,13 @@
 
 \subsubsection{Sessions}
 
-\begin{defi}{Session}
+\begin{defi}{Session (JavaScript)}
     Wenn man vertrauliche Daten serverseitig speichern möchte, werden \emph{Sessions} genutzt.
 
     Die Session-ID wird clientseitig als Cookie gespeichert.
 \end{defi}
 
-\begin{example}{Session}
+\begin{example}{Session (JavaScript)}
     \texttt{app.js}:
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')

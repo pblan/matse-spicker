@@ -1,14 +1,12 @@
 \section{CSS}
 
 \begin{defi}{CSS}
-    \emph{Cascading Style Sheets (CSS)} wird genutzt um HTML-Dokumente zu designen.
-
-    Es wird genutzt um eine strikte Trennung von Inhalt (HTML) und Design (CSS) zu schaffen.
+    \emph{Cascading Style Sheets (CSS)} wird genutzt, um HTML-Dokumente zu designen und dabei Inhalt (HTML) und Design (CSS) zu trennen.
 \end{defi}
 
-\begin{example}{Einbindung von CSS}
-    \texttt{index.html}
-    \begin{lstlisting}[language=HTML5]
+\begin{example}{Einbinden von CSS}
+    Einbinden über \texttt{<link>} (empfohlen):
+    \begin{lstlisting}[language=html5]
         <!DOCTYPE html>
         <html>
         <head>
@@ -17,47 +15,44 @@
         </head>
         </html>
     \end{lstlisting}
-\end{example}
 
-\begin{example}{Einbindung von CSS (deprecated)}
-    \begin{lstlisting}[language=HTML5]
+    Manuelles CSS in einer HTML-Datei über \texttt{<style>} (nicht empfohlen\footnote{Problem: Keine Trennung von HTML und CSS.}, deprecated):
+    \begin{lstlisting}[language=html5]
         <!DOCTYPE html>
         <html>
         <head>
             <title>Index</title>
-            <style type="text/css">
+            ^<style type="text/css">^
                 h1 { font-size: 200%; }
-            </style>
+            ^</style>^
         </head>
 
         <body>
             <h1> Pokemon </h1>
-            <h2 style="font-size:150%"> Glumanda </h2>
+            <h2 ^style="font-size:150%"^> Glumanda </h2>
         </body>
         </html>
     \end{lstlisting}
-
-    Problem: Keine Trennung von HTML und CSS!
 \end{example}
 
-\begin{defi}{Selektoren}
-    Selektoren sprechen eine Gruppe von HTML-Elementen an.
-    Beinhaltete Eigenschaften werden auf dieses HTML-Element angewendet\footnote{
+\begin{defi}{Selektor}
+    \emph{Selektoren} sprechen eine Gruppe von HTML-Elementen an.
+
+    Zugehörige Eigenschaften werden auf alle entsprechenden HTML-Elemente angewandt\footnote{
         CSS wird von oben nach unten ausgewertet.
         Tiefere Selektoren überschreiben dabei bei potentiellen Überschneidungen die Werte höherer Selektoren.
     }.
 
     \begin{lstlisting}[language=CSS]
         Selektor {
-            /* Kommentar */
             Eigenschaft: Wert;
         }
     \end{lstlisting}
 \end{defi}
 
-\begin{example}{Selektoren}
+\begin{example}{Selektor}
     \begin{lstlisting}[language=CSS]
-        /* HTML-Tag */
+        /* Einzelner HTML-Tag */
         p { ... } /* <p> Glumanda </p> */
 
         /* Mehrere HTML-Tags */
@@ -65,12 +60,11 @@
         p, strong { ... } /* ODER: <p> Glumanda </p> bzw. <strong> Glumanda </strong> */
 
         /* Verschachtelte HTML-Tags */
-        div > string { ... } /* <p> <strong> Glumanda </strong> </p> */
+        p > strong { ... } /* <p> <strong> Glumanda </strong> </p> */
 
-        /* Verschachtelte HTML-Tags (Sibling) */
-        p + strong { ... } /* <p> ... </p> <strong> Glumanda </strong> */
-        /* Verschachtelte HTML-Tags (Sibling) */
-        p ~ strong { ... } /* <p> ... </p> ... <strong> Glumanda </strong> */
+        /* Gemeinsam verschachtelte HTML-Tags (Sibling) */
+        p + strong { ... } /* DIREKT NEBENEINANDER: <p> ... </p> <strong> Glumanda </strong> */
+        p ~ strong { ... } /* NEBENEINANDER: <p> ... </p> ... <strong> Glumanda </strong> */
         
         /* HTML-Class */
         .pokemon { ... } /* <p class="pokemon"> Glumanda </p> */
@@ -90,10 +84,10 @@
 
 \begin{bonus}{Maßeinheiten}
     \begin{itemize}
-        \item \texttt{px}: Absolute pixel
-        \item \texttt{em}: Schriftgröße eines kleinen \enquote{m}s
+        \item \texttt{px}: Absolute Pixel
+        \item \texttt{em}: Schriftgröße eines kleinen \enquote{m}
         \item \texttt{\%}: Angabe relativ zum Elternelement
-        \item \texttt{vh}, vw: Viewport Units, relative Größe des Browserfensters
+        \item \texttt{vh}, \texttt{vw}: Viewport Units, relative Größe des Browserfensters
     \end{itemize}
 \end{bonus}
 
@@ -102,10 +96,10 @@
         p {
             font-family: Comic Sans M, sans-serif; /* Schriftart */
             font-style: italic; /* kursiv */
-            font-size: 22px; /* Schriftgroesse */
+            font-size: 22px; 
             font-weight: bold; /* fett */
-            color: #E9AB7C; /* color */
-            text-align: center; /* zentrieren */
+            color: #E9AB7C; 
+            text-align: center; 
         }
     \end{lstlisting}
 \end{bonus}
@@ -114,7 +108,7 @@
     \begin{lstlisting}[language=CSS]
         p {
             background-color: #E9AB7C;
-            background-image: url(...);
+            background-image: url(path/to/bg.png);
             background-repeat: no-repeat;
         }
     \end{lstlisting}
@@ -151,17 +145,18 @@
 \end{bonus}
 
 \begin{bonus}{Flexbox}
-    Eine \emph{Flexbox} verzeichnet auf feste Breiten, wobei sich das flexible Element an den tatsächlich verfügbaren Platz anpasst, indem es die Leerräume zwischen den Elementen gleichmäßig verteilt.
+    Eine \emph{Flexbox} verzichtet auf feste Breiten, wobei sich das flexible Element an den tatsächlich verfügbaren Platz anpasst, indem es die Leerräume zwischen den Elementen gleichmäßig verteilt.
 \end{bonus}
 
 \begin{bonus}{Bootstrap}
     Responsive Design wird zumeist mittels Frameworks erreicht.
 
-    Bootstrap ist das populärste CSS-Framework und verfolgt einen Mobile-First-Ansatz.
+    \emph{Bootstrap} ist das populärste CSS-Framework und verfolgt einen Mobile-First-Ansatz.
     Die Layout-Stile wurden zunächst für kleine Bildschirme entworfen, um sie dann den größeren anzupassen.
 
-    Bootstrap wird ebenfalls im Head-Element zumeist bon einem externen Anbieter eingebunden:
+    Bootstrap wird wie CSS im Head-Element zumeist von einem externen Anbieter (CDN) eingebunden:
     \begin{lstlisting}[language=HTML5]
-        <link res="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" 
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     \end{lstlisting}
 \end{bonus}

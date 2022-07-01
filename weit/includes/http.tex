@@ -5,14 +5,15 @@
         \includegraphics[width=0.5\textwidth]{includes/figures/defi_http.pdf}
     \end{center}
 
-    HTTP ist ein textbasiertes zustandsloses Anfrage-/Antwort-Protokoll der ISO/OSI Schichten 5 bis 7.
+    Das \emph{Hypertext Transfer Protocol (HTTP)} ist ein textbasiertes, zustandsloses Anfrage-/Antwort-Protokoll der ISO/OSI-Schichten 5 bis 7.
 
-    Es Dient zur Übertragung von Datenobjekten zwischen einem Server und einem Client.
-    Der Client sendet einen \emph{Request} über eine aufgebaute TCP/IP-Verbindung an den Server.
-    Dieser antwortet mit einer \emph{Response}
+    Es dient zur Übertragung von Datenobjekten zwischen einem Server und einem Client.
+    Der Client sendet einen \emph{HTTP-Request} über eine aufgebaute TCP/IP-Verbindung an den Server.
+    Dieser antwortet mit einer \emph{HTTP-Response}
 
     Der Endpunkt wird über eine URL identifiziert:
 
+    \centering
     \texttt{<protokoll>://<host>:<port>/<path>?<parameter>}
 \end{defi}
 
@@ -21,8 +22,8 @@
 
     URIs werden in zwei Gruppen aufgeteilt:
     \begin{itemize}
-        \item \emph{Uniform Resource Location (URL)}: Adressierung bon Informationsobjekten mit Festlegung des Zugangsprotokolls.
-        \item \emph{Uniform Ressource Name (URN)}: Adressierung von Objekten ohne ein Protokoll festzulegen.
+        \item \emph{Uniform Resource Location (URL)}: Adressierung von Informationsobjekten mit Festlegung des Zugangsprotokolls
+        \item \emph{Uniform Ressource Name (URN)}: Adressierung von Objekten ohne ein Protokoll
     \end{itemize}
 \end{defi}
 
@@ -61,10 +62,10 @@
 
 \begin{defi}{CDN}
     \emph{Content Delivery Networks (CDN)} bieten Dienste an, um Inhalte auf multiple Server zu replizieren.
-    Dies wird genutzt, da Große Anbieter \enquote{nahe} beim Nutzenden sein wollen.
+    Dies wird genutzt, da große Anbieter \enquote{nahe} beim Nutzenden sein wollen.
 
     Clients können so den Server nutzen, der den Inhalt am schnellsten liefert.
-    Der Inhalt wird von einem Origin Server geklont.
+    Der Inhalt wird von einem Origin-Server geklont.
 
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/defi_cdn.pdf}
@@ -85,7 +86,7 @@
     \includegraphics[width=\textwidth]{includes/figures/example_http_header.pdf}
 \end{example}
 
-\begin{bonus}{HTTP-Statuscodes}
+\begin{bonus}{HTTP-Statuscode}
     \begin{center}
         \begin{tabular}{|c|l|l|}
             \hline
@@ -97,17 +98,21 @@
             \texttt{5xx} & Server Error  & Server kann Anfrage nicht ausführen                      \\\hline
         \end{tabular}
     \end{center}
-
-    z. B.:
-
-    \begin{tabular}{Tl}
-        200 & OK                    \\
-        301 & Moved Permanently     \\
-        302 & Moved Temporarily     \\
-        404 & Not Found             \\
-        500 & Internal Server Error \\
-    \end{tabular}
 \end{bonus}
+
+\begin{example}{HTTP-Statuscode}
+    \begin{center}
+        \begin{tabular}{|c|l|}
+            \hline
+            Code         & Bedeutung             \\\hline\hline
+            \texttt{200} & OK                    \\\hline
+            \texttt{301} & Moved Permanently     \\\hline
+            \texttt{302} & Moved Temporarily     \\\hline
+            \texttt{404} & Not Found             \\\hline
+            \texttt{500} & Internal Server Error \\\hline
+        \end{tabular}
+    \end{center}
+\end{example}
 
 \begin{defi}{HTTP-Methoden}
     \begin{itemize}
@@ -123,32 +128,33 @@
     \end{itemize}
 \end{defi}
 
-\begin{defi}{HTTP GET}
+\begin{defi}{GET (HTTP)}
     Bei \emph{GET}-Methoden werden die Daten über die Adresszeile übertragen.
-    Sie sind sind nicht geeignet zur Übertragung großer Datenmengen.
 
-    z. B.:
-    %[language=HTTP]
+    Sie sind sind nicht geeignet zur Übertragung großer Datenmengen.
+\end{defi}
+
+\begin{example}{GET (HTTP)}
     \begin{lstlisting} 
         GET /pokemon?^id=4^&^name=glumanda^
         HOST: paddel.xyz
     \end{lstlisting}
+\end{example}
+
+\begin{defi}{POST (HTTP)}
+    Bei \emph{POST}-Methoden werden die Daten im HTTP-Body übertragen.
 \end{defi}
 
-\begin{defi}{HTTP POST}
-    Bei \emph{POST}-Methoden werden die Daten im HTTP-Body übertragen.
-
-    z. B.:
-    %[language=HTTP]
-    \begin{lstlisting}
-        GET /pokemon
+\begin{example}{POST (HTTP)}
+    \begin{lstlisting} 
+        POST /pokemon
         HOST: paddel.xyz
 
         ^id=4^&^name=glumanda^
     \end{lstlisting}
-\end{defi}
+\end{example}
 
-\begin{bonus}{HTTP POST aus HTML Form}
+\begin{example}{POST (HTML-Formular)}
     \begin{lstlisting}[language=HTML5]
         <form action="pokemon" method="post">
             <input type="number" name="id" />
@@ -157,29 +163,29 @@
         </form>
     \end{lstlisting}
 
-    Wird bei Absenden der Form übersetzt zu:
+    Wird beim Absenden der Form übersetzt zu:
 
     %[language=HTTP]
     \begin{lstlisting}
-        GET /pokemon
+        POST /pokemon
         HOST: paddel.xyz
 
         ^id=4^&^name=glumanda^
     \end{lstlisting}
-\end{bonus}
+\end{example}
 
-\begin{bonus}{Unterschiede HTTP Versionen}
-    In den neueren Versionen von HTTP versucht man die Anzahl bzw. Dauer von weiteren Anfragen zu verhindern.
+\begin{bonus}{HTTP-Versionen}
+    In den neueren Versionen von HTTP versucht man die Anzahl bzw. Dauer von weiteren Anfragen zu verhindern bzw. zu reduzieren.
 
-    Während bei \emph{HTTP/1.1} noch jede Ressource einzeln abgefragt wurde, konnte man bei dem ursprünglichen \emph{HTTP/2.0} alle Dokumente gleichzeitig anfragen, die in dem ursprünglichen Dokument verknüpft wurden.
-
-    Sprich:
+    Während bei \emph{HTTP/1.1} noch jede Ressource einzeln abgefragt wurde, konnte man bei dem ursprünglichen \emph{HTTP/2.0} alle Dokumente gleichzeitig anfragen, die in dem ursprünglichen Dokument verknüpft wurden; z. B.:
 
     \emph{HTTP/1.1}: \texttt{GET index.html -> GET style.css -> GET script.js}
 
     \emph{HTTP/2.0}: \texttt{GET index.html -> GET style.css,  script.js}
 
     In neueren Version von \emph{HTTP/2.x} sendet der Server direkt Dateien mit, die der Client eventuell benötigen könnten.
+
     Der Client muss also nicht mehr alle Objekte selbständig anfragen.
-    Bei dieser \emph{push}-Variante können zwar \enquote{zu viele} Dateien mitgesendet werden, jedoch ist solch ein geringer Overhead bei aktuellen Netzwerkkapazitäten verkraftbar.
+
+    Bei dieser \emph{Push}-Variante können zwar \enquote{zu viele} Dateien mitgesendet werden, jedoch ist solch ein geringer Overhead bei aktuellen Netzwerkkapazitäten verkraftbar.
 \end{bonus}
