@@ -433,6 +433,38 @@
     \texttt{896}
 \end{example}
 
+\begin{defi}{Validierung (JavaScript)}
+    Beschränkungen auf Clientseite können von erfahrenen Nutzenden aktiv umgangen werden, daher ist eine serverseitige Prüfung von Userdaten zwingend erforderlich.
+
+    \texttt{express-validator} vereinfacht in JavaScript die Validierung von Eingaben.
+
+    Sie liefern \texttt{NULL}, \texttt{false} oder eine je nach Filter gültige Variable zurück.
+
+    \begin{itemize}
+        \item \texttt{Validators} validieren Eingaben
+        \item \texttt{Sanitizers} korrigieren Eingaben
+    \end{itemize}
+
+    Validator:
+    \begin{lstlisting}[language=JavaScript]
+        const { check } = require('express-validator')
+
+        app.use('/pokemon', [                      // check pokemon
+            check('pokemon').isLength({ min: 3 }), // min. length 3 chars (z. B. Mew)
+        ])
+    \end{lstlisting}
+
+    Sanitizer:
+    \begin{lstlisting}[language=JavaScript]
+        const { check } = require('express-validator')
+
+        app.use('/pokemon', [         // check pokemon
+            check('id').toInt()       // parse ID to Int
+            check('Pokemon').escape() // '<Glumanda%>' -> '&lt;Glumanda%&gt;'
+        ])
+    \end{lstlisting}
+\end{defi}
+
 \subsubsection{REST}
 
 \begin{defi}{REST}
