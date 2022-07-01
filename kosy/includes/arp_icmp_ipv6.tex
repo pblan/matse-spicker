@@ -139,7 +139,7 @@
 
     Um in IPv4-Netzen die maximale Größe zu bestimmen, die ein Datenpaket haben sollte, muss die Stelle des Pfades gefunden werden, die die kleinsten Datenpakete zulässt.
 
-    Vorgehen\footnote{Nur gültig in IPv4, da in IPv6 keine Fragmentierung von weitergeleiteten Paketen auf Routern statt.}:
+    Vorgehen\footnote{Nur gültig in IPv4, da in IPv6 keine Fragmentierung von weitergeleiteten Paketen auf Routern stattfindet.}:
     \begin{enumerate}
         \item Es wird ein IPv4-Paket versendet, bei dem das \texttt{DF}-Bit (Don't Fragment) gesetzt ist und das die Größe der lokal eingestellten Maximum Transmission Unit hat.
         \item Kommt das Paket an eine Stelle im Netz, an dem nur eine kleinere MTU verarbeitet werden kann, wird ein ICMP-Error Typ 3 Code 4 (Destination Unreachable Fragmentation Needed, DF Set) zurückgeschickt, der auch die eigene MTU enthält.
