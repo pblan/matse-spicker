@@ -34,6 +34,7 @@
 
 \begin{defi}{Verzögerungs-Bandbreiten-Produkt}
     Das \emph{Verzögerungs-Bandbreiten-Produkt}  ist eine Eigenschaft einer Datenverbindung. Es berechnet sich als das Produkt aus der Verzögerung (Einheit: Sekunde) und der Datenübertragungsrate (Einheit: Bit pro Sekunde).
+
     Das Ergebnis, eine in Bit oder Byte angegebene Datenmenge entspricht der Anzahl der Daten, die sich auf dem Weg befinden, wenn ein oder mehrere Sender den Übertragungskanal füllen.
 
     Ein hoher Durchsatz kann nur dann erzielt werden, wenn der Sender hinreichend große Datenmengen versenden kann, bevor dieser innehalten und auf eine Empfangsbestätigung durch den Empfänger warten muss.
@@ -46,6 +47,7 @@
 
     mit
     \begin{itemize}
+        \item $n$: Anzahl der Segmente.
         \item $L$: Länge eines Segments in Bits.
         \item $R$: Übertragungsrate des Kanals in Bits pro Sekunde.
         \item $\nicefrac{L}{R}$: Zeit zur Übertragung eines Segments in Sekunden.
@@ -54,7 +56,7 @@
         \item $W := n \cdot L$: Fensterbreite in Bits
     \end{itemize}
 
-    Die erzielbare Bandbreite $R_\rho = B$ ist dann:
+    Die erzielbare Bandbreite $R\rho = B$ ist dann:
     \[
         B := R\rho = n \cdot \frac{L}{\frac{L}{R} + RTT}
     \]
@@ -126,8 +128,7 @@
     Die Reaktion ist die Identifikation und das erneute Verschicken des fehlerhaften Segments:
     \begin{itemize}
         \item \emph{Go-Back-N}: Ab dem Fehlerfall alles neu versenden.
-        \item \emph{Selective Repeat}: Nur das fehlerhafte Segment neu versenden.
-        \item \emph{Selective Reject}
+        \item \emph{Selective Repeat} bzw. \emph{Selective Reject}: Nur das fehlerhafte Segment neu versenden.
     \end{itemize}
 \end{defi}
 

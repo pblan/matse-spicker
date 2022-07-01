@@ -40,7 +40,7 @@
 \begin{defi}{Anwendungsschicht (Application Layer)}
     Dienste, Anwendungen und Netzmanagement.
 
-    Die \emph{Anwendungsschicht} stellt Funktionen für die Anwendungen zur Verfügung.
+    Die \emph{Anwendungsschicht} (Schicht 7) stellt Funktionen für die Anwendungen zur Verfügung.
 
     Diese Schicht stellt die Verbindung zu den unteren Schichten her.
 
@@ -49,7 +49,7 @@
 \end{defi}
 
 \begin{defi}{Darstellungsschicht (Presentation Layer)}
-    Die \emph{Darstellungsschicht} setzt die systemabhängige Darstellung der Daten (z. B. ASCII, Unicode) in eine unabhängige Form um und ermöglicht somit den syntaktisch korrekten Datenaustausch zwischen unterschiedlichen Systemen.
+    Die \emph{Darstellungsschicht} (Schicht 6) setzt die systemabhängige Darstellung der Daten (z. B. ASCII, Unicode) in eine unabhängige Form um und ermöglicht somit den syntaktisch korrekten Datenaustausch zwischen unterschiedlichen Systemen.
 
     Auch Aufgaben wie die Datenkompression und die Verschlüsselung gehören zur Schicht 6.
 
@@ -59,20 +59,20 @@
 \end{defi}
 
 \begin{defi}{Sitzungsschicht (Session Layer)}
-    Die \emph{Sitzungsschicht} sorgt für die Prozesskommunikation zwischen zwei Systemen.
+    Die \emph{Sitzungsschicht} (Schicht 5) sorgt für die Prozesskommunikation zwischen zwei Systemen.
 
     Um Zusammenbrüche der Sitzung und ähnliche Probleme zu beheben, stellt die Sitzungsschicht Dienste für einen organisierten und synchronisierten Datenaustausch zur Verfügung.
     Zu diesem Zweck werden Wiederaufsetzpunkte, so genannte Fixpunkte (Check Points) eingeführt, an denen die Sitzung nach einem Ausfall einer Transportverbindung wieder synchronisiert werden kann, ohne dass die Übertragung wieder von vorne beginnen muss.
 \end{defi}
 
 \begin{defi}{Transportschicht (Transport Layer)}
-    Zu den Aufgaben der \emph{Transportschicht} zählt die Segmentierung des Datenstroms, die Stauvermeidung (congestion avoidance) und die Sicherstellung einer fehlerfreien Übertragung.
+    Zu den Aufgaben der \emph{Transportschicht} (Schicht 4) zählt die Segmentierung des Datenstroms, die Stauvermeidung (congestion avoidance) und die Sicherstellung einer fehlerfreien Übertragung.
 
     Die Transportschicht bietet den anwendungsorientierten Schichten 5 bis 7 einen einheitlichen Zugriff, so dass diese die Eigenschaften des Kommunikationsnetzes nicht zu berücksichtigen brauchen.
 \end{defi}
 
 \begin{defi}{Vermittlungsschicht (Network Layer)}
-    Die \emph{Vermittlungsschicht} sorgt bei leitungsorientierten Diensten für das Schalten von Verbindungen und bei paketorientierten Diensten für die Weitervermittlung von Datenpaketen sowie die Stauvermeidung (congestion avoidance).
+    Die \emph{Vermittlungsschicht} (Schicht 3) sorgt bei leitungsorientierten Diensten für das Schalten von Verbindungen und bei paketorientierten Diensten für die Weitervermittlung von Datenpaketen sowie die Stauvermeidung (congestion avoidance).
 
     Die Datenübertragung geht in beiden Fällen jeweils über das gesamte Kommunikationsnetz hinweg und schließt die Wegsuche (Routing) zwischen den Netzwerkknoten ein.
 
@@ -85,7 +85,7 @@
 \end{defi}
 
 \begin{defi}{Sicherungsschicht (Data Link Layer)}
-    Aufgabe der \emph{Sicherungsschicht} ist es, eine zuverlässige, das heißt weitgehend fehlerfreie Übertragung zu gewährleisten und den Zugriff auf das Übertragungsmedium zu regeln. Dazu dient das Aufteilen des Bitdatenstromes in Blöcke (Frames) und das Hinzufügen von Prüfsummen im Rahmen der Kanalkodierung.
+    Aufgabe der \emph{Sicherungsschicht} (Schicht 2) ist es, eine zuverlässige, das heißt weitgehend fehlerfreie Übertragung zu gewährleisten und den Zugriff auf das Übertragungsmedium zu regeln. Dazu dient das Aufteilen des Bitdatenstromes in Blöcke (Frames) und das Hinzufügen von Prüfsummen im Rahmen der Kanalkodierung.
     So können fehlerhafte Blöcke vom Empfänger erkannt und entweder verworfen oder sogar korrigiert werden.
 
     Eine Datenflusskontrolle ermöglicht es, dass ein Empfänger dynamisch steuert, mit welcher Geschwindigkeit die Gegenseite Blöcke senden darf.
@@ -94,7 +94,7 @@
 \end{defi}
 
 \begin{defi}{Bitübertragungsschicht (Physical Layer)}
-    Die \emph{Bitübertragungsschicht} ist die unterste Schicht.
+    Die \emph{Bitübertragungsschicht} (Schicht 1) ist die unterste Schicht.
 
     Diese Schicht stellt mechanische, elektrische, physikalische und weitere funktionale Hilfsmittel zur Verfügung, um physische Verbindungen zu aktivieren bzw. zu deaktivieren, sie aufrechtzuerhalten und Bits darüber zu übertragen. Das können zum Beispiel elektrische Signale, optische Signale (Lichtleiter, Laser), elektromagnetische Wellen (drahtlose Netze) oder Schall sein.
 

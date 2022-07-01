@@ -210,8 +210,8 @@
                   \item Datentyp (D): 1 bit
                         
                         \begin{tabular}{T|l}
-                            00 & Einfach      \\
-                            01 & Strukturiert
+                            0 & Einfach      \\
+                            1 & Strukturiert
                         \end{tabular}
                   \item Tag-Nummer: 8 bit
                         
@@ -376,7 +376,7 @@
     \begin{lstlisting}[language=XML]
         <xs:simpleType name="pokemonNummer" base="xs:integer">
             <xs:minInclusive value="1" />
-            <xs:minInclusive value="905" />
+            <xs:maxInclusive value="905" />
         </xs:simpleType>
     \end{lstlisting}
     
@@ -501,9 +501,8 @@
         </xs:complexType>
     \end{lstlisting}
     
-    % [language=XML]
+    Dokument:
     \begin{lstlisting}[language=XML]
-        <!-- Dokument -->
         <xs:include schemaLocation="./pokemon-types.xs">
 
         <team>
@@ -573,12 +572,12 @@
     Mit Hilfe der Klasse \texttt{ObjectInputStream} bzw. \texttt{ObjectOutputStream} kann man Objekte serialisieren bzw. deserialisieren.
     
     \begin{itemize}
-        \item \texttt{writeObject()} wandelt ein Objekt in einen Byte-Stream um.
-        \item \texttt{readObject()} wandelt einen Byte-Stream in ein Objekt um.
+        \item \texttt{writeObject()} (wandelt Objekt in Byte-Stream um)
+        \item \texttt{readObject()} (wandelt Byte-Stream in Objekt um)
     \end{itemize}
     
     Im Unterschied zu allgemeinen I/O- bzw. Streaming-Konzepten beruht die Objektkommunikation auf Interfaces.
-    Somit ist ebenfalls eine komplett eingencodierte Serialisierung möglich.
+    Somit ist ebenfalls eine komplett selbstcodierte Serialisierung möglich.
 \end{bonus}
 
 \subsection{JSON}
