@@ -115,6 +115,8 @@
     Jedes IP-Datagramm, das fragmentiert wurde, erhält einen neuen Header auf Basis des originalen Headers und spezieller aktualisierter Felder.
 
     In den neuen IP-Headern der Fragmente gibt der \emph{Offset} die Position der in diesem Paket versendeten Daten in Relation zum Originalpaket an (wird in 8-Byte-Blöcken angegeben).
+
+    Wichtig: Dadurch müssen alle Fragmente (bis auf das letzte) eine durch 8 teilbare Größe haben.
 \end{defi}
 
 \begin{example}{IP-Fragmentierung}

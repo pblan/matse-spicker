@@ -31,7 +31,7 @@
 \begin{defi}{Bestätigungen in TCP}
     Um empfangene Pakete zu bestätigen, wird eine \emph{Huckepack-Technik} verwendet; das bedeutet, dass Bestätigungen im Datenpaket der Rückrichtung erfolgen.
 
-    Dabei kann eine Bestätigungsnachricht mehrere erhaltene Segmente bestätigen.
+    Dabei bestätigt eine Bestätigungsnachricht (\texttt{ACK}) alle bis dahin erhaltenen Segmente.\footnote{Ein \texttt{ACK} enthält also die Sequenznummer des zuletzt erhaltenen Segments.}
 
     Auch ohne Datenfluss in die Rückrichtung werden Bestätigungen verschickt, wenn auch oft verzögert.\footnote{Nach 500ms muss eine Bestätigung verschickt werden. Nach zwei vollständigen Segmenten sollte ebenfalls eine Bestätigung verschickt werden.}
     Diese verzögerten Bestätigungen heißen \emph{Delayed Acknowledgments}.
@@ -40,16 +40,16 @@
 
     \begin{tabularx}{\textwidth}{|X|X|}
         \hline
-        Ereignis beim Empfänger                                                                                                             & Aktion beim Empfänger                                                                                                  \\
+        Ereignis beim Empfänger                                                                                                             & Aktion beim Empfänger                                                                                                         \\
         \hline
         \hline
-        Ankunft eines Segments mit der erwarteten Sequenznummer. Alle Daten bis dahin sind schon bestätigt worden.                          & Delayed ACK. Warte bis zu 500ms auf das nächste Segment. Wenn dieses nicht empfangen wird, verschicke die Bestätigung. \\
+        Ankunft eines Segments mit der erwarteten Sequenznummer. Alle Daten bis dahin sind schon bestätigt worden.                          & \emph{Delayed ACK}. Warte bis zu 500ms auf das nächste Segment. Wenn dieses nicht empfangen wird, verschicke die Bestätigung. \\
         \hline
-        Ankunft eines Segments mit der erwarteten Sequenznummer. Allerdings wurde noch keine Bestätigung des voherigen Segments verschickt. & Sofortiges Verschicken einer kumulativen Bestätigung, die beide Segmente bestätigt.                                    \\
+        Ankunft eines Segments mit der erwarteten Sequenznummer. Allerdings wurde noch keine Bestätigung des voherigen Segments verschickt. & Sofortiges Verschicken einer kumulativen Bestätigung, die beide Segmente bestätigt.                                           \\
         \hline
-        Ankunft eines Segments hinter der erwarteten Sequenznummer. Es wird eine Lücke entdeckt.                                            & Sofortiges Verschicken eines Duplicate ACK (\texttt{Dup ACK}). Diese enthält erneut die erwartete Segmentnummer.       \\
+        Ankunft eines Segments hinter der erwarteten Sequenznummer. Es wird eine Lücke entdeckt.                                            & Sofortiges Verschicken eines \emph{Duplicate ACK} (\texttt{Dup ACK}). Diese enthält erneut die erwartete Segmentnummer.       \\
         \hline
-        Ankunft eines Segments, das eine Lücke teilweise oder vollständig füllt.                                                            & Sofortiges Verschicken einer Bestätigung.                                                                              \\
+        Ankunft eines Segments, das eine Lücke teilweise oder vollständig füllt.                                                            & Sofortiges Verschicken einer Bestätigung.                                                                                     \\
         \hline
     \end{tabularx}
 \end{defi}
