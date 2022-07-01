@@ -1,10 +1,11 @@
 \section{HTTPS}
 
 \begin{defi}{Web-Security}
-    Webanwendungen sind mehr als nur \emph{öffentlich Webseiten} im Browser.
+    Webanwendungen sind mehr als nur öffentliche Webseiten im Browser.
     Jede Client-Server-Anwendung, die auf Webtechnologien basiert, ist eine Webanwendung.
 
-    Durch neue Entwicklungen wird die Anwendungslogik von Server zum Client verlagert\footnote{in JavaScrip z. B. durch AJAX, Singe-Page-Applications, Web- und Microservices, REST etc.}.
+    Durch neue Entwicklungen wird die Anwendungslogik von Server zum Client verlagert\footnote{in JavaScript z. B. durch AJAX, Singe-Page-Applications, Web- und Microservices, REST etc.}.
+
     Es stehen neue Virtualisierungstechnologien wie z. B. Docker zur Verfügung.
 \end{defi}
 
@@ -15,34 +16,34 @@
         \item Intrusion Detection (IDS) bzw. Prevention System (IPS)
     \end{itemize}
 
-    Ein Überwiegender Teil aller Angriffe findet jedoch auf der Anwendungsschicht mittels HTTP-Protokoll statt.
+    Ein überwiegender Teil aller Angriffe findet jedoch auf der Anwendungsschicht mittels HTTP-Protokoll statt.
 \end{defi}
 
 \begin{defi}{Strukturelle Sicherheitsprobleme HTTP}
     \begin{itemize}
-        \item \emph{HTTP} ist unverschlüsselt und ohne Integritätsschutz
-        \item \emph{HTTP} ist zustandslos (Nötige Daten müssen in weiteren Requests mitgesendet werden z. B. durch Sessions)
+        \item HTTP ist unverschlüsselt und ohne Integritätsschutz
+        \item HTTP ist zustandslos. Nötige Daten müssen in weiteren Requests mitgesendet werden, z. B. durch Sessions.
         \item Kommunikation durch nicht typisierte URL-Parameter
         \item Unsichere eingebaute Authentifizierungsverfahren
     \end{itemize}
 \end{defi}
 
 \begin{defi}{Schutzziele}
-    Primäre Schutzziele (CIA Triad):
+    Primäre Schutzziele (\emph{CIA Triad}):
     \begin{itemize}
-        \item Vertraulichkeit (Confidentiality):
+        \item \emph{Vertraulichkeit (Confidentiality)}:
               \begin{itemize}
-                  \item Übertragene Daten sind nur befugten Personen zugänglich
+                  \item Übertragene Daten sind nur befugten Personen zugänglich.
                   \item Ansatz: symmetrische und asymmetrische Verschlüsselung, HTTPS
               \end{itemize}
-        \item Integrität (Integrity):
+        \item \emph{Integrität (Integrity)}:
               \begin{itemize}
-                  \item Übertragene Daten sind nachweislich vollständig und unverändert
+                  \item Übertragene Daten sind nachweislich vollständig und unverändert.
                   \item Ansatz: Message Authentication Code (MAC)
               \end{itemize}
-        \item Verfügbarkeit (Availability):
+        \item \emph{Verfügbarkeit (Availability)}:
               \begin{itemize}
-                  \item Datenzugriff steht (befugten Personen) bei Bedarf zur Verfügung
+                  \item Datenzugriff steht (befugten Personen) bei Bedarf zur Verfügung.
                   \item Angriff: (Distributed) Denial of Service z. B. \texttt{SYN-Flood} beim TCP-Verbindungsaufbau
               \end{itemize}
     \end{itemize}
@@ -56,46 +57,45 @@
 \end{defi}
 
 \begin{bonus}{Kryptographie}
+    \emph{Symmetrische Verschlüsselung}:
     \begin{itemize}
-        \item Symmetrische Verschlüsselung:
+        \item Gleicher Schlüssel für Ver- und Entschlüsselung
+        \item Jede Verbindung benötigt einen eigenen Schlüssel
+        \item Nachteile:
               \begin{itemize}
-                  \item Gleicher Schlüssel für Ver- und Entschlüsselung
-                  \item Jede Verbindung benötigt einen eigenen Schlüssel
-                  \item Nachteile:
-                        \begin{itemize}
-                            \item Geheimhaltung und sicherer Austausch des Schlüssels nötig.
-                            \item Schuld an kompromittierten Schlüsseln nicht eindeutig.
-                        \end{itemize}
-                  \item Beispiele:
-                        \begin{itemize}
-                            \item One-Time-Pad (1882)
-                            \item DES (1975)
-                            \item Blowfish (1993)
-                            \item Twofish (1998)
-                            \item Serpent (1998)
-                            \item AES (1998)
-                        \end{itemize}
+                  \item Geheimhaltung und sicherer Austausch des Schlüssels nötig.
+                  \item Schuld an kompromittierten Schlüsseln nicht eindeutig.
               \end{itemize}
-        \item Asymmetrische Verschlüsselung
+        \item Beispiele:
               \begin{itemize}
-                  \item Verschiedene Schlüssel für Ver- und Entschlüsselung
-                  \item Jeder Client hat z. B. einen privaten und einen öffentlichen Schlüssel:
-                        \begin{itemize}
-                            \item Beim \emph{Versenden} wird der öffentliche Schlüssel des Empfängers zum Verschlüsseln verwendet.
-                            \item Beim \emph{Empfangen} wird der eigene private Schlüssel zum Entschlüsseln genutzt.
-                            \item Zum Authentifizieren verschlüsselt man eine öffentliche Nachricht\footnote{z. B. seine MAC-Adresse} mit seinem privaten Schlüssel.
-                                  Wenn der erwartete Inhalt beim Entschlüsseln mit dem öffentlichen Schlüssel des Geräts erhalten wird, ist der Client authentifiziert\footnote{Wenn Dritte Zugriff zu dem privaten Schlüssel erhalten, können sie sich als das betroffene Gerät ausgeben}.
-                        \end{itemize}
-                  \item Nachteile:
-                        \begin{itemize}
-                            \item langsam
-                        \end{itemize}
-                  \item Beispiele:
-                        \begin{itemize}
-                            \item RSA
-                            \item Diskreter Logarithmus (DL)
-                            \item Elliptische Kurven (EC)
-                        \end{itemize}
+                  \item One-Time-Pad (1882)
+                  \item DES (1975)
+                  \item Blowfish (1993)
+                  \item Twofish (1998)
+                  \item Serpent (1998)
+                  \item AES (1998)
+              \end{itemize}
+    \end{itemize}
+
+    \emph{Asymmetrische Verschlüsselung}:
+    \begin{itemize}
+        \item Verschiedene Schlüssel für Ver- und Entschlüsselung
+        \item Jeder Client hat z. B. einen privaten und einen öffentlichen Schlüssel:
+              \begin{itemize}
+                  \item Beim \emph{Versenden} wird der öffentliche Schlüssel des Empfängers zum Verschlüsseln verwendet.
+                  \item Beim \emph{Empfangen} wird der eigene private Schlüssel zum Entschlüsseln genutzt.
+                  \item Zum Authentifizieren verschlüsselt man eine öffentliche Nachricht\footnote{z. B. seine MAC-Adresse} mit seinem privaten Schlüssel.
+                        Wenn der erwartete Inhalt beim Entschlüsseln mit dem öffentlichen Schlüssel des Geräts erhalten wird, ist der Client authentifiziert\footnote{Wenn Dritte Zugriff zu dem privaten Schlüssel erhalten, können sie sich als das betroffene Gerät ausgeben.}.
+              \end{itemize}
+        \item Nachteile:
+              \begin{itemize}
+                  \item langsam
+              \end{itemize}
+        \item Beispiele:
+              \begin{itemize}
+                  \item RSA
+                  \item Diskreter Logarithmus (DL)
+                  \item Elliptische Kurven (EC)
               \end{itemize}
     \end{itemize}
 \end{bonus}
@@ -103,9 +103,9 @@
 \begin{bonus}{Kryptographische Hashfunktion}
     Eigenschaften:
     \begin{itemize}
-        \item \emph{Kompression}: Bildet beliebig lange Bitfolgen auf eine Bitfolge fester Länge ab
+        \item \emph{Kompression}: bildet beliebig lange Bitfolgen auf eine Bitfolge fester Länge ab
         \item \emph{Effizienz}: Hashwert für gegebene Bitfolge \enquote{leicht} berechenbar
-        \item \emph{Einweg}: Es ist \enquote{schwer}, für einen gegeben Hashwert eine Bitfolge zu finden, die diesen Hashwert besitzt
+        \item \emph{Einweg}: \enquote{schwer} für einen gegeben Hashwert eine Bitfolge zu finden, die diesen Hashwert besitzt
     \end{itemize}
 
     Anwendungsfälle:
@@ -118,8 +118,9 @@
 \end{bonus}
 
 \begin{defi}{HTTPS}
-    \emph{HTTP} ist unverschlüsselt.
-    Jeder Man-in-the-middle kann daher die Kommunikation mitschneiden und verändern.
+    HTTP ist unverschlüsselt.
+    Jeder Man-in-the-Middle kann daher die Kommunikation mitschneiden und verändern.
+
     Um sicherzugehen, dass Inhalte vom Server stammen und unverändert ausgeliefert wurden, muss \emph{HTTPS} genutzt werden.
 
     \emph{HTTPS} verschlüsselt alle Inhalte, außer IP-Adressen und Ports.
@@ -129,6 +130,7 @@
     \emph{Secure Socket Layer (SSL)} stellt mit Hilfe digitaler Zertifikate sicher, dass die übertragenen Inhalte durch symmetrische Algorithmen verschlüsselt werden.
 
     Beim Verbindungsaufbau wird sich auf einen symmetrischen Schlüssel geeinigt, mit dem die Daten verschlüsselt werden.
+
     Der Verbindungsaufbau erfolgt jedoch mit asymmetrischer Verbindung.
 \end{bonus}
 
@@ -238,11 +240,11 @@
 \begin{bonus}{CAs}
     Die \emph{Certificate Authorities (CAs)} stellen u. a. für Webseitenbetreibende Zertifikate aus und signieren diese.
 
-    Vertraut ein Client der \emph{CA}, vertraut er auch dem ausgestellten Zertifikat.
+    Vertraut ein Client der CA, vertraut er auch dem ausgestellten Zertifikat.
 
     Browser und Betriebssysteme kommen mit einer Reihe voreingestellten \emph{Trusted Root CAs}.
     Diese können selbstsignierte Zertifikate ausstellen, müssen jedoch längere Verfahren durchlaufen bis Browserhersteller oder Betriebssysteme die CA aufnehmen.
-    Browser speichern \emph{Trusted Root CAs}.
+    Browser speichern Trusted Root CAs.
 
     z. B. von \href{https://www.fh-aachen.de}{https://www.fh-aachen.de}: \enquote{Systems Enterprise Services GmbH}
 
@@ -271,37 +273,39 @@
     \begin{itemize}
         \item \emph{Registrierungsstelle}:
               \begin{itemize}
-                  \item Organisationen, bei der Personen, Maschinen oder auch untergeordnete Zertifizierungsstellen Zertifikate beantragen können.
-                  \item Diese prüft die Richtigkeit der Daten im gewünschten Zertifikat und genehmigt den Zertifikatsantrag, der dann durch die Zertifizierungsstelle signiert wird.
+                  \item Organisationen, bei der Personen, Maschinen oder auch untergeordnete Zertifizierungsstellen Zertifikate beantragen können
+                  \item prüft Richtigkeit der Daten im gewünschten Zertifikat und genehmigt Zertifikatsantrag, der dann durch eine Zertifizierungsstelle signiert wird
               \end{itemize}
         \item \emph{Zertifizierungsstelle}:
               \begin{itemize}
-                  \item Vertrauenswürdige Organisation, die die Signatur von Zertifikatsanträgen gemäß bekannter Regeln übernimmt.
+                  \item vertrauenswürdige Organisation, die Signatur von Zertifikatsanträgen gemäß bekannter Regeln übernimmt
               \end{itemize}
         \item \emph{Verzeichnisdienst}:
               \begin{itemize}
-                  \item Ein Durchsuchbares Verzeichnis, welches ausgestellte Zertifikate enthält.
+                  \item durchsuchbares Verzeichnis, das ausgestellte Zertifikate enthält
               \end{itemize}
         \item \emph{Validierungsdienst}:
               \begin{itemize}
-                  \item Ein Dienst, der die Überprüfung von Zertifikaten in Echtzeit ermöglicht.
+                  \item Dienst, der Überprüfung von Zertifikaten in Echtzeit ermöglicht
               \end{itemize}
     \end{itemize}
 \end{bonus}
 
 \begin{bonus}{POODLE-Attacke}
-    \emph{Padding Oracle On Downgraded Legacy Encryption}-Attacken reduzieren Verbindungen auf niedrige SSL-Versionen.
+    \emph{Padding Oracle On Downgraded Legacy Encryption}-Attacken reduzieren Verbindungen auf niedrigere SSL-Versionen.
 \end{bonus}
 
 \begin{defi}{HSTS}
-    \emph{Strict Transport Security (HSTS)} teilt einem Browser mit, dass eine Seite nur über \emph{HTTPS} und den angegeben \emph{Cipher Suites} erreichbar ist.
+    \emph{Strict Transport Security (HSTS)} teilt einem Browser mit, dass eine Seite nur über HTTPS und den angegeben \emph{Cipher Suites} erreichbar ist.
+
     Sobald man einmal mit einer Webseite verbunden ist, merkt sich der Browser die Verbindungseigenschaften.
 
     Dadurch werden \emph{POODLE}-Attacken verhindert.
 \end{defi}
 
 \begin{defi}{HPKP}
-    \emph{HTTP Public Key Pinning (HPKP)} nagelt den Browser auf einen öffentlichen Schlüssel fest.
+    \emph{HTTP Public Key Pinning (HPKP)} setzt den Browser auf einen öffentlichen Schlüssel fest.
+
     Danach kann niemand versuchen die Identität des Servers mit einem gefälschten Zertifikat anzunehmen.
 
     Dieses System wurde im Jahr 2020 deaktiviert.

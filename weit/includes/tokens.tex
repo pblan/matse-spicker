@@ -1,9 +1,9 @@
 \section{Tokens}
 
 \begin{defi}{Token-basierte Authentifikation}
-    Bei der \emph{Token-basierten Authentifizierung} handelt es sich um ein Protokoll, das es den Nutzern ermöglicht, ihre Identität zu verifizieren und im Gegenzug ein eindeutiges Zugangstoken zu erhalten.
+    Bei der \emph{Token-basierten Authentifizierung} handelt es sich um ein Protokoll, das es den Nutzenden ermöglicht, ihre Identität zu verifizieren und im Gegenzug ein eindeutiges Zugangstoken zu erhalten.
 
-    Während der Gültigkeitsdauer des Tokens können die Nutzer dann auf die Website oder Anwendung zugreifen, für die das Token ausgestellt wurde.
+    Während der Gültigkeitsdauer des Tokens können die Nutzenden dann auf die Website oder Anwendung zugreifen, für die das Token ausgestellt wurde.
 
     Sie müssen ihre Anmeldedaten nicht jedes Mal neu eingeben, wenn sie dieselbe Website, Anwendung oder eine andere mit demselben Token geschützte Ressource aufrufen.
 \end{defi}
@@ -46,7 +46,7 @@
 
 \begin{bonus}{OAuth 2.0 Protokollfluss}
     \centering
-    \includegraphics[width=.5\textwidth]{includes/figures/bonus_oauth2.pdf}
+    \includegraphics[width=.4\textwidth]{includes/figures/bonus_oauth2.pdf}
 \end{bonus}
 
 \begin{defi}{JSON Web Token}
@@ -83,13 +83,13 @@
 \begin{bonus}{OpenID und OpenID Connect}
     \emph{OpenID} ist ein dezentrales Authentifizierungssystem für webbasierte Dienste.
 
-    Es erlaubt einem Benutzer, der sich bei seinem OpenID-Provider einmal mit Benutzername und Kennwort angemeldet hat, sich mithilfe der OpenID (einer URL, in diesem Kontext auch Identifier genannt) ohne Benutzername und Passwort bei allen das System unterstützenden Websites – den Relying Parties – anzumelden, wendet also das \emph{Single-Sign-on-Prinzip} an.
+    Es erlaubt einem Client, der sich bei seinem OpenID-Provider einmal mit Benutzername und Kennwort angemeldet hat, sich mithilfe der OpenID (einer URL, in diesem Kontext auch Identifier genannt) ohne Benutzername und Passwort bei allen das System unterstützenden Websites – den Relying Parties – anzumelden, wendet also das \emph{Single-Sign-on-Prinzip} an.
 
     \emph{OpenID Connect (OIDC)} ist eine Authentifizierungsschicht, die auf dem Autorisierungsframework OAuth 2.0 basiert.
 \end{bonus}
 
 \begin{bonus}{ID-Token}
-    Ein \emph{ID-Token} ist ein Artefakt, das beweist, dass der Benutzer authentifiziert wurde.
+    Ein \emph{ID-Token} ist ein Artefakt, das beweist, dass ein Client authentifiziert wurde.
 
     Ein ID-Token ist als JSON-Web-Token (JWT) kodiert mit dem eine Anwendung den Inhalt leicht überprüfen und sicherstellen kann, dass er vom erwarteten Aussteller stammt und nicht von jemand anderem geändert wurde.
 \end{bonus}
@@ -98,5 +98,5 @@
     Im OAuth 2.0-Kontext ermöglicht ein \emph{Access-Token} einer Client-Anwendung den Zugriff auf eine bestimmte Ressource, um bestimmte Aktionen im Namen eines Benutzers durchzuführen.
 
     Dies ist ein sogenanntes \emph{delegiertes Autorisierungsszenario}:
-    Der Benutzer delegiert eine Client-Anwendung, um in seinem Namen auf eine Ressource zuzugreifen.
+    Der User delegiert eine Client-Anwendung, um in seinem Namen auf eine Ressource zuzugreifen.
 \end{bonus}
