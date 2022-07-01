@@ -15,6 +15,9 @@
 
     \centering
     \texttt{<protokoll>://<host>:<port>/<path>?<parameter>}
+
+    Beim Verbindungsaufbau fängt der Client an, in einer niedrigen \texttt{HTTP}-Version zu kommunizieren.
+    Sobald er merkt, dass der Server Anfragen bearbeiten kann, erhöht er die \texttt{HTTP}-Version, bis er entweder keine Antwort erhält, oder selber keine neuere Version hat.
 \end{defi}
 
 \begin{defi}{URI}

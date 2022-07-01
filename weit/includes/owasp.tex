@@ -85,7 +85,7 @@
         Wenn eure Datenbank irgendwie an die Öffentlichkeit kommt, haben eure Nutzende deutlich weniger Probleme, da viele Menschen immer noch für verschiedene Dienste das selbe Passwort verwenden.
     }:
     \begin{lstlisting}[language=mysql]
-        SELECT * FROM users WHERE username='admin' AND pw=!'Ch0nGwuX1a0j1ngl1nG'!;
+        SELECT * FROM users WHERE username=!'admin'! AND pw=!'4b5f253b01c2d8b1f85354e0a8c619ec0f047b64'!;
     \end{lstlisting}
 
     \emph{Angriff mittels SQL Injection}: \\
@@ -470,6 +470,23 @@
 
     Alternativ interessieren sich Angreifende für die Daten, die ein einem eigentlich nicht zugänglichen Speicher sind.
 \end{defi}
+
+\begin{bonus}{Heartbleed}
+    Eine Variante von Buffer Overflow Angriffen sind Heartbleed Anfragen.
+
+    Bei diesem Angriff fragt man bei dem Server nach der Wiederholung von gewissen Daten\footnote{z. B. damit der Server sich verifiziert oder um zu überprüfen, ob der Server noch \enquote{zuhört}}.
+    Jedoch gibt man eine falsche Länge der Daten an, die potentiell nicht vom Server validiert wird.
+
+    z. B.:
+
+    \texttt{Client}: Wenn du mich hörst, antworte bitte mit dem 8 Zeichen Wort: \texttt{Glumanda}
+
+    \texttt{Server}: \texttt{Glumanda}
+
+    \texttt{Attacker}: Wenn du mich hörst, antworte bitte mit dem \hl{591} Zeichen Wort: \texttt{Glumanda}
+
+    \texttt{Server}: \texttt{Glumanda\hl{adminpw:4b5f253b01c2d8b1f85354e0a8c619ec0f047b64}...}
+\end{bonus}
 
 \begin{defi}{Cross-Site-Request-Forgery}
     \enquote{Fälschung} einer Anfrage über einen anderen Account.
