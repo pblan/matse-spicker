@@ -251,6 +251,14 @@
     \end{itemize}
 \end{defi}
 
+\begin{bonus}{MSP432 Implementierung}
+    Um einen GPIO-Pin auf \texttt{INPUT} zu setzten, muss \texttt{PxDIR} auf \texttt{1} gesetzt werden.
+    Für einen digitalen Ausgang, kann man \texttt{PxSEL0} und \texttt{PxSEL1} z. B. auf \texttt{0} setzen.
+
+    Um einen GPIO-Pin auf \texttt{OUTPUT} zu setzten, muss \texttt{PxDIR} auf \texttt{0} gesetzt werden.
+    Für einen Pullup Widerstand muss man z. B. \texttt{PxSEL0} und \texttt{PxSEL1} z. B. auf \texttt{0} setzen.
+\end{bonus}
+
 \begin{bonus}{Bitmaske}
     Man kann durch die \texttt{msp.h} Bibliothek byteweise auf Register zugreifen.
     Jedoch möchte man anliegende Leitungen nicht beeinflussen.
@@ -280,7 +288,6 @@
 
     \begin{lstlisting}[language=c]
         #include msp.h
-
         #define BIT0 (uint16_t) (0x0001) // 0000 0001
 
         // Select GPIO mode
@@ -302,7 +309,6 @@
 
     \begin{lstlisting}[language=c]
         #include msp.h
-
         #define BIT1 (uint16_t) (0x0002) // 0000 0010
 
         // Select GPIO mode
