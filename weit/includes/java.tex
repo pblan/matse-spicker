@@ -1,24 +1,18 @@
 \section{Java}
 
-\begin{defi}{CGI}
-    \emph{Common Gateway Interface (CGI)} dient als Schnittstelle, um externe Programme auszuführen.
-    Jede Anfrage erzeugt einen eigenen Prozess.
-    Es ist ein Sprach- bzw. System-unabhängiges Konzept.
-\end{defi}
-
 \begin{defi}{Servlet-Engine}
-    Die Servlet-Engine enthält und verwaltet die Servlets über ihren gesamten Lebenszyklus.
+    Eine \emph{Servlet-Engine} enthält und verwaltet eigene Servlets über ihren gesamten Lebenszyklus.
 
     Sie bindet die Servlets über feste vorgegeben Interfaces ein und stellt die Dienste zum Empfangen von Anfragen und Senden von Antworten bereit.
 
-    Somit bildet sie die Kommunikationsendpunkte für die Servlets, die über HTTP-URLs angesprochen werden können
+    Somit bildet sie die Kommunikationsendpunkte für die Servlets, die über HTTP-URLs angesprochen werden können.
 \end{defi}
 
 \begin{defi}{Servlet}
     Ein \emph{Servlet} ist eine abgeleitete Java-Klasse, die von einem Container verwaltet wird und dynamische HTML-Inhalte generiert.
 
-    Servlets haben keine main-Methode.
-    Die Programmtechnische Nutzung wird durch die Servlet-API gesteuert:
+    Servlets haben keine \texttt{main}-Methode.
+    Die programmtechnische Nutzung wird durch die Servlet-API gesteuert:
     \begin{itemize}
         \item \texttt{init}
         \item \texttt{service} oder \texttt{doGet} bzw. \texttt{doPost}
@@ -26,15 +20,16 @@
     \end{itemize}
 
     Sie sind dauerhafte Prozesse, die zumeist auch über Anfragen hinweg existieren.
+
     Mehrere Anfragen existieren in der gleichen Instanz.
 
     Ein spezifisches Servlet unterliegt einem genau festgelegten Lebenszyklus:
     \begin{enumerate}
-        \item Laden der Servlet-Klasse und instanziieren (on demand)
-        \item Initialisieren des Servlet-Objekts
+        \item Laden der \texttt{Servlet}-Klasse und instanziieren (on demand)
+        \item Initialisieren des \texttt{Servlet}-Objekts
         \item Verarbeitung der verschiedenen Anfragen
-        \item Entfernen des Servlet-Objekts
-        \item Entladen der Servlet-Klasse
+        \item Entfernen des \texttt{Servlet}-Objekts
+        \item Entladen der \texttt{Servlet}-Klasse
     \end{enumerate}
 
     Intern stehen drei Umgebungsvariablen zur Verfügung:
@@ -60,11 +55,11 @@
                 res.setContentType("text/html");
                 PrintWriter out = response.getWriter();
 
-                // Beispiel cookie
+                // Cookie
                 Cookie cookie = new Cookie("lieblings_pokemon", "Glumanda");
                 res.addCookie(cookie);
 
-                // Beispiel session
+                // Session
                 HttpSession session = request.getSession();
                 session.setAttribute("lieblings_pokemon", "Glumanda");
                 
@@ -82,20 +77,46 @@
 \end{example}
 
 \begin{defi}{Tomcat}
-    \emph{Tomcat} ist eine vollständig in Java geschriebene open Source Referenzimplementierung der Apache Foundation der Servlet API.
-    Es dient als leicht-gewichtiger Servlet-Container, der z.B. keine Enterprise Java Beans unterstützt.
+    \emph{Tomcat} ist eine vollständig in Java geschriebene Open-Source-Referenzimplementierung der Apache Foundation der Servlet-API.
+
+    Es dient als leicht-gewichtiger Servlet-Container, der z.B. keine Enterprise JavaBeans unterstützt.
 \end{defi}
 
 \begin{defi}{JSP}
-    \emph{Java Server Pages (JSP)} kehrt die Servlet Idee \enquote{Java-Code generiert HTML} um: \enquote{HTML-Seiten beinhalten Java-Code}.
+    \emph{Java Server Pages (JSP)} kehren die Idee der Servlets \enquote{Java-Code generiert HTML} um in: \enquote{HTML-Seiten beinhalten Java-Code}.
+
     Die Anweisungen werden durch spezielle Tags gekennzeichnet.
 
     JSP-Seiten werden automatisch in Servlets übersetzt.
 \end{defi}
 
+\begin{bonus}{JSP-Elemente}
+    Es gibt neben den HTML-Elementen drei wichtige \emph{JSP-Konstrukte}:
+    \begin{itemize}
+        \item \emph{Scripting-Elemente} bzw. \emph{Java-Fragmente}:
+              \begin{itemize}
+                  \item \texttt{pageContent}: Zugriff auf Objekte in den verschiedenen Gültigkeitsbereichen
+                  \item \texttt{HttpServletRequest}
+                  \item \texttt{session}: sitzungsorientierte Anwendung
+                  \item \texttt{out}: Ausgabe
+              \end{itemize}
+        \item \emph{Direktiven}, die die Gesamtstruktur des Servlets kontrollieren:
+              \begin{itemize}
+                  \item \texttt{page} (Importieren einer Klasse)
+                  \item \texttt{include} (Fügt weitere JSP-Datei ein)
+                  \item \texttt{taglib} (Einführen eigener JSP-Tags)
+              \end{itemize}
+        \item \emph{Aktionen} bzw. \emph{Funktionalitäten} zur Laufzeit, die das Servlet beeinflussen:
+              \begin{itemize}
+                  \item \texttt{include} (Einfügen einer HTML- oder JSP-Seite zur Laufzeit)
+                  \item \texttt{forward} (Anfragen und Antworten an eine andere JSP-Seite übergeben)
+              \end{itemize}
+    \end{itemize}
+\end{bonus}
+
 \begin{example}{JSP}
-    \begin{lstlisting}[language=Java]
-        <%@ page contentType="text/html"%>
+    \begin{lstlisting}[language=Java, alsolanguage=html5]
+        <%@ page contentType="text/html" %>
         <!DOCTYPE html>
         <html>
         <head> <title> Pokemon </title> </head>
@@ -107,81 +128,48 @@
     \end{lstlisting}
 \end{example}
 
-\begin{bonus}{Elemente JSP}
-    Es gibt neben den HTML-Elementen drei wichtige JSP-Konstrukte:
-    \begin{itemize}
-        \item Scripting-Elemente bzw Java-Fragmente
+\begin{bonus}{Wiederholung Model-View-Controller}
+    \emph{Model-View-Controller}  ist ein Muster zur Unterteilung einer Software in die drei Komponenten \emph{Model}, \emph{View} und \emph{Controller}.
+    Das Muster kann sowohl als Architekturmuster als auch als Entwurfsmuster eingesetzt werden.
 
-              lokale Variablen sind:
-              \begin{itemize}
-                  \item \texttt{pageContent}: Zugriff auf Objekte in den verschiedenen Gültigkeitsbereichen
-                  \item \texttt{HttpServletRequest}
-                  \item \texttt{session}: sitzungsorientierte Anwendung
-                  \item \texttt{out}: Ausgabe
-              \end{itemize}
-        \item Direktiven, die die Gesamtstruktur des Servlets kontrollieren
+    Ziel des Musters ist ein flexibler Programmentwurf, der eine spätere Änderung oder Erweiterung erleichtert und eine Wiederverwendbarkeit der einzelnen Komponenten ermöglicht.
+    Die Umsetzungen nutzen dasselbe Model, nur Controller und View müssen dabei jeweils neu implementiert werden.
 
-              Es gibt drei Arten von Direktiven:
-              \begin{itemize}
-                  \item page: zum Importieren einer Klasse
-                  \item include: Fügt eine weitere JSP-Datei ein
-                  \item taglib: zum Einführen eigener JSP-Tags
-              \end{itemize}
-        \item Aktionen bzw. Funktionalitäten zur Laufzeit, die das Servlet beeinflussen
+    Das \emph{Model} enthält Daten, die von der Präsentation dargestellt werden.
+    Es ist von View und Controller unabhängig.
 
-              z. B.:
-              \begin{itemize}
-                  \item Include: Einfügen einer HTML- oder JSP-Seite zur Laufzeit
-                  \item Forward: Anfragen und Antwort werden an eine andere JSP-Seite übergeben
-              \end{itemize}
-    \end{itemize}
+    Die \emph{View} ist für die Darstellung der Daten des Models und die Realisierung der Benutzerinteraktionen zuständig.
+    Sie kennt das Model, dessen Daten sie präsentiert, ist aber nicht für die Verarbeitung dieser Daten zuständig.
+    Des Weiteren ist sie von dem Controller unabhängig.
+
+    Der \emph{Controller} verwaltet die View und das Model.
+    Er wird von der View über Benutzerinteraktionen informiert, wertet diese aus und nimmt daraufhin Anpassungen an der View sowie Änderungen an den Daten im Model vor.
+
+    \begin{center}
+        \includegraphics[width=0.7\textwidth]{includes/figures/defi_mvc.pdf}
+    \end{center}
 \end{bonus}
 
-\begin{defi}{Model View Controller (Prinzip)}
-    \begin{itemize}
-        \item Model-Objekt
-              \begin{itemize}
-                  \item definiert die Datenstruktur der Anwendung
-                  \item speichert die Daten
-                  \item stellt Methoden zur Änderung der Daten zur Verfügung
-                  \item Realisiert manchmal die Geschäftslogik
-              \end{itemize}
-        \item View-Objekt
-              \begin{itemize}
-                  \item stellt die Bildschirmpräsentation dar
-                  \item Objekt erhält die Daten vom Model
-                  \item Benutzender führt auf der View die Aktion aus
-                  \item die Aktionen werden durch den Controller an das Model weitergeleitet
-              \end{itemize}
-        \item Controller-Objekt
-              \begin{itemize}
-                  \item Reaktion und Verarbeitung von Benutzungseingaben
-                  \item Vermittler zwischen Model und View
-                  \item Realisiert oftmals die Geschäftslogik
-              \end{itemize}
-    \end{itemize}
-\end{defi}
-
-\begin{defi}{Model View Controller (Implementierung)}
+\begin{defi}{Model View Controller (Java)}
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_model_view_controller.pdf}
     \end{center}
 
     \begin{itemize}
-        \item Model
+        \item Model:
               \begin{itemize}
-                  \item Realisation zumeist mittels Java Beans
-                  \item Java Beans enthalten die eigentliche Programmlogik
-                  \item Java Beans berechnen die Ergebnisse und speichern Zustände
-                  \item Java Beans sind unabhängig von der Webschnittstelle
+                  \item Realisation zumeist mittels JavaBeans
+                  \item JavaBeans enthalten die eigentliche Programmlogik
+                  \item JavaBeans berechnen die Ergebnisse und speichern Zustände
+                  \item JavaBeans sind unabhängig von der Webschnittstelle
               \end{itemize}
-        \item View
+        \item View:
               \begin{itemize}
                   \item Nutzung von JSP-Seiten
                   \item Anzeige der Ergebnisse
                   \item Ziel: Möglichst wenig Java Code
               \end{itemize}
-        \item Controller
+        \item Controller:
               \begin{itemize}
                   \item Programmieren eines Servlets
                   \item Einlesen und Überprüfen der übergeben Parameter
@@ -191,14 +179,18 @@
     \end{itemize}
 \end{defi}
 
-\begin{defi}{Java Beans}
-    Enterprise Java Beans [\ldots] are meant to perform server side operations, such as executing complex algorithms or performing highly transactional business operations.
-    Server components need to run in a highly available, fault tolerant, transactional, mutli-user, secure environment.
-    The application server provides sich a server side environment for the enterprise beans\ldots
-    Typically, EJB components can perform any of the following tasks:
+\begin{defi}{JavaBeans}
+    JavaBeans sind Software-Komponenten für die Programmiersprache Java.
+    JavaBeans entwickelten sich aus der Notwendigkeit heraus, GUI-Klassen (AWT, Swing) einfach zu instanziieren.
+
+    JavaBeans werden auch als Container zur Datenübertragung verwendet.
+
+    Daher zeichnen sich alle JavaBeans durch folgende Eigenschaften aus:
     \begin{itemize}
-        \item Perform business logic
-        \item Access a database
-        \item Integrate with other systems
+        \item Öffentlicher parameterloser Konstruktor
+        \item Serialisierbarkeit (Serializable)
+        \item Öffentliche Zugriffsmethoden (Public Getters/Setters)
     \end{itemize}
+
+    Mit \emph{Enterprise JavaBeans} können wichtige Konzepte für Unternehmensanwendungen, z. B. Transaktions-, Namens- oder Sicherheitsdienste, umgesetzt werden, die für die Geschäftslogik einer Anwendung nötig sind.
 \end{defi}

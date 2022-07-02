@@ -1,21 +1,22 @@
 \section{Node.js}
 
 \begin{defi}{Node.js}
-    \begin{wrapfigure}{r}{0.25\textwidth}
-        \begin{center}
-            \includegraphics[width=0.2\textwidth]{includes/figures/defi_node_js.png}
-        \end{center}
+    \begin{wrapfigure}{r}{0.2\textwidth}
+        \centering
+        \includegraphics[width=0.15\textwidth]{includes/figures/defi_node_js.png}
     \end{wrapfigure}
-
+    %
     Neben clientseitigem JavaScript kann man ebenfalls serverseitig dynamisch HTML-Objekte erstellen.
     Viele serverseitige Methoden nutzen die selbe Syntax wie clientseitige Methoden.
 
-    Node.js ist ein eventbasierter Webserver.
+    \emph{Node.js} ist ein eventbasierter Webserver.
+
     Bei einer Anfrage wird ein Thread erstellt, welcher genutzt wird, um diese synchron abzuarbeiten.
-    Der Haupt Thread wird dabei jedoch nicht blockiert.
+
+    Der Haupt-Thread wird dabei jedoch nicht blockiert.
     Jeder Worker-Thread läuft dabei in einer eigenen JavaScript Engine.
 
-    Ein erster Ansatz sieht wie folgt aus\footnote{Node.js erstellt einen Worker Thread (hier blau)}:
+    Ein erster Ansatz sieht wie folgt aus\footnote{Node.js erstellt einen Worker-Thread (hier blau)}:
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/defi_js_server.pdf}
     \end{center}
@@ -30,57 +31,58 @@
 
 \subsection{Projekt}
 
-\begin{bonus}{package.json}
-    \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_package.pdf}
-    \end{center}
+\begin{center}
+    \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_package.pdf}
+\end{center}
 
-    \texttt{npm init} erzeugt interaktiv eine \texttt{package.json}, welche Informationen über das Node Projekt (wie z. B. Abhängigkeiten) enthält.
-    Enthält der Ordner diese \texttt{package.json} wird sie von Node als Projekt erkannt und kann mit \texttt{node .} ausgeführt werden.
-\end{bonus}
+\begin{defi}{package.json}
+    \texttt{npm init} erzeugt interaktiv eine \texttt{package.json}, welche Informationen über das Node-Projekt (wie z. B. Abhängigkeiten) enthält.
+
+    Enthält der Ordner diese \texttt{package.json}, wird sie von Node als Projekt erkannt und kann mit \texttt{node .} ausgeführt werden.
+\end{defi}
 
 \subsection{Module}
 
 \begin{defi}{Modul}
-    Ein Module ist eine Funktionalität, die in eine eigene JavaScript Datei ausgelagert wurde.
+    Ein \emph{Modul} ist eine Funktionalität, die in eine eigene JavaScript-Datei ausgelagert wurde.
 
-    Man unterteilt JavaScript Module in drei Arten:
+    Man unterteilt JavaScript-Module in drei Arten:
     \begin{enumerate}
-        \item Integrierte Module
+        \item \emph{Integrierte Module}:
               \begin{itemize}
                   \item Vorinstallierte Kernmodule
               \end{itemize}
-        \item Lokale Module
+        \item \emph{Lokale Module}:
               \begin{itemize}
                   \item Meist selbstgeschriebene Funktionen und Klassen
                   \item Zu finden in \texttt{/modules}
               \end{itemize}
-        \item Third Party Module
+        \item \emph{Third-Party-Module}:
               \begin{itemize}
-                  \item Öffentliche Module, welche per Package Manager eingebunden werden müssen
+                  \item Öffentliche Module, welche per Package Manager (\texttt{npm}) eingebunden werden
                   \item Zu finden in \texttt{/node\_modules}
               \end{itemize}
     \end{enumerate}
 
-    Zum Nutzen der Module muss man ganz oben in seine JavaScript-Datei folgende import-Anweisung nutzen:
+    Zum Nutzen der Module muss man in einer JavaScript-Datei folgende Import-Anweisung nutzen:
     \begin{lstlisting}[language=JavaScript]
         const MODULE = require('/modules/file.js')
     \end{lstlisting}
 \end{defi}
 
-\begin{bonus}{modules}
-    \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_module.pdf}
-    \end{center}
+\begin{center}
+    \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_module.pdf}
+\end{center}
 
-    Zum Exportieren seiner Funktion muss man nach der Initialisierung der Methode bzw. Klasse folgendes export-Anweisung nutzen:
+\begin{defi}{Modulexport}
+    Zum \emph{Exportieren} einer Funktion muss man nach der Initialisierung der Methode bzw. Klasse folgendes Export-Anweisung nutzen:
     \begin{lstlisting}[language=JavaScript]
         module.exports = ...
     \end{lstlisting}
-\end{bonus}
+\end{defi}
 
-\begin{example}{modules}
-    Um Klassen direkt zu exportieren, kann man \texttt{module.exports} überschreiben.
+\begin{example}{Modulexport (einfach)}
+    Um \emph{Klassen} direkt zu exportieren, überschreibt man \texttt{module.exports}:
 
     \texttt{modules/pokemon.js}
     \begin{lstlisting}[language=JavaScript]
@@ -92,12 +94,12 @@
                 this.name = name
             }
 
-            to_string() {
+            toString() {
                 return `${this.name} [${this.id}]`
             }
         }
 
-        module.exports = Pokemon
+        module.exports = ^Pokemon^
     \end{lstlisting}
 
     \texttt{app.js}
@@ -105,12 +107,10 @@
         const ^Pokemon^ = require('modules/pokemon.js')
 
         const glumanda = ^new Pokemon(4, 'Glumanda')^
-        console.log(glumanda.to_string()) // Glumanda [4]
+        console.log(glumanda.toString()) // Glumanda [4]
     \end{lstlisting}
-\end{example}
 
-\begin{example}{modules}
-    Alternativ kann man direkt Instanzen exportieren (z. B. für Singleton etc.):
+    Alternativ kann man direkt \emph{Instanzen} exportieren (z. B. für Singleton etc.):
 
     \texttt{modules/pokemon.js}
     \begin{lstlisting}[language=JavaScript]
@@ -127,13 +127,13 @@
     \end{lstlisting}
 \end{example}
 
-\begin{example}{modules}
+\begin{example}{Modulexport (mehrfach)}
     Um mehrere Objekte zu exportieren, kann man entweder \texttt{module.exports}\footnote{
         Wenn man nur das Objekt anpasst, kann man \texttt{exports = ...} nutzen, da \texttt{exports} ein pointer auf \texttt{module.exports} ist.
         Beim Überschreiben der Variable wird nur die Referenz auf \texttt{module.exports} gelöscht.
-    } anpassen oder mit einem Array überschreiben.
+    } anpassen:
 
-    \texttt{modules/pokemon.js} (exports)
+    \texttt{modules/pokemon.js}
     \begin{lstlisting}[language=JavaScript]
         class Pokemon { ... }
         class Attacke { ... }
@@ -151,9 +151,9 @@
         pokemon_module.brennen(new pokemon_module.Pokemon(4, 'Glumanda'))
     \end{lstlisting}
 
-    oder:
+    oder mit einem Array überschreiben:
 
-    \texttt{modules/pokemon.js} (Array)
+    \texttt{modules/pokemon.js}
     \begin{lstlisting}[language=JavaScript]
         class Pokemon { ... }
         class Attacke { ... }
@@ -172,6 +172,37 @@
     Man sieht, dass man in der ersten Variante deutlich mehr schreiben muss, da man den \enquote{namespace} vor jedes Objekt des Modules schreiben muss.
     Jedoch hat sie den deutlichen Vorteil, dass man nicht alle imports anpassen muss, wenn man einen export hinzufügt.
 \end{example}
+
+\subsection{Öffentliche Module}
+
+\begin{defi}{Node Package Manager}
+    \emph{Node Package Manager (npm)} ist ein Projektmanager für Node.js.
+    Er wird genutzt um Öffentliche Module zu importieren oder eigene Module öffentlich zur Verfügung zu stellen.
+\end{defi}
+
+\begin{center}
+    \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_node_modules.pdf}
+\end{center}
+
+\begin{bonus}{node\_modules}
+
+    Um ein öffentliches Modul einer \texttt{package.json} hinzuzufügen und dieses direkt zu laden, nutzt man:
+
+    \begin{center}
+        \texttt{npm install <package>}
+    \end{center}
+
+    Wenn eine fremde \texttt{package.json} eingebunden hat und alle Module laden möchte, von denen das Projekt abhängig ist, nutzt man:
+    \begin{center}
+        \texttt{npm install}
+    \end{center}
+
+    Einige relevante Module sind:
+    \begin{itemize}
+        \item \emph{Mustache}, zum Rendern von HTML-Templates
+        \item \emph{Sequelize}, für den Zugriff auf eine Datenbank
+    \end{itemize}
+\end{bonus}
 
 \subsubsection{Websockets}
 
@@ -230,7 +261,7 @@
 
     \texttt{public/js/ws.js}
     \begin{lstlisting}[language=JavaScript]
-        let socket = new WebSocket('wss://localhost:3000/') // wss = web socket ^secure^
+        let socket = new WebSocket('wss://localhost:3000/') // wss = web socket secure
         socket.onopen = () => console.log('CLIENT: connected')
         socket.onmessage = message => console.log(`CLIENT: ${message.data}`)
 
@@ -241,47 +272,22 @@
     \end{lstlisting}
 \end{example}
 
-\subsection{Öffentliche Module}
-
-\begin{defi}{Node Package Manager}
-    Node Package Manager (npm) ist ein Projektmanager für Node.js.
-    Er wird genutzt um Öffentliche Module zu importieren oder eigene Module öffentlich zur Verfügung zu stellen.
-\end{defi}
-
-\begin{bonus}{node\_modules (Node.js)}
-    \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_node_modules.pdf}
-    \end{center}
-
-    Um ein öffentliches Modul seiner \texttt{package.json} hinzuzufügen und dieses direkt zu laden, nutzt man:
-    \texttt{npm install <package>}
-
-    Wenn eine fremde \texttt{package.json} eingebunden hat und alle Module laden möchte, von denen das Projekt abhängig ist, nutzt man:
-    \texttt{npm install}
-
-    Einige relevante Module sind:
-    \begin{itemize}
-        \item Mustache, zum Rendern von HTML-Vorlagen
-        \item Sequelize, für den Zugriff auf eine (Lite-) Datenbank
-    \end{itemize}
-\end{bonus}
-
 \subsection{Einstiegspunkt}
 
-\begin{bonus}{app.js}
-    \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_app.pdf}
-    \end{center}
+\begin{center}
+    \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_app.pdf}
+\end{center}
 
-    Die \texttt{app.js} ist der Einstiegspunkt für unseren Server.
+\begin{bonus}{app.js}
+    Die \texttt{app.js} ist der standardmäßige Einstiegspunkt einer Node-Anwendung.
+
     In der \texttt{package.json} wird festgelegt, welche Datei diese Aufgabe übernimmt.
 
     Der Server wird mit \texttt{node .} gestartet.
 \end{bonus}
 
 \begin{example}{app.js}
-    Ein reiner Webserver kann wie folgt erstellt werden.
-    Es wird ausschließlich das vorinstallierte Modul \emph{http} benötigt.
+    Ein reiner Webserver kann wie folgt erstellt werden; es wird ausschließlich das vorinstallierte Modul \texttt{http} benötigt:
 
     \begin{lstlisting}[language=JavaScript]
         const http = require('http')
@@ -296,16 +302,19 @@
         server.listen(port)
     \end{lstlisting}
 
-    Wenn man nun z. B. die Webseite \texttt{http://localhost:3000/test} aufruft, erhält man:\\
-    \texttt{/test: hello}
+    Wenn man nun die URL \texttt{http://localhost:3000/test} aufruft, erhält man:
+    \begin{center}
+        \texttt{/test: hello}
+    \end{center}
 \end{example}
 
-\begin{defi}{express}
-    \emph{express} ist das meistgenutzte Web-Framework für Node.js.
-    Es erweitert Node.js um Werkzeuge, mit denen das Entwickeln moderner Webanwendungen einfacher gestaltet wird
+\begin{defi}{Express}
+    \emph{Express} ist das meistgenutzte Web-Framework für Node.js.
+
+    Es erweitert Node.js um Werkzeuge, mit denen das Entwickeln moderner Webanwendungen einfacher gestaltet wird.
 \end{defi}
 
-\begin{example}{app.js}
+\begin{example}{app.js (Express)}
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
         
@@ -319,8 +328,10 @@
         app.listen(port)
     \end{lstlisting}
 
-    Wenn man nun die Webseite \texttt{http://localhost:3000/} aufruft, erhält man:\\
-    \texttt{hello}
+    Wenn man nun die Webseite \texttt{http://localhost:3000/} aufruft, erhält man:
+    \begin{center}
+        \texttt{hello}
+    \end{center}
 
     Die Routen werden jedoch meist nicht in der \texttt{app.js} definiert, sondern lediglich eingebunden:
     \begin{lstlisting}[language=JavaScript]
@@ -330,107 +341,122 @@
 
 \subsection{Routen}
 
-\begin{bonus}{routes}
-    \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_routes.pdf}
-    \end{center}
-\end{bonus}
+\begin{center}
+    \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_routes.pdf}
+\end{center}
 
 \begin{defi}{Route}
-    Routen dienen zur Navigation innerhalb einer Anwendung.
+    \emph{Routen} dienen zur Navigation innerhalb einer Anwendung.
 
     Sie werden als Callback-Methode abgebildet:
-    \texttt{.get('/'. (req, res, next) => {})}
+
+    \begin{center}
+        \texttt{.get('/'. (req, res, next) => {})}
+    \end{center}
 
     Die Syntax besteht aus folgenden Teilen:
     \begin{itemize}
-        \item \emph{HTTP Methode}: z. B. \texttt{get}, \texttt{post}, \texttt{put}, \texttt{patch}, \texttt{delete} etc.
-              Alternativ:
+        \item \emph{HTTP-Methode}:
               \begin{itemize}
+                  \item z. B. \texttt{get}, \texttt{post}, \texttt{put}, \texttt{patch}, \texttt{delete} etc.
                   \item \texttt{all}: Alle \emph{HTTP Methoden}
-                  \item \texttt{use}: Alle \emph{HTTP Methoden} inkl. rekursiv aller sub-Routen
+                  \item \texttt{use}: Alle \emph{HTTP Methoden}, inkl. rekursiv aller Subrouten
               \end{itemize}
-        \item \emph{Path}: Route, die im Browser genutzt wird. z. B. '/'
-
-              Mögliche Eingaben: \texttt{string}, \texttt{muster}, \texttt{regulärer Ausdruck}, \texttt{array}
-        \item \texttt{req}: \emph{HTTP request argument} mit übergebenen Parametern
-        \item \texttt{res}: \emph{HTTP response argument}, welches wir hier erstellen
-
-              \emph{Responses} sind z. B.:
+        \item \emph{Path}:
               \begin{itemize}
-                  \item \texttt{res.download()}: Fordert den Client auf, eine Datei herunterzuladen
-                  \item \texttt{res.end()}: Beendet den Prozess
-                  \item \texttt{res.json()}: Sendet ein JSON-Objekt
-                  \item \texttt{res.jsonp()}: Sendet ein JSONP-Objekt
-                  \item \texttt{res.redirect()}: Leitet den Client weiter
-                  \item \texttt{res.render()}: Rendert eine Anzeigevorlage
-                  \item \texttt{res.send()}: Sendet eine Antwort mit beliebigem Typen
-                  \item \texttt{res.sendFile()}: Sendet eine Datei als Oktett-Stream
-                  \item \texttt{res.sendStatus()}: Legt den Antwortstatuscode fest
+                  \item Route, die im Browser genutzt wird. z. B. \texttt{/}
+                  \item Mögliche Eingaben: String, Muster, Regex, Array
               \end{itemize}
-        \item \texttt{next}: Callback-Methode die ausgeführt werden muss, sollten wir weitere Routen haben, die unter dem Pfad liegen.
-              Wenn \texttt{next()} genutzt wird, befinden wir uns in einer Middleware
+        \item \texttt{req}:
+              \begin{itemize}
+                  \item \emph{HTTP Request Argument} mit übergebenen Parametern
+              \end{itemize}
+        \item \texttt{res}:
+              \begin{itemize}
+                  \item \emph{HTTP Response Argument}, die hier erstellt wird
+                  \item Beispiele:
+                        \begin{itemize}
+                            \item \texttt{res.download()} (fordert Client auf, eine Datei herunterzuladen)
+                            \item \texttt{res.end()} (beendet den Prozess)
+                            \item \texttt{res.json()} (sendet JSON-Objekt)
+                            \item \texttt{res.redirect()} (leitet Client weiter)
+                            \item \texttt{res.render()} (rendert Anzeigevorlage)
+                            \item \texttt{res.send()} (sendet Antwort mit beliebigem Typen)
+                            \item \texttt{res.sendFile()} (sendet Datei als Oktett-Stream)
+                            \item \texttt{res.sendStatus()} (legt Antwortstatuscode fest)
+                        \end{itemize}
+              \end{itemize}
+        \item \texttt{next}:
+              \begin{itemize}
+                  \item Callback-Methode die ausgeführt werden muss, sollten weitere Routen existieren, die unter dem Pfad liegen.
+                  \item \texttt{next()} wird in Middlewares genutzt.
+              \end{itemize}
     \end{itemize}
 \end{defi}
 
 \begin{defi}{Router}
-    Wenn man mehrere Routen bündeln möchte, nutzt man Router.
-    Man schafft eine Hierarchie um Sub-Pfade getrennt von den Routern zur Verfügung zu stellen und die Routennamen, falls nötig, zu parametrisieren.
+    Wenn man mehrere Routen bündeln möchte, nutzt man \emph{Router}.
 
-    Eine Ansammlung von Routern findet man in \texttt{/routes}
-\end{defi}
+    Man schafft eine Hierarchie um Unterpfade getrennt von den Routern zur Verfügung zu stellen und die Routennamen, falls nötig, zu parametrisieren.
 
-\begin{example}{Router}
+    So wird z. B. aus:
     \begin{lstlisting}[language=JavaScript]
         app.get(^'/base_route/a'^, (req, res) => { ... })
         app.get(^'/base_route/b'^, (req, res) => { ... })
         app.get(^'/base_route/c'^, (req, res) => { ... })
     \end{lstlisting}
 
-    wird vereinfacht zu:
-
+    direkt:
     \begin{lstlisting}[language=JavaScript]
         const router = express.Router()
-
+        
         router.get('/a', (req, res) => { ... })
         router.get('/b', (req, res) => { ... })
         router.get('/c', (req, res) => { ... })
-
+        
         app.use(^'base_route'^, router)
     \end{lstlisting}
-\end{example}
 
-\begin{example}{routes}
+    Eine Ansammlung von Routern findet man im Ordner \texttt{/routes}.
+\end{defi}
+
+\begin{example}{Router}
     \texttt{app.js}:
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
         const app = express()
 
         /* routes */
-        app.use(^'/pokemon'^, require('modules/pokemon.js'))
+        app.use(^'/pokemon'^, require('routes/pokemon.js'))
 
         app.listen(3000)
     \end{lstlisting}
 
     \texttt{routes/pokemon.js}:
     \begin{lstlisting}[language=JavaScript]
-        const Pokemon = require('../modules/pokemon.js')
+        const Pokemon = require('../modules/pokemon.js') // definiert Pokemon-Klasse
         const express = require('express')
         
         module.exports = express.Router()
             .get(^'/'^, (req, res) => {
-                res.send(Pokemon.get_rand().to_string())
+                res.send(Pokemon.getRand().toString())
             })
             .get(^'/count'^, (req, res) => {
                 res.send('896')
             })
     \end{lstlisting}
 
-    Wenn man nun die Webseite \texttt{http://localhost:3000/pokemon} aufruft, erhält man z. B.:\\
-    \texttt{Glumanda [4]}
+    Wenn man nun die Webseite \texttt{http://localhost:3000/pokemon} aufruft, erhält man z. B.:
 
-    Wenn man die Webseite \texttt{http://localhost:3000/pokemon/count} aufruft, erhält man:\\
-    \texttt{896}
+    \begin{center}
+        \texttt{Glumanda [4]}
+    \end{center}
+
+    Wenn man die Webseite \texttt{http://localhost:3000/pokemon/count} aufruft, erhält man:
+
+    \begin{center}
+        \texttt{896}
+    \end{center}
 \end{example}
 
 \begin{defi}{Validierung (JavaScript)}
@@ -468,37 +494,40 @@
 \subsubsection{REST}
 
 \begin{defi}{REST}
-    \emph{REpresentational State Transfer (REST)} dient als Architektur unter dem HTTP Transportprotokoll um mit Ressourcen zu interagieren.
+    \emph{REpresentational State Transfer (REST)} dient als Architektur unter dem HTTP-Transportprotokoll, um mit Ressourcen zu interagieren.
 
     REST ist zustandslos.
     Der Server behandelt jeden Aufruf als in sich abgeschlossenen Auftrag ohne impliziten Bezug auf vorgehende Operationen.
 \end{defi}
 
 \begin{defi}{Hypermedia}
-    Letztendlich wollen wir nicht nur mit einzelnen Ressourcen arbeiten, sondern mit untereinander vernetzten Prozessen, die u. a. Ressourcen abbilden.
-    Ressourcen \enquote{pflegen} also die Verlinkung mit anderen Ressourcen.
+    \emph{Hypermedia} bezeichnet Medien, die (untereinander) mithilfe von Hyperlinks vernetzt sind.
+
+    Hypermedia kann sich aus allen Typen und Formen von Medien zusammensetzen.
 \end{defi}
 
 \begin{defi}{CRUD}
-    Alle REST Interaktionen lassen sich mittels einfachen Abbildungen auf die HTTP-Verben beschreiben.
-    Dazu nutzen wird die bekannten \emph{CRUD (Create, Read, Update, Delete)}-Operationen.
+    Alle REST-Interaktionen lassen sich mittels einfacher Abbildungen auf die HTTP-Verben beschreiben.
+
+    Dazu nutzen wir die bekannten \emph{CRUD (Create, Read, Update, Delete)}-Operationen.
 \end{defi}
 
-\begin{example}{GET}
+\begin{example}{GET (REST)}
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/example_rest_get.pdf}
     \end{center}
 \end{example}
 
-\begin{example}{POST}
+\begin{example}{POST (REST)}
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/example_rest_post.pdf}
     \end{center}
 \end{example}
 
 \begin{bonus}{Rückgabetypen}
-    In \texttt{express} Routen ist es bei einer REST Schnittstelle sinnvoll anstatt \texttt{res.send()} in einem Switch für das Format \texttt{res.format()} zu nutzen.
-    Dadurch kann man sinnvoll auf das gewünschte Format des Clients reagieren.
+    In Express-Routen ist es bei einer REST-Schnittstelle sinnvoll, anstatt \texttt{res.send()} in einem Switch für das Format, \texttt{res.format()} zu nutzen.
+
+    Dadurch kann man sinnvoll auf das gewünschte Format des Clients reagieren:
 
     \begin{lstlisting}[language=JavaScript]
         res.format({
@@ -542,40 +571,39 @@
 
 \subsection{Middlewares}
 
-\begin{bonus}{middlewares}
-    \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_middlewares.pdf}
-    \end{center}
-\end{bonus}
+\begin{center}
+    \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_middlewares.pdf}
+\end{center}
 
 \begin{defi}{Middleware}
-    Middlewares sind ein Stack von Funktionen mit beliebigem Inhalt.
-    Sie werden zwischen dem Eingehen eines Requests un dessen Bearbeitung durch einen Handler (z. B. Route) geschaltet.
-    In Middlewares können z. B. Eingaben geparsed werden, geloggt werden oder Fehler abgefangen werden.
-    Anmeldungen werden ebenfalls über Middlewares geregelt.
+    \emph{Middlewares} sind ein Stack von Funktionen mit beliebigem Inhalt.
 
-    Sie haben Zugriff auf \emph{Request}, \emph{Response}, sowie die direkt folgende \emph{Middleware}.
+    Sie werden zwischen dem Eingehen eines Requests und dessen Bearbeitung durch eine Handlerfunktion geschaltet.
+
+    In Middlewares können z. B. Eingaben geparsed werden, geloggt werden oder Fehler abgefangen werden.\footnote{Anmeldungen werden ebenfalls über Middlewares geregelt.}
+
+    Sie haben Zugriff auf \emph{Request}, \emph{Response}, sowie den direkt folgende \emph{Middleware-Callback}.
 \end{defi}
 
-\begin{example}{middlewares}
+\begin{example}{Middleware}
     \texttt{app.js}:
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
         const app = express()
 
         /* middlewares */ app.use(^'/'^, require('middlewares/logging.js')) // 1.
-        /* routes */ app.use(^'/pokemon'^, require('modules/pokemon.js')) // 2.
+        /* routes */ app.use(^'/pokemon'^, require('routes/pokemon.js')) // 2.
 
         app.listen(3000)
     \end{lstlisting}
 
-    \texttt{modules/pokemon.js}:
+    \texttt{routes/pokemon.js}:
     \begin{lstlisting}[language=JavaScript]
-        const Pokemon = require('../modules/pokemon.js')
+        const Pokemon = require('../modules/pokemon.js') // definiert Pokemon-Klasse
         const express = require('express')
         
         module.exports = express.Router()
-            .get(^'/'^, (req, res) => res.send(Pokemon.get_rand().to_string()) )
+            .get(^'/'^, (req, res) => res.send(Pokemon.getRand().toString()) )
     \end{lstlisting}
 
     \texttt{middlewares/logging.js}:
@@ -592,19 +620,19 @@
     Wenn man nun die Webseite \texttt{http://localhost:3000/pokemon} aufruft:
     \begin{enumerate}
         \item wird geloggt: \texttt{/pokemon}
-        \item wird erhält man z. B.: \texttt{Glumanda [4]}
+        \item erhält man z. B.: \texttt{Glumanda [4]}
     \end{enumerate}
 \end{example}
 
 \subsubsection{Cookies}
 
-\begin{defi}{Cookie}
-    Der Zustand eines Node.js-Skriptes geht nach der Ausführung verloren.
+\begin{defi}{Cookie (JavaScript)}
+    Der Zustand eines Node.js-Skripts geht nach der Ausführung verloren.
     Clients wollen nicht immer alle Daten im Aufruf aktiv mitsenden und der Server möchte auch keine Daten zwischenspeichern.
 
     Deswegen lässt der Server Daten auf dem Client zwischenspeichern, die der Server nochmal benötigen könnte, damit der Client sie nicht nochmal aktiv senden muss.
 
-    Cookies werden z. B. genutzt damit sich der Client einmalig anmelden kann, und dann angemeldet bleibt oder um das Nutzungsverhalten zu analysieren.
+    \emph{Cookies} werden z. B. genutzt damit sich der Client einmalig anmelden kann und dann angemeldet bleibt, oder um das Nutzungsverhalten zu analysieren.
 
     Die Syntax um Cookies zu erstellen sieht wie folgt aus:
     \begin{lstlisting}[language=JavaScript]
@@ -612,13 +640,13 @@
     \end{lstlisting}
 
     \begin{itemize}
-        \item \texttt{name}: key des cookies
-        \item \texttt{value}: value
-        \item \texttt{options}: z. B.: \texttt{expires}, \texttt{path}, \texttt{domain} etc.
+        \item \texttt{name} (Key des Cookies)
+        \item \texttt{value}
+        \item \texttt{options} (z. B.: \texttt{expires}, \texttt{path}, \texttt{domain} etc.)
     \end{itemize}
 \end{defi}
 
-\begin{example}{set cookie}
+\begin{example}{Cookie (JavaScript)}
     In einer Route wird folgende Zeile ausgeführt:
 
     \begin{lstlisting}[language=JavaScript]
@@ -628,13 +656,13 @@
     Bei der nächsten Anfrage existiert nun ein Cookie, in dem das Lieblings-Pokemon gespeichert ist.
 \end{example}
 
-\begin{bonus}{Cookie Parser}
-    Um den gesetzten Cookie bei der nächsten Anfrage zu lesen, benötigt man einen Cookie-Parser.
+\begin{bonus}{Cookie-Parser}
+    Um den gesetzten Cookie bei der nächsten Anfrage zu lesen, benötigt man einen \emph{Cookie-Parser}.
 
-    Im weiteren nutzen wir das Modul \emph{cookie-parser}.
+    Im Weiteren nutzen wir das Modul \texttt{cookie-parser}.
 \end{bonus}
 
-\begin{example}{Cookie Parser}
+\begin{example}{Cookie-Parser}
     \texttt{app.js}:
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
@@ -647,7 +675,7 @@
         app.use('/pokemon', require('middlewares/cookie.js'))
         
         /* routes */
-        app.use('/pokemon', require('modules/pokemon.js'))
+        app.use('/pokemon', require('routes/pokemon.js'))
 
         app.listen(3000)
     \end{lstlisting}
@@ -663,9 +691,9 @@
             })
     \end{lstlisting}
 
-    \texttt{modules/pokemon.js}:
+    \texttt{routes/pokemon.js}:
     \begin{lstlisting}[language=JavaScript]
-        const Pokemon = require('../modules/pokemon.js')
+        const Pokemon = require('../modules/pokemon.js') // definiert Pokemon-Klasse
         const express = require('express')
         
         module.exports = express.Router()
@@ -676,19 +704,20 @@
 
     Wenn man nun die Webseite \texttt{http://localhost:3000/pokemon} zwei mal aufruft:
     \begin{enumerate}
-        \item Wird der cookie \emph{lieblings\_pokemon} gesetzt, jedoch eine leere Antwort zurückgegeben, da cookies erst bei der nächsten Anfrage gesetzt sind.
-        \item Wird \emph{lieblings\_pokemon} erneuert und \texttt{Glumanda} zurückgegeben.
+        \item Wird der cookie \texttt{lieblings\_pokemon} gesetzt, jedoch eine leere Antwort zurückgegeben, da Cookies erst bei der nächsten Anfrage gesetzt sind.
+        \item Wird \texttt{lieblings\_pokemon} erneuert und \texttt{Glumanda} zurückgegeben.
     \end{enumerate}
 \end{example}
 
 \subsubsection{Sessions}
 
-\begin{defi}{Session}
-    Wenn man vertrauliche Daten serverseitig speichern möchte, kann man Sessions nutzen.
+\begin{defi}{Session (JavaScript)}
+    Wenn man vertrauliche Daten serverseitig speichern möchte, werden \emph{Sessions} genutzt.
+
     Die Session-ID wird clientseitig als Cookie gespeichert.
 \end{defi}
 
-\begin{example}{Session}
+\begin{example}{Session (JavaScript)}
     \texttt{app.js}:
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
@@ -715,9 +744,8 @@
                 req.session.count = (req.session.count ?? 0) + 1
             })
     \end{lstlisting}
-\end{example}
 
-\begin{example}{Session beenden}
+    Um eine Session zu beenden, wird folgende Zeile ausgeführt:
     \begin{lstlisting}[language=JavaScript]
         req.session.destroy()
     \end{lstlisting}
@@ -725,7 +753,7 @@
 
 \subsubsection{Dynamische Webseiten}
 
-\begin{example}{Dynamische Webseiten}
+\begin{example}{Dynamische Webseite}
     \texttt{app.js}:
     \begin{lstlisting}[language=JavaScript]
         const express = require('express')
@@ -750,7 +778,7 @@
 
     \texttt{routes/pokemon.js}
     \begin{lstlisting}[language=JavaScript]
-        const Pokemon = require('../modules/pokemon.js')
+        const Pokemon = require('../modules/pokemon.js') // definiert Pokemon-Klasse
         const express = require('express')
 
         module.exports = express.Router()
@@ -781,34 +809,33 @@
     \end{lstlisting}
 \end{example}
 
-\subsection{HTML Vorlagen}
+\subsection{HTML-Templates}
 
-\begin{bonus}{views}
-    \begin{center}
-        \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_middlewares.pdf}
-    \end{center}
-\end{bonus}
+\begin{center}
+    \includegraphics[width=0.75\textwidth]{includes/figures/bonus_nodejs_views.pdf}
+\end{center}
 
-\begin{defi}{Template Engine}
-    Wenn man Webseiten dynamisch aufbauen möchte, ist es sinnvoll, Darstellung und Inhalt sauber zu trennen.
-    Eine erste Idee ist, dass man leere \texttt{html} Seiten schreibt und in der Route füllt.
+\begin{defi}{Template-Engine}
+    Eine \emph{Template-Engine} verarbeitet Vorlage-Dateien (\emph{Templates}) und ersetzt darin bestimmte Platzhalter durch jeweils aktuelle Inhalte.
 
-    Im weiteren nutzen wir das Modul \emph{mustache-express}
+    Im Weiteren nutzen wir das Modul \texttt{mustache-express}.
 \end{defi}
 
-\begin{example}{views}
-    \texttt{views/pokemon.html}:
+\begin{example}{Views}
+    \texttt{views/pokemon.tpl.html}:
     \begin{lstlisting}[language=HTML5]
         <!DOCTYPE html>
         <html>
-        <head> <title>Pokemon</title> </head>
-
+        <head> <title> Pokemon </title> </head>
         <body>
             <table>
-                <tr> <th>ID</th> <th>Name</th> </tr>
-                <tr>
-                    <td>^{{id}}^</td>
-                    <td>^{{name}}^</td>
+                <tr> 
+                    <th> ID </th> 
+                    <th> Name </th> 
+                </tr>
+                <tr> 
+                    <td> ^{{id}}^ </td> 
+                    <td> ^{{name}}^ </td> 
                 </tr>
             </table>
         </body>
@@ -817,15 +844,14 @@
 
     \texttt{routes/pokemon.js}:
     \begin{lstlisting}[language=JavaScript]
-        const Pokemon = require('../modules/pokemon.js')
+        const Pokemon = require('../modules/pokemon.js') // definiert Pokemon-Klasse
         const express = require('express')
         
         module.exports = express.Router()
             .get('/', (req, res) => {
-                const pokemon = Pokemon.get_rand()
+                const pokemon = Pokemon.getRand()
 
-                // render mit json Objekt, key -> Platzhalter
-                res.render('pokemon.html', {
+                res.render('pokemon.tpl.html', { // render mit json Objekt, key -> Platzhalter
                     ^'id'^: pokemon.id,
                     ^'name'^: pokemon.name 
                 })

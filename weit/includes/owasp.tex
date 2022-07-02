@@ -2,12 +2,10 @@
 
 \begin{defi}{OWASP}
     Das \emph{Open Web Application Security Project} (OWASP) ist eine Non-Profit-Organisation mit dem Ziel, die Sicherheit von Anwendungen und Diensten im World Wide Web zu verbessern.
+
     Durch Schaffung von Transparenz sollen Endanwender und Organisationen fundierte Entscheidungen über wirkliche Sicherheitsrisiken in Software treffen können.
 
     Schwachstellen werden nach folgenden Kriterien kategorisiert:
-
-    \emph{Bedrohungsquellen}: Anwendungsspezifisch \\
-    \emph{Auswirkungen auf das Unternehmen}: Daten- und Geschäfts-spezifisch
 
     \begin{tabularx}{\textwidth}{|l||X|X|X|X|}
         \hline
@@ -16,68 +14,73 @@
         2 & Durchschnittlich & Häufig      & Durchschnittlich & Mittel        \\\hline
         1 & Schwierig        & Selten      & Schwierig        & Gering        \\\hline
     \end{tabularx}
+
+    \begin{itemize}
+        \item \emph{Bedrohungsquellen} sind anwendungsspezifisch
+        \item \emph{Auswirkungen auf das Unternehmen} sind daten- und geschäftsspezifisch
+    \end{itemize}
 \end{defi}
 
 \begin{bonus}{OWASP Top 10}
+    OWASP Top 10 - 2017:
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/bonus_owasp_top10_2017.png}
+    \end{center}
 
-        \emph{OWASP Top 10 - 2017}
-
-        \vspace{2.5em}
-
+    OWASP Top 10 - 2021:
+    \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/bonus_owasp_top10_2021.png}
-
-        \emph{OWASP Top 10 - 2021}
     \end{center}
 \end{bonus}
 
 \subsection{Injection}
 
 \begin{defi}{Injection}
-    Es gibt u. a. drei Arten von Injections:
+    Es gibt u. a. drei Arten von \emph{Injections}:
     \begin{itemize}
-        \item SQL Injections / Prepared Statements
+        \item SQL Injections
         \item Command Injection
         \item Code Injection
     \end{itemize}
 
     Injections können auftreten, wenn Eingaben von Nutzenden nicht validiert werden.
-    Wir dürfen uns nicht verlassen, dass Clients Daten in dem Format senden, wie wir erwarten.
+    Man darf sich nicht darauf verlassen, dass Clients Daten in dem erwarteten Format senden.
 
-    Clientseitige Überprüfung der Daten ist sinnvoll, um versehentlich fehlerhafte Daten einzugeben.
-    z. B. Wenn man bei seiner E-Mail-Adresse das \texttt{\@}-Zeichen vergisst etc.
+    Clientseitige Überprüfung der Daten ist sinnvoll, um versehentlich fehlerhafte Daten einzugeben.\footnote{z. B. Wenn man bei seiner E-Mail-Adresse das \texttt{\@}-Zeichen vergisst etc.}
 
-    Um Injections zu verhindern müssen wir die Daten jedoch serverseitig Validieren, da böswillige Angreifende die clientseitige Überprüfung bewusst umgehen oder über nicht vorgesehene Kanäle Verbindungen aufbauen.
-    \emph{curl} ist potentiell mächtiger als ein Browser, der auf Grund von html tags gewisse Pattern voraussetzt etc.
+    Um Injections zu verhindern müssen die Daten jedoch serverseitig validiert werden, da böswillige Angreifende die clientseitige Überprüfung bewusst umgehen oder über nicht vorgesehene Kanäle bzw. Verbindungen aufbauen könnten.
+
+    \emph{cURL} ist mächtiger als ein Browser, der z. B. auf Grund von HTML-Tags gewisse Pattern voraussetzt.
 \end{defi}
 
-\begin{example}{SQL Injections}
-    \emph{Erwarteter Aufruf}: \\
-    \texttt{GET http://localhost:3000/pokemon?id=4}
+\begin{example}{SQL Injection (GET)}
+    Erwarteter Aufruf:
 
-    \emph{Erzeugtes SQL}:
+    \texttt{GET http://localhost:3000/pokemon\hl{?id=4}}
+
+    Erzeugtes SQL:
     \begin{lstlisting}[language=mysql]
-        SELECT * FROM pokemon WHERE id=4;
+        SELECT * FROM pokemon WHERE !id=4!;
     \end{lstlisting}
 
-    \emph{Angriff mittels SQL Injection}: \\
-    \texttt{GET http://localhost:3000/pokemon?id=4;+DROP+TABLE+pokemon}
+    \emph{Angriff mittels SQL Injection}:
 
-    \emph{Erzeugtes SQL}:
+    \texttt{GET http://localhost:3000/pokemon\hl{?id=4;+DROP+TABLE+pokemon}}
+
+    Erzeugtes SQL:
     \begin{lstlisting}[language=mysql]
-        SELECT * FROM pokemon WHERE id=4; !DROP TABLE pokemon!;
+        SELECT * FROM pokemon WHERE !id=4; DROP TABLE pokemon!;
     \end{lstlisting}
 
     Hier wird anstatt einer erwarteten Anfrage die gesamte Datenbank gelöscht.
 \end{example}
 
-\begin{example}{SQL Injections}
-    \emph{Erwarteter Aufruf}: \\
+\begin{example}{SQL Injection (POST)}
+    Erwarteter Aufruf: \\
     \texttt{POST http://localhost:3000/login} \\
-    \texttt{data: \{ \enquote{user}: \enquote{admin}, \enquote{pw}: \enquote{pok3mon} \}}
+    \texttt{data: \{ \enquote{user}: \enquote{admin}, \hl[\enquote{pw}: \enquote{pok3mon}] \}}
 
-    \emph{Erzeugtes SQL}\footnote{
+    Erzeugtes SQL\footnote{
         Kurze Erinnerung: Passwörter sollten immer verschlüsselt werden.
         Wenn eure Datenbank irgendwie an die Öffentlichkeit kommt, haben eure Nutzende deutlich weniger Probleme, da viele Menschen immer noch für verschiedene Dienste das selbe Passwort verwenden.
     }:
@@ -89,17 +92,18 @@
     \texttt{POST http://localhost:3000/login} \\
     \texttt{data: \{ \enquote{user}: \enquote{admin}, \enquote{pw}: \enquote{' OR '1'='1'} \}}
 
-    \emph{Erzeugtes SQL}\footnote{Wir gehen davon aus, dass das Passwort mit der Verschlüsselung \enquote{' OR '1'='1'} ist}:
+    Erzeugtes SQL\footnote{Hier wird davon ausgegangen, dass das Passwort mit der Verschlüsselung \texttt{' OR '1'='1'} ist.}:
     \begin{lstlisting}[language=mysql]
         SELECT * FROM users WHERE username='admin' AND pw='' OR !'1'='1'!;
     \end{lstlisting}
 
-    Das DBMS wird den admin-Account zurückgeben, da '1'='1' immer \texttt{true} ist.
+    Das DBMS wird den Admin-Account zurückgeben, da \texttt{'1'='1'} immer \texttt{true} ist.
+
     So konnte man sich ohne richtiges Passwort als Account mit erhöhten Rechten anmelden.
 \end{example}
 
 \begin{bonus}{Abwehr von SQL Injections}
-    Viele Datenbank APIs haben sogenannte \emph{prepared Statements}:
+    Viele Datenbank-APIs bieten sogenannte \emph{Prepared Statements} an:
 
     \begin{lstlisting}[language=JavaScript]
         db.query('SELECT * FROM pokemon WHERE id = ?', [ 4 ])
@@ -107,14 +111,18 @@
         db.query('SELECT * FROM pokemon WHERE id = :id', { 'id': 4 })
     \end{lstlisting}
 
-    Wenn wir \texttt{\{ 'id': 4 \}} mitgeben, wird der Befehl wie gewohnt ausgeführt.
+    Wenn \texttt{\{ 'id': 4 \}} mitgeben wird, wird der Befehl wie gewohnt ausgeführt.
+
     Bei \texttt{\{ 'id': '4; DROP TABLE pokemon' \}} erkennt die API, dass dort nicht einfach nur ein Wert gesetzt wird und verhindert die Ausführung.
-    Man sollte sich jedoch nicht ausschließlich darauf verlassen, dass eine API die Aufgabe erfolgreich übernimmt, sonder eventuell zusätzliche Sicherheitsmaßnahmen treffen (z. B. escapen, mysql user mit nur den nötigsten Rechten etc.).
+
+    Man sollte sich jedoch nicht ausschließlich darauf verlassen, dass eine API die Aufgabe erfolgreich übernimmt, sondern eventuell zusätzliche Sicherheitsmaßnahmen treffen\footnote{Escapen, Datenbank-Accounts nur mit nötigen Rechten ausstatten, etc.}.
 \end{bonus}
 
 \begin{example}{Command Injection}
-    Folgende Route bekommt einen potentiell unvollständigen Dateinamen und sucht im Dateisystem nach passenden Dateien. \\
-    \texttt{exec} führt einen Befehl lokal auf dem Server aus und benötigt ein callback für Fehler-Codes, Output (\texttt{1> stdout}) und Fehler (\texttt{2> stderr}). \\
+    Folgende Route bekommt einen potentiell unvollständigen Dateinamen und sucht im Dateisystem nach passenden Dateien.
+
+    \texttt{exec} führt einen Befehl lokal auf dem Server aus und benötigt ein Callback für Fehlercodes, Output (\texttt{1> stdout}) und Fehler (\texttt{2> stderr}).
+
     \texttt{path\_from} parsed die Ausgabe potentiell mehrerer Dateien in einen eindeutigen Pfad.
 
     \begin{lstlisting}[language=JavaScript]
@@ -126,11 +134,11 @@
             )
     \end{lstlisting}
 
-    \emph{Erwarteter Aufruf}: \\
+    Erwarteter Aufruf: \\
     \texttt{POST http://localhost:3000/file} \\
     \texttt{data: \{ \enquote{filename}: \enquote{glumanda} \}}
 
-    \emph{Erzeugter Befehl}:
+    Erzeugter Befehl
     \begin{lstlisting}[language=bash]
         ls ../public/files -al | grep "glumanda" # Glumanda.pdf wird gefunden und versendet
     \end{lstlisting}
@@ -139,7 +147,7 @@
     \texttt{POST http://localhost:3000/file} \\
     \texttt{data: \{ \enquote{filename}: \enquote{'' \&\& ls \textasciitilde /.ssh/ -al | grep ''id\_rsa''} \}}
 
-    \emph{Erwarteter Aufruf}:
+    Erwarteter Aufruf:
     \begin{lstlisting}[language=bash]
         ls ../public/files -al | grep "" && ls ~/.ssh/ -al | grep "id_rsa"
         # private ssh key wird versendet
@@ -177,7 +185,8 @@
 \end{bonus}
 
 \begin{defi}{Code Injections}
-    \emph{Code Injection} führt nicht nur einen Befehl auf dem Server aus, sonder bindet ganze Skripte ein.
+    \emph{Code Injection} führt nicht nur einen Befehl auf dem Server aus, sondern bindet ganze Skripte ein.
+
     So werden teilweise \texttt{.js} Dateien ersetzt oder neu hinzugefügt, die dann automatisch ausgeführt werden.
 \end{defi}
 
@@ -185,6 +194,7 @@
 
 \begin{defi}{Broken Auth. and Session Management}
     Anwendungsfunktionen, welche im Zusammenhang mit Authentifizierung und Session-Management stehen, werden häufig fehlerhaft implementiert.
+
     Dies erlaubt es Angreifenden, Passwörter oder Session-Tokens zu kompromittieren oder die entsprechenden Schwachstellen so auszunutzen, dass sie die Identität anderer Benutzer vorübergehend oder dauerhaft annehmen können.
 \end{defi}
 
@@ -196,21 +206,24 @@
 \end{example}
 
 \begin{example}{Session Hijacking}
-    Eine erweiterte Form von \emph{Session über Adresszeile} ist es die Reihenfolge der Schritte zu vertauschen.
+    Eine erweiterte Form von \emph{Session über Adresszeile} ist es, die Reihenfolge der Schritte zu vertauschen.
+
     Angreifende erstellen eine Session und schicken dem potentiellen Opfer einen Link mit der Session in der Hoffnung, dass sich dieses in der Session anmeldet.
     Nun wurde sich auf beiden Clients mit der Session angemeldet.
 \end{example}
 
 \begin{example}{Nie auslaufende Sessions}
     Kritische Webseiten (z. B. einer Bank) sollten Sessions nach einem kurzen festgelegten Zeitraum löschen.
-    Wenn andere Personen nun Zugriff zu dem eingeloggten Rechner erhalten, ist die Session bereits beendet un es müsste sich neu angemeldet werden.
+
+    Wenn andere Personen nun Zugriff zu dem eingeloggten Rechner erhalten, ist die Session bereits beendet und es müsste sich neu angemeldet werden.
 \end{example}
 
 \begin{bonus}{Abwehr von Broken Auth. and Session Management}
     Es wird nie eine perfekte Lösung für dieses Problem geben.
+
     Jedoch kann man einige Maßnahmen ergreifen, um sich bestmöglichst abzusichern:
     \begin{itemize}
-        \item Mehrfaktor-Authentisierung (beste Möglichkeit für die reine Anmeldung)
+        \item Mehrfaktor-Authentifizierung (beste Möglichkeit für die reine Anmeldung)
         \item Keine Standardaccounts im Werkszustand (z. B. \texttt{admin admin})
         \item Wechsel der Session-ID bei jedem Login
         \item Begrenzte Lebensdauer der Sessions
@@ -225,17 +238,20 @@
 \subsection{Sensitive Data Exposure}
 
 \begin{defi}{Sensitive Data Exposure}
-    Viele Anwendungen schützen sensible Daten, wie personenbezogene Informationen und Finanz- oder Gesundheitsdaten, nicht ausreichend.
+    Viele Anwendungen schützen sensible Daten\footnote{wie personenbezogene Informationen und Finanz- oder Gesundheitsdaten} nicht ausreichend.
+
     Angreifende können diese Daten auslesen oder modifizieren und mit ihnen weitere Straftaten begehen (Kreditkartenbetrug, Identitätsdiebstahl etc.).
+
     Vertrauliche Daten können kompromittiert werden, wenn sie nicht durch Maßnahmen, wie Verschlüsselung gespeicherter Daten und verschlüsselte Datenübertragung, zusätzlich geschützt werden.
+
     Besondere Vorsicht ist beim Datenaustausch mit Browsern angeraten.
 \end{defi}
 
-\begin{example}{Data Exposure}
+\begin{example}{Sensitive Data Exposure}
     \begin{itemize}
         \item Wichtige Daten (Passwörter, Kreditkartennummern etc.) werden im Klartext übertragen oder gespeichert.
               \begin{itemize}
-                  \item z. B. bei der Nutzung von http
+                  \item z. B. bei der Nutzung von HTTP
                   \item In einem öffentlichen WLAN kann jeder die Cookies mitlesen
                   \item evtl. Backup der Daten.
               \end{itemize}
@@ -252,8 +268,8 @@
         \item Kein unnötiges Speichern vertraulicher Daten
         \item Verschlüsseltes Speichern von sensitiven Daten
         \item Aktuelle starke Verschlüsselungs-Algorithmen verwenden
-        \item Passwörter mit Salz versehen
-        \item HTTPs verwenden
+        \item Passwörter mit Salz (und Pfeffer) versehen
+        \item HTTPS verwenden
     \end{itemize}
 
     % \begin{wrapfigure}{r}{0.15\textwidth}
@@ -272,21 +288,25 @@
 \subsection{XML External Entities}
 
 \begin{bonus}{XML External Entities}
-    Viele veraltete oder schlecht konfigurierte XML Prozessoren berücksichtigen Referenzen auf externe Entitäten innerhalb von XML-Dokumenten.
-    Dadurch können solche externen Entitäten dazu eingesetzt werden, um mittels URI Datei-Handlern interne Dateien oder File-Shares offen-zulegen oder interne Port-Scans, Remote-Code-Execution oder Denial-of-Service Angriffe auszuführen.
+    Viele veraltete oder schlecht konfigurierte XML-Prozessoren berücksichtigen Referenzen auf externe Entitäten innerhalb von XML-Dokumenten.
+
+    Dadurch können solche externen Entitäten dazu eingesetzt werden, um mittels URI Datei-Handlern interne Dateien oder File-Shares offenzulegen oder interne Port-Scans, Remote-Code-Execution oder Denial-of-Service Angriffe auszuführen.
 \end{bonus}
 
 \subsection{Fehler in der Zugriffskontrolle}
 
 \begin{defi}{Fehler in der Zugriffskontrolle}
     Häufig werden die Zugriffsrechte für authentifizierte Nutzende nicht korrekt um- bzw. durchgesetzt.
+
     Angreifende können entsprechende Schwachstellen ausnutzen, um auf Funktionen oder Daten zuzugreifen, für die sie keine Zugriffsberechtigung haben.
+
     Dies kann Zugriffe auf Account anderer Nutzenden, sowie auf vertrauliche Daten oder aber die Manipulation von Nutzungsdaten, Zugriffsrechten etc. zur Folge haben.
 
+    Beispiele sind:
     \begin{itemize}
         \item Aufrufen authentifizierter Seiten als nicht authentifizierter Benutzender oder privilegierter Seiten als Standardbenutzender.
               Zugriff auf die API durch fehlende Zugriffskontrollen für POST, PUT und DELETE.
-        \item Umgehen von Zugriffskontrollprüfungen durch Ändern der URL, des internen Anwendungsstatus, der HTML-Seite oder einfach durch Verwendung eine API-Angriffswerkzeugs.
+        \item Umgehen von Zugriffskontrollprüfungen durch Ändern der URL, des internen Anwendungsstatus, der HTML-Seite oder durch Verwendung eine API-Angriffswerkzeugs.
         \item Änderbarkeit des Primärschlüssels: Unterschieben des Schlüssels eines anderen Benutzenden, so dass das jeweilige Konto angezeigt oder bearbeitet werden kann.
         \item Fehlkonfiguration von CORS ermöglichen einen unbefugten API-Zugriffs.
     \end{itemize}
@@ -307,16 +327,17 @@
 \end{example}
 
 \begin{example}{Missing Function Level Access Control}
-    Seiten wie \texttt{http://localhost:3000/admin} sollten immer Überprüfen, ob der angemeldete User ein Admin ist.
+    Seiten wie \texttt{http://localhost:3000/admin} sollten immer überprüfen, ob der angemeldete User ein Admin ist.
     Komplizierter wird es, wenn man mehr Abfragen halt als \texttt{user == admin}.
 
-    Eine Lösung dafür sind Middlewares für alle Routen, die unter z. B. \texttt{/admin} liegen, die überprüfen, ob der angemeldete user Admin ist bzw die Rolle besitzt, die für den Zugriff notwendig ist.
+    Eine Lösung dafür sind Middlewares für alle Routen, die unter z. B. \texttt{/admin} liegen, die überprüfen, ob der angemeldete User Admin ist, bzw. die Rolle besitzt, die für den Zugriff notwendig ist.
 \end{example}
 
 \subsection{Sicherheitsrelevante Fehlkonfiguration}
 
 \begin{defi}{Sicherheitsrelevante Fehlkonfiguration}
     Fehlkonfigurationen von Sicherheitseinstellungen sind das am häufigsten auftretende Problem.
+
     Ursachen sind:
     \begin{itemize}
         \item unsichere Standardkonfigurationen
@@ -327,40 +348,40 @@
               \end{itemize}
         \item ungeschützte Cloud-Speicher
         \item Fehlkonfigurierte HTTP-Header
-        \item Fehlerausgaben, die vertrauliche Daten enthalten
-              \begin{itemize}
-                  \item Am besten Fehlermeldungen nicht an den Nutzenden weiterleiten
-              \end{itemize}
+        \item Fehlerausgaben, die vertrauliche Daten enthalten\footnote{Am besten Fehlermeldungen nicht an den Nutzenden weiterleiten.}
     \end{itemize}
 
     Betriebssysteme, Frameworks, Bibliotheken und Anwendungen müssen sicher konfiguriert werden und zeitnah Patches und Updates erhalten.
-    Des Weiteren sollten Test-Umgebungen wie z. B. XAMPP nicht in das Produktivsystem übernommen werden.
+
+    Des Weiteren sollten Dev-Umgebungen wie z. B. XAMPP nicht in das Produktivsystem übernommen werden.
 \end{defi}
 
 \subsection{Cross-Site-Scripting (XSS)}
 
 \begin{defi}{Cross-Site-Scripting (XSS)}
-    XSS tritt auf, wenn Anwendungen nicht vertrauenswürdige Daten entgegennehmen und ohne Validierung oder Umkodierung an einen Webbrowser senden.
-    XSS tritt auch auf, wenn einen Anwendung HTML- oder JavaScript-Code auf Basis bon Nutzungseingaben erzeugt.
+    \emph{Cross-Site-Scripting (XSS)} tritt auf, wenn Anwendungen nicht vertrauenswürdige Daten entgegennehmen und ohne Validierung oder Umkodierung an einen Webbrowser senden.
+
+    XSS tritt auch auf, wenn einen Anwendung HTML- oder JavaScript-Code auf Basis von Nutzungseingaben erzeugt.
+
     XSS erlaubt es dem Angreifenden Scriptcode im Browser eines potentiellen Opfers auszuführen und so Benutzungssitzungen zu übernehmen, Seiteninhalte verändert anzuzeigen oder den Benutzenden auf bösartige Seiten umzuleiten.
 
     XSS wird in drei Arten unterteilt:
     \begin{itemize}
-        \item Reflektiert (nicht-persistent)
+        \item \emph{Reflektiert} (\emph{nicht-persistent})
               \begin{itemize}
                   \item Clientdaten werden vom Server direkt in die Webseite eingebunden.
                   \item Angriff per Link auf externer Webseite oder Email
                   \item z. B. Suchanfrage
               \end{itemize}
-        \item Beständig (persistent)
+        \item \emph{Beständig} (\emph{persistent})
               \begin{itemize}
                   \item Clientdaten werden serverseitig gespeichert und in die Webseite eingebunden.
                   \item z. B. Forum, Blog, Feedback Formular
               \end{itemize}
-        \item DOM-basiert oder lokal
+        \item \emph{DOM-basiert} oder \emph{lokal}
               \begin{itemize}
                   \item Ähnlich dem reflektierten Angriff (aber ohne Server)
-                  \item JavaScript-Applikationen liest Clientdaten ein (z. B. aks Teil der URL) zbd verändert entsprechend das DOM
+                  \item JavaScript-Applikationen liest Clientdaten ein (z. B. als Teil der URL) und verändert entsprechend das DOM
               \end{itemize}
     \end{itemize}
 
@@ -374,26 +395,28 @@
 \end{defi}
 
 \begin{example}{Cross-Site-Scripting (XSS)}
-    \emph{Erwarteter Aufruf}: \\
-    \texttt{GET http://localhost:3000/pokemon?search=glu}
+    Erwarteter Aufruf: \\
+    \texttt{GET http://localhost:3000/pokemon\hl{?search=glu}}
 
     \emph{Erzeugtes HTML}:
     \begin{lstlisting}[language=HTML5]
-        <p>Es wird nach: glu gesucht </p>
+        <p>Es wird nach: ^glu^ gesucht </p>
     \end{lstlisting}
 
     \emph{Angriff mittels Cross-Site-Scripting}: \\
-    \texttt{GET http://localhost:3000/pokemon?search=glu<script> ... </script>}
+    \texttt{GET http://localhost:3000/pokemon\hl{?search=glu<script> ... </script>}}
 
     \emph{Erzeugtes HTML}:
     \begin{lstlisting}[language=HTML5]
-        <p>Es wird nach: glu <script> ... </script> gesucht</p>
+        <p>Es wird nach: ^glu <script> ... </script>^ gesucht</p>
     \end{lstlisting}
 \end{example}
 
 \begin{example}{Cross-Site-Scripting (XSS)}
     Der Anmelde-Button wird dynamisch aufgebaut.
+
     Bei der Erstellung der Webseite wird die Methode, die diesen Button erstellt, durch eine ersetzt, die die übergebenen Daten direkt an Fremde weiterleitet.
+
     Für den Browser stammt der Code scheinbar von einer vertrauenswürdigen Seite.
 \end{example}
 
@@ -401,6 +424,7 @@
 
 \begin{defi}{Unsichere Deserialisierung}
     Unsichere, weil unzureichend geprüfte Deserialisierung können zu Remote-Code-Execution-Schwachstellen führen.
+
     Aber auch wenn das nicht der Fall ist, können Deserialisierungsfehler Angriffsmuster wie Replay-Angriffe, Injections und Erschleichung erweiterter Zugriffsrechte ermöglichen.
 \end{defi}
 
@@ -413,7 +437,8 @@
     \emph{Angriff mittels unsicherer Deserialisierung}: \\
     \texttt{\{ \enquote{u\_id}: \enquote{22}, \enquote{name}: \enquote{Misty}, \enquote{role}: \enquote{\hl{admin}}, ... \}}
 
-    Hier gibt der Angreifende an die Rolle \enquote{Admin} zu haben, obwohl er sie potentiell nicht hat.
+    Hier gibt der Angreifende an, die Rolle \enquote{Admin} zu haben, obwohl er sie potentiell nicht hat.
+
     Um dieses Problem zu umgehen, muss man vertrauliche Daten serverseitig speichern und alle mitgegeben Daten bei jeder Übermittlung überprüfen.
 \end{example}
 
@@ -421,7 +446,9 @@
 
 \begin{defi}{Using Components with Known Vulnerabilities}
     Komponenten wie Bibliotheken, Frameworks etc. werden mit den Berechtigungen der zugehörigen Anwendung ausgeführt.
+
     Wird eine verwundete Komponenten ausgenutzt, kann ein solcher Angriff von Datenverlusten bis hin zu einer Übernahme des Systems führen.
+
     Applikationen und APIs, die Komponenten mit bekannten Schwachstellen einsetzten, können Schutzmaßnahmen unterlaufen und so Angriffe mit schwerwiegenden Auswirkungen verursachen.
 \end{defi}
 
@@ -429,7 +456,8 @@
 
 \begin{defi}{Unzureichendes Logging}
     Unzureichendes Logging und Monitoring führt zusammen mit fehlender oder uneffektiver Reaktionen auf Vorfälle zu andauernden oder wiederholten Angriffen.
-    Auch können Angreifende dadurch in Netzwerken weiter vordringen und Daten entwenden, veränder oder zerstören.
+    Auch können Angreifende dadurch in Netzwerken weiter vordringen und Daten entwenden, verändern oder zerstören.
+
     Viele Studien zeigen, dass die Zeit bis zur Aufdeckung eines Angriffs bei ca. 200 Tagen liegt sowie typischerweise durch Dritte entdeckt wird und nicht durch interne Überwachungs- und Kontrollmaßnahmen
 \end{defi}
 
@@ -437,7 +465,9 @@
 
 \begin{defi}{Buffer Overflow}
     Ist der Puffer zu klein, werden die nachfolgenden Datenfelder im Speicher überschrieben.
+
     In den meisten Fällen führt dies zu einem Programmabsturz, aber bei geschickter Wahl der Overflow-Daten können eigene Funktionen in den laufenden Code geschmuggelt werden.
+
     Alternativ interessieren sich Angreifende für die Daten, die ein einem eigentlich nicht zugänglichen Speicher sind.
 \end{defi}
 
@@ -465,19 +495,20 @@
 
     Schutzmaßnahmen sind Tokens, die bei jedem Login generiert werden.
     Die Webseite versieht nun alle Anfragen zusätzlich mit diesem Token.
-    Dieses Token kann durch POST request nicht von Angreifenden herausgefunden werden.
+    Dieses Token kann durch POST-Request nicht von Angreifenden herausgefunden werden.
 \end{defi}
 
 \begin{example}{Cross-Site-Request-Forgery}
-    \url{https://steamcomminity.com} hat es auf einen Steam Account abgesehen.
-    Dafür bindet sie das Login-Formular von \url{https://steamcommunity.com/} ein.
+    \href{https://www.youtube.com/watch?v=dQw4w9WgXcQ}{https://steamcomminity.com} hat es auf einen Steam Account abgesehen.
+    Dafür bindet sie das Login-Formular von \href{https://steamcommunity.com/}{https://steamcommunity.com/} ein.
 
-    Bei der Anmeldung wird auf der \enquote{bösen} Seite der Accountname sowie das Passwort gespeichert.
+    Bei der Anmeldung wird auf der \enquote{bösen} Seite der Accountname, sowie das Passwort gespeichert.
     Durch \emph{iFrames} ist der Angriff nur schwer zu erkennen.
 \end{example}
 
 \begin{defi}{Same Origin Policy}
     Die \emph{Same Origin Policy} besagt, dass nur Anfragen von einer Domäne auf gewisse Ressourcen zugreifen können.
+
     So kann man ausschließlich auf die Route zugreifen wenn folgendes übereinstimmt:
     \begin{itemize}
         \item Domain
@@ -494,9 +525,10 @@
 
 \begin{defi}{Insecure Design}
     Unzureichende oder fehlende Konzepte zur Zugriffskontrolle.
+
     Es geht nicht um die Implementierung, vielmehr um fehlerhaftes Vorgehen.
 
-    z. B.:
+    Beispiele sind:
     \begin{itemize}
         \item \emph{Credential Recovery} mittels Fragen und Antwort.
               Obwohl dies leider immer noch üblich ist birgt dieses Vorgehen große Probleme.
@@ -509,7 +541,7 @@
 \begin{defi}{Software and Data Integrity Failure}
     Überprüfte Abhängigkeiten zu externen Ressourcen.
 
-    z. B.:
+    Beispiele sind:
     \begin{itemize}
         \item Installation von neuen Versionen ohne Hash oder insbesondere Signatur.
               So kann beispielsweise der DSL-Router Malware enthalten.
@@ -533,12 +565,12 @@
                   \item Einem Dienst werden mehr Anfragen gesendet, als dieser abarbeiten kann.
                         Irgendwann ist der Dienst überlastet und stürzt ab.
               \end{itemize}
-        \item Insufficient Anti-automation
+        \item Insufficient Anti-Automation
         \item Malicious File Execution
         \item Cross Frame Scripting (XFS)
         \item Cross Site Tracing
         \item Cross Site Cooking
-        \item \emph{Layer 8} der Mensch und Social Engineering
+        \item \emph{Layer 8}, der Mensch und Social Engineering
               \begin{itemize}
                   \item Auch das sicherste Passwort ist direkt geknackt, wenn der Besitzende es einem \enquote{freiwillig} mitteilt.
               \end{itemize}

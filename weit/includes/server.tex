@@ -1,1 +1,188 @@
 \section{Server}
+
+\begin{bonus}{Inetd}
+    \emph{Inetd} ist ein Superserver für Unix-Systeme und ist implementiert als Daemon, der Netzwerk-Sockets abhört und bei Anfrage auf einem bestimmten Port ein voreingestelltes Programm (meist selbst ein Daemon) startet.
+
+    Der Inetd-Daemon lauscht stets bestimmte, über eine Konfigurationsdatei einstellbare Netzwerk-Ports ab.
+
+    Wenn ein Computer aus dem Netzwerk eine Verbindung zu einem dieser Ports aufbaut, nimmt inetd die Anfrage entgegen und leitet alle Daten an das dem Port zugehörige Programm (Inetd-Dienst) weiter.
+
+    Nach Beendigung der Verbindung stoppt der Inetd-Daemon den Dienst automatisch wieder.
+\end{bonus}
+
+\subsection{Lastenkontrolle}
+
+\begin{defi}{MPM}
+    Der Apache HTTP Server wurde als leistungsfähiger und flexibler Webserver konzipiert, der auf einer Vielzahl von Plattformen in einer Reihe unterschiedlicher Umgebungen arbeiten kann.
+
+    Unterschiedliche Plattformen und unterschiedliche Umgebungen verlangen oftmals verschiedene Fähigkeiten oder kennen verschiedene Wege, die gleiche Funktionaltät sehr effizient zu implementieren.
+
+    Der Apache hat durch seinen modularen Aufbau schon immer eine breite Auswahl von Umgebungen unterstützt.
+    Dieses Design erlaubt es, durch Auswahl der Module, die zur Kompilierungszeit oder zur Laufzeit geladen werden, die Features auszuwählen, die in den Server intregiert werden.
+
+    Der Apache 2.0 erweitert dieses modulare Design auf die grundlegenden Funktionen eines Webservers.
+
+    Der Server wird mit einer Auswahl von \emph{Multi-Processing-Modulen (MPMs)} ausgeliefert, die für die Bindung an Netzwerkports der Maschine, die Annahme von Anfragen und die Abfertigung von Kindprozessen zur Behandlung der Anfragen zuständig sind.
+
+    Apache kommt standardmäßig mit zwei MPM-Modellen:\footnote{Eigentlich käme hier noch \emph{Event} hinzu, wird in der Vorlesung aber nicht aufgeführt.}
+    \begin{itemize}
+        \item \emph{Prefork}
+        \item \emph{Worker}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Prefork}
+    \emph{Forking} findet vor der eigentlichen Anfrage statt (\emph{Preforking}).
+
+    Prozesse \enquote{warten} darauf genutzt zu werden.
+
+    Jeder Prozess behandelt jeweils eine Verbindung.
+
+    Vorteile:
+    \begin{itemize}
+        \item Saubere Trennung der Anfragen
+        \item Threadsafe
+    \end{itemize}
+
+    Nachteile:
+    \begin{itemize}
+        \item RAM-intensiv
+        \item \enquote{You'll run out of memory before CPU.}
+    \end{itemize}
+
+    Prefork ist der Standard für Apache.
+\end{defi}
+
+\begin{defi}{Worker}
+    Beim (Multithreaded-) \emph{Worker-Modell} werden weniger Kinderprozesse erzeugt.
+
+    Jeder Kindprozess behandelt viele Verbindungen gleichzeitig (ein Thread pro Verbindung).
+
+    Vorteile:
+    \begin{itemize}
+        \item Pro Anfrage ein Thread
+        \item Weniger Speicherverbrauch
+    \end{itemize}
+
+    Nachteile:
+    \begin{itemize}
+        \item Verarbeitete Bibliothek muss multithreading-fähig sein.
+        \item Ein außer Kontrolle geratener Thread hat eine Beendigung der kompletten Prozesse zur Folge.
+    \end{itemize}
+
+    Das Worker-Modell sollte nicht in einer Produktionsumgebung verwendet werden.
+\end{defi}
+
+\begin{defi}{CGI}
+    Ein \emph{Common Gateway Interface (CGI)} dient als Schnittstelle um externe Programme auszuführen.
+
+    Beim Aufruf einer auf CGI basierenden Webseite wird vom Webserver ein Prozess des CGI-Programms gestartet und am Ende des Requests wieder beendet.
+    Jede Anfrage erzeugt einen eigenen Prozess.
+
+    Weil CGI-Programme häufig in einer Skriptsprache wie Perl geschrieben sind, bedeutet das, dass pro Seitenaufruf der oft recht umfangreiche Interpreter geladen werden muss, was einen großen Overhead bedeutet (das Laden des Interpreters dauert bei einfachen CGI-Programmen länger als die eigentliche Programmausführung).
+
+
+    Es ist ein sprach- bzw. systemunabhängiges Konzept.
+\end{defi}
+
+\begin{defi}{FastCGI}
+    \emph{FastCGI} ist ein binäres Netzwerkprotokoll für die Anbindung eines Anwendungsservers an einen Webserver.
+
+    FastCGI ist vergleichbar mit dem Common Gateway Interface (CGI), wurde jedoch entwickelt, um dessen Performance-Probleme zu umgehen.
+
+    Im Unterschied dazu wird bei FastCGI das auszuführende Programm (inkl. Interpreter, falls nötig) nur einmal geladen und steht dann für mehrere Requests zur Verfügung – egal ob vom selben Client oder von unterschiedlichen Clients.
+
+    Die Kommunikation mit dem Webserver erfolgt dabei nicht durch Umgebungsvariablen und Standardein-/ausgabe, sondern über Unix Domain Sockets oder TCP-Netzwerkverbindungen, d. h., das Programm kann sogar auf einem anderen Rechner laufen.
+\end{defi}
+
+\subsection{Zugriffskontrolle}
+
+\begin{defi}{Zugriffskontrolle}
+    In Apache kann die \emph{Zugriffskontrolle} mittels der \texttt{Order}-Direktive gesetzt werden.
+    Es können folgende Modi gewählt werden:
+    \begin{itemize}
+        \item \texttt{Order Allow, Deny}:
+              \begin{itemize}
+                  \item Zuerst werden alle \texttt{Allow}-Direktiven ausgewertet; mindestens eine muss übereinstimmen, sonst wird die Anfrage abgelehnt.
+                  \item Als nächstes werden alle \texttt{Deny}-Direktiven ausgewertet. Wenn eine davon zutrifft, wird die Anfrage abgelehnt.
+                  \item Zuletzt werden alle Anfragen, die weder mit einer \texttt{Allow}- noch mit einer \texttt{Deny}-Direktive übereinstimmen, standardmäßig abgelehnt.
+              \end{itemize}
+        \item \texttt{Order Deny, Allow}:
+              \begin{itemize}
+                  \item Zunächst werden alle \texttt{Deny}-Direktiven ausgewertet; wenn eine davon zutrifft, wird die Anfrage abgelehnt, es sei denn, sie entspricht auch einer \texttt{Allow}-Direktive.
+                  \item Alle Anfragen, die weder auf eine \texttt{Allow}- noch auf eine \texttt{Deny}-Direktive zutreffen, werden zugelassen.
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{.htaccess}
+    \texttt{.htaccess} ist eine Konfigurationsdatei auf Webservern wie Apache, in der verzeichnisbezogene Regeln aufgestellt werden können.
+
+    Beispielsweise kann man darüber ein Verzeichnis oder Dateien durch HTTP-Authentifizierung vor unberechtigten Zugriffen schützen.
+
+    Auch Fehlerseiten oder Weiterleitungen innerhalb des Servers lassen sich darin festlegen, ohne dass der Server neu gestartet werden muss:
+    Änderungen in der \texttt{.htaccess}-Datei treten ohne Weiteres sofort in Kraft, weil die Datei bei jeder Anfrage an den Webserver ausgewertet wird.
+\end{bonus}
+
+\begin{example}{.htaccess}
+    \begin{lstlisting}
+        AuthType Basic
+        AuthName "Pokemon-Passwortschutz"
+        AuthUserFile /var/www/html/.htpasswd
+        Require valid-user
+    \end{lstlisting}
+\end{example}
+
+\begin{defi}{HTTP-Authentifizierung}
+    \emph{HTTP-Authentifizierung} ist ein Verfahren, mit dem sich der Nutzer eines Webbrowsers gegenüber dem Webserver bzw. einer Webanwendung als User authentisieren kann, um danach für weitere Zugriffe autorisiert zu sein.
+
+    Es gibt mehrere Möglichkeiten, Clients zu authentifizieren:
+    \begin{itemize}
+        \item \emph{Basic Authentication}
+        \item \emph{Digest Access Authentication}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Basic Authentication}
+    Der Webserver fordert mit \texttt{WWW-Authenticate: Basic realm=\ditto RealmName\ditto} eine Authentifizierung an, wobei \texttt{RealmName} eine Beschreibung des geschützten Bereiches darstellt.
+
+    Der Browser sucht daraufhin nach Benutzername und Passwort für diese URL und fragt gegebenenfalls den Benutzer.
+
+    Anschließend sendet er die Authentifizierung mit dem Authorization-Header in der Form \texttt{Benutzername:Passwort} Base64-codiert an den Server.
+
+    Nachteile:
+    \begin{itemize}
+        \item Passwörter werden im Klartext übertragen.
+        \item Keinerlei Authentisierung des Servers.
+        \item Keine Absicherung der Nachrichten.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Digest Access Authentication}
+    Server sendet zusammen mit dem WWW-Authenticate-Header eine eigens erzeugte zufällige Zeichenfolge (\emph{Challenge}, \emph{Nonce}).
+
+    Browser berechnet den Hashcode (in der Regel MD5) einer Kombination aus Benutzername, Passwort, erhaltener Zeichenfolge, HTTP-Methode und angeforderter URL.
+
+    Diese sendet er im Authorization-Header zusammen mit dem Benutzernamen und der zufälligen Zeichenfolge zurück an den Server.
+
+    Dieser berechnet seinerseits die Prüfsumme und vergleicht.
+
+    Vorteile:
+    \begin{itemize}
+        \item Keine Passwörter im Klartext.
+        \item Keine Speicherung von Klartextpasswörtern auf dem Server.
+        \item Server wird authentisiert.
+    \end{itemize}
+
+    Nachteile:
+    \begin{itemize}
+        \item Man-in-the-Middle-Attacken noch immer möglich
+        \item Sniffing-Attacken noch immer möglich
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{nginx}
+    \emph{nginx} ist eine Webserver-Software, Reverse Proxy und E-Mail-Proxy (POP3 bzw. IMAP).
+
+    nginx ist modular aufgebaut und unterstützt durch die verschiedenen Module Techniken wie Lastverteilung und Reverse Proxying, namens- und IP-basierte Virtual Hosts, FastCGI, direkten Zugriff auf den Memcached Cache, SSL, Flash-Video-Streaming, das WebSocket-Protokoll und vieles mehr.
+\end{bonus}

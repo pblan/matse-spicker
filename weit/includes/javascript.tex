@@ -1,8 +1,9 @@
 \section{JavaScript}
 
 \begin{defi}{JavaScript}
-    JavaScript wird genutzt, um clientseitig das erhaltene Dokument zu manipulieren ohne dieses neu zu laden.
-    Es ist eine \enquote{single-threaded und non-blocking event-based language}.
+    \emph{JavaScript} wird genutzt, um clientseitig das erhaltene Dokument zu manipulieren, ohne dieses neu zu laden.
+
+    JavaScript ist eine \enquote{single-threaded} und \emph{non-blocking event-based language}.
 
     Der Code ist zwar in HTML-Dokumenten eingebettet, jedoch wird eine strikte Trennung von HTML, PHP und JavaScript empfohlen.
 
@@ -16,7 +17,7 @@
 
     Typische Anwendungsfälle:
     \begin{itemize}
-        \item Validierung von Formulareingabedaten vor der Übertragung zum Server\footnote{Obacht: Serverseitige Überprüfung wurde hierbei nicht ersetzt, da man clientseitigen Code bewusst umgehen kann}
+        \item Validierung von Formulareingabedaten vor der Übertragung zum Server\footnote{Serverseitige Überprüfung wurde hierbei nicht ersetzt, da man clientseitigen Code bewusst umgehen kann.}
         \item Anzeige von Dialogfenstern inkl. Suchvorschlägen
         \item Werbung
         \item Single-Page-Anwendung
@@ -24,7 +25,7 @@
 \end{defi}
 
 \begin{defi}{JavaScript Engine}
-    Clients führen JavaScript Code mit Hilfe einer JavaScript Engine aus.
+    Clients führen JavaScript Code mit Hilfe einer \emph{JavaScript Engine} aus.
 
     Einige bekannte Beispiele sind:
 
@@ -48,8 +49,8 @@
     \end{center}
 \end{defi}
 
-\begin{example}{Einbindung von JavaScript}
-    \texttt{index.html}
+\begin{example}{Einbinden von Dateien (JavaScript)}
+    Einbinden über \texttt{<link>} (empfohlen):
     \begin{lstlisting}[language=HTML5]
         <!DOCTYPE html>
         <html>
@@ -66,40 +67,36 @@
     \begin{center}
         \includegraphics[width=0.50\textwidth]{includes/figures/defi_client_js.pdf}
     \end{center}
-\end{example}
 
-\begin{example}{Einbindung von JavaScript (deprecated)}
-    \texttt{index\_deprecated.html}:
-
+    Manuelles JavaScript in einer HTML-Datei über \texttt{<script>} (nicht empfohlen\footnote{Problem: Keine Trennung von HTML und JavaScript.}, deprecated):
     \begin{lstlisting}[language=HTML5]
         <!DOCTYPE html>
         <html>
         <head>
-            <title>Index</title>
+            <title> Index </title>
         </head>
 
         <body>
-            <button onclick="doStuff();">Klick mich!</button>
-            <script>alert('Willkommen!');</script>
+            <button onclick="doStuff();"> Klick mich! </button>
+            <script> alert('Willkommen!'); </script>
         </body>
         </html>
     \end{lstlisting}
-
-    Problem: Keine Trennung von HTML und JavaScript!
 \end{example}
 
-\begin{defi}{Variablen (JavaScript)}
+\begin{defi}{Variable (JavaScript)}
     \emph{Variablen} haben in JavaScript keinen festen Typen.
+
     Nicht initialisierte Variablen haben den Wert \texttt{undefined}.
 
-    Zur Deklaration von Variablen stehen 3 Schlüsselworte zur Verfügung:
+    Zur Deklaration von Variablen stehen drei Schlüsselworte zur Verfügung:
 
     \begin{tabularx}{\textwidth}{|l|X|X|}
         \hline
-        Schlüsselwort & Beschreibung                                                                                                                            & Gültigkeitsbereich                                                                       \\\hline\hline
-        var           &                                                                                                                                         & Innere sowie äußere Scopes innerhalb der Funktion, in der die Variable deklariert wurde. \\\hline
-        let           & Vergleichbar mit dem aus \texttt{Java} bekannten Schlüsselwort \texttt{var}                                                             & Scope, in dem die Variable deklariert wurde, sowie innere Scopes                         \\\hline
-        const         & Wie \texttt{let}, jedoch müssen const Variablen bei der Deklaration initialisiert werden und können danach nicht mehr angepasst werden. &                                                                                          \\\hline
+        Schlüsselwort & Beschreibung                                                                                                                            & Gültigkeitsbereich                                                                      \\\hline\hline
+        var           &                                                                                                                                         & Innere sowie äußere Scopes innerhalb der Funktion, in der die Variable deklariert wurde \\\hline
+        let           & Vergleichbar mit dem aus \texttt{Java} bekannten Schlüsselwort \texttt{var}.                                                            & Scope, in dem die Variable deklariert wurde, sowie innere Scopes                        \\\hline
+        const         & Wie \texttt{let}, jedoch müssen const Variablen bei der Deklaration initialisiert werden und können danach nicht mehr angepasst werden. &                                                                                         \\\hline
     \end{tabularx}
 \end{defi}
 
@@ -119,13 +116,21 @@
 
     Beim Vergleichen von Variablen stehen einem zwei Operatoren zur Verfügung:
     \begin{itemize}
-        \item \texttt{==}: Versucht verschiedene Datentypen sinnvoll zu vergleichen
-        \item \texttt{===}: Vergleicht nur gleiche Datentypen.
-              Unterschiedliche Datentypen geben immer \texttt{false} zurück.
+        \item \texttt{==}:
+              \begin{itemize}
+                  \item typschwacher Vergleich
+                  \item versucht verschiedene Datentypen sinnvoll zu vergleichen
+              \end{itemize}
+        \item \texttt{===}:
+              \begin{itemize}
+                  \item typstarker Vergleich
+                  \item vergleicht nur gleiche Datentypen
+                  \item Unterschiedliche Datentypen geben immer \texttt{false} zurück.
+              \end{itemize}
     \end{itemize}
 
     \emph{Falsy Values} geben bei der Typumwandlung\footnote{explizit oder implizit z. B. in dem Kopf einer Schleife} in einen \texttt{boolean} \texttt{false} zurück.
-    Zu falsy Values gehören \texttt{false}, \texttt{0}, \texttt{""}, \texttt{null}, \texttt{undefined}, \texttt{NaN}.
+    Zu Falsy Values gehören \texttt{false}, \texttt{0}, \texttt{""}, \texttt{null}, \texttt{undefined}, \texttt{NaN}.
     Alle anderen Objekte sind \emph{truthy values}.
 
     \emph{Arrays} haben keine feste Größe und keinen festen Datentypen.
@@ -152,13 +157,13 @@
         console.log(glumanda.vorentwicklung) // undefined
         console.log(glumanda.to_string())    // Glumanda [4]
         glumanda.attack(2)                   // Flammenwurf
-        // glumanda.attack(5)                // Error
-        glumanda.attacken[5] = 'Fliegen'     // ok
+        // glumanda.attack(5)                // (Error)
+        glumanda.attacken[5] = 'Fliegen'     // (ok)
         glumanda.attack(5)                   // Fliegen
     \end{lstlisting}
 \end{example}
 
-\begin{example}{JavaScript Vererbung}
+\begin{example}{Vererbung (JavaScript)}
     \begin{lstlisting}[language=JavaScript]
         class Pokemon {
             id, name, typ // nicht notwendig, jedoch sinnvoll
@@ -169,7 +174,7 @@
                 this.typ = typ
             }
 
-            to_string() {
+            toString() {
                 return `${this.name} [${this.id}]`
             }
         }
@@ -181,26 +186,26 @@
         }
 
         let glumanda = new Pokemon(4, 'Glumanda', 'Feuer')
-        console.log(glumanda.to_string()) // Glumanda [4]
-        // glumanda.brennen               // undefined
+        console.log(glumanda.toString()) // Glumanda [4]
+        // glumanda.brennen              // undefined
 
         let glutexo = new FeuerPokemon(5, 'Glutexo', 'Feuer')
-        console.log(glutexo.to_string()) // Glutexo [5]
-        // glutexo.brennen               // function
-        glutexo.brennen()                // *knister*
+        console.log(glutexo.toString()) // Glutexo [5]
+        // glutexo.brennen              // function
+        glutexo.brennen()               // *knister*
     \end{lstlisting}
 \end{example}
 
-\begin{bonus}{Klassenlose Vererbung (JavaScript)}
-    Jede Instanz einer Klasse hat ein verstecktes Attribut \texttt{\_\_proto\_\_}.
+\begin{bonus}{Klassenlose Vererbung}
+    Jede \emph{Instanz} einer Klasse hat ein verstecktes Attribut \texttt{\_\_proto\_\_}.
 
-    Jede Klasse hat ein verstecktes Attribut \texttt{prototype}.
+    Jede \emph{Klasse} hat ein verstecktes Attribut \texttt{prototype}.
 
     Wenn man auf ein Attribut eines Objektes zugreifen möchte, welches dort nicht direkt gefunden wird, schaut die Engine in dem jeweiligen Prototypen nach.
     Sollte es dort nicht gefunden werden, wird rekursiv eine Ebene höher geschaut.
 \end{bonus}
 
-\begin{example}{Klassenlose Vererbung (JavaScript)}
+\begin{example}{Klassenlose Vererbung}
     \begin{lstlisting}[language=JavaScript]
         let glumanda = {
             id: 4
@@ -216,34 +221,35 @@
     \end{lstlisting}
 \end{example}
 
-\begin{defi}{Call Stack (JavaScript)}
+\begin{defi}{Call Stack}
     Der \emph{Call Stack} führt Methoden synchron aus.
 
-    Die Reihenfolge wird nach dem LIFO Prinzip entschieden.
+    Die Reihenfolge wird nach dem LIFO-Prinzip entschieden.
 
-    Ob Methoden in den \emph{Call Stack} aufgenommen werden, wird durch den \emph{Event Loop} entschieden
+    Ob Methoden in den \emph{Call Stack} aufgenommen werden, wird durch den \emph{Event Loop} entschieden.
 \end{defi}
 
-\begin{defi}{Callback Queue (JavaScript)}
-    Wenn WEB APIs JavaScript Code ausführen müssen, werden die Methoden in die \emph{Callback Queue} eingefügt.
+\begin{defi}{Callback Queue}
+    Wenn WEB-APIs JavaScript-Code ausführen müssen, werden die Methoden in die \emph{Callback Queue} eingefügt.
 
-    Die Reihenfolge wird nach dem FIFO Prinzip entschieden.
+    Die Reihenfolge wird nach dem FIFO-Prinzip entschieden.
 
     Wenn der \emph{Call Stack} leer ist, wird das älteste Objekt der \emph{Callback Queue} dorthin verschoben.
 \end{defi}
 
 \begin{defi}{JavaScript Runtime Environment}
-    JavaScript blockiert dem Main Thread nicht.
-    Alle Funktionen werden aus dem Source Code direkt in den \emph{Call Stack} aufgenommen und ausgeführt.
+    JavaScript blockiert dem Main-Thread nicht.
 
-    Deswegen nennt man JavaScript \emph{Single-Threaded and Non-Blocking}.
+    Alle Funktionen werden aus dem Source-Code direkt in den \emph{Call Stack} aufgenommen und ausgeführt.
+
+    Deswegen nennt man JavaScript \emph{single-threaded} und \emph{non-blocking}.
 
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_js_runtime_environment.pdf}
     \end{center}
 \end{defi}
 
-\begin{example}{Single-Threaded and Non-Blocking (JavaScript)}
+\begin{example}{Single-Threaded and Non-Blocking (Funktionsaufruf)}
     \begin{lstlisting}[language=JavaScript]
         function a() {
             console.log('a')            
@@ -258,11 +264,11 @@
         \item \texttt{main()} \emph{(Call Stack)}
         \item \texttt{a()} wird in den \emph{Call Stack} eingefügt.
         \item \texttt{console.log('a')} \emph{(Call Stack)}
-        \item Alle Methoden im \emph{Call Stack} werden entfernt
+        \item Alle Methoden im \emph{Call Stack} werden entfernt.
     \end{enumerate}
 \end{example}
 
-\begin{example}{Single-Threaded and Non-Blocking (JavaScript)}
+\begin{example}{Single-Threaded and Non-Blocking (Timeout)}
     \begin{lstlisting}[language=JavaScript]
         setTimeout(() => {
             console.log('a')
@@ -283,7 +289,7 @@
     \end{enumerate}
 \end{example}
 
-\begin{example}{Single-Threaded and Non-Blocking (JavaScript)}
+\begin{example}{Single-Threaded and Non-Blocking (Event)}
     \begin{lstlisting}[language=JavaScript]
         document.getElementById('btn').addEventListener('click', event => {
             console.log('click!')
@@ -296,37 +302,39 @@
 
     \begin{enumerate}
         \item \texttt{main()} \emph{(Call Stack)}
-        \item Dem HTMLElement mit der ID \texttt{btn} wird ein \texttt{EventListener} hinzugefügt \emph{(Call Stack)}.
-        \item In den \emph{Web APIs} befindet sich nun ein \texttt{EventListener}.
+        \item Dem \texttt{HTMLElement} mit der ID \texttt{btn} wird ein \texttt{EventListener} hinzugefügt \emph{(Call Stack)}.
+        \item In den \emph{Web-APIs} befindet sich nun ein \texttt{EventListener}.
         \item \texttt{console.log('block')} \emph{(Call Stack)}
-        \item Wenn nun irgendwann der Button gedrückt wird, fügt die \emph{Web API} ein \texttt{Event} der \emph{Callback Queue} hinzu.
+        \item Wenn nun irgendwann der Button gedrückt wird, fügt die \emph{Web-API} ein \texttt{Event} der \emph{Callback Queue} hinzu.
         \item Wenn 3. erfolgreich ausgeführt wurde, ist der \emph{Call Stack} leer.
-        \item Wenn der \emph{Call Stack} leer ist, wird \texttt{console.log('click!')} ausgeführt \emph{(Call Stack)}
+        \item Wenn der \emph{Call Stack} leer ist, wird \texttt{console.log('click!')} ausgeführt \emph{(Call Stack)}.
         \item Ansonsten warten alle Elemente der \emph{Callback Queue} darauf, dass der \emph{Event Loop} sie \enquote{abholt}
     \end{enumerate}
 \end{example}
 
-\begin{defi}{Callbacks (JavaScript)}
+\begin{defi}{Callback}
     Wenn man nun trotzdem auf die Rückgabe von Funktionen warten möchte, die eine längere Laufzeit benötigen, als der Event Loop ihnen zur Verfügung stellt, muss man auf asynchrone Methoden zurückgreifen.
 
     Ein erster Ansatz dazu waren \emph{Callbacks}.
 
     Die Idee hinter Callbacks ist, dass man Methoden eine weitere Methode mitgibt, welche nach Ablauf der eigentlichen Methode mit der Rückgabe dieser als Parameter, die mitgegebene Methode ausführt.
+
     Callbacks haben den großen Vorteil, dass man sich die Methoden modular aufbauen kann.
+
     Bisher kann man nicht die tiefere Methode zur Laufzeit austauschen.
 \end{defi}
 
-\begin{example}{Callbacks (JavaScript)}
+\begin{example}{Callback}
     Die folgenden Methoden erstellen einen Timer und rufen dann die Callback-Methode mit dem \enquote{passenden} Buchstaben auf.
 
-    Die bisherige Implementierung sieht wie folgt aus:
+    Implementierung ohne Callbacks:
     \begin{lstlisting}[language=JavaScript]
         function a(s) {
             /* sleep */
             b(s + 'a')
         }
 
-        ...
+        // ...
 
         function c(s) {
             /* sleep */
@@ -338,14 +346,14 @@
         a('') // abc
     \end{lstlisting}
 
-    Die Callback-Implementierung sähe z. B. wie folgt aus:
+    Implementierung mit Callbacks:
     \begin{lstlisting}[language=JavaScript]
         function a(s, callback) {
             /* sleep */
             callback(s + 'a')
         }
 
-        ...
+        // ...
     \end{lstlisting}
 
     \begin{lstlisting}[language=JavaScript]
@@ -358,12 +366,14 @@
         )
     \end{lstlisting}
 
-    Die untere Variante ist zwar modularer und offen für Erweiterungen, jedoch nicht sonderlich lesbar.
+    Die Variante mit Callbacks ist zwar modularer und offen für Erweiterungen, jedoch nicht sonderlich lesbar.
+
     Einen potentiellen Ausweg aus dieser Callback-Hell bietet das Promise-Interface.
 \end{example}
 
-\begin{defi}{Promise (JavaScript)}
-    Ein Promise ist ein Platzhalter für eine Variable.
+\begin{defi}{Promise}
+    Ein \emph{Promise} ist ein Platzhalter für eine Variable.
+
     Es gibt drei interne Zustände:
 
     \begin{center}
@@ -383,8 +393,7 @@
     Zum Schluss kann man eine \texttt{finally()} Methode ausführen lassen.
 \end{defi}
 
-\begin{example}{Promise (JavaScript)}
-    Um auf unser Beispiel zurück zu kommen:
+\begin{example}{Promise (Fulfilled)}
     \begin{lstlisting}[language=JavaScript]
         function a(s) {
             return new Promise((resolve, reject) => {
@@ -402,27 +411,28 @@
     \end{lstlisting}
 \end{example}
 
-\begin{example}{Promise Error (JavaScript)}
-    Sollte \texttt{b} einen Fehler werfen, können wir diesen Fehler am Ende der \texttt{then()}-Kette mit \texttt{catch()} abfangen.
+\begin{example}{Promise (Rejected)}
+    Sollte ein Promise (hier \texttt{b}) rejected werden, kann der Fehler am Ende der \texttt{then()}-Kette mit \texttt{catch()} abgefangen werden.
+
     Ab der Methode, in der der Fehler geworfen wird, werden nur noch \texttt{catch()} sowie \texttt{finally()} beachtet.
 
     % TODO .then() weniger Deckkraft
     \begin{lstlisting}[language=JavaScript]
         a('')
-            ^.then(s => b(s))^                     // error
-            .then(s => c(s))                     // skip
-            .then(console.log)                   // skip
+            ^.then(s => b(s))^                     // (error)
+            .then(s => c(s))                     // (skip)
+            .then(console.log)                   // (skip)
             ^.catch(err => console.log('Fehler'))^ // Fehler
     \end{lstlisting}
 \end{example}
 
-\begin{defi}{Asynchronität (JavaScript)}
-    Da, je nach Komplexität, auch \texttt{.then()}-Ketten unübersichtlich werden.
-    Um dort Abhilfe zu schaffen, wurden \texttt{async}-Methoden hinzugefügt.
-    In dieser Methode kann man mit \texttt{await} darauf warten, dass ein Promise in den Fulfilled Zustand wechseln.
+\begin{defi}{Asynchronität}
+    Da auch \texttt{.then()}-Ketten unübersichtlich werden, wurden \texttt{async}-Methoden hinzugefügt.
+
+    In dieser Methode kann man mit \texttt{await} darauf warten, dass ein Promise in den Fulfilled-Zustand wechseln.
 \end{defi}
 
-\begin{example}{Asynchronität (JavaScript)}
+\begin{example}{Asynchronität}
     \begin{lstlisting}[language=JavaScript]
         function a(s) {
             return new Promise((resolve, reject) => {
@@ -442,12 +452,14 @@
             s = ^await^ c(s)
             console.log(s) // abc
         }
+
         abc()
     \end{lstlisting}
 \end{example}
 
-\begin{bonus}{Asynchronität mehrerer unabhängiger Promises (JavaScript)}
-    Asynchrone Methoden sollten trotzdem möglichst schnell sein.
+\begin{bonus}{Asynchronität mehrerer unabhängiger Promises}
+    Asynchrone Methoden sollten möglichst schnell sein.
+
     Wenn verschiedene Promises unabhängig sind, sollten diese nicht aufeinander warten müssen.
 
     \begin{lstlisting}[language=JavaScript]
@@ -458,10 +470,10 @@
 
             console.log(s1 + s2 + s3) // abc
         }
+
         abc()
     \end{lstlisting}
-    In diesem Beispiel ist nur \texttt{console.log} abhängig von den vorherigen Methoden.
-    Trotzdem muss \texttt{b()} auf \texttt{a()} warten.
+    In diesem Beispiel ist nur \texttt{console.log} abhängig von den vorherigen Methoden; trotzdem muss \texttt{b()} auf \texttt{a()} warten.
 
     Besser und schneller\footnote{
         Die Methoden geschehen nicht gleichzeitig, da JavaScript ausschließlich auf einem Thread läuft.
@@ -475,6 +487,7 @@
 
             console.log(s1 + s2 + s3) // abc
         }
+
         abc()
     \end{lstlisting}
 \end{bonus}
@@ -482,13 +495,14 @@
 \subsection{Fetch}
 
 \begin{defi}{DOM}
-    Eine HTML Webseite ist als Baumstruktur im \emph{Document Object Model (DOM)}-Format gespeichert.
+    Eine HTML-Webseite ist als Baumstruktur im \emph{Document Object Model (DOM)}-Format gespeichert.
 
     Die Wurzel stellt dabei immer das \texttt{HTML}-Objekt dar.
+
     In JavaScript kann man durch den Baum navigieren und die Objekte manipulieren.
 \end{defi}
 
-\begin{defi}{DOM-Manipulation (JavaScript)}
+\begin{defi}{DOM-Manipulation}
     Zur Manipulation von DOM-Objekten stehen zwei globale Variablen zur Verfügung:
     \begin{itemize}
         \item \texttt{document}: Die geladene Webseite.
@@ -497,42 +511,42 @@
               Einige der relevanten Methoden des Objektes sind:
               \begin{itemize}
                   \item \texttt{getElementById()}: Gibt ein bestimmtes \texttt{HTMLElement} zurück.
-                  \item \texttt{getElementByClassName()}: Gibt eine HTMLCollection aller \texttt{HTMLElemente} zurück, die diese Klasse in ihrer \texttt{classList} haben.
+                  \item \texttt{getElementByClassName()}: Gibt eine \texttt{HTMLCollection} aller \texttt{HTMLElemente} zurück, die diese Klasse in ihrer \texttt{classList} haben.
               \end{itemize}
         \item \texttt{window}: Eine Repräsentation des geladenen Fensters.
 
-              Die Variable wird genutzt um auf den fertigen Aufbau von dem \texttt{document} zu warten oder die Seite umzuleiten.
+              Die Variable wird genutzt um auf den fertigen Aufbau von \texttt{document} zu warten, oder die Seite umzuleiten.
     \end{itemize}
 
-    Des Weiteren benötigen wir einige mitgelieferten Klassen:
+    Des Weiteren benötigen wir einige mitgelieferte Klassen:
     \begin{itemize}
         \item \texttt{HTMLElement}: Ein spezifisches Element.
 
               Einige relevante Member der Klasse sind:
               \begin{itemize}
-                  \item \texttt{textContent}: z. B. der Text eines Buttons
-                  \item \texttt{value}: z. B. die Eingabe einer Textbox
-                  \item \texttt{disabled}: Boolean um Eingabeobjekte zu deaktivieren
-                  \item \texttt{classList}: Liste aller Klassen
-                  \item \texttt{addEventListener()}: Zum Hinzufügen eines \texttt{EventListeners}
+                  \item \texttt{textContent} (z. B. der Text eines Buttons)
+                  \item \texttt{value} (z. B. die Eingabe einer Textbox)
+                  \item \texttt{disable} (\texttt{Boolean} um Eingabeobjekte zu deaktivieren)
+                  \item \texttt{classList}
+                  \item \texttt{addEventListener()}
               \end{itemize}
         \item \texttt{HTMLCollection}: Eine Array-ähnliche Sammlung an \texttt{HTMLElementen}
 
-              Neben ein paar Membern (wie z. B. \texttt{length}) bieten HTMLCollections keine Funktionen.
-              Wenn man über alle HTMLElemente einer HTMLCollection iterieren möchte, muss man sich aus der Collection ein Array erstellen:
+              Neben ein paar Membern (wie z. B. \texttt{length}) bieten \texttt{HTMLCollections} keine Funktionen.
+              Wenn man über alle \texttt{HTMLElemente} einer \texttt{HTMLCollection} iterieren möchte, muss man sich aus der Collection ein Array erstellen:
 
               \texttt{Array.from(HTMLCollection).foreach(element => {...})}
-        \item \texttt{Event}: Ein Event wird durch spezifische Nutzungseingaben ausgelöst.
+        \item \texttt{Event}: Ein \texttt{Event} wird durch spezifische Nutzungseingaben ausgelöst.
 
               Einige relevante Member der Klasse sind:
               \begin{itemize}
-                  \item \texttt{target}: Das auslösende HTMLElement
-                  \item \texttt{preventDefault()}: Bricht das Event ab (z. B. wenn man die Aktion einer Form nicht auslösen möchte)
+                  \item \texttt{target}: Das auslösende \texttt{HTMLElement}
+                  \item \texttt{preventDefault()}: Bricht das \texttt{Event} ab (z. B. wenn man die Aktion einer Form nicht auslösen möchte)
               \end{itemize}
     \end{itemize}
 \end{defi}
 
-\begin{example}{DOM-Manipulation (JavaScript)}
+\begin{example}{DOM-Manipulation}
     \begin{lstlisting}[language=JavaScript]
         window.onload = () => {
             ...
@@ -551,11 +565,12 @@
     \end{lstlisting}
 \end{example}
 
-\begin{bonus}{Ajax}
-    Neben einfacher DOM-Manipulation bietet JavaScript einem die Möglichkeit in den clientseitig ausgeführten Skripten mit dem Server zu kommunizieren.
+\begin{defi}{AJAX}
+    Neben einfacher DOM-Manipulation bietet JavaScript in Form von \emph{Asynchronous JavaScript and XML (AJAX)} die Möglichkeit, in den clientseitig ausgeführten Skripten mit dem Server zu kommunizieren.
+
     Der Datenaustausch findet dabei in XML oder JSON statt.
 
-    Die erhaltenen Daten werden dann clientseitig in das DOM Dokument eingebunden.
+    Die erhaltenen Daten werden clientseitig in das DOM-Dokument eingebunden.
 
     Vorteile:
     \begin{itemize}
@@ -563,15 +578,16 @@
         \item Erhöhte Benutzungsfreundlichkeit
     \end{itemize}
 
-    Nachteile
+    Nachteile:
     \begin{itemize}
         \item Bruch mit klassischen Technologien
         \item Komplexität der URL-Ressource hoch
         \item Suchmaschinenlesbarkeit erschwert
     \end{itemize}
-\end{bonus}
+\end{defi}
 
-\begin{example}{Ajax (Deprecated)}
+\begin{bonus}{Modernes AJAX}
+    Veraltetes AJAX funktioniert wie folgt:
     \begin{lstlisting}[language=JavaScript]
         const xmlHttp = new XMLHttpRequest()
 
@@ -580,20 +596,16 @@
                 console.log(xmlHttp.responseText)
         }
 
-        xmlHttp.open('GET', 'http://paddel.xyz', true)
+        xmlHttp.open('GET', 'http://paddel.xyz/pokemon', true)
         xmlHttp.send(null)
     \end{lstlisting}
 
-    xmlHttp funktioniert zwar, jedoch gelingt man schnell in eine Callback-Hell und ist gezwungen mit XML arbeiten.
+    \texttt{xmlHttp} funktioniert zwar, jedoch gelingt man schnell in eine Callback-Hell und ist gezwungen mit XML arbeiten.
 
-    Moderne Schnittstellen arbeiten mit \texttt{fetch}.
-    \texttt{fetch} arbeitet mit Promises und gibt JSON Objekte zurück.
-\end{example}
-
-\begin{example}{Ajax}
+    Moderne Schnittstellen arbeiten mit \texttt{fetch}; \texttt{fetch} wiederum arbeitet mit Promises und gibt JSON-Objekte zurück:
     \begin{lstlisting}[language=JavaScript]
         fetch(url)
-            .then(res => res.json()) // parsed Erhaltene response in Json
+            .then(res => res.json()) // parsed erhaltene Response in JSON
             .then(data => {
                 ...
             })
@@ -601,9 +613,9 @@
                 ...
             })
     \end{lstlisting}
-\end{example}
+\end{bonus}
 
-\begin{example}{Ajax (GET)}
+\begin{example}{GET (AJAX)}
     \begin{lstlisting}[language=JavaScript]
         fetch('https://paddel.xyz/pokemon?id=4')
             .then(res => res.json())
@@ -611,7 +623,7 @@
     \end{lstlisting}
 \end{example}
 
-\begin{example}{Ajax (POST)}
+\begin{example}{POST (AJAX)}
     \begin{lstlisting}[language=JavaScript]
         fetch('https://paddel.xyz/pokemon',
             {
