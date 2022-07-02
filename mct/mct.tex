@@ -1,0 +1,28 @@
+\documentclass[german]{spicker}
+
+\addbibresource{mct.bib}
+
+\title{Mikrocontrollertechnik}
+\author{Tim Wende}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{includes/grundlagen.tex}
+\include{includes/elektrotechnik.tex}
+\include{includes/hardware.tex}
+\include{includes/analog_digital.tex}
+\include{includes/takt_timer.tex}
+\include{includes/serielle_schnittstelle.tex}
+\include{includes/assembler.tex}
+\include{includes/interrupt_multitasking.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}
