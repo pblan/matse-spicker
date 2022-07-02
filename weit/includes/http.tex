@@ -26,8 +26,15 @@
 
     URIs werden in zwei Gruppen aufgeteilt:
     \begin{itemize}
-        \item \emph{Uniform Resource Location (URL)}: Adressierung von Informationsobjekten mit Festlegung des Zugangsprotokolls
-        \item \emph{Uniform Ressource Name (URN)}: Adressierung von Objekten ohne ein Protokoll
+        \item \emph{Uniform Resource Location (URL)}
+              \begin{itemize}
+                  \item Benennen eine Ressource über ihren primären Zugriffsmechanismus wie zum Beispiel \texttt{http} oder \texttt{ftp}.
+                  \item Danach folgt die Bezeichnung des Ortes (\emph{Location}) der Ressource im Netz – meistens der Domain-Name.\footnote{URLs waren ursprünglich die einzige Art von URIs, weshalb der Begriff URL oft gleichbedeutend mit URI verwendet wird.}
+              \end{itemize}
+        \item \emph{Uniform Ressource Name (URN)}:
+              \begin{itemize}
+                  \item Mit dem URI-Schema \texttt{urn} identifizieren eine Ressource mittels eines vorhandenen oder frei zu vergebenden Namens, beispielsweise \texttt{urn:isbn} oder \texttt{urn:sha1}.
+              \end{itemize}
     \end{itemize}
 \end{defi}
 

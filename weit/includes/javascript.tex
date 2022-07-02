@@ -32,13 +32,13 @@
     \begin{center}
         \begin{tabular}{|l|l|l|}
             \hline
-            Browser & JS Runtime & HTML, CSS Renderer \\\hline\hline
-            Chrome  & V8         & Blink              \\\hline
+            Browser & JS Runtime               & HTML, CSS Renderer         \\\hline\hline
+            Chrome  & V8                       & Blink                      \\\hline
             % IE      & Trident    & Chakra             \\\hline
-            Firefox & Gecko      & SpiderMonkey       \\\hline
-            Edge    & EdgeHTML   & Chakra             \\\hline
+            Firefox & Gecko                    & SpiderMonkey               \\\hline
+            Edge    & EdgeHTML (seit 2021: V8) & Chakra  (seit 2021: Blink) \\\hline
             % Opera   & Blink      & V8                 \\\hline
-            Safari  & WebKit     & Nitro              \\\hline
+            Safari  & WebKit                   & Nitro                      \\\hline
         \end{tabular}
     \end{center}
 
@@ -130,7 +130,7 @@
     \end{itemize}
 
     \emph{Falsy Values} geben bei der Typumwandlung\footnote{explizit oder implizit z. B. in dem Kopf einer Schleife} in einen \texttt{boolean} \texttt{false} zurück.
-    Zu Falsy Values gehören \texttt{false}, \texttt{0}, \texttt{""}, \texttt{null}, \texttt{undefined}, \texttt{NaN}.
+    Zu Falsy Values gehören \texttt{false}, \texttt{0}, \texttt{\ditto\ditto}, \texttt{null}, \texttt{undefined}, \texttt{NaN}.
     Alle anderen Objekte sind \emph{truthy values}.
 
     \emph{Arrays} haben keine feste Größe und keinen festen Datentypen.
@@ -628,7 +628,7 @@
         fetch('https://paddel.xyz/pokemon',
             {
                 'method': 'POST',
-                'body': { 'id': 4 },
+                'body': JSON.stringify({'id': 4}),
                 'headers': { 'Content-Type': 'application/json' }
             }
         )
