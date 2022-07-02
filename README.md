@@ -20,3 +20,5 @@
 [![Einführung in die Künstliche Intelligenz](https://github.com/pblan/matse-spicker/actions/workflows/ki.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/ki.yml)
 
 [![Einführung in Machine Learning](https://github.com/pblan/matse-spicker/actions/workflows/ml.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/ml.yml)
+
+[![Microcontrollertechnik](https://github.com/pblan/matse-spicker/actions/workflows/mct.yml/badge.svg)](https://github.com/pblan/matse-spicker/actions/workflows/mct.yml)
