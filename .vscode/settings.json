@@ -1,4 +1,7 @@
 {
     "discord.enabled": true,
-    "latex-workshop.latex.autoBuild.run": "onSave"
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "cSpell.words": [
+        "schaltungstechnische"
+    ]
 }
