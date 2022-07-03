@@ -103,6 +103,14 @@
     \end{lstlisting}
 \end{defi}
 
+\begin{bonus}{Methodensprünge}
+    Beim Wechseln der Methode werden gesetzte Register der alten auf den Stack gepusht.
+    Die Parameter der neuen Methode werden in die Register geschrieben und bearbeitet.
+
+    Wenn die Methode beendet wird, wird der Rückgabewert in das Register \texttt{R0} gespeichert.
+    Der Prozessor springt zurück an die Adresse \texttt{LR} und poppt die gespeicherten Register zurück.
+\end{bonus}
+
 \begin{bonus}{Assembler Direktiven}
     \emph{Assembler Direktiven} beginnen immer mit einem \enquote{.}.
 
