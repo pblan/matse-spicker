@@ -6,10 +6,10 @@
     Assembler Code besteht im Wesentlichen aus 4 Spalten:
     \begin{itemize}
         \item \emph{Label} bzw. Sprungmarken sind optional und ein Alias für die na der Stelle befindlichen Adresse.
-              Sie enden immer mit einem \enquote{:}.
+              Sie enden immer mit einem \enquote{:}  (Doppelpunkt).
         \item \emph{Mnemonic} ist ein Alias für einen auszuführenden Maschinenbefehl, wobei die Operanden definieren, mit welchen Daten gearbeitet werden.
         \item \emph{Operanden}
-        \item \emph{Kommentare} können beliebig platziert werden und starten immer mit \enquote{@}.
+        \item \emph{Kommentare} können beliebig platziert werden und starten immer mit \enquote{@} (At-Zeichen).
     \end{itemize}
 \end{defi}
 
@@ -46,6 +46,7 @@
 \begin{defi}{Datentransfer}
     \begin{lstlisting}[language={[x86masm]Assembler}]
         LDR     R0, [R1]    ; Lade 32 bit Wort an Adresse R1 nach R0
+        LDRB    R0, [R1]    ; Lade Byte an Adresse R1 nach R0
         STR     R0, [R1]    ; Speichere 32 bit Wort R0 an die Adresse R1  
     \end{lstlisting}
 \end{defi}
@@ -92,7 +93,7 @@
     \end{lstlisting}
 
     Der Stack sollte immer \enquote{ausgeglichen} sein, d. h. eine Funktion sollte gleiche Anzahl von \texttt{PUSH-} und \texttt{POP}-Anweisungen besitzen.
-    Keine Stack-Zugriffe außerhalb des vorgesehenen Speicherbereichs.
+    Keine Stackzugriffe außerhalb des vorgesehenen Speicherbereichs.
 \end{defi}
 
 \begin{defi}{Sprungbefehle}
@@ -108,20 +109,20 @@
     Die Parameter der neuen Methode werden in die Register geschrieben und bearbeitet.
 
     Wenn die Methode beendet wird, wird der Rückgabewert in das Register \texttt{R0} gespeichert.
-    Der Prozessor springt zurück an die Adresse \texttt{LR} und poppt die gespeicherten Register zurück.
+    Der Prozessor springt zurück an die Adresse \texttt{LR} und \enquote{poppt} die gespeicherten Register zurück.
 \end{bonus}
 
-\begin{bonus}{Assembler Direktiven}
-    \emph{Assembler Direktiven} beginnen immer mit einem \enquote{.}.
+\begin{bonus}{Assembler-Direktiven}
+    \emph{Assembler-Direktiven} beginnen immer mit einem \enquote{.} (Punkt).
 
     Folgende Direktiven erzeugen \emph{keinen} Code:
     \begin{itemize}
-        \item \texttt{.thumb}: Übersetze in Thumb/Thumb2 Maschinencode
-        \item \texttt{.text}: Lade folgenden Code in die text-Sektion
-        \item \texttt{.global main}: Deklariere main als für den Linker sichtbare Funktion
+        \item \texttt{.thumb}: Übersetze in Thumb bzw. Thumb2 Maschinencode
+        \item \texttt{.text}: Lade folgenden Code in die Text-Sektion
+        \item \texttt{.global main}: Deklariere \texttt{main} als für den Linker sichtbare Funktion
         \item \texttt{.asmfunc}: Start einer Assembler-Unterfunktion
         \item \texttt{.endasmfunc}: Ende einer Assembler-Unterfunktion
-        \item \texttt{.align 4}: Erhöhe die aktuelle Adresse auf ein vielfaches von 4
+        \item \texttt{.align 4}: Erhöhe die aktuelle Adresse auf ein Vielfaches von 4
         \item \texttt{.end}: Ende des Assembler Codes
         \item \texttt{.equ}: Definition eines Wertes als symbolischer Namen
     \end{itemize}
@@ -133,7 +134,7 @@
 \end{bonus}
 
 \begin{example}{Assembler}
-    Wenn wir P1.0\footnote{Auf dem MSP432 die rote LED} als Output setzen wollen, können wir die Register wie folge manipulieren:
+    Wenn wir \texttt{P1.0} als Output setzen wollen, können wir die Register wie folgt manipulieren:
 
     \begin{lstlisting}[language=c]
         #include msp.h

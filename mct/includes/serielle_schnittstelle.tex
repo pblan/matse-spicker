@@ -1,16 +1,6 @@
 \section{Serielle Schnittstelle}
 
-\begin{defi}{Parallele Schnittstelle}
-    \emph{Parallele Schnittstellen} übertragen Bits \emph{parallel} über mehrere, parallele Leitungen.
-\end{defi}
-
-\begin{defi}{Serielle Schnittstelle}
-    \emph{Serielle Schnittstellen} übertragen Bits nacheinander auf einer Leitung.
-
-    In der Praxis zeigt sich, dass serielle Schnittstellen schneller sind, da sie keine Probleme wie Laufzeit der Signale, \enquote{übersprechen} oder Leitungskapazitäten haben.
-\end{defi}
-
-\begin{defi}
+\begin{defi}{Schnittstelle}
     Schnittstellen werden genutzt, um zwischen einem Mikrocontroller und Sensoren oder einem Host System zu kommunizieren.
 
     Eigenschaften:
@@ -40,14 +30,34 @@
     \end{itemize}
 \end{defi}
 
-\begin{defi}{Schrittgeschwindigkeit}
-    [Bd] = $\frac{1}{t}$ = Baud
+\begin{defi}{Parallele Schnittstelle}
+    \emph{Parallele Schnittstellen} übertragen Bits \emph{parallel} über mehrere, parallele Leitungen.
 \end{defi}
+
+\begin{defi}{Serielle Schnittstelle}
+    \emph{Serielle Schnittstellen} übertragen Bits nacheinander auf einer Leitung.
+
+    In der Praxis zeigt sich, dass serielle Schnittstellen schneller sind, da sie keine Probleme wie Laufzeit der Signale, \enquote{übersprechen} oder Leitungskapazitäten haben.
+\end{defi}
+
+\begin{bonus}{Baudrate vs. Bitrate}
+    Wenn die Zeitdauer (Schrittdauer) eines Symbols bzw. Codeelements $T$ ist, ist die Schrittgeschwindigkeit bzw. \emph{Baudrate}:
+    \[
+        v_s = \frac{1}{T} \text{ [Baud]}
+    \]
+
+    Die dazugehörige Übertragungsgeschwindigkeit bzw. \emph{Bitrate} ist dann:\footnote{$n$ = Anzahl diskreter Zustände des Codeelements}
+    \[
+        v_u = v_s \log_2 n
+    \]
+
+    Bei binären Codeelementen stimmen somit Bitrate und Baudrate überein, falls nur Codeelementen für Daten übermittelt werden.
+\end{bonus}
 
 \subsection{UART und SPI}
 
 \begin{defi}{UART}
-    \emph{Universal Asynchronous Receiver/Transmitter (UART)} ist eine asynchrone Punkt-zu-Punkt, die grundsätzlich voll-duplex Betrieb erlaubt.
+    \emph{Universal Asynchronous Receiver/Transmitter (UART)} ist eine asynchrone Punkt-zu-Punkt Verbindung, die grundsätzlich voll-duplex Betrieb erlaubt.
 
     Im einfachsten Fall existieren nur 2 Leitungen, die über Kreuz zwischen zwei Geräten angeschlossen werden:
     \begin{itemize}
@@ -77,7 +87,7 @@
 \end{defi}
 
 \begin{defi}{eUSCI}
-    \emph{Enhanced Universal Serial Communication Interface} Einheiten können im \emph{UART} Modus betrieben werden.
+    \emph{enhanced Universal Serial Communication Interface (eUSCI)} Einheiten können im \emph{UART} Modus betrieben werden.
 
     \texttt{eUSCI\_A0} ist normalerweise über zwei Jumper an das Backchannel-UART angeschlossen.
 \end{defi}
@@ -92,8 +102,8 @@
 
     Dabei können verschiedene Fehler auftreten:
     \begin{itemize}
-        \item \emph{Break (BRK)} wird gesetzt, wenn das Empfangssignal länger als die Dauer eines Datenrahmens auf logisch 0 liegt.
-        \item \emph{Overrun Error (OE)} wird gesetzt, wenn \texttt{UCSxRXBUF} bereits gefüllt ist, und ein komplettes neues Datenwort Shift-Register eingegangen ist.
+        \item \emph{Break} \texttt{(BRK)} wird gesetzt, wenn das Empfangssignal länger als die Dauer eines Datenrahmens auf logisch 0 liegt.
+        \item \emph{Overrun Error} \texttt{(OE)} wird gesetzt, wenn \texttt{UCSxRXBUF} bereits gefüllt ist, und ein komplettes neues Datenwort Shift-Register eingegangen ist.
     \end{itemize}
 \end{bonus}
 
@@ -108,12 +118,12 @@
         \item Frequenz
     \end{itemize}
 
-    Dazu werden 4 Signale genutzt:
+    Dazu werden vier Signale genutzt:
     \begin{itemize}
-        \item \emph{Serial CLocK (SCLK)}, gesetzt von Main
-        \item \emph{Main Out, Sub In (MOSI)}
-        \item \emph{Main In, Sub Out (MISO)}
-        \item \emph{Sub Select (/SS)}
+        \item \emph{Serial CLocK} \texttt{(SCLK)}, gesetzt von Main
+        \item \emph{Main Out, Sub In} \texttt{(MOSI)}
+        \item \emph{Main In, Sub Out} \texttt{(MISO)}
+        \item \emph{Sub Select \texttt{(/SS)}}
     \end{itemize}
 
     Jedes Subsystem hat ein eigenes \emph{Sub Select}-Signal.
@@ -140,16 +150,17 @@
 
 \begin{bonus}{Besonderheiten I2C}
     \begin{itemize}
-        \item Main/Sub Architektur wie bei SPI
+        \item Main- bzw Sub-Architektur wie bei SPI
         \item Main initiiert die Kommunikation
-        \item Nur eine Datenleiten, trotzdem Datenaustausch in beide Richtungen möglich
+        \item Nur eine Datenleitung, trotzdem Datenaustausch in beide Richtungen möglich
         \item Auch die Taktleitung kann von beiden Kommunikationspartnern genutzt werden.
     \end{itemize}
 \end{bonus}
 
-\begin{defi}{Open Drain}
+\begin{defi}{Open-Drain}
     Wenn ein Kommunikationspartner eine Leitung auf \texttt{HIGH} und ein anderer auf \texttt{LOW} setzt, kann es zu einem Kurzschluss kommen.
-    Um dem entgegenzuwirken wurden \emph{Open-Drain Ausgangsstufen} implementiert:
+
+    Um dem entgegenzuwirken wurden \emph{Open-Drai- Ausgangsstufen} implementiert:
 
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/defi_open_drain.pdf}
@@ -163,6 +174,7 @@
     Die Pullup-Widerstände müssen richtig dimensioniert werden, damit die Pegelwechsel auf den Leitungen schnell genug passieren.
 
     I2C arbeitet durch die Open-Drain Ausgänge langsamer als SPI.
+
     Üblich sind Taktraten von 100kHz bus 1MHz.
 
     Im Gegensatz zu SPI werden bei I2C immer 8 Bit und ein \texttt{ACK}-bit versendet, die entweder als Geräteadresse oder Daten interpretiert werden.
@@ -171,8 +183,8 @@
 \begin{defi}{Datenaustausch}
     Jede Datenübertragung wird von einer sogenannten \texttt{START}- und \texttt{STOP}-Bedingung eingerahmt.
 
-    Bei \texttt{START} wird zuerst \emph{SDA}, dann \emph{SCL} auf \texttt{LOW} gesetzt.
-    Bei \texttt{STOP} wird zuerst \emph{SCL}, dann \emph{SDA} auf \texttt{HIGH} gesetzt.
+    Bei \texttt{START} wird zuerst \texttt{SDA}, dann \texttt{SCL} auf \texttt{LOW} gesetzt.
+    Bei \texttt{STOP} wird zuerst \texttt{SCL}, dann \texttt{SDA} auf \texttt{HIGH} gesetzt.
 
     Nach der \texttt{START}-Bedingung erfolgt die Übertragung von 8 bit, wobei \texttt{SDA} nur seinen Pegel ändern darf, wenn \texttt{SCL} \texttt{LOW} ist.
 
@@ -186,12 +198,12 @@
 
 \begin{defi}{Adressierung}
     Jedes I2C-Gerät wird über eine 7 bit Adresse adressiert.
-    Ein weiteres bit ($R / \bar{W}$) gibt an, ober das Main.System die Daten schreiben oder Lesen möchte.
+    Ein weiteres bit ($\nicefrac{R}{\bar{W}}$) gibt an, ober das Main-System die Daten schreiben oder lesen möchte.
 
     Beim \emph{lesenden} Zugriff wird zunächst auch die Adresse des I2C-Geräts und die Adresse des Registers vom Main-System gesendet.
     Danach wird eine weitere \texttt{START}-Bedingung gesendet und nach dem Schreiben der Register-Adresse übernimmt das Sub-System die \texttt{SDA}-Leitung und versendet die Daten.
 
-    Das Main-System signalisiert mit einem \texttt{NACK}, dass er keine weiteren Daten empfangenen möchte.
+    Das Main-System signalisiert mit einem \texttt{NACK}, dass es keine weiteren Daten empfangen möchte.
 \end{defi}
 
 \begin{bonus}{Empfangen einer Nachricht}
@@ -209,5 +221,5 @@
     Zu Beginn wird die Nachricht in des \emph{Transmit Shift Register} aufgenommen.
     Die Sub-Adresse befindet sich in einem eigenen Register.
 
-    Solange Daten im \texttt{Transmit Buffer} liegen, wird das \emph{Transmit Shift Register} gefüllt.
+    Solange Daten im Transmit Buffer liegen, wird das Transmit Shift Register gefüllt.
 \end{bonus}

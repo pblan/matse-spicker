@@ -140,14 +140,16 @@
 
             \begin{tabular}{|c|c||c|}
                 \hline
-                $A$ & $\bar{G}$ & $Y$                                                                   \\\hline\hline
-                0   & 0         & 0                                                                     \\\hline
-                0   & 1         & nc\footnote{\enquote{not connected bzw. dritter hochohmiger Zustand}} \\\hline
-                1   & 0         & 1                                                                     \\\hline
-                1   & 1         & nc                                                                    \\\hline
+                $A$ & $\bar{G}$ & $Y$ \\\hline\hline
+                0   & 0         & 0   \\\hline
+                0   & 1         & nc  \\\hline
+                1   & 0         & 1   \\\hline
+                1   & 1         & nc  \\\hline
             \end{tabular}
         \end{center}
     \end{minipage}
+
+    \footnotetext[1]{\enquote{not connected bzw. dritter hochohmiger Zustand}}
 \end{defi}
 
 \begin{defi}{Multiplexer}
@@ -293,7 +295,7 @@
 \end{bonus}
 
 \begin{example}{C-Schnittstelle zur Peripherie}
-    Wenn wir P1.0\footnote{Auf dem MSP432 die rote LED} als Output setzen wollen, können wir die Register wie folgt manipulieren:
+    Wenn wir \texttt{P1.0}\footnote{Auf dem MSP432 die rote LED} als Output setzen wollen, können wir die Register wie folgt manipulieren:
 
     \begin{lstlisting}[language=c]
         #include msp.h
