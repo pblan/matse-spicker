@@ -1,22 +1,22 @@
 \section{Analoge und Digitale Signale}
 
 \begin{defi}{Digitales Signal}
-    Ein digitales Signal ist eine spezielle Form eines Signals, welches:
+    Ein \emph{digitales Signal} ist eine spezielle Form eines Signals, welches:
     \begin{itemize}
         \item einen abgegrenzten und gestuften Wertvorrat umfasst
-        \item in der zeitlichen Abfolge nur tz bestimmten periodischen Zeitpunkten definiert ist bzw. eine Veränderung im Signalwert aufweist.
+        \item in der zeitlichen Abfolge nur zu bestimmten periodischen Zeitpunkten definiert ist bzw. eine Veränderung im Signalwert aufweist.
     \end{itemize}
 
     z. B. TTL-Logikpegel mit \texttt{HIGH} (2.7 bist 5V) und \texttt{LOW} (0 bis 0.5V)
 \end{defi}
 
 \begin{defi}{Analoge Signale}
-    Analoge Signale sind im Gegensatz zu digitalen Signalen sowohl im Wertebereich als auch zeitlichem Verlauf kontinuierlich.
+    \emph{Analoge Signale} sind im Gegensatz zu digitalen Signalen sowohl im Wertebereich, als auch zeitlichem Verlauf kontinuierlich.
 
     Ein Analogsignal ist eine Form eines Signals mit stufenlosem und unterbrechungsfreiem Verlauf.
     Ein Analogsignal wird als glatte Funktion beschrieben und es lässt sich damit beispielsweise der zeitlich kontinuierlichen Verlauf einer physikalischen Größe beschreiben.
 
-    Viele Sensoren geben z. B. ein analoges Signal zurück, wenn sie veränderbare Widerstände nutzen (Licht-empfindlich, Temperatur-empfindlich etc.).
+    Viele Sensoren geben z. B. ein analoges Signal zurück, wenn sie veränderbare Widerstände nutzen (lichtempfindlich, temperaturempfindlich etc.).
 \end{defi}
 
 \begin{defi}{Digitalisierung}
@@ -26,9 +26,9 @@
 \begin{bonus}{Abtastung}
     Analoge Signale werden regelmäßig gemessen.
 
-    Dabei wird der Wert zu dem n-ten Zeitpunkten $t_n = n \cdot \Delta t$ gemessen.
+    Dabei wird der Wert zu dem $n$-ten Zeitpunkten $t_n = n \cdot \Delta t$ gemessen.
 
-    Bei dem \texttt{Hold}-Verfahren wird der letzte gemessene Wert gehalten:
+    Bei dem \emph{Hold-Verfahren} wird der letzte gemessene Wert gehalten:
 
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/defi_abtastrate.pdf}
@@ -63,6 +63,7 @@
     \end{itemize}
 
     Die technischen Vorrichtungen für die Umwandlung nennt man \emph{Wandler (engl. Converter)}.
+
     Das System für z. B. eine AD-Wandlung nennt man AD-Wandlung (\emph{Analog to Digital Converter (ADC)}).
 
     Wichtige Kenngrößen:
@@ -88,7 +89,9 @@
 
 \begin{defi}{DA-Wandlung (Widerstandskette)}
     \emph{Direkt-Wandler} basieren auf einer Widerstandskette um $2^n$ mögliche Ausgangswerte zu realisieren.
+
     Hierzu benötigen wir $n$ Widerstände mit $k \ \Omega$.
+
     $n$ sei definiert als Anzahl der genutzten digitalen GPIO Pins $S_0 \to S_n$; in folgendem Beispiel sei $n = 2$.
 
     \begin{center}

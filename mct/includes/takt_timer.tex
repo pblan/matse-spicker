@@ -8,16 +8,15 @@
     Ein Mikrocontroller vereinigt eine CPU mit weiterer Peripherie.
     Häufig besitzen diese Geräte eine andere bzw. schnellere Taktung.
 
-    u. A. wird die Taktung der CPU im Betrieb herabgesetzt werden, um Strom zu sparen.
-    Jeder Schaltvorgang in einem Digitalgatter erzeugt eine geringe, thermische Verlustleistung.
+    U. A. wird die Taktung der CPU im Betrieb herabgesetzt werden, um Strom zu sparen.
+    Jeder Schaltvorgang in einem Digitalgatter erzeugt eine geringe thermische Verlustleistung.
     Aus einer höheren Taktfrequenz folgt mehr Verlustleistung.
 
     Typische Taktfrequenzen von Mikrocontrollern bewegen sich im Bereich von einigen kHz bis zu mehreren hundert MHz.
 \end{defi}
 
 \begin{defi}{Quarzoszillatoren}
-    Bei \emph{Quarzoszillatoren} wird die Frequenz durch ein Quarz bestimmt.
-    Ein Quarz ist ein Kristallplättchen, dass piezzoelektrische Eigenschaften besitzt, und eine durch Abmessungen gegebene Eigenfrequenz hat.
+    Bei \emph{Quarzoszillatoren} wird die Frequenz durch ein Quarz bestimmt. \footnote{Ein Quarz ist ein Kristallplättchen, dass piezzoelektrische Eigenschaften besitzt, und eine durch Abmessungen gegebene Eigenfrequenz hat.}
 
     Piezzoelektisch bedeutet, dass der Kristall bei Anlegen von elektrischen Spannungen seine Form verändert.
     Falls der Kristall verformt wid, entsteht eine elektrische Spannung.
@@ -51,12 +50,13 @@
 
 \begin{defi}{Timer}
     Innerhalb eines Mikrocontrollers existieren verschiedenste Zähler, die mit einem (i. d. R. konfigurierbaren) Taktsignal betrieben werden.
+
     Wenn ein derartiger Zähler zum Auslösen von Ereignissen genutzt wird, spricht man von einem \emph{Timer}
 
     Timer lösen einen Interrupt aus.
 \end{defi}
 
-\begin{defi}{Timer Betriebsmodi}
+\begin{defi}{Timer Betriebsmodus}
     \begin{itemize}
         \item \emph{Capture Mode} (Stoppuhr):
 
@@ -67,20 +67,20 @@
               Wenn der Zähler einen speziellen Wert erreicht, kann er auf 0 zurückgesetzt werden.
         \item \emph{Output Mode}:
 
-              Eine Erweiterung des \emph{Compare Mode}, bei dem beim Erreichen eines speziellen Wertes oder beim Rücksetzen/Überlaufen des Zählers eine Ausgabeleitung gezielt verändert wird.
-              Dadurch können z. B. PWM Signale erzeugt werden.
+              Eine Erweiterung des \emph{Compare Mode}, bei dem beim Erreichen eines speziellen Wertes oder beim Rücksetzen bzw. Überlaufen des Zählers eine Ausgabeleitung gezielt verändert wird.
+              Dadurch können z. B. PWM-Signale erzeugt werden.
     \end{itemize}
 \end{defi}
 
-\begin{defi}{Watchdog Timer}
-    Der \emph{Watchdog Timer} ist wie ein Wachhund.
+\begin{defi}{Watchdog-Timer}
+    Der \emph{Watchdog-Timer} ist wie ein Wachhund.
 
     Zum Reset des Systems wird er gestartet und zählt autonom regelmäßig hoch.
 
     Während eine Software läuft, muss der Watchdog Timer regelmäßig auf 0 zurückgesetzt werden.
     Dies geschieht i. d. R. an einer zentralen Stelle in der Software.
 
-    Falls der Watchdog Timer zu lange nicht \enquote{gefüttert} wurde, wird ein System-Reset ausgeführt.
+    Falls der Watchdog-Timer zu lange nicht \enquote{gefüttert} wurde, wird ein System-Reset ausgeführt.
     Meist passiert das nur, wenn die Software abgestürzt ist.
 \end{defi}
 
@@ -94,13 +94,13 @@
 
     Bei einem System-Reset werden alle Timer von dem DCO auf 3MHz eingestellt.
 
-    Es lässt sich ebenfalls ein vielfaches von 3MHz als Frequenz einstellen.
+    Es lässt sich ebenfalls ein Vielfaches von 3MHz als Frequenz einstellen.
     Die Maximalfrequenz liegt bei 48MHz.
 \end{bonus}
 
 \begin{defi}{Timer A}
     Der \emph{Timer\_A} ist ein 16-bit Zähler, der von unterschiedlichen Taktsignalen gespeist werden kann.
-    Der MSP432 besitzt 4 Timer\_A Module.
+    Der MSP432 besitzt 4 \texttt{Timer\_A} Module.
 
     Jeder Timer besitzt ein \emph{Capture and Compare Register (CCR)}.
     Zusätzlich lässt sich einer von 7 Output-Modi einstellen:
@@ -111,14 +111,15 @@
 \end{defi}
 
 \begin{defi}{PWM}
-    \emph{Pulse Width Modulation (PWM)} besitzen bei konstanter Frequenz unterschiedlich lange Zeiten im High- und Low-Zustand.
+    \emph{Pulse Width Modulation (PWM)}-Signale erstellen bei konstanter Frequenz unterschiedlich lange Zeiten im High- und Low-Zustand.
+
     Das Verhältnis der Einschalt- zur Gesamtdauer einer Schwingung nennt man Tastverhältnis und ist als $\nicefrac{t_1}{T}$ definiert.
 
-    OWM Signale werden z. B. genutzt um:
+    OWM-Signale werden genutzt zum:
     \begin{itemize}
-        \item Motoren zu steuern
-        \item Lampen zu dimmen
-        \item die Spannung in Netzteilen zu regeln
+        \item Steuern von Motoren
+        \item Dimmen von Lampen
+        \item Regeln von Spannungen in Netzteilen
     \end{itemize}
 \end{defi}
 
@@ -145,5 +146,5 @@
 \end{example}
 
 \begin{bonus}{MSP432 Implementierung}
-    Um einen GPIO-Pin als Timer\_0 zu verwenden, sind neben dem \texttt{PxDIR} Register \texttt{PxSEL0} auf \texttt{1} und \texttt{PxSEL1} auf \texttt{0} zu setzten.
+    Um einen GPIO-Pin als \texttt{Timer\_A} zu verwenden, sind neben dem \texttt{PxDIR} Register \texttt{PxSEL0} auf \texttt{1} und \texttt{PxSEL1} auf \texttt{0} zu setzten.
 \end{bonus}

@@ -1,6 +1,6 @@
 \section{Elektrotechnik}
 
-\begin{defi}{Elektische Ladung}
+\begin{defi}{Elektrische Ladung}
     Grundlegende Eigenschaft von Materie: [Q] = C (Coulomb)
 
     Ladung ist beobachtbar als nicht mit Gravitation erklärbare Kraftwirkung zwischen Materie.
@@ -8,7 +8,7 @@
     Körper mit gleicher Ladung stoßen sich ab.
     Ungleich geladene Körper ziehen sich an.
 
-    F ist definiert als Coulomb-Kraft:
+    $F$ ist definiert als Coulomb-Kraft:
 
     \[
         F = K \cdot \frac{Q_1 \cdot Q_2}{r^2} \cdot \vec{r}
@@ -18,7 +18,7 @@
 \begin{defi}{Arbeit}
     Potenzielle Energie: [W] = J (Joule)
 
-    W ist proportional zur Größe der bewegten Ladung Q.
+    $W$ ist proportional zur Größe der bewegten Ladung $Q$.
     Energie, die als Ergebnis einer Ladungsträgerverschiebung bezogen auf die Ladungseinheit zur Verfügung:
 
     \[
@@ -51,6 +51,8 @@
         R = \frac{U}{I} = \sum_{i = 1}^n R_i
     \]
 
+    Die Schaltsymbole sehen dabei wie folgt aus:
+
     \begin{center}
         \includegraphics[width=0.35\textwidth]{includes/figures/defi_widerstand.pdf}
     \end{center}
@@ -60,14 +62,14 @@
     \begin{itemize}
         \item \emph{Knotenregel}:
 
-              Die Summe aller zufließenden Ströme in einem Punkt ist gleich der Summe der abfließenden Ströme.
+              Die Summe aller zufließenden Ströme in einem Punkt ist gleich der Summe der abfließenden Ströme:
 
               \[
                   \sum_{i \in \{1, \ldots, n\}} I_{\text{in}_i} - \sum_{i \in \{1, \ldots, n\}} I_{\text{out}_i} \stackrel{!}{=} 0
               \]
         \item \emph{Maschenregel}:
 
-              Die Summer aller abfallenden Spannungen in einem Schaltkreis ist gleich Null.
+              Die Summer aller abfallenden Spannungen in einem Schaltkreis ist gleich Null:
 
               \[
                   - U_Q + \sum_{i \in \{1, \ldots, n\}} U_i \stackrel{!}{=} 0

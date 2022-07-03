@@ -3,8 +3,8 @@
 \begin{defi}{Transistor}
     \emph{TRANsfer reSISTOR (Transistor)} bedeutet soviel wie \enquote{steuerbarer Widerstand}.
 
-    Im Kontext der Digitaltechnik reicht uns die einfache Vorstellung eines CMOS Transistors als durch Spannung gesteuerte Schalter.
-    Sie bestehen aus \texttt{Emitter}, \texttt{Collector} und \texttt{Base}
+    Im Kontext der Digitaltechnik reicht uns die einfache Vorstellung eines CMOS-Transistors als durch Spannung gesteuerte Schalter.
+    Sie bestehen aus \emph{Emitter}, \emph{Collector} und \emph{Base}.
 
     \begin{minipage}[t]{0.45\textwidth}
         Der \emph{n-Typ} Transistor schließt, wenn an der Base 3.3V anliegt.
@@ -81,7 +81,7 @@
 \end{defi}
 
 \begin{bonus}{Logikgatter mit Transistoren}
-    Da \emph{UND} und \emph{OR} am Ende negiert werden müssen, sind \emph{NAND} und \emph{NOR} \enquote{leichter} zu bauen:
+    Da \emph{AND} und \emph{OR} am Ende negiert werden müssen, sind \emph{NAND} und \emph{NOR} \enquote{leichter} zu bauen:
 
     \begin{center}
         \begin{minipage}[t]{0.33\textwidth}
@@ -151,7 +151,9 @@
 \end{defi}
 
 \begin{defi}{Multiplexer}
-    Ein \emph{Multiplexer} wird genutzt um an einen Ausgang mehrere Eingänge anzuschließen, die einzeln weitergeleitet werden.
+    Ein \emph{Multiplexer} wird genutzt, um an einen Ausgang mehrere Eingänge anzuschließen, die einzeln weitergeleitet werden.
+
+    $S_1$ und $S_2$ steuern dabei die Eingänge $A$ bis $D$.
 
     \begin{minipage}{0.5\textwidth}
         \begin{center}
@@ -177,6 +179,10 @@
 \end{defi}
 
 \begin{defi}{SR-Latch}
+    Ein \emph{SR-Latch} wird genutzt, um eine kurze anliegende Flanke ($S$) zu halten.
+
+    $R$ wird genutzt, um den SR-Latch zu resetten.
+
     \begin{center}
         \includegraphics[width=0.5\textwidth]{includes/figures/defi_sr_latch.pdf}
     \end{center}
@@ -189,13 +195,13 @@
 \end{bonus}
 
 \begin{defi}{SR-Latch mit Takt}
-    Durch die UND-Gatter werden die Set und Reset-Signale nur weitergeleitet, wenn das Clock-Signal HIGH ist.
+    Durch die UND-Gatter werden die Set und Reset-Signale nur weitergeleitet, wenn das Clock-Signal \texttt{HIGH} ist.
 
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_lr_latch_clock.pdf}
     \end{center}
 
-    Alternativ kann man das Reset Signal mit NOT-Set ersetzen:
+    Alternativ kann man das Reset Signal mit \texttt{NOT-Set} ersetzen:
 
     \begin{center}
         \includegraphics[width=0.75\textwidth]{includes/figures/defi_lr_latch_clock2.pdf}
@@ -204,7 +210,7 @@
 
 \begin{defi}{Pulsgenerator}
     Häufig soll die Datenübernahme nur bei einer steigenden oder fallenden Flanke des Clock-Signals erfolgen.
-    Dazu wird ein Pulsgenerator eingesetzt.
+    Dazu wird ein \emph{Pulsgenerator} eingesetzt.
 
     Sei $\Delta$ die Verzögerung, die die Bauteile zum \enquote{schalten} benötigen:
 
@@ -222,12 +228,12 @@
 \end{defi}
 
 \begin{defi}{MSP432 Speicher Layout}
-    ARM Prozessoren besitzen eine Harvard-Architektur.
+    ARM Prozessoren nutzen die Harvard-Architektur.
     Der MSP432 besitzt 32-Bit Adressbusse und 32-Bit Datenbusse.
 
-    Aus der Programmier-Perspektive zeigt jede Adresse jedoch auf einen Byte (8 Bit), nicht ein ganzes 32-Bit Wort.
+    Aus der Programmierperspektive zeigt jede Adresse jedoch auf einen Byte (8 bit), nicht ein ganzes 32-Bit Wort.
 
-    Der MSP432 hat einen 4GB Adressraum, der in 512MB-Zonen unterteilt ist:
+    Der MSP432 hat einen 4GB großen Adressraum, der in 512MB große Zonen unterteilt ist:
 
     \includegraphics[width=\textwidth]{includes/figures/defi_msp432_speicher.pdf}
 \end{defi}
@@ -238,7 +244,7 @@
             \includegraphics[width=0.3\textwidth]{includes/figures/defi_msp432_port.pdf}
         \end{center}
     \end{wrapfigure}
-
+    %
     Die Einstellungen für einen GPIO Port befinden sich in mehreren Registern.
     Sie sind in folgende Register unterteilt:
     \begin{itemize}
@@ -252,20 +258,22 @@
 \end{defi}
 
 \begin{bonus}{MSP432 Implementierung}
-    Um einen GPIO-Pin auf \texttt{INPUT} zu setzten, muss \texttt{PxDIR} auf \texttt{1} gesetzt werden.
+    Um einen GPIO-Pin auf \texttt{INPUT} zu setzen, muss \texttt{PxDIR} auf \texttt{1} gesetzt werden.
+
     Für einen digitalen Ausgang, kann man \texttt{PxSEL0} und \texttt{PxSEL1} z. B. auf \texttt{0} setzen.
 
-    Um einen GPIO-Pin auf \texttt{OUTPUT} zu setzten, muss \texttt{PxDIR} auf \texttt{0} gesetzt werden.
+    Um einen GPIO-Pin auf \texttt{OUTPUT} zu setzen, muss \texttt{PxDIR} auf \texttt{0} gesetzt werden.
+
     Für einen Pullup Widerstand muss man z. B. \texttt{PxSEL0} und \texttt{PxSEL1} z. B. auf \texttt{0} setzen.
 \end{bonus}
 
 \begin{bonus}{Bitmaske}
     Man kann durch die \texttt{msp.h} Bibliothek byteweise auf Register zugreifen.
-    Jedoch möchte man anliegende Leitungen nicht beeinflussen.
+    Jedoch möchte man anliegende Leitungen nicht durch Operation beeinflussen.
 
     Dazu kann man durch logische Verknüpfungen einzelne Bits verändern.
 
-    Sei P1 bis auf das letzte bit (\texttt{$\alpha$}) unbekannt, die Maske für P1.1 \texttt{0000 0001}:
+    Sei P1 bis auf das letzte bit (\texttt{$\alpha$}) unbekannt, die Maske für P1.1 sei \texttt{0000 0001}:
 
     \begin{center}
         \begin{tabular}{|c|c|c|c|c|}
@@ -276,15 +284,16 @@
     \end{center}
 
     Wir sehen, dass wir um $\alpha$ zu verändern folgende Verknüpfungen nehmen müssen:
-    \begin{itemize}
-        \item \texttt{0}: $\land \lnot (\text{0000 0001})$
-        \item \texttt{1}: $\lor (\text{0000 0001})$
-        \item \texttt{$\lnot \alpha$}: $\oplus (\text{0000 0001})$
-    \end{itemize}
+
+    \begin{tabular}{cc}
+        \texttt{0}:              & $\land \lnot (\text{0000 0001})$ \\
+        \texttt{1}:              & $\lor (\text{0000 0001})$        \\
+        \texttt{$\lnot \alpha$}: & $\oplus (\text{0000 0001})$      \\
+    \end{tabular}
 \end{bonus}
 
-\begin{example}{C Schnittstelle zur Peripherie}
-    Wenn wir P1.0\footnote{Auf dem MSP432 die rote LED} als Output setzen wollen, können wir die Register wie folge manipulieren:
+\begin{example}{C-Schnittstelle zur Peripherie}
+    Wenn wir P1.0\footnote{Auf dem MSP432 die rote LED} als Output setzen wollen, können wir die Register wie folgt manipulieren:
 
     \begin{lstlisting}[language=c]
         #include msp.h
@@ -304,8 +313,8 @@
     \end{lstlisting}
 \end{example}
 
-\begin{example}{C Schnittstelle zur Peripherie}
-    Wenn wir P5.1\footnote{Auf dem MSP432 Schalter 1} als Input setzen wollen, können wir die Register wie folge manipulieren:
+\begin{example}{C-Schnittstelle zur Peripherie}
+    Wenn wir P5.1\footnote{Auf dem MSP432 Schalter 1} als Input setzen wollen, können wir die Register wie folgt manipulieren:
 
     \begin{lstlisting}[language=c]
         #include msp.h
