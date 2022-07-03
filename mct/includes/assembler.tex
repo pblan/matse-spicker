@@ -1,1 +1,163 @@
 \section{Assembler}
+
+\begin{defi}{Assembler}
+    \emph{Assembler} wird genutzt, um zeitkritische Optimierungen zu erzielen.
+
+    Assembler Code besteht im Wesentlichen aus 4 Spalten:
+    \begin{itemize}
+        \item \emph{Label} bzw. Sprungmarken sind optional und ein Alias für die na der Stelle befindlichen Adresse.
+              Sie enden immer mit einem \enquote{:}.
+        \item \emph{Mnemonic} ist ein Alias für einen auszuführenden Maschinenbefehl, wobei die Operanden definieren, mit welchen Daten gearbeitet werden.
+        \item \emph{Operanden}
+        \item \emph{Kommentare} können beliebig platziert werden und starten immer mit \enquote{@}.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Datentypen}
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        R0      ; Register
+        [ptr]   ; *(ptr), Wert an der Stelle ptr
+        #4      ; Dezimalzahl  4
+        #0xA    ; Dezimalzahl 10
+    \end{lstlisting}
+
+    Diese Typen lassen sich kombinieren.
+    z. B.:
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        [R1, #4]            ; *(R1 + 4)
+        [R1, #4, LSL #2]    ; *(R1 + (4 << 2))
+    \end{lstlisting}
+\end{defi}
+
+\begin{defi}{Shift-Operationen}
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        #4, LSL #2  ; 4 << 2: 100 (4) -> 10000 (16)
+        #4, LSR #2  ; 4 >> 2: 100 (4) ->     1  (1)
+    \end{lstlisting}
+\end{defi}
+
+\begin{defi}{MOV}
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        MOV     R0, R1  ; R0 =  R1
+        MVN     R0, R1  ; R0 = !R1
+    \end{lstlisting}
+\end{defi}
+
+\begin{defi}{Datentransfer}
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        LDR     R0, [R1]    ; Lade 32 bit Wort an Adresse R1 nach R0
+        STR     R0, [R1]    ; Speichere 32 bit Wort R0 an die Adresse R1  
+    \end{lstlisting}
+\end{defi}
+
+\begin{defi}{Logische Operanden}
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        AND     R0, R1, R2  ; R0 = R1 &  R2
+        BIC     R0, R1, R2  ; R0 = R1 & !R2
+        ORR     R0, R1, R2  ; R0 = R1 |  R2
+        ORN     R0, R1, R2  ; R0 = R1 | !R2
+        EOR     R0, R1, R2  ; R0 = R1 ^  R2
+    \end{lstlisting}
+\end{defi}
+
+\begin{defi}{Arithmetische Operationen}
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        ADD     R0, R1, <op2>       ; R0 = R1 + <op2>
+        SUB     R0, R1, <op2>       ; R0 = R1 - <op2>
+        RSB     R0, R1, <op2>       ; R0 = <op2> - R1
+
+        MUL     R0, R1, <op2>       ; R0 = R1 * <op2>
+        MLA     R0, R1, R2, <op2>   ; R0 = <op2> + R1 * R2
+        MLS     R0, R1, R2, <op2>   ; R0 = <op2> - R1 * R2
+        UDIV    R0, R1, <op2>       ; R0 = R1 / <op2> (unsigned)
+        SDIV    R0, R1, <op2>       ; R0 = R1 / <op2> (signed)
+
+        CMP     R0, <op2>           ; R0 - <op2>
+        CMN     R0, <op2>           ; R0 + <op2>
+    \end{lstlisting}
+\end{defi}
+
+\begin{defi}{Stack}
+    Der \emph{Stack} ist ein \emph{Last-In-First-Out (LIFO)} Speicher.
+
+    Er enthält 32 bit Worte.
+    Der \emph{Stack Pointer (SP)} (R13) wird dekrementiert, wenn Daten auf den Stack gelegt werden und inkrementiert, wenn Daten entnommen werden.
+
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        PUSH    <reglist>   ; Register werden auf den Stack gelegt
+        POP     <reglist>   ; Register werden von dem Stack entnommen
+                            ; <reglist> ist eine Komma-separierte Liste von Registern,
+                            ; die auch ganze Bereiche (mit -) enthalten kann.
+                            ; SP oder PC duerfen nicht enthalten sein.
+    \end{lstlisting}
+
+    Der Stack sollte immer \enquote{ausgeglichen} sein, d. h. eine Funktion sollte gleiche Anzahl von \texttt{PUSH-} und \texttt{POP}-Anweisungen besitzen.
+    Keine Stack-Zugriffe außerhalb des vorgesehenen Speicherbereichs.
+\end{defi}
+
+\begin{defi}{Sprungbefehle}
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        B   label   ; goto Label
+        BX  R0      ; goto Adresse in R0
+        BL  label   ; goto Label und speicher Ruecksprungadresse (LR)
+    \end{lstlisting}
+\end{defi}
+
+\begin{bonus}{Assembler Direktiven}
+    \emph{Assembler Direktiven} beginnen immer mit einem \enquote{.}.
+
+    Folgende Direktiven erzeugen \emph{keinen} Code:
+    \begin{itemize}
+        \item \texttt{.thumb}: Übersetze in Thumb/Thumb2 Maschinencode
+        \item \texttt{.text}: Lade folgenden Code in die text-Sektion
+        \item \texttt{.global main}: Deklariere main als für den Linker sichtbare Funktion
+        \item \texttt{.asmfunc}: Start einer Assembler-Unterfunktion
+        \item \texttt{.endasmfunc}: Ende einer Assembler-Unterfunktion
+        \item \texttt{.align 4}: Erhöhe die aktuelle Adresse auf ein vielfaches von 4
+        \item \texttt{.end}: Ende des Assembler Codes
+        \item \texttt{.equ}: Definition eines Wertes als symbolischer Namen
+    \end{itemize}
+
+    Folgende Direktiven erzeugen Code:
+    \begin{itemize}
+        \item \texttt{.word}: Lege ein 32 bit Wert an der aktuellen Adresse ab
+    \end{itemize}
+\end{bonus}
+
+\begin{example}{Assembler}
+    Wenn wir P1.0\footnote{Auf dem MSP432 die rote LED} als Output setzen wollen, können wir die Register wie folge manipulieren:
+
+    \begin{lstlisting}[language=c]
+        #include msp.h
+        #define BIT0 (uint16_t) (0x0001) // 0000 0001
+
+        P1->SEL0 &= ~BIT0 // .... ...0 - Select GPIO mode
+        P1->SEL1 &= ~BIT0 // .... ...0 - Select GPIO mode
+
+        P1->DIR |= BIT0   // .... ...1 - Set as output
+
+        P1->OUT ^= BIT0   // .... ...1 - Set P1.0
+    \end{lstlisting}
+
+    \begin{lstlisting}[language={[x86masm]Assembler}]
+        LDR     R0, P1SEL0
+        LDRB    R1, [R0]
+        BIC     R1, R1, #1      ; R1 &= !(0000 00001)
+        STRB    R1, [R0]        ; P1->SEL0 &= ~BIT0
+
+        LDR     R0, P1SEL1
+        LDRB    R1, [R0]
+        BIC     R1, R1, #1      ; R1 &= !(0000 00001)
+        STRB    R1, [R0]        ; P1->SEL1 &= ~BIT0
+
+        LDR     R0, P1DIR
+        LDRB    R1, [R0]
+        ORR     R1, R1, #1      ; R1 |= 0000 00001
+        STRB    R1, [R0]        ; P1->DIR |= BIT0
+
+        LDR     R0, P1OUT
+        LDRB    R1, [R0]
+        EOR     R1, R1, #1      ; R1 ^= 0000 00001
+        STRB    R1, [R0]        ; P1->OUT ^= BIT0
+    \end{lstlisting}
+\end{example}
