@@ -37,6 +37,8 @@
 \end{defi}
 
 \begin{defi}{MOV}
+    \texttt{MOV} wird genutzt um Register zu kopieren.
+
     \begin{lstlisting}[language={[x86masm]Assembler}]
         MOV     R0, R1  ; R0 =  R1
         MVN     R0, R1  ; R0 = !R1
@@ -44,10 +46,13 @@
 \end{defi}
 
 \begin{defi}{Datentransfer}
+    Um Inhalte aus dem RAM zu laden bzw zu schreiben benötigen wir folgende Befehle:
+
     \begin{lstlisting}[language={[x86masm]Assembler}]
         LDR     R0, [R1]    ; Lade 32 bit Wort an Adresse R1 nach R0
         LDRB    R0, [R1]    ; Lade Byte an Adresse R1 nach R0
-        STR     R0, [R1]    ; Speichere 32 bit Wort R0 an die Adresse R1  
+        STR     R0, [R1]    ; Speichere 32 bit Wort R0 an die Adresse R1
+        STRB    R0, [R1]    ; Lade Byte an Adresse R1 nach R0
     \end{lstlisting}
 \end{defi}
 

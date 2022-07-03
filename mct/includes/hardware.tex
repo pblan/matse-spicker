@@ -247,7 +247,10 @@
         \end{center}
     \end{wrapfigure}
     %
-    Die Einstellungen für einen GPIO Port befinden sich in mehreren Registern.
+    Die Einstellungen für einen GPIO-Port\footnote{
+        Wiederholung: Ein Port beinhaltet 8 Leitungen zu GPIO-Pins, die nach außen Kommunizieren.
+        In folgenden Beispielen wird \texttt{Port 1.0} genutzt.
+    } befinden sich in mehreren Registern.
     Sie sind in folgende Register unterteilt:
     \begin{itemize}
         \item \texttt{SEL1}: Select1
@@ -271,7 +274,7 @@
 
 \begin{bonus}{Bitmaske}
     Man kann durch die \texttt{msp.h} Bibliothek byteweise auf Register zugreifen.
-    Jedoch möchte man anliegende Leitungen nicht durch Operation beeinflussen.
+    Jedoch möchte man anliegende Leitungen nicht durch Operationen beeinflussen.
 
     Dazu kann man durch logische Verknüpfungen einzelne Bits verändern.
 
