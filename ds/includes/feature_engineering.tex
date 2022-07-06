@@ -1,0 +1,108 @@
+\section{Feature Engineering}
+
+\begin{defi}{Feature Engineering}
+    \emph{Feature Engineering} ist der Prozess, mithilfe von Domänenwissen Merkmale aus Rohdaten zu erzeugen, um die datengetriebene Modellierung (und damit Vorhersagen) zu ermöglichen.
+
+    Feature Engineering vermittelt zwischen Rohdaten und Modellen.
+
+    Feature Engineering ist
+    \begin{itemize}
+        \item meist zeitaufwändig
+        \item oft entscheidend für den Erfolg eines Machine Learning Projektes
+        \item domänenspezifisch
+    \end{itemize}
+
+    Typisches Vorgehen (eines Data Scientist) beim Feature Engineering:
+    \begin{enumerate}
+        \item Klassische Methoden der Explorativen Analyse (EDA) werden genutzt
+        \item Domänenexperten aufsuchen und über Daten und ihre wichtigsten Eigenschaften befragen
+        \item Selbst zum Domänenexperten für bestimmte Datenarten werden (typischerweise während der Berufsausübung oder wissenschaftlichen Ausbildung)
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{Klassifikation}
+    Bei der (binären) \emph{Klassifikation} unterscheidet ein Modell zwischen zwei Klassen.
+
+    Das einfachste Modell dabei ist eine Schwellwert-basierte Klassifikation.
+
+    Bei der \emph{Multiklassen-Klassifikation} unterscheidet ein modell zwischen mehr als zwei Klassen.
+\end{defi}
+
+\begin{defi}{Accuracy}
+    Die \emph{Accuracy} ist ein Maß, um die Genauigkeit eines Klassifikators zu messen.
+
+    Sie ist die Anzahl der richtig klassifizierten Datenpunkte dividiert durch Gesamtzahl aller Datenpunkte:
+    \[
+        \ACC = \frac{\TP + \TN}{\TP + \TN + \FN + \FP}
+    \]
+    mit:
+    \begin{itemize}
+        \item $\TP$: True Positive (Richtige Klassifikation)
+        \item $\TN$: True Negative (Richtige Klassifikation)
+        \item $\FP$: False Positive (Falsche Klassifikation)
+        \item $\FN$: False Negative (Falsche Klassifikation)
+    \end{itemize}
+
+    Nachteile:
+    \begin{itemize}
+        \item anfällig gegenüber ungleich großen Klassen (\emph{class imbalance})
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{Baseline Model}
+    \emph{Baseline Models} sind einfache Modelle für die Einschätzung von Beurteilungsmetriken.
+
+    Sie helfen bei der Frage:
+    \enquote{Wie gut ist mein (oft mühsam konstruiertes) Modell gegenüber einem einfachen, schnell erzeugten Baseline Model?}
+\end{bonus}
+
+\begin{defi}{Precision}
+    Die \emph{Precision} bzw. der \emph{Positive Predictive Value} ist die Anzahl der Richtig-Positiven dividiert durch Anzahl aller \emph{als positiv deklarierten Punkte}.
+
+    Sie \enquote{bestraft} Falsch-Positive.
+
+    Sie ist definiert als:
+    \[
+        \PPV = \frac{\TP}{\TP + \FP}
+    \]
+\end{defi}
+
+\begin{defi}{Recall}
+    Der \emph{Recall} bzw. die \emph{True Positive Rate} oder \emph{Sensitivity} ist die Anzahl der Richtig-Positiven dividiert durch \emph{alle Positiven}.
+
+    Er \enquote{bestraft} Falsch-Negative.
+
+    Er ist definiert als:
+    \[
+        \TPR = \frac{\TP}{\TP + \FN}
+    \]
+\end{defi}
+
+\begin{defi}{F1-Score}
+    Der \emph{F1-Score} verbindet Precision und Recall.
+
+    Er ist das harmonische Mittel der beiden:
+    \[
+        F_1 = \left( \frac{\recall^{-1} + \precision^{-1}}{2} \right)^{-1} = 2 \cdot \frac{\precision \cdot \recall}{\precision + \recall} = 2 \cdot \frac{\PPV \cdot \TPR}{\PPV + \TPR} \in [ 0, 1 ]
+    \]
+
+    Je größer der F1-Score, desto besser ist der Klassifikator.
+\end{defi}
+
+\begin{defi}{ROC}
+    Die \emph{Receiver Operating Characteristic (ROC)} basiert auf der True Positive Rate ($\TPR = \nicefrac{\TP}{\text{P}}$)  und False Positive Rate ($\FPR = \nicefrac{\FP}{\text{N}}$).
+
+    Die \emph{ROC-Kurve} entsteht, wenn die TPR gegen die FPR aufgetragen wird, während der freie Parameter (Schwellwert) variiert wird.
+
+    Die ROC-Kurve charakterisiert, wie gut beide Verteilungen durch den Schwellwert trennbar sind.
+
+
+\end{defi}
+
+\begin{defi}{Youden-Index}
+
+\end{defi}
+
+\begin{defi}{AUC}
+
+\end{defi}

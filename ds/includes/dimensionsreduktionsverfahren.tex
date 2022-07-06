@@ -1,0 +1,199 @@
+\section{Dimensionsreduktionsverfahren}
+
+\begin{defi}{Dimensionsreduktionstechnik}
+    \emph{Dimensionsreduktionstechniken} reduzieren die Anzahl der Features (Merkmalen), die für Supervised oder Unsupervised Learning zur Verfügung stehen.
+    \footnote{
+        Oft mit dem Ziel, wenig Informationen dabei zu verlieren.
+    }
+
+    Ein Risiko besteht darin, dass prädikative Informationen für das Supervised Learning verloren gehen können.
+
+    Chancen sind aber:
+    \begin{itemize}
+        \item Schnellere Berechnungen durch Weglassen irrelevanter Informationen
+        \item Ermöglichung von Visualisierung der Daten (und damit der Gewinnung von Einsichten) im Rahmen einer explorativen Analyse (Data Science)
+        \item Ermöglichung besserer Generalisierung von Lernmodellen durch Entgegenwirken der Curse of Dimensionality (Fluch der Dimensionalität)
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{Curse of Dimensionality}
+    Der \emph{Curse of Dimensionality} im Kontext des Machine Learnings das Phänomen, nach dem das Volumen des Feature-Raumes dramatisch zunimmt mit der Anzahl der Dimensionen, so dass die $N$ Datenpunkte (der Trainingsmenge) nur noch spärlich (sparse) im Raum liegen.
+
+    Typische Folgen sind:
+    \begin{itemize}
+        \item Overfitting-Tendenz steigt
+        \item Rechenzeit steigt
+        \item Lernmodelle generalisieren schlecht
+    \end{itemize}
+
+    Wenn Daten nur noch spärlich den Feature-Raum ausfüllen, dann wird es schwierig, Modelle an die Daten anzupassen, die den Raum adäquat beschreiben
+\end{bonus}
+
+\subsection{Principal Component Analysis (PCA)}
+
+\begin{defi}{Principal Component Analysis}
+    Die \emph{Hauptkomponentenzerlegung} (\emph{Principal Component Analysis}, PCA) zählt zu den bekanntesten Dimensionsreduktionsverfahren.
+
+    PCA findet neue Achsen (Komponenten) für die Daten, so dass die Daten bezüglich dieser Achsen eine \emph{möglichst große Varianz} aufweisen.
+
+    Achsen, bezüglich derer die Daten kaum (oder keine) Varianz anweisen, können später weggelassen werden (Dimensionsreduktion).
+
+    Neue Achsen werden durch orthogonale Transformation erzeugt, d.h. Vektorlängen und Winkel bleiben erhalten.
+    \footnote{
+        Präziser: das innere Produkt bleibt erhalten.
+    }
+
+    Sei die \emph{Kovarianzmatrix} $S$ gegeben mit:
+    \[
+        S = \frac{1}{N} \sum_{n=1}^N (\mathbf{x}_n - \conj{\mathbf{x}_n}) (\mathbf{x}_n - \conj{\mathbf{x}_n})^T
+    \]
+
+    Dann gilt:
+    \begin{itemize}
+        \item Eigenwertzerlegung der Kovarianzmatrix $S$ liefert Eigenwerte $\lambda_j$ und -vektoren $\mathbf{u}_j$.
+        \item Wir sortieren nach Größe der Eigenwerte und erhalten die Richtungen der PCA über die zu den Eigenwerten assoziierten Eigenvektoren von S.
+    \end{itemize}
+
+    PCA kann als Transformation interpretiert werden, die die Achsen des Koordinatensystems so rotiert, dass die Varianz der Projektion der Daten auf der ersten Achse maximiert wird.
+
+    Der Mittelwert der Daten beeinflusst die PCA-Koordinaten:
+    \begin{itemize}
+        \item Daten mit Schwerpunkt (Mittelwert), der nicht dem Koordinatenursprung entspricht, haben nach PCA-Transformation in den neuen Koordinaten typischerweise Offsets, die meist nicht gut interpretierbar sind.
+        \item PCA-Richtungen ändern sich nicht unter Änderung des Schwerpunkts der Daten. Grund: Kovarianzmatrix ist invariant\footnote{Die Kovarianzmatrix verändert sich nicht.} unter Transformation der Mittelwerte.
+        \item Manche Software-Implementierungen nutzen für die PCA nicht die Kovarianzmatrix. Dort kann die PCA von den Mittelwerten der Daten abhängen.
+    \end{itemize}
+
+    \emph{Jedes Merkmal sollte auf den Mittelwert $0$ zentriert werden}:
+    \[
+        \tilde{x}_i = x_i - \conj{x}, \quad \forall i
+    \]
+
+    Die Skalierung der Daten beeinflusst PCA:
+    \begin{itemize}
+        \item Die Skalen, in der ein Merkmal angegeben wird beeinflusst die Varianz dieses Merkmals.
+        \item Die Ergebnisse der PCA ist abhängig von den Varianzen der Merkmale.
+    \end{itemize}
+
+    \emph{Jedes Merkmal sollte auf eine Varianz von $1$ skaliert werden, damit die Ergebnisse der PCA nicht von der (eventuell) willkürlichen Wahl der Skalen der Merkmale abhängig ist}:
+    \[
+        \tilde{x}_i = \frac{x_i}{\sigma}, \quad \forall i
+    \]
+\end{defi}
+
+\begin{bonus}{Standardisierung}
+    \emph{Standardisierung} bzw. \emph{z-scoring} beschreibt die Transformation eines Merkmals $X$, so dass es Mittelwert $0$ und Varianz $1$ aufweist.
+    Das Merkmal wird also \emph{zentriert} und \emph{skaliert}.
+
+    Sei $\conj{X}$ der Mittelwert und $\sigma$ die Standardabweichung von $X$.
+
+    Das \emph{standardisierte Merkmal} bzw. der \emph{z-score} $Z$ wird erzeugt durch:
+    \[
+        Z = \frac{X - \conj{X}}{\sigma}
+    \]
+
+    In der Praxis liegen sind Daten oft in Matrizen organisiert, in denen jede Spalte einem Merkmal entsprechen.
+    In diesem Fall standardisiert man jedes Merkmal, indem jede Spalte separat auf Mittelwert 0 und Varianz 1 transformiert wird.
+\end{bonus}
+
+\begin{defi}{Proportion of Variance Explained}
+    \emph{Proportion of Variance Explained (PVE)} beschreibt den Bruchteil der Gesamtvarianz der Merkmale, die über die PCA-Komponenten repräsentiert wird.
+
+    Die Varianz der $j$-ten Komponente ist:\footnote{Entspricht also dem jeweiligen Eigenwert.}
+    \[
+        \Var(Z_j) = \Var(\mathbf{u}_j^T \mathbf{x}) = \mathbf{u}_j^T \mathbf{S} \mathbf{u}_j = \mathbf{u}_j^T \lambda_j \mathbf{u}_j = \lambda_j
+    \]
+
+    Die Gesamtvarianz über alle Merkmale ist dann:
+    \[
+        \Var_\text{total} = \sum_{j=1}^D \Var(Z_j) = \sum_{j=1}^D \lambda_j
+    \]
+
+    Dann ist die $\PVE(j)$ der $j$-ten PCA-Komponente definiert als:
+    \[
+        \PVE(j) = \frac{\Var(Z_j)}{\Var_\text{total}} = \frac{\lambda_j}{\sum_{j=1}^D \lambda_j}
+    \]
+\end{defi}
+
+\subsection{Multidimensional Scaling (MDS)}
+
+\begin{defi}{Multidimensional Scaling}
+    \emph{Multidimensional Scaling (MDS)} ist eine Familie von Verfahren für die Visualisierung von Punkten (durch Finden geeigneter Koordinaten) sowie zur Dimensionsreduktion von Daten.
+
+    Gegeben seien die paarweisen Distanzen zwischen $N$ Objekten, in Form einer $N \times N$-Matrix der paarweisen euklidischen Distanzen:
+    \[
+        D = (d_{rs})
+    \]
+
+    Gesucht ist dann die Datenmatrix $X$, die die Koordinaten (Features) für jedes der $N$ Objekte enthält, so dass die Objekte in diesen Koordinaten die paarweisen euklidischen Distanzen $D = (d_{rs})$ aufweisen.
+
+    Mit diesen Koordinaten lassen sich die Objekte z. B. visualisieren.
+
+    Die Lösung ist dabei nicht eindeutig, da die Distanzen invariant sind unter:
+    \begin{itemize}
+        \item orthogonalen Transformationen (Rotation, Spiegelung)
+        \item Koordinatenverschiebung
+    \end{itemize}
+
+    Das Vorgehen ist wie folgt:
+    \begin{enumerate}
+        \item Ermitteln der Distanzmatrix $D$ (quadrierte euklidische Distanzen)
+        \item Ermitteln der Matrix $B$ durch Zentrierung der Matrix $D$:
+              \[
+                  B = - \frac{1}{2} HDH, \quad H = I - \frac{1}{N} \mathbf{1} \mathbf{1}^T
+              \]
+        \item Durchführen einer Eigenwertzerlegung von $B$
+        \item Mithilfe der Eigenwerte und -vektoren Erzeugen von Datenmatrix $X$:
+              \[
+                  X = \begin{bmatrix}
+                      \sqrt{\lambda_1} \mathbf{v}_1 & \sqrt{\lambda_2} \mathbf{v}_2 & \cdots & \sqrt{\lambda_P} \mathbf{v}_P
+                  \end{bmatrix}
+              \]
+              wobei die Eigenwerte und assoziierten Eigenvektoren der Größe nach absteigend sortiert wurden.
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{Proportion of Distance Matrix Explained}
+    \emph{Proportion of Distance Matrix Explained} (PDME) funktionert analog der Proportion of Variance Explained (PVE) für die PCA.
+
+    Dann ist die $\PDME(j)$ der $j$-ten PCA-Komponente definiert als:
+    \[
+        \PDME(j) = \frac{\lambda_j}{\sum_{i=1}^{N} |\lambda_i|}, \quad \forall j \; \text{mit} \; \lambda_j \geq 0
+    \]
+\end{defi}
+
+\begin{bonus}{MDA vs. PCA}
+    Wenn:
+    \begin{itemize}
+        \item Datenmatrix $X$ zentriert ist (d.h. Mittelwertvektor ist 0)
+        \item Distanzmatrix $D$ aus euklidischen Distanzen besteht
+    \end{itemize}
+    dann sind MDS-Koordinaten und PCA-Koordinaten der Daten identisch.
+
+    Die Matrizen $X^TX$ (PCA) und $XX^T$ (MDS) haben dann gemeinsame Eigenwerte und ihre Eigenvektoren sind proportional zueinander.
+
+    Unterschiede sind aber:
+    \begin{itemize}
+        \item Ausgangssituation (bei MDS ist Distanzmatrix bekannt, Koordinaten aber nicht)
+        \item MDS ist Ausgangspunkt für verschiedene Verfahren, z. B. Isomap
+        \item PCA nicht nutzbar bei nichtlinearen Strukturen
+    \end{itemize}
+\end{bonus}
+
+\begin{defi}{Isomap}
+    \emph{Isomap} nutzt Multidimensional Scaling (MDS), aber errechnet die Distanzmatrix $D$ aus einem Nächste-Nachbarn Graphen der Datenpunkte.
+
+    Der Algorithmus funktioniert wie folgt:
+    \begin{enumerate}
+        \item Ermittle Nachbarschaftsgraph mit euklidischen Distanzen:
+              \begin{enumerate}
+                  \item Verbinde einen Punkt mit seinen $k$-nächsten Nachbarn
+                  \item Verbinde einen Punkt mit allen Nachbarn innerhalb eines Epsilonballs
+              \end{enumerate}
+        \item Distanzmatrix $D$:
+              \begin{enumerate}
+                  \item Ermittle paarweise Distanzen zwischen Punkten auf dem Graph
+                  \item Quadriere diese Distanzen
+              \end{enumerate}
+        \item Wende Multidimensional Scaling auf Distanzmatrix $D$ an und erhalte Datenmatrix $X$
+    \end{enumerate}
+\end{defi}

@@ -1,0 +1,181 @@
+\section{Datengetriebene Modellierung}
+
+
+\begin{defi}{Target Function}
+    Eine Funktion $f: \mathcal{X} \to \mathcal{Y}$ heißt \emph{Target Function}, wobei $\mathcal{X}$ einen Feature Space und $\mathcal{Y}$ einen Label Space darstellt.
+
+    $f$ ist dabei eine \emph{unbekannte} (\enquote{perfekte}) \emph{Funktion}, die für jeden Feature Vector $\mathbf{x}_i \in \mathcal{X}$ ein Label $y_i \in \mathcal{Y}$ liefert.
+\end{defi}
+
+\begin{example}{Feature Vector und Target Function}
+
+    \begin{center}
+        \begin{tikzpicture}[
+            %  -{Stealth[length = 2.5pt]},
+            start chain = going {right=of \tikzchainprevious.north east},
+            FeatureBlock/.style={minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            LabelBlock/.style={minimum height=12em, outer sep=0pt, on chain},
+            every node/.style={draw, label distance=0.5em},
+            every on chain/.style={anchor=north west},
+            node distance=10em
+            ]
+            {
+            \node [FeatureBlock, label={[align=center]above left:{Eigenschaften (Features) des Kunden: \\ \hl{Feature Vector} $\mathbf{x}$}}, label=left:{Alter}] (x0) {};
+            \node [LabelBlock, label={[align=center]above:{Entscheidung: \\ \hl{Label} $y$}}, text width=8em, align=center] (y) {Kredit gewähren: Ja (1), Nein (-1)};
+
+            { [continue chain = going {below=of \tikzchainprevious.south west}, node distance=0]
+            \chainin (x0);
+            \node [FeatureBlock, label=left:{Familienstand}] (x1) {};
+            \node [FeatureBlock, label=left:{Höhe nicht zurückgezahlter Kredite}] (x2) {};
+            \node [FeatureBlock, label=left:{Geschlecht}] (x3) {};
+            \node [FeatureBlock, label=left:{Aufenthaltsdauer am Wohnsitz}] (x4) {};
+            \node [FeatureBlock, label=left:{Jahresgehalt}] (x5) {};
+            }
+
+            \path[->] ([xshift=2ex]x3.north east) edge node[above, draw=none]{\hl{Target Function} $f$} ([xshift=-2ex]y.west);
+            %\draw[->] (x3.north east) +(2em,0) -- (y.west) node [midway, above, draw=none] {Funktion $f$};
+            }
+        \end{tikzpicture}
+    \end{center}
+
+\end{example}
+
+\begin{defi}{Datensatz}
+    Ein Datensatz $\mathcal{D}$ besteht aus einer Menge von Input-Output-Paaren $(\mathbf{x}_1, y_1), \ldots, (\mathbf{x}_N, y_N)$, die durch die unbekannte Target Function $f$ mit $y_i = f(\mathbf{x}_i)$ erzeugt wurden.
+\end{defi}
+
+\begin{defi}{Lernalgorithmus}
+    Ein Lernalgorithmus $\mathcal{A}$ selektiert mithilfe der Daten $\mathcal{D}$ aus einer Menge von Kandidatenfunktionen die Funktion $g$, die $f$ am besten approximiert.
+
+    Der Algorithmus $\mathcal{A}$ selektiert $g$, so dass $g(\mathbf{x}_i) \approx f(\mathbf{x}_i)$ für alle $(\mathbf{x}_i, y_i) \in \mathcal{D}$.
+\end{defi}
+
+\begin{defi}{Kandidatenfunktionen}
+    Die Menge der \emph{Kandidatenfunktionen} (bzw. Hypothesen-Set) $\mathcal{H}$ beschreibt alle Funktionen, die zur Approximation einer Funktion $f$ benutzt werden können.
+
+    Die Hypothese $g \in \mathcal{H}$ mit $g(\mathbf{x}_i) \approx f(\mathbf{x}_i)$ wird dann \emph{finale Hypothese} genannt.
+\end{defi}
+
+\begin{defi}{Lernmodell}
+    Ein \emph{Lernmodell} besteht aus einem Lernalgorithmus $\mathcal{A}$ und einer Menge von Kandidatenfunktionen bzw. dem Hypothesen-Set $\mathcal{H}$.
+\end{defi}
+
+\begin{bonus}{Darstellung des Lernproblems}
+    \begin{center}
+        % https://tex.stackexchange.com/a/224623/243801
+        \begin{tikzpicture}
+            [myBox/.style={rectangle,
+                        draw,
+                        align=center,
+                        inner sep=2.5mm}]
+
+            \node[myBox, fill=blue!20] (unknownTargetFunction) at (-4, 4) {Unbekannte Target Function\\$f: \mathcal{X} \rightarrow \mathcal{Y}$};
+            \node[myBox, fill=blue!20] (trainingExamples) at (-4, 2) {Trainingsdaten\\$\mathcal{D} = (\mathbf{x}_1,y_1),...,(\mathbf{x}_n,y_n)$};
+            \node[myBox, fill=blue!20] (learningAlgorithm) at ( 0, 0) {Lernalgorithmus\\$\mathcal{A}$};
+            \node[myBox, fill=blue!20] (finalHypothesis) at ( 5, 0) {Finale Hypothese\\$g \approx f$};
+            \node[myBox, fill=blue!20] (hypothesisSet) at (-4,-2) {Hypothesenset\\$\mathcal{H}$};
+
+            \draw [->] (unknownTargetFunction) to (trainingExamples);
+            \draw [->] (trainingExamples) to [bend right] (learningAlgorithm.170);
+            \draw [->] (hypothesisSet) to [bend left] (learningAlgorithm.190);
+            \draw [->] (learningAlgorithm) to (finalHypothesis);
+
+            \node[draw,dashed,red,inner sep=2mm,label={[text=red]below:Lernmodell},fit=(learningAlgorithm) (hypothesisSet)] {};
+        \end{tikzpicture}
+    \end{center}
+\end{bonus}
+
+\begin{defi}{Supervised Learning}
+    Beim \emph{Supervised Learning} bzw. \emph{Predictive Learning} wird eine unbekannte Target Function $f: \mathcal{X} \to \mathcal{Y}$ mithilfe einer Menge von Input-Output-Paaren $(\mathbf{x}_1, y_1), \ldots, (\mathbf{x}_N, y_N)$ mit einer Funktion $g$ approximiert.
+\end{defi}
+
+
+\begin{defi}{Ähnlichkeit}
+    Es gibt sehr unterschiedliche Konzepte , um Ähnlichkeit zwischen Objekten zu quantifizieren.
+
+    Beispiele:
+    \begin{itemize}
+        \item Euklidische Distanz (Unähnlichkeitsmaß):
+              \[
+                  d(\mathbf{x}, \mathbf{x}') = \norm{\mathbf{x} - \mathbf{x}'}
+              \]
+        \item Kosinus-Ähnlichkeit:
+              \[
+                  \CosSim(\mathbf{x}, \mathbf{x}') = \frac{\mathbf{x}^T \mathbf{x}'}{\norm{\mathbf{x}} \norm{\mathbf{x}'}}
+              \]
+        \item Jaccard-Koeffizient:\footnote{zur Charakterisierung der Ähnlichkeit der Mengen $S_1$ und $S_2$}
+              \[
+                  J(S_1, S_2) = \frac{\abs{S_1 \cap S_2}}{\abs{S_1 \cup S_2}} \in [0, 1]
+              \]
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Nächste Nachbarn Modelle}
+    \emph{Nächste Nachbarn} (Nearest Neighbor) \emph{Modelle} zählen zu den einfachsten Machine Learning Modellen.
+    Sie können je nach Problemstellung schnelle und gute Vorhersagen liefern und kommen öfters zum Einsatz zur Schätzung einer Baseline.
+
+    Typische Modelle sind:
+    \begin{itemize}
+        \item \emph{Nearest Neighbor} (NN)
+        \item \emph{k-Nearest Neighbors} (kNN-Klassifikation)
+        \item \emph{k-Nearest Neighbors} (kNN-Regression)
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Nearest Neighbor}
+    Seien ein Trainingsset $\mathcal{D} = (\mathbf{x}_1, y_1), \ldots, (\mathbf{x}_n, y_n)$ und ein Ähnlichkeits- bzw. Distanzmaß\footnote{Hier: Euklidische Distanz.} $d(\mathbf{x}, \mathbf{x}')$ gegeben.
+
+    Wir betrachten einen beliebigen Punkt $\mathbf{x}$ im Featureraum:
+    Die Featurevektoren $\mathbf{x}_i$ des Trainingssets liegen gemäß $d$ in unterschiedlichen Abständen zu $\mathbf{x}$.
+
+    Die Feature Vectors des Trainingssets seien nun benannt nach ihrer Nähe zu $\mathbf{x}$:
+    \begin{itemize}
+        \item $\mathbf{x}_{[1]}$ bezeichne den nächsten Nachbarn von $\mathbf{x}$
+        \item $\mathbf{x}_{[2]}$ bezeichne den zweitnächsten Nachbarn von $\mathbf{x}$
+        \item $\ldots$
+    \end{itemize}
+
+    \[
+        d(\mathbf{x}, \mathbf{x}_{[1]}) \leq d(\mathbf{x}, \mathbf{x}_{[2]}) \leq \ldots \leq d(\mathbf{x}, \mathbf{x}_{[N]})
+    \]
+
+    Die finale Hypothese des Nearest Neighbor Modells lautet dann:
+    \[
+        g(\mathbf{x}) = y_{[1]}(\mathbf{x})
+    \]
+
+    Es wird also das Label des nächsten Nachbarn $\mathbf{x}_{[1]}$ von $\mathbf{x}$ als Vorhersage für $\mathbf{x}$ verwendet.
+
+    Es findet gar kein Training statt.
+    Es gibt keine Parameter, die in eine Training bestimmt werden müssen.
+    Die Daten definieren direkt das Modell.
+
+    Nearest Neighbor ist ein Beispiel für \emph{instance-based learning}.
+    Hypothesen solcher Modelle sind direkt durch die Trainingsdaten (Instanzen) definiert.
+
+    Das Nearest Neighbor Modell kann bei steigender Datenpunktanzahl zu sehr komplexen Entscheidungsgrenzen führen.
+
+    \emph{Wichtig}: Skalierung der Daten beeinflusst Nearest Neighbor Modelle.
+    Lösung dafür ist Reskalierung oder Verwenden einer anderen Ähnlichkeits- bzw. Distanzfunktion.
+\end{defi}
+
+\begin{defi}{k-Nearest Neighbors (Klassifikation)}
+    Eine Verallgemeinerung des Nearest Neighbor Modells ist \emph{k-Nearest Neighbors} (k-Nächste Nachbarn).
+
+    Sei $k \geq 1$ eine ganze Zahl und $y \in \{ -1, 1 \}$.
+    Dann lautet die finale Hypothese des k-Nearest Neighbors Modells:
+    \[
+        g(\mathbf{x}) = \sign \left( \sum_{i=1}^k y_{[i]}(\mathbf{x}) \right)
+    \]
+
+    Es wird also das Mehrheitslabel der $k$ nächsten Nachbarn $\mathbf{x}_{[1]}, \ldots, \mathbf{x}_{[k]}$ von $\mathbf{x}$ als Vorhersage für $\mathbf{x}$ verwendet.
+
+    Analog würde eine Mehrklassen-Klassifikation mit kNN funktionieren.
+\end{defi}
+
+\begin{defi}{k-Nearest Neighbors (Regression)}
+    Bei der k-Nearest Neighbors-Regression entspricht die finale Hypothese dem Mittelwert über die Labels der $k$ nächsten Nachbarn:
+    \[
+        g(\mathbf{x}) = \frac{1}{k} \sum_{i=1}^k y_{[i]}(\mathbf{x})
+    \]
+\end{defi}

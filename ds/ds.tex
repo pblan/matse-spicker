@@ -1,0 +1,27 @@
+\documentclass[german]{spicker}
+
+\addbibresource{ds.bib}
+
+\title{Einführung in Data Science}
+\author{Patrick Gustav Blaneck}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{includes/explorative_datenanalyse.tex}
+\include{includes/multivariate_explorative_analyse.tex}
+\include{includes/dimensionsreduktionsverfahren.tex}
+\include{includes/clustering.tex}
+\include{includes/clustervalidierungsverfahren.tex}
+\include{includes/feature_engineering.tex}
+\include{includes/datengetriebene_modellierung.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}
