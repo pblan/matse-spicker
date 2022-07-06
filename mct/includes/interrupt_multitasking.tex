@@ -1,1 +1,96 @@
 \section{Interrupts und Multitasking}
+
+\begin{defi}{Interrupt}
+    Ein \emph{Interrupt} ist die automatische Unterbrechung bzw. Verzweigung des Programmflusses auf Grund eines Hardwareereignisses (\emph{Trigger}), das asynchron zur Programmausführung auftritt.
+
+    Ein Interrupt besitzt eine Priorität, die den Vorrang mehrerer Interrupts regelt, sowie eine Nummer, die die Trigger-Quelle identifiziert.
+
+    Mögliche Trigger sind:
+    \begin{itemize}
+        \item \emph{Externe Trigger} (Hardware):
+              \begin{itemize}
+                  \item Beim PC: Ein- bzw. Ausgabe-Gerät (Tastatur, Maus)
+                  \item Mikrocontroller: Pegeländerung z. B. an einem GPIO-Pin bzw. an einem analogen Eingang
+              \end{itemize}
+        \item \emph{Interne Trigger} (Hardware bzw. Software):
+              \begin{itemize}
+                  \item periodischer Timer-Interrupt
+                  \item Speicherverletzung oder Division durch 0
+                  \item softwareerzeugter Interrupt
+              \end{itemize}
+    \end{itemize}
+
+    Ein Interrupt ist eine Alternative zum \enquote{Polling} (regelmäßige Abfrage der CPU auf neue Daten)
+    Er ist meist immer damit verbunden, dass entweder der Prozessor neue Daten liefern soll, oder Daten zur Abholung bereit stehen.
+
+    Der Interrupt passiert i. d. R. asynchron zur Programmausführung.
+    Die \emph{Interrupt Service Routine (ISR)} muss den aktuellen Zustand der CPU \enquote{retten} und am Ende wieder herstellen.
+
+    Die Latenz ist definiert als $\Delta t$ zwischen Interrupt und Start der ISR.
+
+    Ein Interrupt, der aktiviert wurde, aber noch nicht verarbeitet wurde, nennt man einen \emph{pending Interrupt}.
+    Ausnahme sind hier \emph{Non Maskable Interrupts (NMIs)}, die i. d. R. zum Signalisieren von kritischen Zustandsänderungen verwendet.
+
+    Häufig wird das Mapping von Interrupt zu ISR über eine Tabelle in \texttt{ROM} oder \texttt{RAM}.
+    Die CPU nutzt dann die Interrupt-Nummer als Index in dieser Tabelle, und springt zur entsprechenden ISR.
+\end{defi}
+
+\begin{defi}{Multithreading}
+    Interrupts sind die Grundlage für \emph{Multithreading}.
+
+    Wenn ein Interrupt regelmäßig von einem Timer erzeugt wird, dann muss der Prozessor in der entsprechenden ISR den aktuellen Zustand der CPU \enquote{retten} und könnte danach einen anderen Programmkontext wiederherstellen, und bis zum nächsten Interrupt das entsprechende Programmsegment ausführen.
+    Die IST wird dann zum sog. \emph{Scheduler}.
+\end{defi}
+
+\begin{defi}{Booten}
+    Beim \emph{Booten} wird der \texttt{Reset\_Handler} ausgeführt.
+    Danach folgt ein Sprung zur \texttt{main()}-Methode.
+\end{defi}
+
+\begin{defi}{PRIMASK}
+    Um bestimmte Interrupts auszuschalten wird das Prozessor-Register \texttt{PRIMASK} auf 1 gesetzt.
+\end{defi}
+
+\begin{defi}{Cortex M4-Interrupt}
+    Der Cortex M4-Prozessor besitzt darüber hinaus einen \emph{Nested Vectored Interrupt Controller (NCIV)}.
+
+    Er besitzt u. a. folgende Funktionalitäten:
+    \begin{itemize}
+        \item Programmbasierte Prioritäten (0-255) für alle Interrupts
+        \item Gruppierung von Interrupts in Priorisierungs- und Untergruppen
+    \end{itemize}
+
+    Sobald ein Interrupt ausgeführt wird, passieren folgende Schritte:
+    \begin{enumerate}
+        \item Die Register werden auf dem Stack abgelegt.
+        \item Register \texttt{LR} wird auf \texttt{0xFFFF FFF9} gesetzt.
+        \item \texttt{IPSR} wird auf die entsprechende Interrupt-Nummer gesetzt.
+        \item \texttt{PC} wird auf den entsprechenden Interrupt-Vektor gesetzt.
+        \item Die ISR wird ausgeführt.
+        \item Danach werden die nötigen Operationen in der ISR ausgeführt.
+        \item Am Ende wird zurück in die ursprüngliche Methode gesprungen und die Register werden geladen.
+        \item Es wird an der unterbrochenen Stelle weiter ausgeführt.
+    \end{enumerate}
+
+    Er erfolgt dabei folgenden Regeln:
+    \begin{itemize}
+        \item Der Code sollte möglichst schnell ablaufen, damit möglichst bald ein weiterer Interrupt bearbeitet werden kann.
+        \item Kommunikation zwischen Hauptprogramm und ISR über globale Variablen
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Multitasking}
+    \emph{Multitasking} bedeutet die Fähigkeit einen (Betriebs-)Systems, mehrere Aufgaben (\emph{Tasks}) quasi nebenläufig auszuführen.
+
+    Ein zentraler Bestandteil ist der Scheduler, der die Steuerung der Ausführung übernimmt.
+
+    \begin{itemize}
+        \item \emph{Kooperatives Multitasking}: Die einzelnen Tasks werden von Scheduler aufgerufen, unterscheiden selber, wann sie die Ausführung beenden und zum Scheduler zurückkehren.
+        \item \emph{Preemptives Multitasking}: Der Scheduler unterbricht den Task nach einer gewissen Zeit und speichert den Zustand dieses Tasks.
+              Danach übergibt er die Kontrolle an einen anderen Task, ggf. nach Analyse einer sinnvollen Reihenfolge.
+              Im einfachsten Fall wird die \emph{Round Robin}\footnote{Tasks werden im Kreis abgearbeitet.}-Strategie angewendet.
+
+              Hier benötigt jeder Task einen eigenen Stack.
+              Die \texttt{SP}-Werte der einzelnen Tasks werden in sog. \emph{Task Control Block (TCB)} (eine Art verkettete Liste) gespeichert.
+    \end{itemize}
+\end{defi}

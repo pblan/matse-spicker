@@ -2,6 +2,7 @@
     "discord.enabled": true,
     "latex-workshop.latex.autoBuild.run": "onSave",
     "cSpell.words": [
+        "Highspeed",
         "schaltungstechnische"
     ]
 }
