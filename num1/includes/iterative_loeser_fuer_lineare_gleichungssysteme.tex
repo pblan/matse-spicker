@@ -183,28 +183,47 @@
     \]
 
     Ausführlich heißt das:
+    {
+    \footnotesize
     \[
-        \begin{pmatrix}
-            a_{11} & a_{12} & \cdots & a_{1n} \\
-            a_{21} & a_{22} & \cdots & a_{2n} \\
-            \vdots & \vdots & \ddots & \vdots \\
-            a_{n1} & a_{n2} & \cdots & a_{nn}
-        \end{pmatrix}
+        \underbrace{
+            \begin{pmatrix}
+                a_{11} & a_{12} & \cdots & a_{1n} \\
+                a_{21} & a_{22} & \cdots & a_{2n} \\
+                \vdots & \vdots & \ddots & \vdots \\
+                a_{n1} & a_{n2} & \cdots & a_{nn}
+            \end{pmatrix}
+        }_A
         =
-        \begin{pmatrix}
-            a_{11} & 0      & \cdots & 0      \\
-            0      & a_{22} & \cdots & 0      \\
-            \vdots & \vdots & \ddots & \vdots \\
-            0      & 0      & \cdots & a_{nn}
-        \end{pmatrix}
+        \underbrace{
+            \begin{pmatrix}
+                a_{11} & 0      & \cdots & 0      \\
+                0      & a_{22} & \cdots & 0      \\
+                \vdots & \vdots & \ddots & \vdots \\
+                0      & 0      & \cdots & a_{nn}
+            \end{pmatrix}
+        }_D
         -
-        \begin{pmatrix}
-            0      & a_{12} & \cdots & a_{1n} \\
-            a_{21} & 0      & \cdots & a_{2n} \\
-            \vdots & \vdots & \ddots & \vdots \\
-            a_{n1} & a_{n2} & \cdots & 0
-        \end{pmatrix}
+        \underbrace{
+            \begin{pmatrix}
+                0        & \cdots & \cdots     & 0      \\
+                - a_{21} & \ddots &            & \vdots \\
+                \vdots   & \ddots & \ddots     & \vdots \\
+                - a_{n1} & \cdots & - a_{nn-1} & 0
+            \end{pmatrix}
+        }_E
+        -
+        \underbrace{
+            \begin{pmatrix}
+                0      & - a_{12} & \cdots & - a_{1n}   \\
+                \vdots & \ddots   & \ddots & \vdots     \\
+                \vdots &          & \ddots & - a_{n-1n} \\
+                0      & \cdots   & \cdots & 0
+            \end{pmatrix}
+        }_F
     \]
+    }
+
     Die komponentenweise Iterationsvorschrift lässt sich dann folgendermaßen für den kompletten Vektor darstellen (wir benutzen $M = D$):
     \begin{alignat*}{1}
         x^{(k+1)} & = x^{(k)} + M^{-1} r^{(k)}                                                   \\
@@ -235,7 +254,101 @@
 \end{defi}
 
 \begin{example}{Jacobi-Verfahren (Gesamtschritt-Verfahren)}
-    TODO
+    Gegeben sei eine Matrix $A$, ein Vektor $b$ und ein Startpunkt $x^{(0)}$:
+    \[
+        A = \begin{pmatrix}
+            2  & 3 \\
+            -1 & 2
+        \end{pmatrix}
+        , \quad
+        b = \begin{pmatrix}
+            1 \\
+            3
+        \end{pmatrix}
+        , \quad
+        x^{(0)} = \begin{pmatrix}
+            0 \\
+            0
+        \end{pmatrix}
+    \]
+
+    Führen Sie das Jacobi-Verfahren für drei Iterationen aus.
+
+    \exampleseparator
+
+    Es gilt die komponentenweise Iterationsvorschrift:
+    \[
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j \neq i} a_{ij} x_j^{(k)} \right), \quad i = 1, \ldots, n
+    \]
+
+    Für $i = 1$:
+    \[
+        x_1^{(k+1)} = \frac{1}{a_{11}} \left( b_1 - \sum_{j \neq 1} a_{1j} x_j^{(k)} \right) = \frac{1}{a_{11}} \left( b_1 - a_{12} x_2^{(k)} \right) = \frac{1}{2} \left( 1 - 3 x_2^{(k)} \right) = \frac{1}{2} - \frac{3}{2}x_2^{(k)}
+    \]
+
+    Für $i = 2$:
+    \[
+        x_2^{(k+1)} = \frac{1}{a_{22}} \left( b_2 - \sum_{j \neq 2} a_{2j} x_j^{(k)} \right) = \frac{1}{a_{22}} \left( b_2 - a_{21} x_1^{(k)} \right) = \frac{1}{2} \left( 3 - (-1) x_1^{(k)} \right) = \frac{3}{2} + \frac{1}{2}x_1^{(k)}
+    \]
+
+    Die Iterationen sind dann wie folgt:
+    \[
+        x^{(0)} = \begin{pmatrix}
+            0 \\
+            0
+        \end{pmatrix}
+        \to
+        x^{(1)} = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2}x_2^{(0)} \\
+            \frac{3}{2} + \frac{1}{2}x_1^{(0)}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2} \cdot 0 \\
+            \frac{3}{2} + \frac{1}{2} \cdot 0
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \nicefrac{1}{2} \\
+            \nicefrac{3}{2}
+        \end{pmatrix}
+    \]
+    \[
+        x^{(1)} = \begin{pmatrix}
+            \nicefrac{1}{2} \\
+            \nicefrac{3}{2}
+        \end{pmatrix}
+        \to
+        x^{(2)} = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2}x_2^{(1)} \\
+            \frac{3}{2} + \frac{1}{2}x_1^{(1)}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2} \cdot \frac{3}{2} \\
+            \frac{3}{2} + \frac{1}{2} \cdot \frac{1}{2}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            -\nicefrac{7}{2} \\
+            \nicefrac{7}{2}
+        \end{pmatrix}
+    \]
+    \[
+        x^{(2)} = \begin{pmatrix}
+            -\nicefrac{7}{2} \\
+            \nicefrac{7}{2}
+        \end{pmatrix}
+        \to
+        x^{(3)} = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2}x_2^{(2)} \\
+            \frac{3}{2} + \frac{1}{2}x_1^{(2)}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2} \cdot \frac{7}{2} \\
+            \frac{3}{2} + \frac{1}{2} \cdot (-\frac{7}{2})
+        \end{pmatrix}
+        = \begin{pmatrix}
+            -\nicefrac{17}{8} \\
+            \nicefrac{5}{8}
+        \end{pmatrix}
+    \]
 \end{example}
 
 \begin{defi}{Diagonaldominante Matrix}
@@ -290,7 +403,113 @@
 \end{defi}
 
 \begin{example}{Gauß-Seidel-Verfahren (Einzelschritt-Verfahren)}
-    TODO
+    Gegeben sei eine Matrix $A$, ein Vektor $b$ und ein Startpunkt $x^{(0)}$:
+    \[
+        A = \begin{pmatrix}
+            2  & 3 \\
+            -1 & 2
+        \end{pmatrix}
+        , \quad
+        b = \begin{pmatrix}
+            1 \\
+            3
+        \end{pmatrix}
+        , \quad
+        x^{(0)} = \begin{pmatrix}
+            0 \\
+            0
+        \end{pmatrix}
+    \]
+
+    Führen Sie das Gauß-Seidel-Verfahren für drei Iterationen aus.
+
+    \exampleseparator
+
+    Es gilt die komponentenweise Iterationsvorschrift:
+    \[
+        x_i^{(k+1)} = \frac{1}{a_{ii}} \left( b_i - \sum_{j < i} a_{ij} x_j^{(k+1)} - \sum_{j > i} a_{ij} x_j^{(k)} \right), \quad i = 1, \ldots, n
+    \]
+
+    Für $i = 1$:
+    \[
+        x_1^{(k+1)} = \frac{1}{a_{11}} \left( b_1 - \underbrace{\sum_{j < 1} a_{1j} x_j^{(k+1)}}_{= 0} - \sum_{j > 1} a_{1j} x_j^{(k)} \right) = \frac{1}{2} \left( 1 - 3 x_2^{(k)} \right) = \frac{1}{2} - \frac{3}{2} x_2^{(k)}
+    \]
+
+    Für $i = 2$:
+    \[
+        x_2^{(k+1)} = \frac{1}{a_{22}} \left( b_2 - \sum_{j < 2} a_{2j} x_j^{(k+1)} - \underbrace{\sum_{j > 2} a_{2j} x_j^{(k)}}_{= 0} \right) = \frac{1}{2} \left( 3 - (-1) x_1^{(k+1)} \right) = \frac{3}{2} + \frac{1}{2} x_1^{(k+1)}
+    \]
+
+    Die Iterationen sind dann wie folgt:
+    \[
+        x^{(0)} = \begin{pmatrix}
+            0 \\
+            0
+        \end{pmatrix}
+        \to
+        x^{(1)} = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2} x_2^{(0)} \\
+            \frac{3}{2} + \frac{1}{2} x_1^{(1)}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2} \cdot 0 \\
+            \frac{3}{2} + \frac{1}{2} x_1^{(1)}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \nicefrac{1}{2} \\
+            \frac{3}{2} + \frac{1}{2} \cdot \frac{1}{2}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \nicefrac{1}{2} \\
+            \nicefrac{7}{4}
+        \end{pmatrix}
+    \]
+    \[
+        x^{(1)} = \begin{pmatrix}
+            \nicefrac{1}{2} \\
+            \nicefrac{7}{4}
+        \end{pmatrix}
+        \to
+        x^{(2)} = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2}x_2^{(1)} \\
+            \frac{3}{2} + \frac{1}{2}x_1^{(2)}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2} \cdot \frac{7}{4} \\
+            \frac{3}{2} + \frac{1}{2}x_1^{(2)}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            -\nicefrac{17}{8} \\
+            \frac{3}{2} + \frac{1}{2} \cdot (-\frac{17}{8})
+        \end{pmatrix}
+        = \begin{pmatrix}
+            -\nicefrac{17}{8} \\
+            \nicefrac{7}{16}
+        \end{pmatrix}
+    \]
+    \[
+        x^{(2)} = \begin{pmatrix}
+            -\nicefrac{17}{8} \\
+            \nicefrac{7}{16}
+        \end{pmatrix}
+        \to
+        x^{(3)} = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2}x_2^{(2)} \\
+            \frac{3}{2} + \frac{1}{2}x_1^{(3)}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \frac{1}{2} - \frac{3}{2} \cdot \frac{7}{16} \\
+            \frac{3}{2} + \frac{1}{2}x_1^{(3)}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            -\nicefrac{5}{32} \\
+            \frac{3}{2} + \frac{1}{2} \cdot (-\frac{5}{32})
+        \end{pmatrix}
+        = \begin{pmatrix}
+            -\nicefrac{5}{32} \\
+            \nicefrac{91}{64}
+        \end{pmatrix}
+    \]
 \end{example}
 
 \begin{defi}{Satz von Stein und Rosenberg}
@@ -350,6 +569,257 @@
 
     Ein $r_k$ mit leicher Genauigkeit wie LU-Zerlegung lohnt sich ebenfalls, da die Stabilitätseigenschaften verbessert werden.
 \end{defi}
+
+\begin{example}{Nachiteration}
+    Gegeben sei eine Matrix $A$ ein Vektor $b$, eine ungenaue Zerlegung $\tilde{L} \tilde{U} \approx A$ mit:
+    \[
+        A = \begin{pmatrix}
+            2 & 2 & 0 \\
+            2 & 4 & 2 \\
+            0 & 2 & 4
+        \end{pmatrix}
+        , \quad
+        b = \begin{pmatrix}
+            2 \\
+            0 \\
+            2
+        \end{pmatrix}
+        , \quad
+        \tilde{L} = \begin{pmatrix}
+            1 & 0 & 0 \\
+            1 & 1 & 0 \\
+            1 & 1 & 1
+        \end{pmatrix}
+        , \quad
+        \tilde{U} = \begin{pmatrix}
+            2 & 2 & 1 \\
+            0 & 2 & 2 \\
+            0 & 0 & 2
+        \end{pmatrix}
+    \]
+
+    Berechnen Sie die Näherungslösung $x_0$ für $A x_0 \approx b$ und führen Sie eine Nachiteration durch.
+
+    \exampleseparator
+
+    \footnotesize
+
+    Es gilt:
+    \[
+        \tilde{L} \tilde{U} x_0 \approx b \quad \implies \quad \tilde{L} y_0 = b, \quad \tilde{U} x_0 = y_0
+    \]
+    \[
+        \tilde{L} y_0 = b \quad \iff \quad \begin{pmatrix}
+            1 & 0 & 0 \\
+            1 & 1 & 0 \\
+            1 & 1 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            y_1 \\
+            y_2 \\
+            y_3
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2 \\
+            0 \\
+            2
+        \end{pmatrix}
+        \quad \implies \quad
+        y_0 = \begin{pmatrix}
+            2  \\
+            -2 \\
+            2
+        \end{pmatrix}
+    \]
+    \[
+        \tilde{U} x_0 = y_0 \quad \iff \quad \begin{pmatrix}
+            2 & 2 & 1 \\
+            0 & 2 & 2 \\
+            0 & 0 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            x_1 \\
+            x_2 \\
+            x_3
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2  \\
+            -2 \\
+            2
+        \end{pmatrix}
+        \quad \implies \quad
+        x_0 = \begin{pmatrix}
+            \nicefrac{5}{2} \\
+            -2              \\
+            1
+        \end{pmatrix}
+    \]
+
+    Es gilt:
+    \begin{itemize}
+        \item $r_k = b - A x_k$
+        \item $\tilde{L} \tilde{U} p_k = r_k$
+        \item $x_{k+1} = x_k + p_k$
+    \end{itemize}
+
+    $k = 0$:
+    \[
+        r_0 = b - A x_0 =
+        \begin{pmatrix}
+            2 \\
+            0 \\
+            2
+        \end{pmatrix}
+        -
+        \begin{pmatrix}
+            2 & 2 & 0 \\
+            2 & 4 & 2 \\
+            0 & 2 & 4
+        \end{pmatrix}
+        \begin{pmatrix}
+            \nicefrac{5}{2} \\
+            -2              \\
+            1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2 \\
+            0 \\
+            2
+        \end{pmatrix}
+        -
+        \begin{pmatrix}
+            1  \\
+            -1 \\
+            0
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            1 \\
+            1 \\
+            2
+        \end{pmatrix}
+    \]
+    \[
+        \tilde{L} \tilde{U} p_0 = r_0 \quad \implies \quad \tilde{L} z_0 = r_0, \quad \tilde{U} p_0 = z_0
+    \]
+    \[
+        \tilde{L} z_0 = r_0 \quad \iff \quad \begin{pmatrix}
+            1 & 0 & 0 \\
+            1 & 1 & 0 \\
+            1 & 1 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            z_1 \\
+            z_2 \\
+            z_3
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            1 \\
+            1 \\
+            2
+        \end{pmatrix}
+        \quad \implies \quad
+        z_0 = \begin{pmatrix}
+            1 \\
+            0 \\
+            0
+        \end{pmatrix}
+    \]
+    \[
+        \tilde{U} p_0 = z_0 \quad \iff \quad \begin{pmatrix}
+            2 & 2 & 1 \\
+            0 & 2 & 2 \\
+            0 & 0 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            p_1 \\
+            p_2 \\
+            p_3
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            1 \\
+            0 \\
+            0
+        \end{pmatrix}
+        \quad \implies \quad
+        p_0 = \begin{pmatrix}
+            \nicefrac{3}{4}  \\
+            -\nicefrac{1}{2} \\
+            \nicefrac{1}{2}
+        \end{pmatrix}
+    \]
+    \[
+        x_1 = x_0 + p_0 =
+        \begin{pmatrix}
+            \nicefrac{5}{2} \\
+            -2              \\
+            1
+        \end{pmatrix}
+        +
+        \begin{pmatrix}
+            \nicefrac{3}{4}  \\
+            -\nicefrac{1}{2} \\
+            \nicefrac{1}{2}
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \nicefrac{13}{4} \\
+            -\nicefrac{5}{2} \\
+            \nicefrac{3}{2}
+        \end{pmatrix}
+    \]
+
+    Kennen wir die exakte Lösung $x = \begin{pmatrix} 4 & -3 & 2 \end{pmatrix}^T$ für $A x = b$, dann können wir folgende Fehlerbetrachtungen durchführen:
+    \[
+        e_0 = x - x_0 =
+        \begin{pmatrix}
+            4  \\
+            -3 \\
+            2
+        \end{pmatrix}
+        -
+        \begin{pmatrix}
+            \nicefrac{5}{2} \\
+            -2              \\
+            1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \nicefrac{3}{2} \\
+            -1              \\
+            1
+        \end{pmatrix}
+        \quad \implies \quad
+        \|e_0\|_\infty = \frac{3}{2} = 1.5
+    \]
+    \[
+        e_1 = x - x_1 =
+        \begin{pmatrix}
+            4  \\
+            -3 \\
+            2
+        \end{pmatrix}
+        -
+        \begin{pmatrix}
+            \nicefrac{13}{4} \\
+            -\nicefrac{5}{2} \\
+            \nicefrac{3}{2}
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \nicefrac{3}{4}  \\
+            -\nicefrac{1}{2} \\
+            \nicefrac{1}{2}
+        \end{pmatrix}
+        \quad \implies \quad
+        \|e_1\|_\infty = \frac{3}{4} = 0.75
+    \]
+\end{example}
 
 \subsubsection{Relaxationsverfahren}
 
@@ -478,10 +948,25 @@
 \subsubsection{Steepest-Descent-Verfahren}
 
 \begin{defi}{Steepest-Descent-Verfahren}
-    Das \emph{Steepest-Descent-Verfahren} generiert ausgehend von einem Startpunkt $x_0 \in \R^n$ eine Folge von Punkten $x_k \in \R^n$ gemäß der Iterationsvorschrift
+    Das \emph{Steepest-Descent-Verfahren} generiert ausgehend von einem Startpunkt $x_0 \in \R^n$ eine Folge von Punkten $x_k \in \R^n$ gemäß der folgenden Iteration:
+
+    Starte mit $x_0$ gegeben, $r_0 = b - Ax_0$ und wiederhole für $M = I$:
     \[
-        x_{k+1} = x_k + \alpha_k r_k, \quad r_k = - \nabla f(x_k)
+        p_k = M^{-1} r_k = r_k
     \]
+    \[
+        s_k = A p_k
+    \]
+    \[
+        \alpha_k = \frac{\langle p_k, r_k \rangle}{\langle p_k, s_k \rangle}
+    \]
+    \[
+        x_{k+1} = x_k + \alpha_k p_k
+    \]
+    \[
+        r_{k+1} = r_k - \alpha_k s_k
+    \]
+
     d. h. man geht von $x_k$ in Richtung des steilsten Abstiegs $-\nabla f(x_k)$, bis $\| e_{k+1} \|_A$ minimal wird, also die Folge zu einem stationären Punkt von $f$ konvergiert.\footnote{Wählt man $f$ entsprechend, kann damit auch die Lösung für ein $Ax = b$ gefunden werden. Siehe \emph{Konjugierte Gradienten}.}
 \end{defi}
 
@@ -493,6 +978,189 @@
         x_{k+1} = M x_k + \alpha_k r_k, \quad r_k = - \nabla f(x_k)
     \]
 \end{bonus}
+
+\begin{example}{Steepest-Descent-Verfahren}
+    Gegeben sei das System $Ax = b$ mit dem Startvektor $x_0$:
+    \[
+        A =
+        \begin{pmatrix}
+            2 & 1 \\
+            1 & 2
+        \end{pmatrix}
+        , \quad
+        b =
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        , \quad
+        x_0 =
+        \begin{pmatrix}
+            0 \\ 0
+        \end{pmatrix}
+    \]
+
+    Wenden Sie das Steepest-Descent-Verfahren auf das System an.
+
+    \exampleseparator
+
+    $k = 0$:
+    \[
+        p_0 = r_0 = b - Ax_0 =
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        -
+        \begin{pmatrix}
+            2 & 1 \\
+            1 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            0 \\ 0
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+    \]
+    \[
+        s_0 = A p_0 =
+        \begin{pmatrix}
+            2 & 1 \\
+            1 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            5 \\ 4
+        \end{pmatrix}
+    \]
+    \[
+        \alpha_0 = \frac{\langle p_0, r_0 \rangle}{\langle p_0, s_0 \rangle} = \frac{\langle
+            \begin{pmatrix}
+                2 \\ 1
+            \end{pmatrix},
+            \begin{pmatrix}
+                2 \\ 1
+            \end{pmatrix}
+            \rangle}{\langle
+            \begin{pmatrix}
+                2 \\ 1
+            \end{pmatrix},
+            \begin{pmatrix}
+                5 \\ 4
+            \end{pmatrix}
+            \rangle} = \frac{5}{14}
+    \]
+    \[
+        x_{1} = x_0 + \alpha_0 p_0 =
+        \begin{pmatrix}
+            0 \\ 0
+        \end{pmatrix}
+        + \frac{5}{14}
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \nicefrac{5}{7} \\ \nicefrac{5}{14}
+        \end{pmatrix}
+    \]
+    \[
+        r_{1} = r_0 - \alpha_0 s_0 =
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        - \frac{5}{14}
+        \begin{pmatrix}
+            5 \\ 4
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+        \end{pmatrix}
+    \]
+
+    $k = 1$:
+    \[
+        p_1 = r_1 = b - Ax_1 =
+        \begin{pmatrix}
+            \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+        \end{pmatrix}
+        -
+        \begin{pmatrix}
+            2 & 1 \\
+            1 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            \nicefrac{5}{7} \\ \nicefrac{5}{14}
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+        \end{pmatrix}
+    \]
+    \[
+        s_1 = A p_1 =
+        \begin{pmatrix}
+            2 & 1 \\
+            1 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            0 \\ -\nicefrac{9}{14}
+        \end{pmatrix}
+    \]
+    \[
+        \alpha_1 = \frac{\langle p_1, r_1 \rangle}{\langle p_1, s_1 \rangle} = \frac{\langle
+            \begin{pmatrix}
+                \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+            \end{pmatrix},
+            \begin{pmatrix}
+                \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+            \end{pmatrix}
+            \rangle}{\langle
+            \begin{pmatrix}
+                \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+            \end{pmatrix},
+            \begin{pmatrix}
+                0 \\ -\nicefrac{9}{14}
+            \end{pmatrix}
+            \rangle} = \frac{5}{6}
+    \]
+    \[
+        x_{2} = x_1 + \alpha_1 p_1 =
+        \begin{pmatrix}
+            \nicefrac{5}{7} \\ \nicefrac{5}{14}
+        \end{pmatrix}
+        +\frac{5}{6}
+        \begin{pmatrix}
+            \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \nicefrac{25}{28} \\ 0
+        \end{pmatrix}
+    \]
+    \[
+        r_{2} = r_1 - \alpha_1 s_1 =
+        \begin{pmatrix}
+            \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+        \end{pmatrix}
+        - \frac{5}{6}
+        \begin{pmatrix}
+            0 \\ -\nicefrac{9}{14}
+        \end{pmatrix}
+        = \begin{pmatrix}
+            \nicefrac{3}{14} \\ \nicefrac{3}{28}
+        \end{pmatrix}
+    \]
+
+    usw.
+\end{example}
 
 \subsubsection{Konjugierte Gradienten}
 
@@ -507,18 +1175,152 @@
 
     Das Verfahren funktioniert wie folgt:
     \begin{enumerate}
-        \item $x_0$ gegeben, $p_0 = r_o = b - Ax_0$
+        \item $x_0$ gegeben, $p_0 = r_0 = b - Ax_0$
         \item Wiederhole für $k \geq 0$:
+              \[ \alpha_k = \frac{\langle r_k, r_k \rangle}{\langle p_k, A p_k \rangle} \]
               \[ x_{k+1} = x_k + \alpha_k p_k \]
-              \[ r_{k+1} = r_k - \alpha_k A p_k, \quad \alpha_k = \frac{\langle r_k, r_k \rangle}{\langle p_k, A p_k \rangle} \]
-              \[ p_{k+1} = r_{k+1} + \beta_k p_k, \quad \beta_k = \frac{\langle r_{k+1}, r_{k+1} \rangle}{\langle r_k, r_k \rangle}\]
+              \[ r_{k+1} = r_k - \alpha_k A p_k \]
+              \[ \beta_k = \frac{\langle r_{k+1}, r_{k+1} \rangle}{\langle r_k, r_k \rangle} \]
+              \[ p_{k+1} = r_{k+1} + \beta_k p_k \]
     \end{enumerate}
 
     Nach höchstens $n$ Schritten ist $e_k = 0$.
 \end{defi}
 
 \begin{example}{CG-Verfahren}
-    TODO
+    Gegeben sei das System $Ax = b$ mit dem Startvektor $x_0$:
+    \[
+        A =
+        \begin{pmatrix}
+            2 & 1 \\
+            1 & 2
+        \end{pmatrix}
+        , \quad
+        b =
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        , \quad
+        x_0 =
+        \begin{pmatrix}
+            0 \\ 0
+        \end{pmatrix}
+    \]
+
+    Wenden Sie das Konjugierte Gradienten-Verfahren auf das System an.
+
+    \exampleseparator
+
+    $k = 0$:
+    \[
+        p_0 = r_0 = b - Ax_0 =
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        -
+        \begin{pmatrix}
+            2 & 1 \\
+            1 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            0 \\ 0
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+    \]
+    \[
+        \alpha_0 = \frac{\langle r_0, r_0 \rangle}{\langle p_0, A p_0 \rangle}
+        =
+        \frac{\langle
+            \begin{pmatrix}
+                2 \\ 1
+            \end{pmatrix},
+            \begin{pmatrix}
+                2 \\ 1
+            \end{pmatrix}
+            \rangle}{\langle
+            \begin{pmatrix}
+                2 \\ 1
+            \end{pmatrix},
+            \begin{pmatrix}
+                2 & 1 \\
+                1 & 2
+            \end{pmatrix}
+            \begin{pmatrix}
+                2 \\ 1
+            \end{pmatrix}
+            \rangle}
+        = \frac{5}{14}
+    \]
+    \[
+        x_{1} = x_0 + \alpha_0 p_0 =
+        \begin{pmatrix}
+            0 \\ 0
+        \end{pmatrix}
+        + \frac{5}{14}
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \nicefrac{5}{7} \\ \nicefrac{5}{14}
+        \end{pmatrix}
+    \]
+    \[
+        r_{1} = r_0 - \alpha_0 A p_0 =
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        - \frac{5}{14}
+        \begin{pmatrix}
+            2 & 1 \\
+            1 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+        \end{pmatrix}
+    \]
+    \[
+        \beta_0 = \frac{\langle r_{1}, r_{1} \rangle}{\langle r_0, r_0 \rangle} =
+        \frac{\langle
+            \begin{pmatrix}
+                \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+            \end{pmatrix},
+            \begin{pmatrix}
+                \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+            \end{pmatrix}
+            \rangle}{\langle
+            \begin{pmatrix}
+                2 \\ 1
+            \end{pmatrix},
+            \begin{pmatrix}
+                2 \\ 1
+            \end{pmatrix} \rangle}
+        =
+        \frac{9}{196}
+    \]
+    \[
+        p_{1} = r_{1} + \beta_0 p_0 =
+        \begin{pmatrix}
+            \nicefrac{3}{14} \\ -\nicefrac{3}{7}
+        \end{pmatrix}
+        + \frac{9}{196}
+        \begin{pmatrix}
+            2 \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            \nicefrac{15}{49} \\ -\nicefrac{75}{196}
+        \end{pmatrix}
+    \]
+
+    usw.
 \end{example}
 
 \begin{defi}{Vorkonditioniertes CG-Verfahren}

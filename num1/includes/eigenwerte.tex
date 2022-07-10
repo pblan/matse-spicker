@@ -52,7 +52,137 @@
 \end{defi}
 
 \begin{example}{Satz von Gerschgorin}
-    TODO
+    Gegeben sei eine Matrix $A$ mit
+    \[
+        A =
+        \begin{pmatrix}
+            3 & 1 & 1 \\
+            0 & 2 & 0 \\
+            1 & 0 & 1
+        \end{pmatrix}
+    \]
+
+    Berechnen Sie die Eigenwerte von $A$ per Hand und wenden Sie dann den Satz von Gerschgorin auf $A$ und $A^T$ an.
+
+    \exampleseparator
+
+    \[
+        p(\lambda) = \det(A - \lambda I) = \det
+        \begin{pmatrix}
+            3 - \lambda & 1           & 1           \\
+            0           & 2 - \lambda & 0           \\
+            1           & 0           & 1 - \lambda
+        \end{pmatrix}
+        = \ldots = (2 - \lambda) (\lambda^2 - 4\lambda + 2)
+    \]
+    % \begin{alignat*}{1}
+    %     p(\lambda) = & \det(A - \lambda I)                                                  \\
+    %     =            & \det
+    %     \begin{pmatrix}
+    %         3 - \lambda & 1           & 1           \\
+    %         0           & 2 - \lambda & 0           \\
+    %         1           & 0           & 1 - \lambda
+    %     \end{pmatrix}                                                           \\
+    %     =            & (2 - \lambda) \det
+    %     \begin{pmatrix}
+    %         3 - \lambda & 1           \\
+    %         1           & 1 - \lambda
+    %     \end{pmatrix}                                                           \\
+    %     =            & (2 - \lambda) \left( (\lambda - 3) (\lambda - 1) - 1 \cdot 1 \right) \\
+    %     =            & (2 - \lambda) (\lambda^2 - 4\lambda + 2)
+    % \end{alignat*}
+    \[
+        p(\lambda) = 0 \quad \implies \lambda_1 = 2, \quad \lambda_{2, 3} = 2 \pm \sqrt{4 - 2} = 2 \pm \sqrt{2}
+    \]
+
+    Nach dem Satz von Gerschgorin gilt für $A$ bzw. $A^T$:
+    \[
+        A =
+        \left(
+        \begin{array}{ccc}
+                \cellcolor{red!20} 3 & \cellcolor{red!10} 1 & \cellcolor{red!10} 1 \\
+                \cellcolor{red!10} 0 & \cellcolor{red!20} 2 & \cellcolor{red!10} 0 \\
+                \cellcolor{red!10} 1 & \cellcolor{red!10} 0 & \cellcolor{red!20} 1
+            \end{array}
+        \right)
+        \quad \implies \quad
+        \begin{matrix}
+            \cellcolor{red!20} m_1 = 3 &  & \cellcolor{red!10} r_1 = |1| + |1| = 2 \\
+            \cellcolor{red!20} m_2 = 2 &  & \cellcolor{red!10} r_2 = |0| + |0| = 0 \\
+            \cellcolor{red!20} m_2 = 1 &  & \cellcolor{red!10} r_3 = |1| + |0| = 1
+        \end{matrix}
+    \]
+
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    % xtick distance=2,
+                    % ytick distance=2,
+                    grid=major,
+                    % grid style={line width=.1pt, draw=gray!10}%,major grid style={line width=.2pt,draw=gray!50}
+                    ticks=none, % ticks aus?
+                    axis lines = middle,
+                    axis line style={->},
+                    ymin=-2.5, ymax=2.5,
+                    xmin=-1.5, xmax=6.5,
+                    xlabel={$\Re$},
+                    ylabel={$\Im$},
+                    axis equal image,
+                    width=0.7\textwidth
+                ]
+                \def\circlewidth{1pt}
+                % A
+                \draw[red!80, line width=\circlewidth] (axis cs:3,0) node[circle=2pt] {} circle (2);
+                \draw[red!80, line width=\circlewidth, fill] (axis cs:2,0) circle (0.05);
+                \draw[red!80, line width=\circlewidth] (axis cs:1,0) circle (1);
+
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+
+    \[
+        A^T =
+        \left(
+        \begin{array}{ccc}
+                \cellcolor{red!20} 3 & \cellcolor{red!10} 0 & \cellcolor{red!10} 1 \\
+                \cellcolor{red!10} 1 & \cellcolor{red!20} 2 & \cellcolor{red!10} 0 \\
+                \cellcolor{red!10} 1 & \cellcolor{red!10} 0 & \cellcolor{red!20} 1
+            \end{array}
+        \right)
+        \quad \implies \quad
+        \begin{matrix}
+            \cellcolor{red!20} m_1 = 3 &  & \cellcolor{red!10} r_1 = |0| + |1| = 1 \\
+            \cellcolor{red!20} m_2 = 2 &  & \cellcolor{red!10} r_2 = |1| + |0| = 1 \\
+            \cellcolor{red!20} m_2 = 1 &  & \cellcolor{red!10} r_3 = |1| + |0| = 1
+        \end{matrix}
+    \]
+
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                    % xtick distance=2,
+                    % ytick distance=2,
+                    grid=major,
+                    % grid style={line width=.1pt, draw=gray!10}%,major grid style={line width=.2pt,draw=gray!50}
+                    ticks=none, % ticks aus?
+                    axis lines = middle,
+                    axis line style={->},
+                    ymin=-1.75, ymax=1.75,
+                    xmin=-1.5, xmax=6.5,
+                    xlabel={$\Re$},
+                    ylabel={$\Im$},
+                    axis equal image,
+                    width=0.7\textwidth
+                ]
+                \def\circlewidth{1pt}
+                % A^T
+                \draw[red!80, line width=\circlewidth] (axis cs:3,0) circle (1);
+                \draw[red!80, line width=\circlewidth] (axis cs:2,0) circle (1);
+                \draw[red!80, thick] (axis cs:1,0) circle (1);
+
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
 \end{example}
 
 \begin{bonus}{Eigenwertproblem als Nullstellenproblem}
@@ -129,7 +259,7 @@
               \]
     \end{enumerate}
 
-    Ist $A$ symmetrisch mit $\lambda_1 > \dots > |\lambda_n|$.
+    Ist $A$ symmetrisch mit $\lambda_1 > |\lambda_2| > \dots > |\lambda_n|$.
     Dann ist die Vektoriteration
     \[
         \mu^{(k)} \xrightarrow{k \to \infty} \lambda_1, \quad x^{(k)} \xrightarrow{k \to \infty} \sign(x_1^{(0)}) v_1
@@ -138,7 +268,119 @@
 \end{defi}
 
 \begin{example}{Vektoriteration}
-    TODO
+    Gegeben seien eine Matrix $A$ und ein Startvektor $x^{(0)}$ mit:
+    \[
+        A =
+        \begin{pmatrix}
+            2 & 1 & 0 & 0 \\
+            1 & 2 & 1 & 0 \\
+            0 & 1 & 2 & 1 \\
+            0 & 0 & 1 & 2
+        \end{pmatrix}
+        , \quad
+        x^{(0)} =
+        \begin{pmatrix}
+            1 \\ 0 \\ 0 \\ 0
+        \end{pmatrix}
+    \]
+
+    Wenden Sie die Vektoriteration an und berechnen Sie den betragsgrößten Eigenwert und den Eigenvektor.
+
+    \exampleseparator
+
+    $k = 1$:
+    \[
+        y^{(1)} = A x^{(0)} =
+        \begin{pmatrix}
+            2 & 1 & 0 & 0 \\
+            1 & 2 & 1 & 0 \\
+            0 & 1 & 2 & 1 \\
+            0 & 0 & 1 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            1 \\ 0 \\ 0 \\ 0
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            2 \\ 1 \\ 0 \\ 0
+        \end{pmatrix}
+    \]
+    \[
+        x^{(1)} = \frac{y^{(1)}}{ \| y^{(1)} \|_2 } = \frac{1}{\sqrt{5}}
+        \begin{pmatrix}
+            2 \\ 1 \\ 0 \\ 0
+        \end{pmatrix}
+        \approx
+        \begin{pmatrix}
+            0.89 \\ 0.45 \\ 0 \\ 0
+        \end{pmatrix}
+    \]
+    \[
+        \mu^{(1)} = \langle x^{(0)}, y^{(1)} \rangle = \langle
+        \begin{pmatrix}
+            1 \\ 0 \\ 0 \\ 0
+        \end{pmatrix},
+        \begin{pmatrix}
+            2 \\ 1 \\ 0 \\ 0
+        \end{pmatrix}
+        \rangle
+        = 2
+    \]
+
+    $k = 2$:
+    \[
+        y^{(2)} = A x^{(1)} = \frac{1}{\sqrt{5}}
+        \begin{pmatrix}
+            2 & 1 & 0 & 0 \\
+            1 & 2 & 1 & 0 \\
+            0 & 1 & 2 & 1 \\
+            0 & 0 & 1 & 2
+        \end{pmatrix}
+        \begin{pmatrix}
+            2 \\ 1 \\ 0 \\ 0
+        \end{pmatrix}
+        = \frac{1}{\sqrt{5}}
+        \begin{pmatrix}
+            5 \\ 4 \\ 1 \\ 0
+        \end{pmatrix}
+    \]
+    \[
+        x^{(2)} = \frac{y^{(2)}}{ \| y^{(2)} \|_2 } = \frac{1}{\sqrt{\frac{42}{5}}} \cdot \frac{1}{\sqrt{5}}
+        \begin{pmatrix}
+            5 \\ 4 \\ 1 \\ 0
+        \end{pmatrix}
+        = \frac{1}{\sqrt{42}}
+        \begin{pmatrix}
+            5 \\ 4 \\ 1 \\ 0
+        \end{pmatrix}
+        \approx
+        \begin{pmatrix}
+            0.77 \\ 0.62 \\ 0.15 \\ 0
+        \end{pmatrix}
+    \]
+    \[
+        \mu^{(2)} = \langle x^{(1)}, y^{(2)} \rangle = \frac{1}{5} \langle
+        \begin{pmatrix}
+            2 \\ 1 \\ 0 \\ 0
+        \end{pmatrix},
+        \begin{pmatrix}
+            5 \\ 4 \\ 1 \\ 0
+        \end{pmatrix}
+        \rangle
+        = 2.8
+    \]
+
+    $\ldots$
+
+    $k = 15$:
+    \[
+        x^{(15)} \approx
+        \begin{pmatrix}
+            0.3793 \\ 0.6061 \\ 0.5968 \\ 0.3641
+        \end{pmatrix}
+        , \quad
+        \mu^{(15)} \approx 3.6177
+    \]
 \end{example}
 
 \subsection{Jacobi-Verfahren}
@@ -206,12 +448,96 @@
 \end{defi}
 
 \begin{example}{Jacobi-Verfahren}
-    TODO
+    Gegeben sei die Matrix $A$ mit:
+    \[
+        A =
+        \begin{pmatrix}
+            3 & 4 \\
+            4 & 3
+        \end{pmatrix}
+    \]
+
+    Führen Sie das Jacobi-Verfahren für eine Iteration aus und berechnen Sie die Eigenwerte (näherungsweise).
+
+    \exampleseparator
+
+    \[
+        A = A^{(0)} =
+        \left(
+        \begin{array}{cc}
+                3 & \cellcolor{red!20} 4 \\
+                4 & 3
+            \end{array}
+        \right)
+        \quad \implies \quad
+        i_0 = 1, \quad j_0 = 2
+    \]
+
+    Damit gilt:
+    \[
+        Q_1 =
+        \begin{pmatrix}
+            c  & s \\
+            -s & c
+        \end{pmatrix}
+    \]
+    mit
+    \[
+        \alpha = \frac{a_{j_0 j_0} - a_{i_0 i_0}}{2 a_{i_0 j_0}} = \frac{a_{22} - a_{11}}{2 a_{1 2}} = \frac{3 - 3}{2 \cdot 4} = 0
+    \]
+    \[
+        \implies \quad c = \sqrt{\frac{1}{2} + \frac{1}{2} \sqrt{\frac{\alpha^2}{1 + \alpha^2}}} = \sqrt{\frac{1}{2}} = \frac{1}{\sqrt{2}}, \quad s = \frac{\sign(\alpha)}{2c \sqrt{1 + \alpha^2}} = \frac{1}{2 \cdot \frac{1}{\sqrt{2}} \cdot \sqrt{1}} = \frac{1}{\sqrt{2}}
+    \]
+    \[
+        \implies \quad Q_1 =
+        \left(
+        \begin{array}{cc}
+                \cellcolor{red!10} \nicefrac{1}{\sqrt{2}}  & \cellcolor{blue!10} \nicefrac{1}{\sqrt{2}} \\
+                \cellcolor{red!10} -\nicefrac{1}{\sqrt{2}} & \cellcolor{blue!10} \nicefrac{1}{\sqrt{2}}
+            \end{array}
+        \right)
+    \]
+    \[
+        \implies \quad A^{(1)} = Q_1^T A^{(0)} Q_1 =
+        \begin{pmatrix}
+            \nicefrac{1}{\sqrt{2}} & -\nicefrac{1}{\sqrt{2}} \\
+            \nicefrac{1}{\sqrt{2}} & \nicefrac{1}{\sqrt{2}}
+        \end{pmatrix}
+        \begin{pmatrix}
+            3 & 4 \\
+            4 & 3
+        \end{pmatrix}
+        \begin{pmatrix}
+            \nicefrac{1}{\sqrt{2}}  & \nicefrac{1}{\sqrt{2}} \\
+            -\nicefrac{1}{\sqrt{2}} & \nicefrac{1}{\sqrt{2}}
+        \end{pmatrix}
+        = \ldots =
+        \left(
+        \begin{array}{cc}
+                \cellcolor{red!20} -1 & 0                     \\
+                0                     & \cellcolor{blue!20} 7
+            \end{array}
+        \right)
+    \]
+
+    Damit erhalten wir die Eigenwerte und dazugehörigen Eigenvektoren:
+    \[
+        \lambda_1 = -1, \quad v_1 =
+        \begin{pmatrix}
+            \nicefrac{1}{\sqrt{2}} \\ -\nicefrac{1}{\sqrt{2}}
+        \end{pmatrix}
+    \]
+    \[
+        \lambda_2 = 7, \quad v_2 =
+        \begin{pmatrix}
+            \nicefrac{1}{\sqrt{2}} \\ \nicefrac{1}{\sqrt{2}}
+        \end{pmatrix}
+    \]
 \end{example}
 
 \subsection{QR-Verfahren, Hessenberg-Transformation, Shift-Technik}
 
-\begin{defi}{QR-Verfahren}
+\begin{defi}{QR-Verfahren (singuläre Matrizen)}
     Mit Givens- bzw. Householder-Transformationen können wir eine \emph{reguläre Matrix} $A$ in $A = QR$ zerlegen, wobei $Q$ orthonormal und $R$ eine obere Dreiecksmatrix ist.
 
     Eine analoge Zerlegung ist auch für \emph{singuläres} $A$ möglich:
@@ -304,19 +630,19 @@
     Dann gilt
     \[
         Q_1 A = \begin{pmatrix}
-            \alpha_{11} & *      & \cdots & \cdots & *      \\
-            \alpha_1    & *      & \cdots & \cdots & *      \\
-            0           & \vdots &        &        & \vdots \\
-            \vdots      & \vdots &        &        & \vdots \\
-            0           & *      & \cdots & \cdots & *
+            a_{11}   & *      & \cdots & \cdots & *      \\
+            \alpha_1 & *      & \cdots & \cdots & *      \\
+            0        & \vdots &        &        & \vdots \\
+            \vdots   & \vdots &        &        & \vdots \\
+            0        & *      & \cdots & \cdots & *
         \end{pmatrix}
         , \quad
         Q_1 A Q_1^T = Q_1 A Q_1^{-1} = \begin{pmatrix}
-            \alpha_{11} & *      & \cdots & \cdots & *      \\
-            \alpha_1    & *      & \cdots & \cdots & *      \\
-            0           & \vdots &        &        & \vdots \\
-            \vdots      & \vdots &        &        & \vdots \\
-            0           & *      & \cdots & \cdots & *
+            a_{11}   & *      & \cdots & \cdots & *      \\
+            \alpha_1 & *      & \cdots & \cdots & *      \\
+            0        & \vdots &        &        & \vdots \\
+            \vdots   & \vdots &        &        & \vdots \\
+            0        & *      & \cdots & \cdots & *
         \end{pmatrix}
     \]
 
@@ -338,7 +664,7 @@
     TODO
 \end{example}
 
-\begin{defi}{QR-Verfahren mit einfachen Shifts}
+\begin{bonus}{QR-Verfahren mit einfachen Shifts}
     Mit der Hessenberg-Transformation haben wir den Aufwand reduziert, aber die Konvergenzgeschwindigkeit kann noch verbessert werden.
     Dazu benutzen wir den folgenden Zusammenhang:
 
@@ -403,4 +729,4 @@
     Die Implementierung in dieser Form zählt zu den Standardverfahren und findet sich so auch in den einschlägigen Bibliotheken (z.B. \texttt{LAPACK}).
 
     Die einfache QR-Iteration ergibt sich, indem alle Shifts zu Null gesetzt werden.
-\end{defi}
+\end{bonus}

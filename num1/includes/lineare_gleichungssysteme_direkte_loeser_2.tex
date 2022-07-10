@@ -306,7 +306,259 @@
 \end{defi}
 
 \begin{example}{Verfahren von Givens}
-    TODO
+    Gegeben sei eine Matrix $A \in \R^{3 \times 3}$:
+    \[
+        A =
+        \left(
+        \begin{array}{cccc}
+                15  & 1   & 11  \\ 
+                -20 & 32  & -23 \\ 
+                0   & -15 & 35
+            \end{array}
+        \right)
+    \]
+    
+    Berechnen Sie das $R$ der QR-Zerlegung nach dem Verfahren von Givens.
+    
+    \exampleseparator
+    
+    \footnotesize
+    \[
+        \tilde{A} := A =
+        \left(
+        \begin{array}{cccc}
+                \cellcolor{red!10} 15  & 1   & 11  \\ 
+                \cellcolor{red!20} -20 & 32  & -23 \\ 
+                0                      & -15 & 35
+            \end{array}
+        \right)
+    \]
+    
+    Eliminieren von $\tilde{a}_{21}$: 
+    \[ 
+        u = 
+        \left(
+        \begin{array}{c}
+                \cellcolor{red!10} 15 \\ 
+                \cellcolor{red!20} -20 
+            \end{array}
+        \right)
+        \implies 
+        \tilde{Q}_{21} = 
+        \left(
+        \begin{array}{cc}
+                c  & \cellcolor{blue!10} s \\ 
+                -s & c 
+            \end{array}
+        \right)
+    \]
+    \[ 
+        c = \frac{u_1}{\|u\|_2} = \frac{15}{\sqrt{15^2 + (-20)^2}} = \frac{3}{5}, \quad s = \frac{-20}{\|u\|_2} = \frac{-20}{\sqrt{15^2 + (-20)^2}} = -\frac{4}{5}
+    \]
+    \[ 
+        \tilde{Q}_{21} = 
+        \left(
+        \begin{array}{cc}
+                c  & \cellcolor{blue!10} s \\ 
+                -s & c 
+            \end{array}
+        \right)
+        =
+        \left(
+        \begin{array}{cc}
+                \nicefrac{3}{5} & \cellcolor{blue!10} -\nicefrac{4}{5} \\ 
+                \nicefrac{4}{5} & \nicefrac{3}{5}
+            \end{array}
+        \right)
+        \implies 
+        Q_{21} = 
+        \left(
+        \begin{array}{ccc}
+                c  & \cellcolor{blue!10} s & 0 \\ 
+                -s & c                     & 0 \\ 
+                0  & 0                     & 1
+            \end{array}
+        \right) = 
+        \left(
+        \begin{array}{ccc}
+                \nicefrac{3}{5} & \cellcolor{blue!10} -\nicefrac{4}{5} & 0 \\ 
+                \nicefrac{4}{5} & \nicefrac{3}{5}                      & 0 \\ 
+                0               & 0                                    & 1
+            \end{array}
+        \right)
+    \]
+    
+    \[ 
+        \tilde{A} := Q_{21}A =
+        \left(
+        \begin{array}{ccc}
+                \nicefrac{3}{5} & -\nicefrac{4}{5} & 0 \\ 
+                \nicefrac{4}{5} & \nicefrac{3}{5}  & 0 \\ 
+                0               & 0                & 1
+            \end{array}
+        \right)
+        \left(
+        \begin{array}{cccc}
+                15  & 1   & 11  \\ 
+                -20 & 32  & -23 \\ 
+                0   & -15 & 35
+            \end{array}
+        \right)
+        = 
+        \left(
+        \begin{array}{cccc}
+                \cellcolor{red!10}25                                      & -25 & 25 \\ \cline{1-1}
+                \multicolumn{1}{c|}{\cellcolor{blue!10} -\nicefrac{4}{5}} & 20  & -5 \\ \cline{1-1}
+                \cellcolor{red!20} 0                                      & -15 & 35
+            \end{array}
+        \right)
+    \]
+    
+    Eliminieren von $\tilde{a}_{31}$:\footnote{Das Element ist bereits eliminiert, daraus folgt direkt $Q_{31} = I$. Der Übung halber wird der Schritt aber trotzdem gemacht.}
+    
+    \[ 
+        u = 
+        \left(
+        \begin{array}{c}
+                \cellcolor{red!10} 25 \\ 
+                \cellcolor{red!20} 0 
+            \end{array}
+        \right)
+        \implies 
+        \tilde{Q}_{31} = 
+        \left(
+        \begin{array}{cc}
+                c  & \cellcolor{blue!10} s \\ 
+                -s & c 
+            \end{array}
+        \right)
+    \]
+    \[ 
+        c = \frac{u_1}{\|u\|_2} = \frac{25}{\sqrt{25^2 + 0^2}} = 1, \quad s = \frac{0}{\|u\|_2} = \frac{0}{\sqrt{25^2 + 0^2}} = 0
+    \]
+    \[ 
+        \tilde{Q}_{31} = 
+        \left(
+        \begin{array}{cc}
+                c  & \cellcolor{blue!10} s \\ 
+                -s & c 
+            \end{array}
+        \right)
+        =
+        \left(
+        \begin{array}{cc}
+                1 & \cellcolor{blue!10} 0 \\ 
+                0 & 1
+            \end{array}
+        \right)
+        \implies 
+        Q_{31} = 
+        \left(
+        \begin{array}{ccc}
+                c  & 0 & \cellcolor{blue!10} s \\ 
+                0  & 1 & 0                     \\ 
+                -s & 0 & c
+            \end{array}
+        \right) = 
+        \left(
+        \begin{array}{ccc}
+                1 & 0 & \cellcolor{blue!10} 0 \\ 
+                0 & 1 & 0                     \\ 
+                0 & 0 & 1
+            \end{array}
+        \right) = I
+    \]
+    \[ 
+        \tilde{A} := Q_{31}Q_{21}A = I Q_{21} A = 
+        \left(
+        \begin{array}{cccc}
+                25                                         & -25                   & 25 \\ \cline{1-1}
+                \multicolumn{1}{c|}{-\nicefrac{4}{5}}      & \cellcolor{red!10}20  & -5 \\ 
+                \multicolumn{1}{c|}{\cellcolor{blue!10} 0} & \cellcolor{red!20}-15 & 35
+            \end{array}
+        \right)
+    \]
+    
+    Eliminieren von $\tilde{a}_{32}$: 
+    \[ 
+        u = 
+        \left(
+        \begin{array}{c}
+                \cellcolor{red!10} 20 \\ 
+                \cellcolor{red!20} -15 
+            \end{array}
+        \right)
+        \implies 
+        \tilde{Q}_{32} = 
+        \left(
+        \begin{array}{cc}
+                c  & \cellcolor{blue!10} s \\ 
+                -s & c 
+            \end{array}
+        \right)
+    \]
+    \[ 
+        c = \frac{u_1}{\|u\|_2} = \frac{20}{\sqrt{20^2 + (-15)^2}} = \frac{4}{5}, \quad s = \frac{-15}{\|u\|_2} = \frac{-15}{\sqrt{20^2 + (-15)^2}} = -\frac{3}{5}
+    \]
+    \[ 
+        \tilde{Q}_{32} = 
+        \left(
+        \begin{array}{cc}
+                c  & \cellcolor{blue!10} s \\ 
+                -s & c 
+            \end{array}
+        \right)
+        =
+        \left(
+        \begin{array}{cc}
+                \nicefrac{4}{5} & \cellcolor{blue!10} -\nicefrac{3}{5} \\ 
+                \nicefrac{3}{5} & \nicefrac{4}{5}
+            \end{array}
+        \right)
+        \implies 
+        Q_{32} = 
+        \left(
+        \begin{array}{ccc}
+                1 & 0  & 0                     \\ 
+                0 & c  & \cellcolor{blue!10} s \\ 
+                0 & -s & c
+            \end{array}
+        \right)  = 
+        \left(
+        \begin{array}{ccc}
+                1 & 0               & 0                                    \\ 
+                0 & \nicefrac{4}{5} & \cellcolor{blue!10} -\nicefrac{3}{5} \\ 
+                0 & \nicefrac{3}{5} & \nicefrac{4}{5}                      \\ 
+            \end{array}
+        \right)
+    \]
+    \[ 
+        \tilde{A} := Q_{32}Q_{31}Q_{21}A = 
+        \left(
+        \begin{array}{ccc}
+                1 & 0               & 0                \\ 
+                0 & \nicefrac{4}{5} & -\nicefrac{3}{5} \\ 
+                0 & \nicefrac{3}{5} & \nicefrac{4}{5}  \\ 
+            \end{array}
+        \right)
+        \left(
+        \begin{array}{cccc}
+                25 & -25 & 25 \\ 
+                0  & 20  & -5 \\ 
+                0  & -15 & 35
+            \end{array}
+        \right)
+        = 
+        \left(
+        \begin{array}{cccc}
+                25                                    & -25                                                       & 25  \\ \cline{1-1}
+                \multicolumn{1}{c|}{-\nicefrac{4}{5}} & 25                                                        & -25 \\ \cline{2-2}
+                0                                     & \multicolumn{1}{c|}{\cellcolor{blue!10} -\nicefrac{3}{5}} & 25
+            \end{array}
+        \right)
+        =: R
+    \]
+    
 \end{example}
 
 \begin{bonus}{Verfahren von Givens (stabilisierte Variante)}
@@ -434,7 +686,7 @@
 \begin{defi}{Verfahren von Householder}
     In der Praxis wird das \emph{Householder-Verfahren} wie folgt durchgeführt: 
     \begin{itemize}
-        \item Analog zum LU und Givens-Verfahren:\footnote{$Q = (Q_{n-1} \cdot \ldots \cdot Q_1)^{-1} = Q_1 \cdot \ldots \cdot Q_{n-1}$}
+        \item Analog zum LU- und Givens-Verfahren:\footnote{$Q = (Q_{n-1} \cdot \ldots \cdot Q_1)^{-1} = Q_1 \cdot \ldots \cdot Q_{n-1}$}
               \[
                   Ax = b, \quad A = QR \quad \iff \quad Qy = b, \quad Rx = y \quad \iff \quad Rx = Q^T b
               \]
@@ -492,5 +744,243 @@
 \end{defi}
 
 \begin{example}{Householder-Verfahren}
-    TODO
+    Gegeben sei eine Matrix $A \in \R^{3 \times 3}$:
+    \[
+        A =
+        \left(
+        \begin{array}{cccc}
+                15  & 1   & 11  \\ 
+                -20 & 32  & -23 \\ 
+                0   & -15 & 35
+            \end{array}
+        \right)
+    \]
+    
+    Berechnen Sie das $R$ der QR-Zerlegung nach dem Verfahren von Householder.
+    
+    \exampleseparator
+    
+    \footnotesize
+    
+    \[
+        \tilde{A} := A =
+        \left(
+        \begin{array}{cccc}
+                \cellcolor{red!10} 15  & 1   & 11  \\ 
+                \cellcolor{red!10} -20 & 32  & -23 \\ 
+                \cellcolor{red!10} 0   & -15 & 35
+            \end{array}
+        \right)
+    \]
+    
+    Spalte $\tilde{a}_1$ transformieren:
+    \[ 
+        \|\tilde{a}_1\|_2 = \sqrt{15^2 + (-20)^2 + 0^2} = 25
+    \]
+    \[ 
+        v = \tilde{a}_1 \mp \|\tilde{a}_1\|_2 e_1
+        \stackrel{25 > 0 \implies +}{=}
+        \left(
+        \begin{array}{c}
+                \cellcolor{red!10} 15  \\
+                \cellcolor{red!10} -20 \\
+                \cellcolor{red!10} 0   
+            \end{array}
+        \right)
+        + 25 \cdot 
+        \left(
+        \begin{array}{c}
+                1 \\ 
+                0 \\ 
+                0
+            \end{array}
+        \right)
+        =
+        \left(
+        \begin{array}{c}
+                \cellcolor{red!20} 40  \\ 
+                \cellcolor{red!20} -20 \\ 
+                \cellcolor{red!20} 0
+            \end{array}
+        \right)
+    \]
+    \[ 
+        Q_1 = I - \frac{2}{\|v\|_2^2} vv^T = I - \frac{2}{40^2 + (-20)^2 + 0^2} \left(
+        \begin{array}{c}
+                \cellcolor{red!20} 40  \\ 
+                \cellcolor{red!20} -20 \\ 
+                \cellcolor{red!20} 0
+            \end{array}
+        \right) \left(
+        \begin{array}{ccc}
+                \rowcolor{red!20}
+                \cellcolor{red!20} 40  & 
+                \cellcolor{red!20} -20 & 
+                \cellcolor{red!20} 0
+            \end{array}
+        \right)
+        = \ldots = 
+        \left(
+        \begin{array}{ccc}
+                -\nicefrac{3}{5} & \nicefrac{4}{5} & 0 \\ 
+                \nicefrac{4}{5}  & \nicefrac{3}{5} & 0 \\ 
+                0                & 0               & 5
+            \end{array}
+        \right)
+    \]
+    
+    \[ 
+        Q_1 A =
+        \left(
+        \begin{array}{ccc}
+                -\nicefrac{3}{5} & \nicefrac{4}{5} & 0 \\ 
+                \nicefrac{4}{5}  & \nicefrac{3}{5} & 0 \\ 
+                0                & 0               & 5
+            \end{array}
+        \right)
+        \left(
+        \begin{array}{cccc}
+                \cellcolor{red!10} 15  & 1   & 11  \\ 
+                \cellcolor{red!10} -20 & 32  & -23 \\ 
+                \cellcolor{red!10} 0   & -15 & 35
+            \end{array}
+        \right)
+        = 
+        \left(
+        \begin{array}{cccc}
+                \cellcolor{blue!10} -25 & 25  & -25 \\ 
+                0                       & 20  & -5  \\ 
+                0                       & -15 & 35
+            \end{array}
+        \right)
+    \]
+    \[ 
+        \text{Gespeichert als:} \; \left(
+        \begin{array}{ccc}
+                \multicolumn{1}{c|}{\cellcolor{red!20} 40}  & 25  & -25 \\ 
+                \multicolumn{1}{c|}{\cellcolor{red!20} -20} & 20  & -5  \\ 
+                \multicolumn{1}{c|}{\cellcolor{red!20} 0}   & -15 & 35
+            \end{array}
+        \right), \quad d = \left(
+        \begin{array}{c}
+                \cellcolor{blue!10} -25 \\ 
+                *                       \\ 
+                *
+            \end{array}
+        \right)
+    \]
+    \[ 
+        \tilde{A} := Q_1 A = 
+        \left(
+        \begin{array}{cccc}
+                -25 & 25                     & -25 \\ 
+                0   & \cellcolor{red!10} 20  & -5  \\ 
+                0   & \cellcolor{red!10} -15 & 35
+            \end{array}
+        \right)
+    \]
+    Spalte $\tilde{a}_2$ transformieren:
+    \[ 
+        \|\tilde{a}_2\|_2 = \sqrt{20^2 + (-15)^2} = 25
+    \]
+    \[
+        v = \tilde{a}_2 \mp \|\tilde{a}_2\|_2 e_1
+        \stackrel{20 > 0 \implies +}{=}
+        \left(
+        \begin{array}{c}
+                \cellcolor{red!10} 20  \\
+                \cellcolor{red!10} -15 \\
+            \end{array}
+        \right)
+        + 25 \cdot 
+        \left(
+        \begin{array}{c}
+                1 \\ 
+                0 
+            \end{array}
+        \right)
+        =
+        \left(
+        \begin{array}{c}
+                \cellcolor{red!20} 45 \\ 
+                \cellcolor{red!20} -15 
+            \end{array}
+        \right)
+    \]
+    \[ 
+        \tilde{Q}_2 = I - \frac{2}{\|v\|_2^2} vv^T = I - \frac{2}{45^2 + (-15)^2} \left(
+        \begin{array}{c}
+                \cellcolor{red!20} 45 \\ 
+                \cellcolor{red!20} -15 
+            \end{array}
+        \right) \left(
+        \begin{array}{ccc}
+                \cellcolor{red!20} 45 & 
+                \cellcolor{red!20} -15 
+            \end{array}
+        \right)
+        = \ldots =
+        \left(
+        \begin{array}{cc}
+                -\nicefrac{4}{5} & \nicefrac{3}{5} \\ 
+                \nicefrac{3}{5}  & \nicefrac{4}{5}
+            \end{array}
+        \right)
+    \]
+    \[ 
+        \tilde{Q}_2 = 
+        \left(
+        \begin{array}{cc}
+                -\nicefrac{4}{5} & \nicefrac{3}{5} \\ 
+                \nicefrac{3}{5}  & \nicefrac{4}{5}
+            \end{array}
+        \right)
+        \implies Q_2 = \left(
+        \begin{array}{ccc}
+                1 & 0                & 0               \\
+                0 & -\nicefrac{4}{5} & \nicefrac{3}{5} \\ 
+                0 & \nicefrac{3}{5}  & \nicefrac{4}{5}
+            \end{array}
+        \right)
+    \]
+    \[ 
+        Q_2 Q_1 A = \left(
+        \begin{array}{ccc}
+                1 & 0                & 0               \\
+                0 & -\nicefrac{4}{5} & \nicefrac{3}{5} \\ 
+                0 & \nicefrac{3}{5}  & \nicefrac{4}{5}
+            \end{array}
+        \right)
+        \left(
+        \begin{array}{cccc}
+                -25 & 25  & -25 \\ 
+                0   & 20  & -5  \\ 
+                0   & -15 & 35
+            \end{array}
+        \right)
+        =
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{-25} & 25                                           & -25                    \\ \cline{2-2}
+                0                        & \multicolumn{1}{c|}{\cellcolor{blue!10} -25} & 25                     \\ \cline{3-3}
+                0                        & 0                                            & \cellcolor{blue!20} 25
+            \end{array}
+        \right)
+        := R
+    \]
+    \[ 
+        \text{Gespeichert als:} \; \left(
+        \begin{array}{ccc}
+                \multicolumn{1}{c|}{40} & 25                                         & -25 \\ \cline{2-2}
+                -20                     & \multicolumn{1}{c|}{\cellcolor{red!20} 45} & 25  \\ \cline{3-3}
+                0                       & \cellcolor{red!20} -15                     & *
+            \end{array}
+        \right), \quad d = \left(
+        \begin{array}{c}
+                -25                     \\ 
+                \cellcolor{blue!10} -25 \\ 
+                \cellcolor{blue!20} 25
+            \end{array}
+        \right)
+    \]
 \end{example}

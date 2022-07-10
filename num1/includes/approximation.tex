@@ -1,1 +1,315 @@
 \section{Approximation}
+
+\subsection{Lineare Ausgleichsprobleme}
+
+\begin{defi}{Ausgleichspolynom mithilfe von Normalgleichungen}
+    Seien
+    \[
+        A = \begin{pmatrix}
+            1      & x_1    & \cdots & x_1^{n-1} \\
+            \vdots & \vdots &        & \vdots    \\
+            1      & x_m    & \cdots & x_m^{n-1}
+        \end{pmatrix}
+        \in \R^{m \times n}
+        , \quad
+        b = \begin{pmatrix}
+            y_1    \\
+            \vdots \\
+            y_m
+        \end{pmatrix}
+        \in \R^{m}
+        , \quad
+        x = \begin{pmatrix}
+            p_1    \\
+            \vdots \\
+            p_n
+        \end{pmatrix}
+        \in \R^{n}
+    \]
+    mit $m \geq n$, $\rang(A) = n$ (also maximal).
+
+    Dann hat für jedes $b \in \R^m$ das \emph{Minimalproblem}
+    \[
+        \min_{x \in \R^n} \|Ax - b\|_2
+    \]
+    genau eine Lösung $\hat{x} \in \R^n$.
+
+    Die Lösung $\hat{x}$ löst auch die \emph{Normalgleichungen}
+    \[
+        A^T A \hat{x} = A^T b
+    \]
+    wobei $A^T A \in \R^{n \times n}$ regulär ist.\footnote{$A^TA$ ist auch spd, so dass das Cholesky-Verfahren oder iterative Methoden verwendet werden können.}
+
+    Die Lösung $\hat{x}$ liefert Polynomkoeffizienten für das \emph{Ausgleichspolynom}.
+\end{defi}
+
+\begin{example}{Ausgleichspolynom mithilfe von Normalgleichungen}
+    TODO
+\end{example}
+
+\begin{bonus}{Ausgleichsfunktion mit beliebigen Basisfunktionen}
+    Wählt man
+    \[
+        A =
+        \begin{pmatrix}
+            \varphi_1(x_1) & \cdots & \varphi_n(x_1) \\
+            \vdots         &        & \vdots         \\
+            \varphi_1(x_m) & \cdots & \varphi_n(x_m)
+        \end{pmatrix}
+        \in \R^{m \times n}
+    \]
+    wobei $\varphi_i(x)$ beliebige Basisfunktionen sind, kann man das Approximationsproblem und damit die Ausgleichsfunktion auf diese beliebigen Basisfunktionen erweitern.
+\end{bonus}
+
+\subsection{QR-Zerlegung für lineare Ausgleichsprobleme}
+
+\begin{defi}{QR-Zerlegung für lineare Ausgleichsprobleme}
+    Seien $A \in \R^{m \times n}$, $b \in \R^{m}$ und $x \in \R^{n}$ wie bisher definiert mit $m \geq n$, $\rang(A) = n$.
+
+    Dann suchen wir analog zur normalen QR-Zerlegung ein
+    \[
+        Q = Q_m \cdot \ldots \cdot Q_1, \quad Q_i \ \text{orthonormal}
+    \]
+
+    z. B. mit Householder-Matrizen, so dass
+    \[
+        QA = Q_m \cdot \ldots \cdot Q_1 \cdot A =
+        \begin{pmatrix}
+            *      & \cdots & \cdots & *      \\
+            0      & \ddots &        & \vdots \\
+            \vdots & \ddots & \ddots & \vdots \\
+            0      & \cdots & 0      & *      \\
+                   &        &        &        \\
+            0      & \cdots & 0      & 0      \\
+            \vdots &        & \vdots & \vdots \\
+            0      & \cdots & 0      & 0
+        \end{pmatrix}
+        =:
+        \begin{pmatrix}
+            R \\
+            0
+        \end{pmatrix}
+    \]
+    wobei $R \in \R^{n \times n}$ eine obere Dreiecksmatrix ist, die regulär ist.
+
+    Benutzen wir
+    \[
+        Qb = \begin{pmatrix}
+            c \\
+            d
+        \end{pmatrix}
+    \]
+    wobei $c \in \R^n$ und $d \in \R^{m - n}$, so folgt
+    \begin{alignat*}{1}
+        \min_{x \in \R^n} \|Ax - b\|_2 & = \min_{x \in \R^n} \|QAx - Qb\|_2                                                   \\
+                                       & = \min_{x \in \R^n} \| \begin{pmatrix} R \\ 0 \end{pmatrix} x - \begin{pmatrix} c \\ d \end{pmatrix} \|_2 \\
+                                       & = \min_{x \in \R^n} \sqrt{\| Rx - c \|^2_2 + \| d \|^2_2}
+    \end{alignat*}
+
+    Zu bestimmen ist dann die Lösung von
+    \[
+        Rx - c = 0 \quad \iff \quad Rx = c
+    \]
+    durch Rückwärtseinsetzen.
+\end{defi}
+
+\subsection{CGLS}
+
+\begin{defi}{CGLS-Verfahren}
+    Das \emph{CGLS-Verfahren} (\emph{Conjugate Gradient Least Squares}) ist definiert durch:
+
+    Das Verfahren funktioniert wie folgt:
+    \begin{enumerate}
+        \item $x_0$ gegeben, $p_0 = r_0 = b - Ax_0$
+        \item Wiederhole für $k \geq 0$:
+              \[ x_{k+1} = x_k + \alpha_k p_k \]
+              \[ \mhl{s_{k+1} = s_k - \alpha_k A p_k}, \quad \alpha_k = \frac{\langle r_k, r_k \rangle}{\langle \mhl{A} p_k, A p_k \rangle} \]
+              \[ \mhl{r_{k+1} = A^T s_{k+1}} \]
+              \[ p_{k+1} = r_{k+1} + \beta_k p_k, \quad \beta_k = \frac{\langle r_{k+1}, r_{k+1} \rangle}{\langle r_k, r_k \rangle}\]
+    \end{enumerate}
+
+    Hat $A \in \R^{m \times n}$ vollen Rang, d. h. $A^TA \in \R^{n \times n}$ ist regulär, so liefert das CGLS-Verfahren in exakter Arithmetik nach spätestens $n$ Schritten die eindeutige Lösung des Ausgleichsproblems.
+
+    Hat $A$ keinen vollen Rang, so konvergiert CGLS immer noch gegen einen Minimierer.
+\end{defi}
+
+\subsection{Pseudoinverse}
+
+\begin{defi}{Pseudoinverse}
+    Sei $A \in \R^{m \times n}$ beliebig, $b \in \R^m$.
+
+    Dann gibt es genau eine Lösung $x \in \R^n$ für das Ausgleichungsproblem.
+    Diese hängt linear von $b$, d. h. es existiert eine eindeutige, von $b$ unabhängige Matrix $A^+ \in \R^{n \times m}$ mit
+    \[
+        x = A^+ b, \quad \forall b \in \R^m
+    \]
+
+    $A^+$ heißt dann \emph{Pseudoinverse} von $A$.\footnote{Für reguläres $A$ ist $A^+ = A^{-1}$}
+
+    Die Pseudoinverse $A^+$ ist durch die folgenden vier \emph{Penrose-Axiome} festgelegt:
+    \begin{itemize}
+        \item $A^+$ ist eine verallgemeinerte Inverse:
+              \[
+                  AA^+A = A
+              \]
+        \item $A^+$ verhält sich wie eine schwache Inverse:
+              \[
+                  A^+AA^+ = A^+
+              \]
+        \item Die Matrix $AA^+$ ist hermetisch\footnote{Für reelle Matrizen symmetrisch.}:
+              \[
+                  (AA^+)^T = AA^+
+              \]
+        \item Die Matrix $A^+A$ ist ebenfalls hermetisch:
+              \[
+                  (A^+A)^T = A^+A
+              \]
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Pseudoinverse}
+    TODO
+\end{example}
+
+\subsection{Singulärwertzerlegung}
+
+\begin{defi}{Singulärwertzerlegung}
+    Sei $A \in \R^{m \times n}$ beliebig.
+
+    Dann gibt es orthonormale Matrizen $U \in \R^{m \times m}$, $V \in \R^{n \times n}$, so dass
+    \[
+        U^TAV = \Sigma
+    \]
+    mit
+    \[
+        \Sigma \in \R^{m \times n}, \quad \Sigma = \diagonal(\sigma_1, \ldots, \sigma_p), \quad p = \min(m , n)
+    \]
+    und
+    \[
+        \sigma_1 \geq \ldots \geq \sigma_p \geq 0
+    \]
+
+    $U^TAV = \Sigma$ bzw. $A = U\Sigma V^T$ heißt \emph{Singulärwertzerlegung} von $A$ mit \emph{Singulärwerten} $\sigma_i$.
+
+    Es gilt:
+    \begin{itemize}
+        \item $V\Sigma^T U^T$ ist Singulärwertzerlegung von $A^T$ $\implies$ Singulärwerte von $A$ und $A^T$ identisch
+        \item hilt $\sigma_1 \geq \ldots \geq \sigma_r > \sigma_{r+1} = \ldots = \sigma_p = 0$ dann ist $\rang(A) = r$
+        \item $\sigma_1^2, \ldots, \sigma_2^2$ sind Eigenwerte von $A^TA$ bzw. $AA^T$\footnote{Alle anderen Eigenwerte sind gleich $0$.}
+        \item Die Spalten von $U$, $V$ sind Eigenvektoren von $AA^T$ bzw. $A^TA$.
+        \item Ist $r = \rang(A)$, $A = U \Sigma V^T$ mit
+              \[
+                  \Sigma = \diagonal(\sigma_1, \ldots, \sigma_r, 0, \ldots, 0) \in \R^{m \times n}
+              \]
+              dann ist
+              \[
+                  A^+ = V \Sigma^T U^T, \quad \Sigma^T = \diagonal(\frac{1}{\sigma_1}, \ldots, \frac{1}{\sigma_r}, 0, \ldots, 0) \in \R^{n \times m}
+              \]
+        \item Ist $A \in \R^{m \times n}$ und sind $S \in \R^{m \times m}$ und $T \in \R^{n \times n}$ orthonormal, dann haben $A$ und $SAT$ dieselben Singulärwerte.
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{Singulärwertzerlegung von spd Matrizen}
+    Ist $A \in \R^{n \times n}$ spd, dann gilt
+    \[
+        A = Q \Lambda Q^T, \quad \Lambda = \diagonal(\lambda_1, \ldots, \lambda_n), \quad Q = \begin{pmatrix} q_1 & \cdots & q_n \end{pmatrix}
+    \]
+    wobei
+    \[
+        \lambda_n \geq \ldots \geq \lambda_n
+    \]
+    die Eigenwerte von $A$ und $q_i$ die zugehörigen Eigenvektoren sind, d. h.
+    \[
+        \Sigma = \Lambda, \quad U = V = Q
+    \]
+\end{bonus}
+
+\begin{defi}{Bestimmen einer Singulärwertzerlegung}
+    Wir benutzen orthonormale Matrizen $S \in \R^{m \times m}$ und $T \in \R^{n \times n}$ und um $A$ so umzuformen, dass die Singulärwerte leichter zu bestimmen sind.\footnote{Wir nehmen $m \geq n$ an, ansonsten wählen wir $A^T$ statt $A$.}
+
+    \begin{enumerate}
+        \item Wir transformieren $A$ durch $S$ und $T$ in eine obere Bidiagonalform:\footnote{Analog zur Hessenberg-Transformation bei der Eigenwertberechnung.}
+              \begin{itemize}
+                  \item Mit Hilfe von orthogonalen Transformationen (z. B. Householder-Matrizen) $S_i$ eliminieren wir die $i$-te Spalte von $A$:\footnote{Am Beispiel von $S_1$}
+                        \[
+                            A \to S_1 A =
+                            \begin{pmatrix}
+                                *      & *      & * & \cdots & *      \\
+                                0      & *      & * & \cdots & *      \\
+                                0      & *      & * & \cdots & *      \\
+                                \vdots & \vdots &   &        & \vdots \\
+                                0      & *      & * & \cdots & *      \\
+                            \end{pmatrix}
+                        \]
+                  \item Mit Hilfe von orthogonalen Transformationen (z. B. Householder-Matrizen) $T_i$ eliminieren wir die um eins verkürzte $i$-te Zeile von $A$:\footnote{Am Beispiel von $S_1 A$}
+                        \[
+                            S_1 A \to S_1 A T_1 =
+                            \begin{pmatrix}
+                                *      & *      & 0 & \cdots & 0      \\
+                                0      & *      & * & \cdots & *      \\
+                                0      & *      & * & \cdots & *      \\
+                                \vdots & \vdots &   &        & \vdots \\
+                                0      & *      & * & \cdots & *      \\
+                            \end{pmatrix}
+                        \]
+                  \item Nach $n$-Schritten erhalten wir
+                        \[
+                            SAT = S_n \cdot \ldots \cdot S_1 \cdot A \cdot T_1 \cdot \ldots \cdot T_{n-1} =
+                            \begin{pmatrix}
+                                *      & *      & 0      & \cdots & 0      \\
+                                0      & \ddots & \ddots & \ddots & \vdots \\
+                                \vdots & \ddots & *      & *      & 0      \\
+                                \vdots &        & \ddots & *      & *      \\
+                                0      & \cdots & \cdots & 0      & *      \\
+                                       &        &        &        &        \\
+                                0      & \cdots & \cdots & \cdots & 0      \\
+                                \vdots &        &        &        & \vdots \\
+                                0      & \cdots & \cdots & \cdots & 0
+                            \end{pmatrix}
+                            =
+                            \begin{pmatrix}
+                                R \\ 0
+                            \end{pmatrix}
+                            , \quad R \in \R^{n \times n}
+                        \]
+              \end{itemize}
+        \item Analogon einer QR-Iteration ohne Shift auf $R^TR$:
+              \begin{itemize}
+                  \item $R_0 = R$
+                  \item Wiederhole für $k > 0$ (immer zwei Schritte $R_k \to R_{k+2}$):
+                        \[ R_k^T = Q_{k+1} R_{k+1}, \quad R_{k+1}^T = Q_{k+2} R_{k+2} \]
+                  \item $R_{2k}$ konvergiert gegen eine Diagonalmatrix, die die Singulärwerte enthält.
+              \end{itemize}
+    \end{enumerate}
+\end{defi}
+
+\begin{example}{Bestimmen einer Singulärwertzerlegung}
+    TODO
+\end{example}
+
+\subsection{Regularisierung schlecht konditionierter Probleme}
+
+\subsubsection{Grundlagen}
+
+\begin{defi}{Konditionszahl mithilfe von Singulärwerten}
+    Es sei $A \in \R^{m \times n}$ mit Singulärwertzerlegung $A = U \Sigma V^T$
+    \[
+        \Sigma = \diagonal(\sigma_1, \ldots, \sigma_r, 0, \ldots, 0) \in \R^{m \times n}, \quad \sigma_1 \geq \ldots \geq \sigma_r > 0
+    \]
+
+    Dann ist die Konditionszahl $\varkappa_2$ von $A$ gegeben durch\footnote{Für reguläre Matrizen $A$ stimmt dieser Ausdruck mit der früheren Definiton der Konditionszahl $\varkappa_2$ überein.}
+    \[
+        \varkappa_2 (A) = \frac{\sigma_1}{\sigma_r}
+    \]
+\end{defi}
+
+\subsubsection{Abgeschnittene Singulärwertzerlegung (TSVD)}
+
+\begin{defi}{Abgeschnittene Singulärwertzerlegung}
+
+\end{defi}
+
+\subsubsection{Tikhonov Regularisierung}
+
+\subsubsection{Parameterwahl}
+

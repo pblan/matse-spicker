@@ -202,7 +202,7 @@
 \begin{defi}{Frobeniusnorm}
     Die \emph{Frobeniusnorm}
     \[
-        \| A \|_F = \sqrt{\spur(A^TA)}, \quad \spur(C) = \sum_{i=1}^{n} \sum_{j=1}^{n} c_{ij}^2
+        \| A \|_F = \sqrt{\spur(A^TA)}, \quad \spur(A^TA) = \sum_{i=1}^{n} \sum_{j=1}^{n} |a_{ij}|^2
     \]
     ist \emph{nicht induziert}, erfüllt aber
     \[
@@ -469,6 +469,142 @@
     Die Permutation $P$ ist nicht vorher bekannt, sondern ergibt sich erst während der LU-Zerlegung.
 \end{defi}
 
+\begin{example}{LU-Zerlegung für beliebige reguläre Matrizen}
+    Gegeben sei eine reguläre Matrix $A \in \R^{4 \times 4}$:
+    \[
+        A =
+        \left(
+        \begin{array}{cccc}
+                0 & 0 & 3 & 1 \\
+                2 & 1 & 2 & 0 \\
+                8 & 8 & 0 & 0 \\
+                4 & 6 & 2 & 4
+            \end{array}
+        \right)
+    \]
+
+    Führen Sie eine LU-Zerlegung auf $A$ durch.
+
+    \exampleseparator
+
+    \begin{alignat*}{2}
+         & k=1: \qquad
+         &             &
+        \left(
+        \begin{array}{cccc}
+                \rowcolor{red!20}
+                0 & 0 & 3 & 1 \\
+                \rowcolor{red!10}
+                2 & 1 & 2 & 0 \\
+                8 & 8 & 0 & 0 \\
+                4 & 6 & 2 & 4
+            \end{array}
+        \right)
+        \xrightarrow{j_1 = 2}
+        \left(
+        \begin{array}{cccc}
+                \rowcolor{red!10}
+                2 & 1 & 2 & 0 \\
+                \rowcolor{red!20}
+                0 & 0 & 3 & 1 \\
+                8 & 8 & 0 & 0 \\
+                4 & 6 & 2 & 4
+            \end{array}
+        \right)
+        \xrightarrow{}
+        \left(
+        \begin{array}{cccc}
+                2                      & 1 & 2  & 0 \\ \cline{1-1}
+                \multicolumn{1}{c|}{0} & 0 & 3  & 1 \\
+                \multicolumn{1}{c|}{4} & 4 & -8 & 0 \\
+                \multicolumn{1}{c|}{2} & 4 & -2 & 4
+            \end{array}
+        \right)          \\
+         & k=2: \qquad
+         &             &
+        \left(
+        \begin{array}{cccc}
+                2                      & 1 & 2  & 0 \\ \cline{1-1}
+                \rowcolor{red!20}
+                \multicolumn{1}{c|}{0} & 0 & 3  & 1 \\
+                \rowcolor{red!10}
+                \multicolumn{1}{c|}{4} & 4 & -8 & 0 \\
+                \multicolumn{1}{c|}{2} & 4 & -2 & 4
+            \end{array}
+        \right)
+        \xrightarrow{j_2 = 3}
+        \left(
+        \begin{array}{cccc}
+                2                      & 1 & 2  & 0 \\ \cline{1-1}
+                \rowcolor{red!10}
+                \multicolumn{1}{c|}{4} & 4 & -8 & 0 \\
+                \rowcolor{red!20}
+                \multicolumn{1}{c|}{0} & 0 & 3  & 1 \\
+                \multicolumn{1}{c|}{2} & 4 & -2 & 4
+            \end{array}
+        \right)
+        \xrightarrow{}
+        \left(
+        \begin{array}{cccc}
+                2                      & 1                      & 2  & 0 \\ \cline{1-1}
+                \multicolumn{1}{c|}{4} & 4                      & -8 & 0 \\ \cline{2-2}
+                0                      & \multicolumn{1}{c|}{0} & 3  & 1 \\
+                2                      & \multicolumn{1}{c|}{1} & 6  & 4
+            \end{array}
+        \right)          \\
+         & k=3: \qquad
+         &             &
+        \left(
+        \begin{array}{cccc}
+                2                      & 1                      & 2  & 0 \\ \cline{1-1}
+                \multicolumn{1}{c|}{4} & 4                      & -8 & 0 \\ \cline{2-2}
+                \rowcolor{red!20}
+                0                      & \multicolumn{1}{c|}{0} & 3  & 1 \\
+                2                      & \multicolumn{1}{c|}{1} & 6  & 4
+            \end{array}
+        \right)
+        \xrightarrow{j_3 = 3}
+        \left(
+        \begin{array}{cccc}
+                2                      & 1                      & 2  & 0 \\ \cline{1-1}
+                \multicolumn{1}{c|}{4} & 4                      & -8 & 0 \\ \cline{2-2}
+                \rowcolor{red!20}
+                0                      & \multicolumn{1}{c|}{0} & 3  & 1 \\
+                2                      & \multicolumn{1}{c|}{1} & 6  & 4
+            \end{array}
+        \right)
+        \xrightarrow{}
+        \left(
+        \begin{array}{cccc}
+                2                      & 1                      & 2                      & 0 \\ \cline{1-1}
+                \multicolumn{1}{c|}{4} & 4                      & -8                     & 0 \\ \cline{2-2}
+                0                      & \multicolumn{1}{c|}{0} & 3                      & 1 \\ \cline{3-3}
+                2                      & 1                      & \multicolumn{1}{c|}{2} & 2
+            \end{array}
+        \right)
+    \end{alignat*}
+
+    Damit erhalten wir:
+    \[
+        L =
+        \begin{pmatrix}
+            1 & 0 & 0 & 0 \\
+            4 & 1 & 0 & 0 \\
+            0 & 0 & 1 & 0 \\
+            2 & 1 & 2 & 1
+        \end{pmatrix}, \quad
+        U =
+        \begin{pmatrix}
+            2 & 1 & 2  & 0 \\
+            0 & 4 & -8 & 0 \\
+            0 & 0 & 3  & 1 \\
+            0 & 0 & 0  & 2
+        \end{pmatrix}, \quad
+        p = \begin{pmatrix}
+            2 \\ 3 \\ 3
+        \end{pmatrix}
+    \]
+\end{example}
 
 \begin{defi}{LU-Zerlegung für beliebige reguläre Matrizen (Praxis)}
     Es gilt:
@@ -504,6 +640,10 @@
         \item eliminiere $k$-te Spalte wie üblich
     \end{itemize}
 \end{defi}
+
+\begin{code}{LU-Zerlegung für beliebige reguläre Matrizen (Praxis)}
+    TODO
+\end{code}
 
 \subsection{Cholesky-Zerlegung}
 
@@ -550,29 +690,22 @@
     Der $k$-te Schritt des Cholesky-Verfahrens besteht aus:
     \begin{enumerate}
         \item Berechne $k$-te Spalte:
+              \[
+                  l_{kk} = \sqrt{a^{(k)}_{kk}}
+              \]
+              \[
+                  l_{ik} = \frac{a^{(k)}_{ik}}{l_{kk}}
+              \]
               \begin{itemize}
-                  \item
-                        \[
-                            l_{kk} = \sqrt{a^{(k)}_{kk}}
-                        \]
-                  \item
-                        \[
-                            l_{ik} = \frac{a^{(k)}_{ik}}{l_{kk}}
-                        \]
-                        \begin{itemize}
-                            \item $i = k + 1, \ldots, n$
-                        \end{itemize}
+                  \item $i = k + 1, \ldots, n$
               \end{itemize}
         \item Berechne $A^{(k+1)}$:
+              \[
+                  a^{(k+1)}_{ij} = a^{(k)}_{ij} - l_{ik} l_{jk}
+              \]
               \begin{itemize}
-                  \item
-                        \[
-                            a^{(k+1)}_{ij} = a^{(k)}_{ij} - l_{ik} l_{jk}
-                        \]
-                        \begin{itemize}
-                            \item $i = k + 1, \ldots, n$
-                            \item $j = k + 1, \ldots, i$
-                        \end{itemize}
+                  \item $i = k + 1, \ldots, n$
+                  \item $j = k + 1, \ldots, i$
               \end{itemize}
     \end{enumerate}
 
@@ -587,5 +720,216 @@
 \end{defi}
 
 \begin{example}{Cholesky-Zerlegung}
-    TODO
+    Gegeben sei eine spd Matrix $A \in \R^{4 \times 4}$:
+    \[
+        A =
+        \left(
+        \begin{array}{cccc}
+                9   & *   & *   & *   \\
+                0   & 9   & *   & *   \\
+                -27 & -9  & 99  & *   \\
+                18  & -27 & -27 & 121
+            \end{array}
+        \right)
+    \]
+
+    Führen Sie eine Cholesky-Zerlegung auf $A$ durch.
+
+    \exampleseparator
+
+    \footnotesize
+
+    $k = 1:$
+    \[
+        \left(
+        \begin{array}{cccc}
+                9   & *   & *   & *   \\
+                0   & 9   & *   & *   \\
+                -27 & -9  & 99  & *   \\
+                18  & -27 & -27 & 121
+            \end{array}
+        \right)
+        \xrightarrow{l_{11} = \sqrt{a^{(1)}_{11}}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{\cellcolor{red!10} \sqrt{9}} & *   & *   & *   \\\cline{1-1}
+                0                                                & 9   & *   & *   \\
+                -27                                              & -9  & 99  & *   \\
+                18                                               & -27 & -27 & 121
+            \end{array}
+        \right)
+        \xrightarrow{l_{i1} = \frac{a^{(1)}_{i1}}{l_{11}}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{\cellcolor{red!10}3}  & *   & *   & *   \\
+                \multicolumn{1}{c|}{\cellcolor{red!20}0}  & 9   & *   & *   \\
+                \multicolumn{1}{c|}{\cellcolor{red!20}-9} & -9  & 99  & *   \\
+                \multicolumn{1}{c|}{\cellcolor{red!20}6}  & -27 & -27 & 121
+            \end{array}
+        \right)
+    \]
+    \[
+        \xrightarrow{a^{(2)}_{ij} = a^{(1)}_{ij} - l_{i1} l_{j1}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{\cellcolor{red!10} 3}  & \cellcolor{red!20} 0 & \cellcolor{red!20}-9 & \cellcolor{red!20}6 \\\cdashline{2-4}
+                \multicolumn{1}{c|}{\cellcolor{red!20} 0}  & 9 - 0^2              & *                    & *                   \\
+                \multicolumn{1}{c|}{\cellcolor{red!20} -9} & -9 - (-9) \cdot 0    & 99 - (-9)^2          & *                   \\
+                \multicolumn{1}{c|}{\cellcolor{red!20} 6}  & -27 - 6 \cdot 0      & -27 - 6 \cdot (-9)   & 121 - 6^2
+            \end{array}
+        \right)
+        \sim
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3}  & *   & *  & *  \\
+                \multicolumn{1}{c|}{0}  & 9   & *  & *  \\
+                \multicolumn{1}{c|}{-9} & -9  & 18 & *  \\
+                \multicolumn{1}{c|}{6}  & -27 & 27 & 85
+            \end{array}
+        \right)
+    \]
+
+    \vspace{1em}
+    $k = 2:$
+    \[
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3}  & *   & *  & *  \\
+                \multicolumn{1}{c|}{0}  & 9   & *  & *  \\
+                \multicolumn{1}{c|}{-9} & -9  & 18 & *  \\
+                \multicolumn{1}{c|}{6}  & -27 & 27 & 85
+            \end{array}
+        \right)
+        \xrightarrow{l_{22} = \sqrt{a^{(2)}_{22}}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3}  & *                                                & *  & *  \\\cline{2-2}
+                0                       & \multicolumn{1}{c|}{\cellcolor{red!10} \sqrt{9}} & *  & *  \\\cline{2-2}
+                \multicolumn{1}{c|}{-6} & -9                                               & 18 & *  \\
+                \multicolumn{1}{c|}{9}  & -27                                              & 27 & 85
+            \end{array}
+        \right)
+        \xrightarrow{l_{i2} = \frac{a^{(2)}_{i2}}{l_{22}}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                                          & *  & *  \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{\cellcolor{red!10} 3}  & *  & *  \\
+                -6                     & \multicolumn{1}{c|}{\cellcolor{red!20} -3} & 18 & *  \\
+                9                      & \multicolumn{1}{c|}{\cellcolor{red!20} -9} & 27 & 85
+            \end{array}
+        \right)
+    \]
+    \[
+        \xrightarrow{a^{(3)}_{ij} = a^{(2)}_{ij} - l_{i2} l_{j2}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                                         & *                    & *                    \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{\cellcolor{red!10} 3} & \cellcolor{red!20}-3 & \cellcolor{red!20}-9 \\\cdashline{3-4}
+                -6                     & \multicolumn{1}{c|}{\cellcolor{red!20}-3} & 18 - (-3)^2          & *                    \\
+                9                      & \multicolumn{1}{c|}{\cellcolor{red!20}-9} & 27 - (-9) \cdot (-3) & 85 - (-9)^2
+            \end{array}
+        \right)
+        \sim
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                       & * & * \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{3}  & * & * \\
+                -6                     & \multicolumn{1}{c|}{-3} & 9 & * \\
+                9                      & \multicolumn{1}{c|}{-9} & 0 & 4
+            \end{array}
+        \right)
+    \]
+
+    \vspace{1em}
+    $k = 3:$
+    \[
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                       & * & * \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{3}  & * & * \\
+                -6                     & \multicolumn{1}{c|}{-3} & 9 & * \\
+                9                      & \multicolumn{1}{c|}{-9} & 0 & 4
+            \end{array}
+        \right)
+        \xrightarrow{l_{33} = \sqrt{a^{(3)}_{33}}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                       & *                                                & * \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{3}  & *                                                & * \\\cline{3-3}
+                -6                     & -3                      & \multicolumn{1}{c|}{\cellcolor{red!20} \sqrt{9}} & * \\\cline{3-3}
+                9                      & \multicolumn{1}{c|}{-9} & 0                                                & 4
+            \end{array}
+        \right)
+        \xrightarrow{l_{i3} = \frac{a^{(3)}_{i3}}{l_{33}}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                      & *                                         & * \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{3} & *                                         & * \\\cline{3-3}
+                -6                     & -3                     & \multicolumn{1}{c|}{\cellcolor{red!10} 3} & * \\
+                9                      & -9                     & \multicolumn{1}{c|}{\cellcolor{red!20} 0} & 4
+            \end{array}
+        \right)
+    \]
+    \[
+        \xrightarrow{a^{(4)}_{ij} = a^{(3)}_{ij} - l_{i3} l_{j3}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                      & *                                         & *                    \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{3} & *                                         & *                    \\\cline{3-3}
+                -6                     & -3                     & \multicolumn{1}{c|}{\cellcolor{red!10} 3} & \cellcolor{red!20} 0 \\\cdashline{4-4}
+                9                      & -9                     & \multicolumn{1}{c|}{\cellcolor{red!20} 0} & 4 - 0^2
+            \end{array}
+        \right)
+        \sim
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                      & *                      & * \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{3} & *                      & * \\\cline{3-3}
+                -6                     & -3                     & \multicolumn{1}{c|}{3} & * \\
+                9                      & -9                     & \multicolumn{1}{c|}{0} & 4
+            \end{array}
+        \right)
+    \]
+
+    \vspace{1em}
+    $k = 4:$
+    \[
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                      & *                      & * \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{3} & *                      & * \\\cline{3-3}
+                -6                     & -3                     & \multicolumn{1}{c|}{3} & * \\
+                9                      & -9                     & \multicolumn{1}{c|}{0} & 4
+            \end{array}
+        \right)
+        \xrightarrow{l_{44} = \sqrt{a^{(4)}_{44}}}
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                      & *                      & *                                                \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{3} & *                      & *                                                \\\cline{3-3}
+                -6                     & -3                     & \multicolumn{1}{c|}{3} & *                                                \\\cline{4-4}
+                9                      & -9                     & 0                      & \multicolumn{1}{c|}{\cellcolor{red!10} \sqrt{4}}
+            \end{array}
+        \right)
+        \sim
+        \left(
+        \begin{array}{cccc}
+                \multicolumn{1}{c|}{3} & *                      & *                      & *                                         \\\cline{2-2}
+                0                      & \multicolumn{1}{c|}{3} & *                      & *                                         \\\cline{3-3}
+                -6                     & -3                     & \multicolumn{1}{c|}{3} & *                                         \\\cline{4-4}
+                9                      & -9                     & 0                      & \multicolumn{1}{c|}{\cellcolor{red!10} 2}
+            \end{array}
+        \right)
+    \]
+
+    Damit erhalten wir:
+    \[
+        A = LL^T, \quad L =
+        \begin{pmatrix}
+            3  & 0  & 0 & 0 \\
+            0  & 3  & 0 & 0 \\
+            -6 & -3 & 3 & 0 \\
+            9  & -9 & 0 & 2
+        \end{pmatrix}
+    \]
 \end{example}
