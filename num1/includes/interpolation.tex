@@ -110,7 +110,43 @@
 \end{defi}
 
 \begin{example}{Lagrange-Polynom}
-    TODO
+    Gegeben seien die folgenden Datenpunkte: 
+    
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|c|}
+            \hline
+            $x_i$ & -1 & 0 & 1 & 2 \\ 
+            \hline
+            $y_i$ & 2  & 2 & 2 & 8 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    
+    Berechnen Sie das zugehörige Lagrange-Interpolationspolynom.
+    
+    \exampleseparator
+    
+    Die Lagrange-Polynome sind wie folgt: 
+    \[ 
+        L_0(x) = \frac{x - x_1}{x_0 - x_1} \cdot \frac{x - x_2}{x_0 - x_2} \cdot \frac{x - x_3}{x_0 - x_3} = \frac{x - 0}{-1 - 0} \cdot \frac{x - 1}{-1 - 1} \cdot \frac{x - 2}{-1 - 2} = -\frac{x(x-1)(x-2)}{6}
+    \]
+    \[ 
+        L_1(x) = \frac{x - x_0}{x_1 - x_0} \cdot \frac{x - x_2}{x_1 - x_2} \cdot \frac{x - x_3}{x_1 - x_3} = \frac{x - (-1)}{0 - (-1)} \cdot \frac{x - 1}{0 - 1} \cdot \frac{x - 2}{0 - 2} = \frac{(x+1)(x-1)(x-2)}{2}
+    \]
+    \[ 
+        L_2(x) = \frac{x - x_0}{x_2 - x_0} \cdot \frac{x - x_1}{x_2 - x_1} \cdot \frac{x - x_3}{x_2 - x_3} = \frac{x - (-1)}{1 - (-1)} \cdot \frac{x - 0}{1 - 0} \cdot \frac{x - 2}{1 - 2} = -\frac{(x+1)x(x-2)}{2}
+    \]
+    \[ 
+        L_3(x) = \frac{x - x_0}{x_3 - x_0} \cdot \frac{x - x_1}{x_3 - x_1} \cdot \frac{x - x_2}{x_3 - x_2} = \frac{x - (-1)}{2 - (-1)} \cdot \frac{x - 0}{2 - 0} \cdot \frac{x - 1}{2 - 1} = \frac{(x+1)x(x-2)}{6}
+    \]
+    
+    Damit ist das Lagrange-Interpolationspolynom $p(x)$: 
+    \begin{alignat*}{1}
+        p(x) = \quad & y_0 L_0 + y_1 L_1 + y_2 L_2 + y_3 L_3                                                                  \\
+        =      \quad & -\frac{2x(x-1)(x-2)}{6} + \frac{2(x+1)(x-1)(x-2)}{2} - \frac{2(x+1)x(x-2)}{2} + \frac{8(x+1)x(x-2)}{6} \\ 
+        =      \quad & \ldots                                                                                                 \\ 
+        =      \quad & x^3 - x + 2
+    \end{alignat*}
 \end{example}
 
 \begin{defi}{Newton-Interpolationspolynom}
@@ -167,15 +203,60 @@
     
     Insgesamt ist das Newton-Interpolationspolynom also gegeben mit 
     \[ 
-        p_n(x) = \sum_{j=0}^{n} d_{j,j} N_j(x)  
+        p_n(x) = \sum_{j=0}^{n} d_{j,0} N_j(x)  
     \]
     \[  
-        = d_{0, 0} + d_{1, 1} (x - x_0) + d_{2, 2} (x - x_0) (x - x_1) + \ldots + d_{n, n} (x - x_0) \cdot \ldots \cdot (x - x_{n-1})
+        = d_{0, 0} + d_{1, 0} (x - x_0) + d_{2, 0} (x - x_0) (x - x_1) + \ldots + d_{n, 0} (x - x_0) \cdot \ldots \cdot (x - x_{n-1})
     \]
 \end{defi}
 
 \begin{example}{Newton-Interpolationspolynom}
-    TODO
+    Gegeben seien die folgenden Datenpunkte: 
+    
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|c|}
+            \hline
+            $x_i$ & -1 & 0 & 1 & 2 \\ 
+            \hline
+            $y_i$ & 2  & 2 & 2 & 8 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    
+    Berechnen Sie das zugehörige Newton-Interpolationspolynom.
+    
+    \exampleseparator
+    
+    Das Newton-Interpolationspolynom ist:
+    \[ 
+        p_3(x) = \sum_{j=0}^{3} d_{j,0} N_j(x) 
+    \]
+    \[ 
+        = a_0 + a_1 (x - x_0) + a_2 (x - x_0) (x - x_1) + a_3 (x - x_0) (x - x_1) (x - x_2) 
+    \]
+    
+    Es gilt:
+    
+    {
+    \footnotesize
+    \[
+        \begin{array}{llllllllllll}
+            y_0 & = & d_{0,0} = 2 & =           & a_0                                                                                                                                                                                                              \\
+                &   &             & \searrow                                                                                                                                                                                                                       \\
+            y_1 & = & d_{1,1} = 2 & \rightarrow & d_{1,0} = \frac{d_{1,1} - d_{0,0}}{x_1 - x_0} = \frac{2 - 2}{0 + 1} = 0 & =           & a_1                                                                                                                      \\
+                &   &             & \searrow    &                                                                         & \searrow                                                                                                                               \\
+            y_2 & = & d_{2,2} = 2 & \rightarrow & d_{2,1} = \frac{d_{2,2} - d_{1,1}}{x_2 - x_1} = \frac{2 - 2}{1 - 0} = 0 & \rightarrow & d_{2,0} = \frac{d_{2,1} - d_{1,0}}{x_2 - x_0} = \frac{0 - 0}{1 + 1} = 0  & =           & a_2                             \\
+                &   &             & \searrow    &                                                                         & \searrow    &                                                                          & \searrow                                      \\
+            y_3 & = & d_{3,3} = 8 & \rightarrow & d_{3,2} = \frac{d_{3,3} - d_{2,2}}{x_3 - x_2} = \frac{8 - 2}{2 - 1} = 6 & \rightarrow & d_{3, 1} = \frac{d_{3,2} - d_{2,1}}{x_3 - x_1} = \frac{6 - 0}{2 - 0} = 3 & \rightarrow & d_{3, 0} = \ldots = 1 & = & a_3 \\
+        \end{array}
+    \]
+    }
+    
+    Damit ist: 
+    \[ 
+        p_3(x) = 2 + 1 (x - x_0) (x - x_1) (x - x_2) = 2 + (x+1) x (x-1) = 2 + x(x^2 - 1) = 2 - x + x^3
+    \]
+    \qed
 \end{example}
 
 \subsection{Splines}
@@ -418,11 +499,117 @@
 \end{defi}
 
 \begin{example}{Kubischer Polynom-Spline (Bedingungsgleichungen)}
-    TODO
+    Gegeben seien die folgenden Datenpunkte: 
+    
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|c|}
+            \hline
+            $x_i$ & -1 & 0 & 1 \\ 
+            \hline
+            $y_i$ & 1  & 0 & 1 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    
+    Berechnen Sie den zugehörigen kubischen Polynom-Spline mithilfe der Bedingungsgleichungen.
+    
+    \exampleseparator
+    
+    Wir wissen: 
+    \[ 
+        p(x) = a + bx + cx^2 + dx^3
+    \]
+    \[ 
+        p'(x) = b + 2cx + 3dx^2
+    \]
+    \[ 
+        p''(x) = 2c + 6dx
+    \]
+    
+    Wir haben folgende Bedingungsgleichungen:
+    \begin{alignat*}{3}
+        \text{Interpolation:} \qquad              & p_L(x_0)       = y_0        \quad & \implies \quad & a_L - b_L + c_L - d_L =  1 \\
+        \text{Interpolation:} \qquad              & p_L(x_1)       = y_1        \quad & \implies \quad & a_L =  0                   \\
+        \text{Interpolation:} \qquad              & p_R(x_1)       = y_1        \quad & \implies \quad & a_R = 0                    \\
+        \text{Interpolation:} \qquad              & p_R(x_2)       = y_2        \quad & \implies \quad & a_R + b_R + c_R + d_R = 1  \\
+        \text{Glattheit erste Ableitung:} \qquad  & p'_L(x_1)      = p'_R(x_1)  \quad & \implies \quad & b_L = b_R                  \\
+        \text{Glattheit zweite Ableitung:} \qquad & p''_L(x_1)     = p''_R(x_1) \quad & \implies \quad & 2c_L = 2c_R                \\
+        \text{natürlicher Spline:} \qquad         & p''_L(x_0)     = 0          \quad & \implies \quad & 2c_L - 6d_L = 0            \\
+        \text{natürlicher Spline:} \qquad         & p''_R(x_2) =     0          \quad & \implies \quad & 2c_R + 6d_R = 0
+    \end{alignat*}
+    
+    Wir erhalten das lineare Gleichungssystem: 
+    \[ 
+        \begin{pmatrix}
+            1 & -1 & 1 & -1 & 0 & 0  & 0  & 0  \\ 
+            1 & 0  & 0 & 0  & 0 & 0  & 0  & 0  \\
+            0 & 0  & 0 & 0  & 1 & 0  & 0  & 0  \\
+            0 & 0  & 0 & 0  & 1 & 1  & 1  & 1  \\
+            0 & 1  & 0 & 0  & 0 & -1 & 0  & 0  \\
+            0 & 0  & 2 & 0  & 0 & 0  & -2 & 0  \\
+            0 & 0  & 2 & -6 & 0 & 0  & 0  & 0  \\
+            0 & 0  & 0 & 0  & 0 & 0  & 2  & 6 
+        \end{pmatrix}
+        \begin{pmatrix}
+            a_L \\
+            b_L \\
+            c_L \\
+            d_L \\
+            a_R \\
+            b_R \\
+            c_R \\
+            d_R
+        \end{pmatrix}
+        = 
+        \begin{pmatrix}
+            1 \\
+            0 \\
+            0 \\
+            1 \\
+            0 \\
+            0 \\
+            0 \\
+            0
+        \end{pmatrix}
+    \]
+    
+    mit der Lösung: 
+    \[ 
+        \begin{pmatrix}
+            a_L & b_L & c_L & d_L & a_R & b_R & c_R & d_R
+        \end{pmatrix}^T
+        = 
+        \begin{pmatrix}
+            0 & 0 & \nicefrac{3}{2} & \nicefrac{1}{2} & 0 & 0 & \nicefrac{3}{2} & -\nicefrac{1}{2}
+        \end{pmatrix}^T
+    \]
+    
+    Daraus ergibt sich der kubische Polynom-Spline:
+    \[ 
+        s(x) = 
+        \begin{cases}
+            \frac{3}{2} x^2 + \frac{1}{2} x^3 & x \leq 0 \\ 
+            \frac{3}{2} x^2 - \frac{1}{2} x^3 & x > 0
+        \end{cases}
+    \]
 \end{example}
 
 \begin{example}{Kubischer Polynom-Spline (Momente)}
-    TODO
+    Gegeben seien die folgenden Datenpunkte: 
+    
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|c|}
+            \hline
+            $x_i$ & -1 & 0 & 1 \\ 
+            \hline
+            $y_i$ & 1  & 0 & 1 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    
+    Berechnen Sie den zugehörigen kubischen Polynom-Spline mithilfe der Momentgleichungen.
+    
+    \exampleseparator
 \end{example}
 
 \subsection{B-Splines}
@@ -442,7 +629,7 @@
     \]
 \end{defi}
 
-\begin{defi}{B-Spline}
+\begin{bonus}{B-Spline}
     Es sei $\Omega_n = \{ x_0, \ldots, x_n \}$ eine Unterteilung von $[x_0, x_n]$.
     
     Wir wählen Hilfspunkte\footnote{Oft beschränken wir uns auf äquidistante Unterteilungen (mit äquidistanten Hilfspunkten) $x_i = i \cdot h$ mit $h > 0$.}
@@ -484,7 +671,7 @@
     \]
     
     Die $e_{k, i}$ sind dann Basis-Splines auf dem Intervall $[x_0, x_n]$.
-\end{defi}
+\end{bonus}
 
 % \subsection{Interpolierende Kurven}
 
