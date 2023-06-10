@@ -22,8 +22,9 @@ jobs:
       - name: Compiling LaTeX
         uses: xu-cheng/latex-action@v2
         env:
-         TEXINPUTS: ".:./tex//:"
+         TEXINPUTS: ".:./tex/latex/spicker//:"
         with:
+          pre_compile: "pwd;" 
           latexmk_use_xelatex: true
           latexmk_shell_escape: true
           working_directory: ${{ inputs.spicker-path }}
