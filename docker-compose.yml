@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  latex:
+    container_name: latex
+    image: ghcr.io/pblan/latex:latest
+    volumes:
+      # required
+      - tex:/root/tex/
+      # change lines below if necessary
+      - ../matse-spicker:/mnt/matse-spicker/
+    tty: true
+    restart: always

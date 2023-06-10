@@ -1,0 +1,76 @@
+\documentclass[english]{../spicker}
+
+\usepackage{amsmath}
+
+\usepackage{graphicx}
+\usepackage{tabularx, multirow}
+
+\usepackage[style=numeric, backend=bibtex]{biblatex}
+\addbibresource{or.bib}
+
+\title{Operations Research}
+\author{Patrick Gustav Blaneck}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+%\setcounter{section}{1}
+
+\section{Linear Programming}
+
+\begin{defi}{Linear Programming}
+    \emph{Linear Programming} is the problem of optimizing (maximizing or minimizing) a \emph{linear objective function} subject to a set of \emph{linear functional constraints}.
+
+    \textbf{Given:} $A \in \R^{m\times n}, b \in \R^m, c\in R^n$
+
+    \textbf{Find:} $x^* \in \R^n$ where $x^* = \arg\max\{c^Tx \mid Ax \leq b\}$
+\end{defi}
+
+\begin{bonus}{Linear Programming Solvers}
+    Software that solves linear programs - \emph{linear programming solvers} - also generate lots of important auxiliary information (as well as the optimum):
+    \begin{itemize}
+        \item sensitivity analysis
+        \item shadow prices
+        \item alternative optima
+        \item \ldots
+    \end{itemize}
+\end{bonus}
+
+\begin{theo}{Ellipsoid Method}
+    A LP of dimension $n$ can be solved in $\bigo(L^2 \cdot n^6)$ time \cite{khachiyan1979}, where $L =$ \# bits in the input.
+\end{theo}
+
+\begin{theo}{Interior Point Method}
+    A LP of dimension $n$ can be solved in a \emph{numerically stable} way in $\bigo(L^2 \cdot n^{3.5})$ time \cite{karmarkar1984}.
+\end{theo}
+
+\begin{defi}{Integer Linear Programs (ILP)}
+    \textbf{Given:} $A \in \R^{m\times n}, b \in \R^m, c\in R^n$
+
+    \textbf{Find:} $\underline{x^*\in\Z^n}$ where $x^* = \arg\max\{c^Tx \mid Ax \leq b\}$
+\end{defi}
+
+\begin{example}{Integer Linear Program for \textsc{Vertex Cover}}
+    \fbox{
+        \parbox{0.95\textwidth}{
+            \underline{\textsc{Vertex Cover}}
+
+
+            \textbf{Given:} Graph $G = (V, E)$\\
+            \textbf{Find:} \textsc{Vertex Cover}, i.e. $V' \subseteq V$ such that every edge has at least one endpoint in $V'$.
+        }
+    }
+
+    \textbf{Integer Linear Program:}
+
+    For $v\in V$, let $x_v \in \{0, 1\}$.
+
+    Goal: minimize $\sum_{v\in V}x_v$.
+
+    Constraints: for every edge $uv \in E$, we require $x_u + x_v \geq 1$.
+\end{example}
+
+\printbibliography
+\end{document}

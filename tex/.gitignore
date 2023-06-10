@@ -1,0 +1,14 @@
+# from https://github.com/zoomoid/assignments/blob/main/tex/.gitignore
+**/*.cls
+**/*.glo
+**/*.aux
+**/*.log
+**/*.idx
+**/*.fdb_latexmk
+**/*.ind
+**/*.toc
+**/*.ilg
+**/*.hd
+**/*.out
+*.zip
+*.pdf

@@ -1,0 +1,35 @@
+\documentclass[ngerman]{spicker}
+
+%\addbibresource{para.bib}
+
+\title{Parallele Rechnerarchitekturen}
+\subtitle{Sommersemester 2023}
+\university{Fachhochschule Aachen}
+\programme{Angewandte Mathematik und Informatik, M. Sc.}
+\lecturer{Dr. Marcus Richter, Jochen Kreutz}
+
+\author{Patrick Gustav Blaneck}
+
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\include{includes/01_rechnerarchitektur.tex}
+\include{includes/02_komplexitaet.tex}
+\include{includes/03_parallelverarbeitung.tex}
+\include{includes/04_einzelprozessorsysteme.tex}
+\include{includes/05_pipelining.tex}
+\include{includes/06_mehrprozessorsysteme.tex}
+% \include{includes/06_cache.tex}
+% \include{includes/07_mehrprozessorsysteme.tex}
+% \include{includes/08_multithreading.tex}
+% \include{includes/09_vektorrechner.tex}
+
+\printindex
+\printindex[Beispiele]
+
+%\printbibliography
+\end{document}

@@ -1,0 +1,57 @@
+name: Compile and Release Spicker
+on:
+  push:
+    tags:
+      - 'spicker-*-v*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Determine Subject and Version
+        id: tag-info
+        run: |
+          TAG_NAME=${{ github.ref }}
+          TAG_NAME=${TAG_NAME#refs/tags/spicker-}  # Remove "refs/tags/spicker-" prefix
+          IFS='-' read -ra TAG_ARRAY <<< "$TAG_NAME"  # Split tag by "-"
+          SUBJECT=${TAG_ARRAY[0]}
+          VERSION=${TAG_ARRAY[1]}
+          echo "::set-output name=subject::$SUBJECT"
+          echo "::set-output name=version::$VERSION"
+
+          FOLDER_PATH=$(find . -type d -name "$SUBJECT" | head -n 1)
+          echo "::set-output name=folder_path::$FOLDER_PATH"
+
+      - name: Compiling LaTeX
+        uses: xu-cheng/latex-action@v2
+        env:
+         TEXINPUTS: ".:./tex//:"
+        with:
+          latexmk_use_xelatex: true
+          latexmk_shell_escape: true
+          working_directory: ${{ steps.tag-info.outputs.folder_path }}
+          root_file: |
+            ${{ steps.tag-info.outputs.subject }}.tex
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Release ${{ github.ref }} for ${{ steps.tag-info.outputs.subject }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.tag-info.outputs.subject }}
+          path: ${{ steps.tag-info.outputs.folder_path }}/${{ steps.tag-info.outputs.subject }}.pdf

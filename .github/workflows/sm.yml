@@ -1,4 +1,4 @@
-name: Einführung in Künstliche Intelligenz
+name: Statistische Modellierung
 
 on:
   push:
@@ -6,13 +6,13 @@ on:
       - main
       - development
     paths:
-      - bachelor/ki/**
+      - master/sm/**
   pull_request:
     branches:
       - main
       - development
     paths:
-      - bachelor/ki/**
+      - master/sm/**
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -21,5 +21,5 @@ jobs:
   compile:
     uses: pblan/matse-spicker/.github/workflows/compile.yml@main
     with:
-       spicker-handle: ki
-       spicker-fullname: Einführung in Künstliche Intelligenz
+       spicker-handle: sm
+       spicker-fullname: Statistische Modellierung

@@ -1,0 +1,1640 @@
+\section{Graphen}
+
+\begin{defi}{Gerichteter Graph}
+    Ein \emph{gerichteter Graph} $G = (V, E)$ besteht aus
+    \begin{itemize}
+        \item einer endlichen, nicht leeren Menge $V = \{v_1, \ldots, v_n\}$ von \emph{Knoten (vertices)} und
+        \item einer Relation $E \subseteq V \times V$ von geordneten Paaren $e = (u, v)$ den \emph{Kanten (edges)}.
+    \end{itemize}
+
+    Jede Kante $(u,v) \in E$ hat einen Anfangsknoten $u$ und einen Enknoten $v$ und damit eine Richtung von $u$ nach $v$ ($u=v$ ist möglich).
+
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle] (1) {1};
+            \node[draw, circle, below=of 1] (2) {2};
+            \node[draw, circle, right=of 2] (3) {3};
+            \node[draw, circle, above=of 3] (4) {4};
+            \node[draw, circle, right=of 4] (5) {5};
+
+            %\draw[->] (1) to[bend left=15] (4);
+            %\draw[->] (4) to[bend left=15] (1);
+            %\draw[->] (1) to (2);
+            %\draw[->] (2) to (3);
+            %\draw[->] (3) to (4);
+            %\draw[->] (4) to (5);
+
+            \path (1) edge[bend left=15] (4);
+            \path (4) edge[bend left=15] (1);
+            \path (1) edge (2);
+            \path (2) edge (3);
+            \path (3) edge (4);
+            \path (4) edge (5);
+            \path (5) edge[loop above] (5);
+        \end{tikzpicture}
+    \end{center}
+\end{defi}
+
+\begin{defi}{Ungerichteter Graph}
+    Ein \emph{ungerichteter Graph} $G = (V, E)$ besteht aus
+    \begin{itemize}
+        \item einer endlichen, nicht leeren Menge $V = \{v_1, \ldots, v_n\}$ von \emph{Knoten (vertices)} und
+        \item einer symmetrischen Relation $E \subseteq V \times V$ von geordneten Paaren $e = (u, v) \iff (v, u)$ den \emph{Kanten (edges)}.
+    \end{itemize}
+
+    Jede Kante $(u,v) \in E$ hat einen Anfangsknoten $u$ und einen Enknoten $v$ und damit eine Richtung von $u$ nach $v$ ($u=v$ ist möglich).
+
+    \vspace{1em}
+    \begin{center}
+        \begin{tikzpicture}
+            \node[draw, circle] (1) {1};
+            \node[draw, circle, below=of 1] (2) {2};
+            \node[draw, circle, right=of 2] (3) {3};
+            \node[draw, circle, above=of 3] (4) {4};
+            \node[draw, circle, right=of 4] (5) {5};
+
+            %\draw[->] (1) to[bend left=15] (4);
+            %\draw[->] (4) to[bend left=15] (1);
+            %\draw[->] (1) to (2);
+            %\draw[->] (2) to (3);
+            %\draw[->] (3) to (4);
+            %\draw[->] (4) to (5);
+
+            \path (1) edge (4);
+            \path (1) edge (2);
+            \path (2) edge (3);
+            \path (3) edge (4);
+            \path (4) edge (5);
+        \end{tikzpicture}
+    \end{center}
+\end{defi}
+
+\begin{defi}{Gewichteter Graph}
+    Ein Graph heißt \emph{gewichtet}, wenn jeder Kante ein Wert als \emph{Gewicht} zugeordnet ist (z.B. Transportkosten, Entfernung).
+
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle] (1) {1};
+            \node[draw, circle, below=of 1] (2) {2};
+            \node[draw, circle, right=of 2] (3) {3};
+            \node[draw, circle, above=of 3] (4) {4};
+            \node[draw, circle, right=of 4] (5) {5};
+
+            %\draw[->] (1) to[bend left=15] (4);
+            %\draw[->] (4) to[bend left=15] (1);
+            %\draw[->] (1) to (2);
+            %\draw[->] (2) to (3);
+            %\draw[->] (3) to (4);
+            %\draw[->] (4) to (5);
+
+            \path (1) edge[bend left=15] node[above,scale=0.7] {2} (4);
+            \path (4) edge[bend left=15] node[below,scale=0.7] {1} (1);
+            \path (1) edge node[left,scale=0.7] {2} (2);
+            \path (2) edge node[above,scale=0.7] {1} (3);
+            \path (3) edge node[right,scale=0.7] {8} (4);
+            \path (4) edge node[above,scale=0.7] {1} (5);
+            \path (5) edge[loop above] node[above,scale=0.7] {2} (5);
+        \end{tikzpicture}
+    \end{center}
+\end{defi}
+
+\begin{defi}{Teilgraph}
+    $G' = (V', E')$ heißt \emph{Teilgraph} von $G=(V, E)$, wenn gilt:
+    $$
+        V' \subseteq V \quad \text{und} \quad E' \subseteq E
+    $$
+\end{defi}
+
+\begin{defi}{Weg}
+    Sei $G = (V, E)$ ein Graph.
+
+    Eine Folge von Knoten
+    $$
+        W := (v_1, v_2, \ldots, v_n)
+    $$
+    heißt \emph{Weg} oder \emph{Pfad} in $G$, falls gilt:
+    $$
+        \forall 1 \leq i \leq n-1 : (v_i, v_{i+1}) \in E
+    $$
+    (also eine Folge von zusammenhängenden Kanten)
+
+    $\alpha(W) := v_1$ heißt \emph{Anfangsknoten} des Weges $W$.
+
+    $\omega(W) := v_n$ heißt \emph{Endknoten} des Weges $W$.
+
+    $\forall v_i \in V : (v_i)$ heißt \emph{trivialer Weg} und ist stets ein Weg in $G$.
+
+    Die \emph{Länge eines Weges} ist $l(W) := n-1$, falls $n$ Knoten auf diesem Weg besucht werden.
+
+    Ein Weg heißt \emph{einfacher Weg}, wenn kein Knoten (ausgenommen Start- und Endknoten) mehr als einmal vorkommt.
+
+    Ein \emph{Zykel} oder \emph{Kreis} ist ein nicht-trivialer einfacher Weg mit der Bedingung $\alpha(W) = \omega(W)$.
+\end{defi}
+
+\begin{defi}{Adjazenz}
+    Zwei Knoten heißen \emph{adjazent (benachbart)}, wenn sie eine Kante verbindet.
+\end{defi}
+
+\begin{defi}{Speicherung von Graphen}
+    \begin{itemize}
+        \item Kantenorientiert
+              \begin{itemize}
+                  \item Index für Kanten
+                  \item für jede Kante speichern: Vorgänger-, Nachfolgerknoten (Markierung, Gewicht)
+                  \item meist statische Darstellung, z.B. Kantenliste
+              \end{itemize}
+        \item Knotenorientiert
+              \begin{itemize}
+                  \item gebräuchlicher als kantenorientiert
+                  \item in vielen Ausprägungen, z.B. Knotenliste, Adjazenzmatrix, Adjazenzliste
+                  \item für Adjazenzmatrix gilt:
+                        $$
+                            A_{ij} = \begin{cases}
+                                1 & \text{, falls} \ (i, j) \in E \\
+                                0 & \text{, sonst}
+                            \end{cases}
+                        $$
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Kantenliste}
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle] (1) {1};
+            \node[draw, circle, below left=of 1] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Für eine Kantenliste gilt:
+    \begin{itemize}
+        \item Position \texttt{0}: Anzahl der Knoten
+        \item Position \texttt{1}: Anzahl der Kanten
+        \item Danach für jede Kante \texttt{c = (i, j)}:
+              \begin{itemize}
+                  \item Startknoten \texttt{i}
+                  \item Endknoten \texttt{j}
+              \end{itemize}
+    \end{itemize}
+
+    Für den Graphen $G$ oben gilt die Kantenliste:
+
+    \centering
+
+    \texttt{[6,11,1,2,1,3,3,1,4,1,3,4,3,6,5,3,5,5,6,5,6,2,6,4]}
+
+\end{example}
+
+\begin{example}{Knotenliste}
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle] (1) {1};
+            \node[draw, circle, below left=of 1] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Für eine Knoten gilt:
+    \begin{itemize}
+        \item Position \texttt{0}: Anzahl der Knoten
+        \item Position \texttt{1}: Anzahl der Kanten
+        \item Danach für jeden Knoten \texttt{i}:
+              \begin{itemize}
+                  \item Ausgangsgrad des Knotens \texttt{i} (Anzahl der ausgehenden Kanten)
+                  \item Alle Knoten \texttt{j} für die gilt $(i, j) \in E$
+              \end{itemize}
+    \end{itemize}
+
+    Für den Graphen $G$ oben gilt die Knotenliste:
+
+    \centering
+
+    \texttt{[6,11,2,2,3,0,3,1,4,6,1,1,2,3,5,3,2,4,5]}
+
+\end{example}
+
+\begin{example}{Adjazenzmatrix}
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle] (1) {1};
+            \node[draw, circle, below left=of 1] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Für den Graphen $G$ oben gilt die Adjazenzmatrix:
+    $$
+        A(G) = \vektor{
+            0 & 1 & 1 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 \\
+            1 & 0 & 0 & 1 & 0 & 1 \\
+            1 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 1 & 0 & 1 & 0 \\
+            0 & 1 & 0 & 1 & 1 & 0
+        }
+    $$
+\end{example}
+
+\begin{example}{Adjazenzliste}
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle] (1) {1};
+            \node[draw, circle, below left=of 1] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+    \end{center}
+
+    Für den Graphen $G$ oben gilt die Adjazenzliste:
+
+    \vspace{1em}
+
+    \begin{center}
+        \begin{tikzpicture}[
+            start chain = going below,
+            StackBlock/.style={minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            every node/.style={draw, label distance=0.5em},
+            node distance=0em
+            ]
+            {
+            \node [StackBlock] (k1) {$1$};
+            \node [StackBlock,yshift=-0.5em] (k2) {$2$};
+            \node [StackBlock,yshift=-0.5em] (k3) {$3$};
+            \node [StackBlock,yshift=-0.5em] (k4) {$4$};
+            \node [StackBlock,yshift=-0.5em] (k5) {$5$};
+            \node [StackBlock,yshift=-0.5em] (k6) {$6$};
+
+            % Chain 1
+            { [continue chain = going right]
+            \chainin (k1);
+
+            \node [StackBlock, xshift=2em] (12) {$2$};
+            \node [StackBlock] (12p) {};
+            \node [StackBlock, xshift=2em] (13) {$3$};
+            \node [StackBlock] (13p) {};
+            }
+
+            % Chain 3
+            { [continue chain = going right]
+            \chainin (k3);
+
+            \node [StackBlock, xshift=2em] (31) {$1$};
+            \node [StackBlock] (31p) {};
+            \node [StackBlock, xshift=2em] (34) {$4$};
+            \node [StackBlock] (34p) {};
+            \node [StackBlock, xshift=2em] (36) {$6$};
+            \node [StackBlock] (36p) {};
+            }
+
+            % Chain 4
+            { [continue chain = going right]
+            \chainin (k4);
+
+            \node [StackBlock, xshift=2em] (41) {$1$};
+            \node [StackBlock] (41p) {};
+            }
+
+            % Chain 5
+            { [continue chain = going right]
+            \chainin (k5);
+
+            \node [StackBlock, xshift=2em] (53) {$3$};
+            \node [StackBlock] (53p) {};
+            \node [StackBlock, xshift=2em] (55) {$5$};
+            \node [StackBlock] (55p) {};
+            }
+
+            % Chain 6
+            { [continue chain = going right]
+            \chainin (k6);
+
+            \node [StackBlock, xshift=2em] (62) {$2$};
+            \node [StackBlock] (62p) {};
+            \node [StackBlock, xshift=2em] (64) {$4$};
+            \node [StackBlock] (64p) {};
+            \node [StackBlock, xshift=2em] (65) {$5$};
+            \node [StackBlock] (65p) {};
+            }
+
+            \draw[->] (k1.east) [out=0, in=180] to (12.west);
+            \draw[->] (k3.east) [out=0, in=180] to (31.west);
+            \draw[->] (k4.east) [out=0, in=180] to (41.west);
+            \draw[->] (k5.east) [out=0, in=180] to (53.west);
+            \draw[->] (k6.east) [out=0, in=180] to (62.west);
+
+            \draw[->] (12p.center) [out=0, in=180] to (13.west);
+
+            \draw[->] (31p.center) [out=0, in=180] to (34.west);
+            \draw[->] (34p.center) [out=0, in=180] to (36.west);
+
+            \draw[->] (53p.center) [out=0, in=180] to (55.west);
+
+            \draw[->] (62p.center) [out=0, in=180] to (64.west);
+            \draw[->] (64p.center) [out=0, in=180] to (65.west);
+            }
+        \end{tikzpicture}
+    \end{center}
+\end{example}
+
+\subsection{Suche}
+
+\begin{algo}{Breitensuche}
+    \begin{enumerate}
+        \item Zunächst werden alle Knoten als \glqq noch nicht besucht\grqq markiert.
+        \item Startpunkt $v$ wählen und als \glqq besucht\grqq markieren.
+        \item Jetzt:
+              \begin{enumerate}
+                  \item alle von $v$ aus direkt erreichbaren (nicht besuchten) Knoten \glqq besuchen\grqq
+                  \item alle von $v$ über zwei Kanten erreichbaren (nicht besuchten) Knoten \glqq besuchen\grqq
+                  \item $\ldots$
+              \end{enumerate}
+        \item Wenn noch nicht alle Knoten besucht worden sind, wähle einen neuen unbesuchten Startpunkt $v$ und beginne bei Schritt 3
+    \end{enumerate}
+
+    Start bei Knoten 1.
+
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle, current] (1) {1};
+            \node[draw, circle, below left=of 1] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1, current] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4, current] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        %\hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1, visited] (3) {3};
+            \node[draw, circle, below right=of 1, current] (4) {4};
+            \node[draw, circle, above right=of 4, visited] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4, current] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1, visited] (3) {3};
+            \node[draw, circle, below right=of 1, visited] (4) {4};
+            \node[draw, circle, above right=of 4, visited] (2) {2};
+            \node[draw, circle, below=of 3, current] (5) {5};
+            \node[draw, circle, below=of 4, visited] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        %\hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1, visited] (3) {3};
+            \node[draw, circle, below right=of 1, visited] (4) {4};
+            \node[draw, circle, above right=of 4, visited] (2) {2};
+            \node[draw, circle, below=of 3, visited] (5) {5};
+            \node[draw, circle, below=of 4, visited] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+    \end{center}
+\end{algo}
+
+\begin{algo}{Tiefensuche}
+    \begin{enumerate}
+        \item Zunächst alle Knoten als \glqq noch nicht besucht\grqq markieren.
+        \item Startpunkt $v$ wählen und als \glqq besucht\grqq markieren.
+        \item Von dort aus möglichst langen Pfad entlang gehen; dabei nur bisher nicht besuchte Knoten \glqq besuchen\grqq
+        \item Wenn dann noch nicht alle Knoten besucht worden sind, wähle einen neuen unbesuchten Startpunkt $v$ und beginne bei Schritt 3
+    \end{enumerate}
+
+    Start bei Knoten 1.
+
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle, current] (1) {1};
+            \node[draw, circle, below left=of 1] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4, current] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        %\hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1, current] (3) {3};
+            \node[draw, circle, below right=of 1] (4) {4};
+            \node[draw, circle, above right=of 4, visited] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1, visited] (3) {3};
+            \node[draw, circle, below right=of 1, current] (4) {4};
+            \node[draw, circle, above right=of 4, visited] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        %\hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1, visited] (3) {3};
+            \node[draw, circle, below right=of 1, visited] (4) {4};
+            \node[draw, circle, above right=of 4, visited] (2) {2};
+            \node[draw, circle, below=of 3] (5) {5};
+            \node[draw, circle, below=of 4, current] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1, visited] (3) {3};
+            \node[draw, circle, below right=of 1, visited] (4) {4};
+            \node[draw, circle, above right=of 4, visited] (2) {2};
+            \node[draw, circle, below=of 3, current] (5) {5};
+            \node[draw, circle, below=of 4, visited] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+        %
+        %\hspace{5em}
+        %
+        \begin{tikzpicture}[->]
+            \node[draw, circle, visited] (1) {1};
+            \node[draw, circle, below left=of 1, visited] (3) {3};
+            \node[draw, circle, below right=of 1, visited] (4) {4};
+            \node[draw, circle, above right=of 4, visited] (2) {2};
+            \node[draw, circle, below=of 3, visited] (5) {5};
+            \node[draw, circle, below=of 4, visited] (6) {6};
+
+            \path (5) edge[loop below] (5);
+            \path (1) edge[bend left=15] (3);
+            \path (3) edge[bend left=15] (1);
+            \path (4) edge (1);
+            \path (1) edge (2);
+            \path (3) edge (4);
+            \path (5) edge (3);
+            \path (3) edge (6);
+            \path (6) edge (4);
+            \path (6) edge (5);
+            \path (6) edge (2);
+        \end{tikzpicture}
+    \end{center}
+\end{algo}
+
+\begin{defi}{Level-Order-Baumdurchlauf}
+    Führt man eine Breitensuche bei Bäumen aus, stellt man fest:
+    \begin{itemize}
+        \item Es ist nicht nötig, die Knoten zu markieren.
+        \item Der Baum wird Ebene für Ebene durchlaufen,
+    \end{itemize}
+
+    Diesen Durchlauf nennt man \emph{Level-Order-Durchlauf}.
+\end{defi}
+
+\begin{defi}{Pre-Order-Baumdurchlauf}
+    Führt man eine Tiefensuche bei Bäumen aus, nennt man diesen Durchlauf \emph{Pre-Order-Durchlauf}.
+
+    Dabei wird stets der linke Teilbaum zuerst durchlaufen.
+\end{defi}
+
+\begin{defi}{Post-Order-Baumdurchlauf}
+    \begin{enumerate}
+        \item Durchlaufe linken Teilbaum
+        \item Durchlaufe rechten Teilbaum
+        \item Betrachte die Wurzel
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}{In-Order-Baumdurchlauf}
+    \begin{enumerate}
+        \item Durchlaufe linken Teilbaum
+        \item Betrachte die Wurzel
+        \item Durchlaufe rechten Teilbaum
+    \end{enumerate}
+\end{defi}
+
+\begin{example}{Baumdurchläufe}
+    \begin{center}
+        \begin{forest}
+            baseline,anchor=north,
+            for tree={circle, draw,
+                    minimum size=2em, % <-- added
+                    inner sep=1pt}
+                [
+                    45
+                        [
+                            36
+                                [
+                                    25
+                                        [
+                                            2
+                                        ]
+                                        [
+                                            3
+                                        ]
+                                ]
+                                [
+                                    26
+                                        [
+                                            19
+                                        ]
+                                        [, draw=none, edge={draw=none}]
+                                ]
+                        ]
+                        [
+                            17
+                                [
+                                    7
+                                ]
+                                [
+                                    1
+                                ]
+                        ]
+                ]
+        \end{forest}
+    \end{center}
+
+    Für den gegebenen Baum gelten folgende Baumdurchläufe:
+
+    \centering
+    \begin{tabular}{|l|cccccccccc|}
+        \hline
+        Pre-Order   & 45 & 36 & 25 & 2  & 3  & 26 & 19 & 17 & 7  & 1  \\
+        \hline
+        In-Order    & 2  & 25 & 3  & 19 & 26 & 36 & 45 & 7  & 17 & 1  \\
+        \hline
+        Post-Order  & 2  & 3  & 25 & 19 & 26 & 36 & 7  & 1  & 17 & 45 \\
+        \hline
+        Level-Order & 45 & 36 & 17 & 25 & 26 & 7  & 1  & 2  & 3  & 19 \\
+        \hline
+    \end{tabular}
+\end{example}
+
+
+\subsection{Entwurfsprinzipien}
+
+\begin{defi}{Traveling-Salesman-Problem}
+    Das \emph{Traveling-Salesman-Problem} ist ein Optimierungsproblem.
+    Die Aufgabe besteht darin, eine Reihenfolge für den Besuch mehrerer Orte so zu wählen, dass:
+    \begin{itemize}
+        \item kein Ort doppelt besucht wird und
+        \item die Reisestrecke minimal ist.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Greedy}
+    Wähle immer den Schritt, desse unmittelbarer Folgezustand das beste Ergebnis liefert.
+    Denke nicht an die weiteren Schritte (greedy = gierig).
+
+    Ob ein Greedy-Algorithmus die optimale Lösung liefert oder nicht, ist vom konkreten Problem abhängig.
+
+    Für das Traveling-Salesman-Problem ist eine Greedy-Lösung z.B. die \emph{Nearest-Neighbour-Lösung}:
+    \begin{itemize}
+        \item Gehe in jedem Schritt zur nächstliegenden Stadt, die noch nicht besucht ist.
+        \item $\bigo(n^2)$
+        \item liefert nicht die optimale Lösung (kann sogar beliebig schlecht werden)
+        \item arbeitet meistens einigermaßen gut
+    \end{itemize}
+\end{defi}
+
+\begin{bonus}{Random Insertion}
+    Wähle immer einen zufälligen Knoten.
+
+    \begin{itemize}
+        \item $\bigo(n^2)$
+        \item keine Garantie, dass die Lösung irgendeinem Gütekriterium genügt
+        \item im Allgmeinen ist Lösung ziemlich gut
+        \item Vorteil: Durch den Zufallsfaktor kann man das Verfahren beliebig oft wiederholen und sich die beste Lösung heraussuchen.
+    \end{itemize}
+\end{bonus}
+
+\begin{bonus}{Lösung mit minimalem Spannbaum}
+    \begin{enumerate}
+        \item Konstruktion eines minimalen Spannbaums nach Prim
+        \item Durchlaufen mit Tiefensuche
+        \item jede Kante wird zweimal durchlaufen
+        \item summierte Gewichte des minimalen Spannbaums müssen kleiner sein als das optimale TSP-Ergebnis
+        \item Optimierung:
+              \begin{itemize}
+                  \item Knoten schon einmal besucht: beim nächsten Mal überspringen
+                  \item bei einem Schritt mehrere Möglichkeiten: zuerst kürzeren Weg wählen (greedy)
+              \end{itemize}
+    \end{enumerate}
+\end{bonus}
+
+\begin{defi}{Backtracking}
+    Durchlauf eines Lösungsbaum in Pre-Order-Reihenfolge.
+
+    Situation: Mehrere Alternativen sind in bestimmten Schritten des Algorithmus möglich.
+
+    Lösung mit \emph{Backtracking}:
+    \begin{enumerate}
+        \item Wähle eine Alternative und verfolge dieses Weg weiter.
+        \item Falls man so eine Lösung des Problems findet, ist man fertig.
+        \item Ansonsten gehe einen Schritt zurück und verfolge rekursiv eine andere (nicht versuchte) Alternative in diesem Schritt.
+        \item Falls alle Alternativen erfolglos probiert wurden, einen Schritt zurückgehen $\ldots$
+    \end{enumerate}
+
+    Backtracking-Algorithmen können exponentiellen Aufwand haben.
+
+    Tipps:
+    \begin{itemize}
+        \item Durch Einführung von Zusatzbedingungen möglichst viele Sackgassen ausschließen.
+        \item Symmetriebedingungen ausnutzen.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Branch and Bound}
+    \begin{enumerate}
+        \item Ermitteln einer oberen Schranke (greedy)
+        \item Falls dieser Wert überschritten wird, kann man die Suche auf diesem Pfad abbrechen.
+        \item Bessere Lösungen nutzen, um die Schranke zu verbessern.
+    \end{enumerate}
+\end{defi}
+
+
+\subsection{Graphalgorithmen}
+
+\begin{defi}{Bipartiter Graph}
+    Ein Graph $G=(V, E)$ heißt \emph{bipartit}, wenn man $V$ in disjunkte Mengen $U$ und $W$ zerlegen kann, so dass alle Kanten zwischen $U$ und $W$ verlaufen.
+
+    Die Knoten eines bipartiten Graphen lassen sich mit zwei Farben so einfärben, dass zwei Nachbarknoten immer unterschiedlich eingefärbt sind.
+\end{defi}
+
+\begin{algo}{Prüfung ob ein Graph bipartit ist}
+    \begin{enumerate}
+        \item Einfärben des 1. Knotens
+        \item Durchlauf mit Breitensuche
+        \item Abwechselndes Färben
+    \end{enumerate}
+
+    Start bei Knoten 1.
+
+    \vspace{1em}
+
+    \begin{center}
+        \begin{tikzpicture}
+            \node[draw, circle, text=white, fill = blue!50] (1) {1};
+            \node[draw, circle, right=of 1] (2) {2};
+            \node[draw, circle, right=of 2] (3) {3};
+            \node[draw, circle, below=of 1] (4) {4};
+            \node[draw, circle, right=of 4] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+            \node[draw, circle, right=of 6] (7) {7};
+
+            \path (1) edge (2);
+            \path (2) edge (3);
+            \path (1) edge (4);
+            \path (4) edge (5);
+            \path (2) edge (5);
+            \path (4) edge (6);
+            \path (6) edge (7);
+            \path (3) edge[bend left=30] (7);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tikzpicture}
+            \node[draw, circle, text=white, fill = blue!50] (1) {1};
+            \node[draw, circle, text=white, right=of 1, fill = red!50] (2) {2};
+            \node[draw, circle, right=of 2] (3) {3};
+            \node[draw, circle, text=white, below=of 1, fill = red!50] (4) {4};
+            \node[draw, circle, right=of 4] (5) {5};
+            \node[draw, circle, below=of 4] (6) {6};
+            \node[draw, circle, right=of 6] (7) {7};
+
+            \path (1) edge (2);
+            \path (2) edge (3);
+            \path (1) edge (4);
+            \path (4) edge (5);
+            \path (2) edge (5);
+            \path (4) edge (6);
+            \path (6) edge (7);
+            \path (3) edge[bend left=30] (7);
+        \end{tikzpicture}
+
+        \vspace{1em}
+
+        \begin{tikzpicture}
+            \node[draw, circle, text=white, fill = blue!50] (1) {1};
+            \node[draw, circle, text=white, right=of 1, fill = red!50] (2) {2};
+            \node[draw, circle, text=white, right=of 2, fill = blue!50] (3) {3};
+            \node[draw, circle, text=white, below=of 1, fill = red!50] (4) {4};
+            \node[draw, circle, text=white, right=of 4, fill = blue!50] (5) {5};
+            \node[draw, circle, text=white, below=of 4, fill = blue!50] (6) {6};
+            \node[draw, circle, right=of 6] (7) {7};
+
+            \path (1) edge (2);
+            \path (2) edge (3);
+            \path (1) edge (4);
+            \path (4) edge (5);
+            \path (2) edge (5);
+            \path (4) edge (6);
+            \path (6) edge (7);
+            \path (3) edge[bend left=30] (7);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tikzpicture}
+            \node[draw, circle, text=white, fill = blue!50] (1) {1};
+            \node[draw, circle, text=white, right=of 1, fill = red!50] (2) {2};
+            \node[draw, circle, text=white, right=of 2, fill = blue!50] (3) {3};
+            \node[draw, circle, text=white, below=of 1, fill = red!50] (4) {4};
+            \node[draw, circle, text=white, right=of 4, fill = blue!50] (5) {5};
+            \node[draw, circle, text=white, below=of 4, fill = blue!50] (6) {6};
+            \node[draw, circle, text=white, right=of 6, fill = red!50] (7) {7};
+
+            \path (1) edge (2);
+            \path (2) edge (3);
+            \path (1) edge (4);
+            \path (4) edge (5);
+            \path (2) edge (5);
+            \path (4) edge (6);
+            \path (6) edge (7);
+            \path (3) edge[bend left=30] (7);
+        \end{tikzpicture}
+    \end{center}
+\end{algo}
+
+\begin{defi}{Spannbaum}
+    Ein \emph{Spannbaum} verbindet alle Knoten eines ungerichteten Graphen miteinander, hat jedoch keine Kreise.
+
+    Der \emph{minimale Spannbaum} ist der Spannbaum, dessen Kanten das kleinste summierte Gewicht haben.
+\end{defi}
+
+\begin{algo}{Prim-Algorithmus}
+    \begin{enumerate}
+        \item Wähle einen beliebigen Startknoten für den minimalen Spannbaum $T$
+        \item Solange $T$ noch nicht alle Knoten enthält:
+              \begin{itemize}
+                  \item Wähle eine Kante $e$ mit minimalem Gewicht aus, die einen noch nicht in $T$ enthaltenen Knoten $v$ mit $T$ verbindet.
+                  \item Füge $e$ und $v$ dem Graphen $T$ hinzu.
+              \end{itemize}
+    \end{enumerate}
+
+    Start bei Knoten $A$.
+
+    \vspace{1em}
+    \begin{center}
+        \begin{tikzpicture}
+            \node[draw, circle, prim node] (A) {$A$};
+            \node[draw, circle, below right=of A] (B) {$B$};
+            \node[draw, circle, above right=of B] (C) {$C$};
+            \node[draw, circle, below left=of B] (D) {$D$};
+            \node[draw, circle, below right=of B] (E) {$E$};
+            \node[draw, circle, below=of D] (F) {$F$};
+            \node[draw, circle, below=of E] (G) {$G$};
+
+            \path (A) edge node[weight,above right] {7} (B);
+            \path (B) edge node[weight,above left] {8} (C);
+            \path (D) edge node[weight,right] {5} (A);
+            \path (D) edge node[weight,above left] {9} (B);
+            \path (E) edge node[weight,above right] {7} (B);
+            \path (C) edge node[weight,right] {5} (E);
+            \path (D) edge node[weight,above] {15} (E);
+            \path (D) edge node[weight,right] {6} (F);
+            \path (E) edge node[weight,above left] {8} (F);
+            \path (E) edge node[weight,right] {11} (G);
+            \path (F) edge node[weight,above] {9} (G);
+        \end{tikzpicture}
+        %
+        \hspace{3em}
+        %
+        \begin{tikzpicture}
+            \node[draw, circle, prim node] (A) {$A$};
+            \node[draw, circle, below right=of A] (B) {$B$};
+            \node[draw, circle, above right=of B] (C) {$C$};
+            \node[draw, circle, below left=of B, prim node] (D) {$D$};
+            \node[draw, circle, below right=of B] (E) {$E$};
+            \node[draw, circle, below=of D] (F) {$F$};
+            \node[draw, circle, below=of E] (G) {$G$};
+
+            \path (A) edge node[weight,above right] {7} (B);
+            \path (B) edge node[weight,above left] {8} (C);
+            \path (D) edge[prim edge] node[weight,right] {5} (A);
+            \path (D) edge node[weight,above left] {9} (B);
+            \path (E) edge node[weight,above right] {7} (B);
+            \path (C) edge node[weight,right] {5} (E);
+            \path (D) edge node[weight,above] {15} (E);
+            \path (D) edge node[weight,right] {6} (F);
+            \path (E) edge node[weight,above left] {8} (F);
+            \path (E) edge node[weight,right] {11} (G);
+            \path (F) edge node[weight,above] {9} (G);
+        \end{tikzpicture}
+        %
+        \hspace{3em}
+        %
+        \begin{tikzpicture}
+            \node[draw, circle, prim node] (A) {$A$};
+            \node[draw, circle, below right=of A] (B) {$B$};
+            \node[draw, circle, above right=of B] (C) {$C$};
+            \node[draw, circle, below left=of B, prim node] (D) {$D$};
+            \node[draw, circle, below right=of B] (E) {$E$};
+            \node[draw, circle, below=of D, prim node] (F) {$F$};
+            \node[draw, circle, below=of E] (G) {$G$};
+
+            \path (A) edge node[weight,above right] {7} (B);
+            \path (B) edge node[weight,above left] {8} (C);
+            \path (D) edge[prim edge] node[weight,right] {5} (A);
+            \path (D) edge node[weight,above left] {9} (B);
+            \path (E) edge node[weight,above right] {7} (B);
+            \path (C) edge node[weight,right] {5} (E);
+            \path (D) edge node[weight,above] {15} (E);
+            \path (D) edge[prim edge] node[weight,right] {6} (F);
+            \path (E) edge node[weight,above left] {8} (F);
+            \path (E) edge node[weight,right] {11} (G);
+            \path (F) edge node[weight,above] {9} (G);
+        \end{tikzpicture}
+        %
+        \vspace{1em}
+        %
+
+        \begin{tikzpicture}
+            \node[draw, circle, prim node] (A) {$A$};
+            \node[draw, circle, below right=of A, prim node] (B) {$B$};
+            \node[draw, circle, above right=of B] (C) {$C$};
+            \node[draw, circle, below left=of B, prim node] (D) {$D$};
+            \node[draw, circle, below right=of B] (E) {$E$};
+            \node[draw, circle, below=of D, prim node] (F) {$F$};
+            \node[draw, circle, below=of E] (G) {$G$};
+
+            \path (A) edge[prim edge] node[weight,above right] {7} (B);
+            \path (B) edge node[weight,above left] {8} (C);
+            \path (D) edge[prim edge] node[weight,right] {5} (A);
+            \path (D) edge node[weight,above left] {9} (B);
+            \path (E) edge node[weight,above right] {7} (B);
+            \path (C) edge node[weight,right] {5} (E);
+            \path (D) edge node[weight,above] {15} (E);
+            \path (D) edge[prim edge] node[weight,right] {6} (F);
+            \path (E) edge node[weight,above left] {8} (F);
+            \path (E) edge node[weight,right] {11} (G);
+            \path (F) edge node[weight,above] {9} (G);
+        \end{tikzpicture}
+        %
+        \hspace{3em}
+        %
+        \begin{tikzpicture}
+            \node[draw, circle, prim node] (A) {$A$};
+            \node[draw, circle, below right=of A, prim node] (B) {$B$};
+            \node[draw, circle, above right=of B] (C) {$C$};
+            \node[draw, circle, below left=of B, prim node] (D) {$D$};
+            \node[draw, circle, below right=of B, prim node] (E) {$E$};
+            \node[draw, circle, below=of D, prim node] (F) {$F$};
+            \node[draw, circle, below=of E] (G) {$G$};
+
+            \path (A) edge[prim edge] node[weight,above right] {7} (B);
+            \path (B) edge node[weight,above left] {8} (C);
+            \path (D) edge[prim edge] node[weight,right] {5} (A);
+            \path (D) edge node[weight,above left] {9} (B);
+            \path (E) edge[prim edge] node[weight,above right] {7} (B);
+            \path (C) edge node[weight,right] {5} (E);
+            \path (D) edge node[weight,above] {15} (E);
+            \path (D) edge[prim edge] node[weight,right] {6} (F);
+            \path (E) edge node[weight,above left] {8} (F);
+            \path (E) edge node[weight,right] {11} (G);
+            \path (F) edge node[weight,above] {9} (G);
+        \end{tikzpicture}
+        %
+        \hspace{3em}
+        %
+        \begin{tikzpicture}
+            \node[draw, circle, prim node] (A) {$A$};
+            \node[draw, circle, below right=of A, prim node] (B) {$B$};
+            \node[draw, circle, above right=of B, prim node] (C) {$C$};
+            \node[draw, circle, below left=of B, prim node] (D) {$D$};
+            \node[draw, circle, below right=of B, prim node] (E) {$E$};
+            \node[draw, circle, below=of D, prim node] (F) {$F$};
+            \node[draw, circle, below=of E] (G) {$G$};
+
+            \path (A) edge[prim edge] node[weight,above right] {7} (B);
+            \path (B) edge node[weight,above left] {8} (C);
+            \path (D) edge[prim edge] node[weight,right] {5} (A);
+            \path (D) edge node[weight,above left] {9} (B);
+            \path (E) edge[prim edge] node[weight,above right] {7} (B);
+            \path (C) edge[prim edge] node[weight,right] {5} (E);
+            \path (D) edge node[weight,above] {15} (E);
+            \path (D) edge[prim edge] node[weight,right] {6} (F);
+            \path (E) edge node[weight,above left] {8} (F);
+            \path (E) edge node[weight,right] {11} (G);
+            \path (F) edge node[weight,above] {9} (G);
+        \end{tikzpicture}
+        %
+        \vspace{1em}
+        %
+
+        \begin{tikzpicture}
+            \node[draw, circle, prim node] (A) {$A$};
+            \node[draw, circle, below right=of A, prim node] (B) {$B$};
+            \node[draw, circle, above right=of B, prim node] (C) {$C$};
+            \node[draw, circle, below left=of B, prim node] (D) {$D$};
+            \node[draw, circle, below right=of B, prim node] (E) {$E$};
+            \node[draw, circle, below=of D, prim node] (F) {$F$};
+            \node[draw, circle, below=of E, prim node] (G) {$G$};
+
+            \path (A) edge[prim edge] node[weight,above right] {7} (B);
+            \path (B) edge node[weight,above left] {8} (C);
+            \path (D) edge[prim edge] node[weight,right] {5} (A);
+            \path (D) edge node[weight,above left] {9} (B);
+            \path (E) edge[prim edge] node[weight,above right] {7} (B);
+            \path (C) edge[prim edge] node[weight,right] {5} (E);
+            \path (D) edge node[weight,above] {15} (E);
+            \path (D) edge[prim edge] node[weight,right] {6} (F);
+            \path (E) edge node[weight,above left] {8} (F);
+            \path (E) edge node[weight,right] {11} (G);
+            \path (F) edge[prim edge] node[weight,above] {9} (G);
+        \end{tikzpicture}
+    \end{center}
+\end{algo}
+
+\begin{defi}{Shortest-Path-Probleme}
+    Eigentlich: Suche nach \emph{günstigsten Wegen} in gewichteten Graphen: Gewichte $\simeq$ Kosten
+
+    Bei Anwendung auf ungewichtete Graphen ergibt sich: \emph{kürzeste Wege}.
+
+    Beispiele:
+    \begin{itemize}
+        \item Single-Source-Shortest-Path
+              \begin{itemize}
+                  \item Dijkstra-Algorithmus (nicht-negative Kantengewichte)
+                  \item Bellman-Ford-Algorithmus (keine negativen Zykel)
+              \end{itemize}
+        \item All-Pairs-Shortest-Path
+              \begin{itemize}
+                  \item Floyd-Warshall-Algorithmus
+              \end{itemize}
+        \item One-Pair
+              \begin{itemize}
+                  \item A*-Algorithmus
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{algo}{Dijkstra-Algorithmus}
+    Gegeben: Graph $G = (V, E)$, dessen Bewertungsfunktion die Eigenschaften hat:
+    \begin{itemize}
+        \item Jede Kante von $v_i$ nach $v_j$ hat nicht-negative Kosten: $C(i, j) \geq 0$
+        \item Falls keine Kante zwischen $v_i$ und $v_j$: $C(i, j) = \infty$
+        \item Diagonalelemente: $C(i, i) = 0$
+    \end{itemize}
+
+    Menge $S$: die Knoten, deren günstigste Wegekosten von der vorgegebenen Quelle (Startknoten) bereits bekannt sind.
+
+    \begin{enumerate}
+        \item Initialisierung: $S = \{ \text{Startknoten} \}$
+        \item Beginnend mit Quelle alle ausgehenden Kanten betrachten (analog Breitensuche). Nachfolgerknoten $v$ mit günstigster Kante zu $S$ hinzunehmen.
+        \item Jetzt: Berechnen, ob die Knoten in $V \setminus S$ günstiger über $v$ als Zwischenweg erreichbar sind, als ohne Umweg über $v$.
+        \item Danach: Denjenigen Knoten $v'$ zu $S$ hinzunehmen, der nun am günstigsten zu erreichen ist. Bei zwei gleich günstigen Knoten wird ein beliebiger davon ausgewählt.
+        \item Ab Schritt 3 wiederholen, bis alle Knoten in $S$ sind.
+    \end{enumerate}
+
+    Zeitkomplexität (bei Speicherung des Graphen mit Adjazenzmatrix): $\bigo(\abs{V}^2)$
+\end{algo}
+
+\begin{example}{Dijkstra-Algorithmus}
+    \begin{center}
+        \begin{tikzpicture}[->]
+            \node[draw, circle] (A) {$A$};
+            \node[draw, circle, below right=of A] (D) {$D$};
+            \node[draw, circle, right=of D] (E) {$E$};
+            \node[draw, circle, above right=of E] (B) {$B$};
+            \node[draw, circle, below right=of B] (H) {$H$};
+            \node[draw, circle, below left=of H] (G) {$G$};
+            \node[draw, circle, below left=of A] (F) {$F$};
+            \node[draw, circle, below right=of F] (C) {$C$};
+
+            \path (A) edge node[weight, below left] {4} (D);
+            \path (A) edge node[weight, above right] {2} (E);
+            \path (A) edge node[weight, above right] {12} (B);
+            \path (A) edge node[weight, above left] {30} (F);
+            \path (E) edge node[weight, above] {1} (D);
+            \path (E) edge node[weight, below right] {8} (C);
+            \path (E) edge node[weight, above left] {8} (B);
+            \path (C) edge node[weight, above right] {3} (F);
+            \path (C) edge node[weight, above right] {3} (F);
+            \path (C) edge node[weight, above] {12} (G);
+            \path (G) edge node[weight, right] {4} (B);
+            \path (G) edge node[weight, below right] {5} (H);
+            \path (H) edge node[weight, above right] {2} (B);
+        \end{tikzpicture}
+
+        \vspace{1em}
+
+        \begin{tabular}{|c|ccccccc|ccccccc|}
+            \hline
+            \multirow{2}{*}{$v_i$} & $d[2]$      & $d[3]$      & $d[4]$     & $d[5]$     & $d[6]$      & $d[7]$      & $d[8]$      & $p[2]$ & $p[3]$ & $p[4]$ & $p[5]$ & $p[6]$ & $p[7]$ & $p[8]$ \\ \cline{2-15}
+                                   & B           & C           & D          & E          & F           & G           & H           & B      & C      & D      & E      & F      & G      & H      \\
+            \hline
+            A                      & 12          &             & 4          & \textbf{2} & 30          &             &             & A      &        & A      & A      & A      &        &        \\
+            E                      & 10          & 10          & \textbf{3} & \textbf{2} & 30          &             &             & E      & E      & E      & A      & A      &        &        \\
+            D                      & \textbf{10} & 10          & \textbf{3} & \textbf{2} & 30          &             &             & E      & E      & E      & A      & A      &        &        \\
+            B                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & 30          &             &             & E      & E      & E      & A      & A      &        &        \\
+            C                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & 22          &             & E      & E      & E      & A      & C      & C      &        \\
+            F                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & \textbf{22} &             & E      & E      & E      & A      & C      & C      &        \\
+            G                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & \textbf{22} & \textbf{27} & E      & E      & E      & A      & C      & C      & G      \\
+            H                      & \textbf{10} & \textbf{10} & \textbf{3} & \textbf{2} & \textbf{13} & \textbf{22} & \textbf{27} & E      & E      & E      & A      & C      & C      & G      \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    \vspace{1em}
+
+    \url{https://youtu.be/4pBP2hbnGso} (Herleitung und Erklärung)
+\end{example}
+
+\begin{algo}{Bellman-Ford-Algorithmus}
+    Gegeben: Graph $G = (V, E)$, dessen Bewertungsfunktion die Eigenschaften hat:
+    \begin{itemize}
+        \item Falls keine Kante zwischen $v_i$ und $v_j$: $C(i, j) = \infty$
+        \item Diagonalelemente: $C(i, i) = 0$
+    \end{itemize}
+
+    \begin{enumerate}
+        \item Initialisierung: Startknoten $s$, Distanz zu $V \setminus \{s\}$ auf $\infty$ setzen
+        \item Für jede Kante $(i, j)$:
+              \begin{itemize}
+                  \item Falls Distanz zu $v_i$ bekannt:
+                        \subitem Falls $d(v_i) + C(i, j) < d(v_j)$, setze $d(v_j)$ auf $d(v_i) + C(i, j)$
+              \end{itemize}
+    \end{enumerate}
+
+    Zeitkomplexität: $\bigo(\abs{V} \cdot \abs{E})$
+\end{algo}
+
+\begin{example}{Bellman-Ford-Algorithmus}
+    \begin{center}
+        \begin{tikzpicture}[->,baseline,anchor=north]
+            \node[draw, circle] (S) {$S$};
+            \node[draw, circle, above right=of S] (A) {$A$};
+            \node[draw, circle, right=of A] (B) {$B$};
+            \node[draw, circle, below right=of S] (C) {$C$};
+            \node[draw, circle, right=of C] (D) {$D$};
+
+            \path (S) edge node[weight, above left] {2} (A);
+            \path (S) edge node[weight, below left] {5} (C);
+            \path (A) edge node[weight, above] {4} (B);
+            \path (C) edge node[weight, above] {2} (D);
+            \path (C) edge node[weight, left] {-4} (A);
+            \path (D) edge node[weight, right] {8} (B);
+            \path (B) edge[bend left=10] node[weight, below right] {1} (C);
+            \path (C) edge[bend left=10] node[weight, above left] {6} (B);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}{|c||c|c|c|c|c|}
+            \hline
+              & S & A        & B        & C        & D        \\
+            \hline
+            0 & 0 & $\infty$ & $\infty$ & $\infty$ & $\infty$ \\
+            1 & 0 & 2        & $\infty$ & 5        & $\infty$ \\
+            2 & 0 & 1        & 6        & 5        & 7        \\
+            3 & 0 & 1        & 5        & 5        & 7        \\
+            4 & 0 & 1        & 5        & 5        & 7        \\
+            \hline
+        \end{tabular}
+
+        Keine Änderungen nach Schritt 3 $\implies$ Fertig!
+    \end{center}
+\end{example}
+
+\begin{algo}{Floyd-Algorithmus}
+    Gegeben: Graph $G = (V, E)$, dessen Bewertungsfunktion die Eigenschaften hat:
+    \begin{itemize}
+        \item Jede Kante von $v_i$ nach $v_j$ hat nicht-negative Kosten: $C(i, j) \geq 0$
+        \item Falls keine Kante zwischen $v_i$ und $v_j$: $C(i, j) = \infty$
+        \item Diagonalelemente: $C(i, i) = 0$
+    \end{itemize}
+
+    Im Kontrast zum Dijkstra-Algorithmus bestimmt der \emph{Floyd-Algorithmus} für alle geordneten Paare $(v, w)$ den kürzesten Weg von $v$ nach $w$.
+
+    $\abs{V}$ Iterationen:
+    \begin{enumerate}
+        \item Vergleiche Kosten von
+              \begin{itemize}
+                  \item direkter Verbindung von Knoten $i$ zu Knoten $j$
+                  \item Umweg über Knoten $1$ (also: von $i$ nach $1$ + von $1$ nach $j$)
+                  \item Falls Umweg günstiger: alten Weg durch Umweg ersetzen
+              \end{itemize}
+        \item Umwege über Knoten $2$ betrachten.
+        \item[$k$.] Umwege über Knoten $k$ betrachten.
+    \end{enumerate}
+
+    Der Floyd-Algorithmus nutzt eine $\abs{V} \times \abs{V}$-Matrix, um die Kosten der günstigsten Wege zu speichern:
+    \begin{center}
+        $A_k[i][j] :=$ minimale Kosten, um in Schritt $k$ über irgendwelche der Knoten in $V$ vom Knoten $i$ zum Knoten $j$ zu gelangen
+    \end{center}
+
+    \begin{itemize}
+        \item Initialisierung: $A_0[i][j]= C(i, j)$
+        \item $\abs{V}$ Iterationen mit \glqq dynamischer Programmierung\grqq:
+              \subitem Iterationsformel zur Aktualisierung von $A[i][j]$:
+              $$
+                  A_k[i][j] = \min \{ A_{k-1}[i][j] , A_{k-1}[i][k] + A_{k-1}[k][j] \}
+              $$
+    \end{itemize}
+
+    Der Floyd-Algorithmus ist ein wichtiges Beispiel für dynamische Programmierung.
+\end{algo}
+
+\begin{code}{Floyd-Algorithmus}
+    \lstinputlisting{floyd.java}
+\end{code}
+
+\begin{example}{Floyd-Algorithmus}
+    \newcolumntype{g}{>{\columncolor{gray!25}}c}
+
+    $A_0$ (direkter Weg):
+    \begin{center}
+        \begin{tikzpicture}[baseline,anchor=north]
+            \node[draw, circle] (1) {$1$};
+            \node[draw, circle, right=of 1] (2) {$2$};
+            \node[draw, circle, below=of 1] (3) {$3$};
+            \node[draw, circle, right=of 3] (4) {$4$};
+
+            \path (1) edge node[weight, above] {2} (2);
+            \path (1) edge node[weight, left] {3} (3);
+            \path (3) edge node[weight, below] {7} (4);
+            \path (2) edge node[weight, right] {1} (4);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|cccc|}
+            \hline
+              & 1                   & 2                   & 3                   & 4                   \\
+            \hline
+            1 & \textcolor{gray}{0} & 2                   & 3                   & $\infty$            \\
+            2 & 2                   & \textcolor{gray}{0} & $\infty$            & 1                   \\
+            3 & 3                   & $\infty$            & \textcolor{gray}{0} & 7                   \\
+            4 & $\infty$            & 1                   & 7                   & \textcolor{gray}{0} \\
+            \hline
+        \end{tabular}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|cccc|}
+            \hline
+              & 1                   & 2                   & 3                   & 4 \\
+            \hline
+            1 & \textcolor{gray}{-} & -                   & -                   & - \\
+            2 & -                   & \textcolor{gray}{-} & -                   & - \\
+            3 & -                   & -                   & \textcolor{gray}{-} & - \\
+            4 & -                   & -                   & -                   & - \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    $A_1$ (Umweg über 1):
+    \begin{center}
+        \begin{tikzpicture}[baseline,anchor=north]
+            \node[draw, circle] (1) {$1$};
+            \node[draw, circle, right=of 1] (2) {$2$};
+            \node[draw, circle, below=of 1] (3) {$3$};
+            \node[draw, circle, right=of 3] (4) {$4$};
+
+            \path (1) edge node[weight, above] {2} (2);
+            \path (1) edge node[weight, left] {3} (3);
+            \path (3) edge node[weight, below] {7} (4);
+            \path (2) edge node[weight, right] {1} (4);
+            %\path (1) edge[blue, bend left=45] node[weight, above, blue] {2} (2);
+            %\path (1) edge[blue, bend right=45] node[weight, left, blue] {3} (3);
+            \path (2) edge[dashed, red, bend right] node[weight, above left, pos=1] {5} (1.north west);
+            \path (1.north west) edge[dashed, red, bend right] (3);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|gccc|}
+            \hline
+              & 1                   & 2                   & 3                   & 4                   \\
+            \hline
+            \rowcolor{gray!25}
+            1 & \textcolor{gray}{0} & 2                   & 3                   & $\infty$            \\
+            2 & 2                   & \textcolor{gray}{0} & \textcolor{red}{5}  & 1                   \\
+            3 & 3                   & \textcolor{red}{5}  & \textcolor{gray}{0} & 7                   \\
+            4 & $\infty$            & 1                   & 7                   & \textcolor{gray}{0} \\
+            \hline
+        \end{tabular}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|cccc|}
+            \hline
+              & 1                   & 2                   & 3                   & 4 \\
+            \hline
+            1 & \textcolor{gray}{-} & -                   & -                   & - \\
+            2 & -                   & \textcolor{gray}{-} & 1                   & - \\
+            3 & -                   & 1                   & \textcolor{gray}{-} & - \\
+            4 & -                   & -                   & -                   & - \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    $$A_0[2][3] > A_0[3][1] + A_0[1][2] \implies A_1[2][3] = A_0[3][1] + A_0[1][2] = 3 + 2 = 5$$
+    $$A_0[3][2] > A_0[2][1] + A_0[1][3] \implies A_1[3][2] = A_0[2][1] + A_0[1][3] = 2 + 3 = 5$$
+
+
+    $A_2$ (Umweg über 2):
+    \begin{center}
+        \begin{tikzpicture}[baseline,anchor=north]
+            \node[draw, circle] (1) {$1$};
+            \node[draw, circle, right=of 1] (2) {$2$};
+            \node[draw, circle, below=of 1] (3) {$3$};
+            \node[draw, circle, right=of 3] (4) {$4$};
+
+            \path (1) edge node[weight, above] {2} (2);
+            \path (1) edge node[weight, left] {3} (3);
+            \path (3) edge node[weight, below] {7} (4);
+            \path (2) edge node[weight, right] {1} (4);
+
+            % old edge 2-1-3
+            \path (2) edge[dashed, blue, bend right] node[weight, above left, pos=1] {5} (1.north west);
+            \path (1.north west) edge[dashed, blue, bend right] (3);
+            % new edge 1-2-4
+            \path (1) edge[dashed, red, bend left] node[weight, above right, pos=1] {3} (2.north east);
+            \path (2.north east) edge[dashed, red, bend left] (4);
+            % old edge 3-2-4
+            \path (3) edge[dashed, red, bend left] node[weight, below right, pos=0.5] {6} (2.south west);
+            \path (2.south west) edge[dashed, red, bend right] (4);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|cgcc|}
+            \hline
+              & 1                   & 2                   & 3                   & 4                   \\
+            \hline
+            1 & \textcolor{gray}{0} & 2                   & 3                   & \textcolor{red}{3}  \\
+            \rowcolor{gray!25}
+            2 & 2                   & \textcolor{gray}{0} & 5                   & 1                   \\
+            3 & 3                   & 5                   & \textcolor{gray}{0} & \textcolor{red}{6}  \\
+            4 & \textcolor{red}{3}  & 1                   & \textcolor{red}{6}  & \textcolor{gray}{0} \\
+            \hline
+        \end{tabular}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|cccc|}
+            \hline
+              & 1                   & 2                   & 3                   & 4 \\
+            \hline
+            1 & \textcolor{gray}{-} & -                   & -                   & 2 \\
+            2 & -                   & \textcolor{gray}{-} & 1                   & - \\
+            3 & -                   & 1                   & \textcolor{gray}{-} & 2 \\
+            4 & 2                   & -                   & 2                   & - \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    $$A_1[1][4] > A_1[1][2] + A_1[2][4] \implies A_2[2][3] = A_1[1][2] + A_1[2][4] = 2 + 1 = 3$$
+    $$A_1[4][1] > A_1[4][2] + A_1[2][1] \implies A_2[3][2] = A_1[4][2] + A_1[2][1] = 1 + 2 = 3$$
+    $$A_1[3][4] > A_1[3][2] + A_1[2][4] \implies A_2[3][4] = A_1[3][2] + A_1[2][4] = 5 + 1 = 6$$
+    $$A_1[4][3] > A_1[4][2] + A_1[2][3] \implies A_2[4][3] = A_1[4][2] + A_1[2][3] = 1 + 5 = 6$$
+
+    $A_3$ (Umweg über 3):
+    \begin{center}
+        \begin{tikzpicture}[baseline,anchor=north]
+            \node[draw, circle] (1) {$1$};
+            \node[draw, circle, right=of 1] (2) {$2$};
+            \node[draw, circle, below=of 1] (3) {$3$};
+            \node[draw, circle, right=of 3] (4) {$4$};
+
+            \path (1) edge node[weight, above] {2} (2);
+            \path (1) edge node[weight, left] {3} (3);
+            \path (3) edge node[weight, below] {7} (4);
+            \path (2) edge node[weight, right] {1} (4);
+
+            % old edge 2-1-3
+            \path (2) edge[dashed, blue, bend right] node[weight, above left, pos=1] {5} (1.north west);
+            \path (1.north west) edge[dashed, blue, bend right] (3);
+            % old edge 1-2-4
+            \path (1) edge[dashed, blue, bend left] node[weight, above right, pos=1] {3} (2.north east);
+            \path (2.north east) edge[dashed, blue, bend left] (4);
+            % old edge 3-2-4
+            \path (3) edge[dashed, blue, bend left] node[weight, below right, pos=0.5] {6} (2.south west);
+            \path (2.south west) edge[dashed, blue, bend right] (4);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|ccgc|}
+            \hline
+              & 1                   & 2                   & 3                   & 4                   \\
+            \hline
+            1 & \textcolor{gray}{0} & 2                   & 3                   & 3                   \\
+            2 & 2                   & \textcolor{gray}{0} & 5                   & 1                   \\
+            \rowcolor{gray!25}
+            3 & 3                   & 5                   & \textcolor{gray}{0} & 6                   \\
+            4 & 3                   & 1                   & 6                   & \textcolor{gray}{0} \\
+            \hline
+        \end{tabular}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|cccc|}
+            \hline
+              & 1                   & 2                   & 3                   & 4 \\
+            \hline
+            1 & \textcolor{gray}{-} & -                   & -                   & 2 \\
+            2 & -                   & \textcolor{gray}{-} & 1                   & - \\
+            3 & -                   & 1                   & \textcolor{gray}{-} & 2 \\
+            4 & 2                   & -                   & 2                   & - \\
+            \hline
+        \end{tabular}
+    \end{center}
+
+    $A_4$ (Umweg über 4):
+    \begin{center}
+        \begin{tikzpicture}[baseline,anchor=north]
+            \node[draw, circle] (1) {$1$};
+            \node[draw, circle, right=of 1] (2) {$2$};
+            \node[draw, circle, below=of 1] (3) {$3$};
+            \node[draw, circle, right=of 3] (4) {$4$};
+
+            \path (1) edge node[weight, above] {2} (2);
+            \path (1) edge node[weight, left] {3} (3);
+            \path (3) edge node[weight, below] {7} (4);
+            \path (2) edge node[weight, right] {1} (4);
+
+            % old edge 2-1-3
+            \path (2) edge[dashed, blue, bend right] node[weight, above left, pos=1] {5} (1.north west);
+            \path (1.north west) edge[dashed, blue, bend right] (3);
+            % old edge 1-2-4
+            \path (1) edge[dashed, blue, bend left] node[weight, above right, pos=1] {3} (2.north east);
+            \path (2.north east) edge[dashed, blue, bend left] (4);
+            % old edge 3-2-4
+            \path (3) edge[dashed, blue, bend left] node[weight, below right, pos=0.5] {6} (2.south west);
+            \path (2.south west) edge[dashed, blue, bend right] (4);
+        \end{tikzpicture}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|cccg|}
+            \hline
+              & 1                   & 2                   & 3                   & 4                   \\
+            \hline
+            1 & \textcolor{gray}{0} & 2                   & 3                   & 3                   \\
+            2 & 2                   & \textcolor{gray}{0} & 5                   & 1                   \\
+            3 & 3                   & 5                   & \textcolor{gray}{0} & 6                   \\
+            \rowcolor{gray!25}
+            4 & 3                   & 1                   & 6                   & \textcolor{gray}{0} \\
+            \hline
+        \end{tabular}
+        %
+        \hspace{5em}
+        %
+        \begin{tabular}[t]{|c|cccc|}
+            \hline
+              & 1                   & 2                   & 3                   & 4 \\
+            \hline
+            1 & \textcolor{gray}{-} & -                   & -                   & 2 \\
+            2 & -                   & \textcolor{gray}{-} & 1                   & - \\
+            3 & -                   & 1                   & \textcolor{gray}{-} & 2 \\
+            4 & 2                   & -                   & 2                   & - \\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{example}
+
+\begin{algo}{Warshall-Algorithmus}
+    Gegeben: Graph $G = (V, E)$, egal ob gerichtet oder nicht.
+
+    Aufgabenstellung: Prüfe für alle geordneten Paare $(v_i, v_j)$, ob ein Weg von $v_i$ nach $v_j$ existiert.
+
+    Ziel: Berechne Adjazenzmatrix $A$ zu \emph{transitivem Abschluss} von $G$:
+    \begin{center}
+        $A[i][j] = $ \texttt{true} $\iff$ es existiert ein nicht-trivialer Weg (Länge $>0$) von $v_i$ nach $v_j$
+    \end{center}
+
+    Iterationsformel zur Aktualisierung von $A[i][j]$:
+    $$
+        A_k[i][j] = A_{k-1}[i][j] \lor (A_{k-1}[i][k] \land A_{k-1}[k][j])
+    $$
+
+    Der Algorithmus funktioniert also analog zum Floyd-Algorithmus.
+\end{algo}
+
+\begin{code}{Warshall-Algorithmus}
+    \lstinputlisting{warshall.java}
+\end{code}

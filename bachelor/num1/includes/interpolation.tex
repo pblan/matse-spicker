@@ -1,0 +1,685 @@
+\section{Interpolation}
+
+\subsection{Einleitung}
+
+\begin{defi}{Interpolation}
+    Der Begriff \emph{Interpolation} bescheibt eine Klasse von Problemen und Verfahren. 
+    
+    Zu gegebenen diskreten Daten (z. B. Messwerten) soll eine stetige Funktion (die sogenannte \emph{Interpolante} oder \emph{Interpolierende}) gefunden werden, die diese Daten abbildet. 
+    
+    Man sagt dann, die Funktion \emph{interpoliert} die Daten. 
+\end{defi}
+
+\subsection{Polynominterpolation}
+
+\begin{defi}{Vandermonde-Matrix}
+    Die \emph{Vandermonde-Matrix} spielt bei der Interpolation von Funktionen eine wichtige Rolle: 
+    
+    Wenn an den Stützstellen $(x_0, x_1, \ldots, x_n)$ die Funktionswerte $(y_0, y_1, \ldots, y_n)$ durch ein Polynom $p$ vom Grad $n$ (oder kleiner) interpoliert werden sollen, dann führt der Ansatz 
+    \[
+        p_n(x) = a_0 + a_1 x^1 + a_2 x^2 + \ldots + a_{n} x^{n}
+    \]
+    auf das lineare Gleichungssystem 
+    \[
+        \underbrace{\begin{pmatrix}
+                1      & x_0    & \cdots & x_0^n  \\ 
+                \vdots & \vdots &        & \vdots \\ 
+                1      & x_n    & \cdots & x_n^n 
+            \end{pmatrix}}_{V(x_0, \ldots, x_n)}
+        \underbrace{\begin{pmatrix}
+                a_0 \\ \vdots \\ a_n
+            \end{pmatrix}}_{\alpha}
+        =
+        \underbrace{\begin{pmatrix}
+                y_0 \\ \vdots \\ y_n     
+            \end{pmatrix}}_{y}
+    \]
+    mit einer Vandermonde-Matrix $Vx_0, \ldots, x_n)$ als Koeffizientenmatrix.\footnote{Beachte: Für ein Polynom vom Grad $n$ haben wir $n+1$ Koeffizienten!}
+    
+    Ist $x_i \neq x_j$ ($\forall i \neq j$) so gibt es genau ein Polynom $p_n(x)$ mit Grad $\leq n$, das $(x_0, y_0), \ldots, (x_n, y_n)$ interpoliert. 
+\end{defi}
+
+\begin{defi}{Vandermonde-Determinante}
+    Die Determinante der Vandermonde-Matrix wird auch \emph{Vandermonde-Determinante} genannt.
+    Sie hat den Wert 
+    \[
+        \det V(x_0, \ldots, x_n) = \prod_{1 \leq i < j \leq n} (x_j - x_i)
+    \]
+    
+    Insbesondere ist die Vandermonde-Matrix genau dann regulär, wenn die $x_i$ paarweise verschieden sind. 
+\end{defi}
+
+\begin{defi}{Horner-Schema}
+    Um Zwischenstellen eines Polynoms $p_n(x)$ auszuwerten, nutzt man in der Regel nicht direkt die Form 
+    \[
+        p_n(x) = a_0 + a_1 x + \ldots + a_n x^n    
+    \]
+    Diese Auswertung ist teuer und durch die vielen Summationen sehr anfällig für Rundungsfehler.
+    
+    Besser ist hier das \emph{Horner-Schema}: 
+    \begin{itemize}
+        \item $p_n(x)$ wird wie folgt umgeformt:
+              \begin{alignat*}{1}
+                  p_n (x) & = a_0 + a_1 x + a_2 x^2 + \ldots + a_n x^n                                                                                                                                                      \\ 
+                          & = a_0 + x \left( a_1 + a_2 x + \ldots + a_n x^{n-1} \right)                                                                                                                                     \\ 
+                          & = a_0 + x \left( a_1 + x \left( a_2 + \ldots + a_n x^{n-2} \right) \right)                                                                                                                      \\ 
+                          & = \ \ldots                                                                                                                                                                                      \\ 
+                          & = \underbrace{a_0 + x \underbrace{( a_1 + x \underbrace{( a_2 + x \underbrace{( \ldots + x \underbrace{( a_{n-1} + x \underbrace{a_n}_{q_0} )}_{q_1} )}_{\ldots} )}_{q_{n-2}} )}_{q_n-1}}_{q_n}
+              \end{alignat*}
+        \item Berechne schrittweise von innen nach außen:
+              \begin{alignat*}{1}
+                  q_0 & = a_n                   \\ 
+                  q_1 & = a_{n-1} + x \cdot q_0 \\
+                  q_2 & = a_{n-2} + x \cdot q_1 \\
+                      & \ldots
+              \end{alignat*}
+              also
+              \[ 
+                  q_0 = a_n, \quad q_k = a_{n-k} + x \cdot q_{k-1}, \quad k = 1, \ldots, n
+              \]
+              und damit 
+              \[ 
+                  p_n(x) = q_n
+              \]
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Lagrange-Polynom}
+    Wir betrachten $x_0, \ldots, x_n$ und definieren das $j$-te \emph{Lagrange-Polynom} als 
+    \[ 
+        L_j(x) = \frac{x - x_0}{x_j - x_0} \cdot \frac{x - x_{j-1}}{x_j - x_{j-1}} \cdot \frac{x - x_{j+1}}{x_j - x_{j+1}} \cdot \ldots \cdot \frac{x - x_n}{x_j - x_n}
+    \]
+    
+    $L_j$ ist wohldefiniert, wenn die $x_i$ paarweise verschieden sind und hat Grad $n$.
+    
+    Außerdem gilt 
+    \[
+        L_j(x_i) = 
+        \begin{cases}
+            1 & \text{für} \ i = j \\ 
+            0 & \text{sonst}
+        \end{cases}
+    \]
+    
+    Mit den Lagrange-Polynomen $L_j$ können wir das Interpolationspolynom einfach ermitteln mit 
+    \[
+        p_n(x) = \sum_{j = 0}^{n} y_j \cdot L_j(x)    
+    \]
+    
+    Bei der Benutzung der Lagrange-Polynome muss kein Gleichungssystem gelöst werden, allerdings müssen sämtliche $L_j$ verändert werden, wenn ein weiterer Datenpunkt hinzukommt.
+\end{defi}
+
+\begin{example}{Lagrange-Polynom}
+    Gegeben seien die folgenden Datenpunkte: 
+    
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|c|}
+            \hline
+            $x_i$ & -1 & 0 & 1 & 2 \\ 
+            \hline
+            $y_i$ & 2  & 2 & 2 & 8 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    
+    Berechnen Sie das zugehörige Lagrange-Interpolationspolynom.
+    
+    \exampleseparator
+    
+    Die Lagrange-Polynome sind wie folgt: 
+    \[ 
+        L_0(x) = \frac{x - x_1}{x_0 - x_1} \cdot \frac{x - x_2}{x_0 - x_2} \cdot \frac{x - x_3}{x_0 - x_3} = \frac{x - 0}{-1 - 0} \cdot \frac{x - 1}{-1 - 1} \cdot \frac{x - 2}{-1 - 2} = -\frac{x(x-1)(x-2)}{6}
+    \]
+    \[ 
+        L_1(x) = \frac{x - x_0}{x_1 - x_0} \cdot \frac{x - x_2}{x_1 - x_2} \cdot \frac{x - x_3}{x_1 - x_3} = \frac{x - (-1)}{0 - (-1)} \cdot \frac{x - 1}{0 - 1} \cdot \frac{x - 2}{0 - 2} = \frac{(x+1)(x-1)(x-2)}{2}
+    \]
+    \[ 
+        L_2(x) = \frac{x - x_0}{x_2 - x_0} \cdot \frac{x - x_1}{x_2 - x_1} \cdot \frac{x - x_3}{x_2 - x_3} = \frac{x - (-1)}{1 - (-1)} \cdot \frac{x - 0}{1 - 0} \cdot \frac{x - 2}{1 - 2} = -\frac{(x+1)x(x-2)}{2}
+    \]
+    \[ 
+        L_3(x) = \frac{x - x_0}{x_3 - x_0} \cdot \frac{x - x_1}{x_3 - x_1} \cdot \frac{x - x_2}{x_3 - x_2} = \frac{x - (-1)}{2 - (-1)} \cdot \frac{x - 0}{2 - 0} \cdot \frac{x - 1}{2 - 1} = \frac{(x+1)x(x-2)}{6}
+    \]
+    
+    Damit ist das Lagrange-Interpolationspolynom $p(x)$: 
+    \begin{alignat*}{1}
+        p(x) = \quad & y_0 L_0 + y_1 L_1 + y_2 L_2 + y_3 L_3                                                                  \\
+        =      \quad & -\frac{2x(x-1)(x-2)}{6} + \frac{2(x+1)(x-1)(x-2)}{2} - \frac{2(x+1)x(x-2)}{2} + \frac{8(x+1)x(x-2)}{6} \\ 
+        =      \quad & \ldots                                                                                                 \\ 
+        =      \quad & x^3 - x + 2
+    \end{alignat*}
+\end{example}
+
+\begin{defi}{Newton-Interpolationspolynom}
+    \index{Methode der dividierten Differenzen}
+    %
+    Ein \emph{Newton-Interpolationspolynom} ist ein Interpolationspolynom für eine bestimmte Menge von Datenpunkten.
+    
+    Gegeben seien $n+1$ paarweise verschiedene Datenpunkte $(x_0, y_0), \ldots, (x_n, y_n)$.
+    
+    Das \emph{Newton-Interpolationspolynom} ist dann eine Linearkombination der Newton-Basispolynome $N_j(x)$ mit 
+    \[ 
+        p_n(x) = \sum_{j=0}^{n} a_j N_j(x)  
+    \]
+    \[  
+        = a_0 + a_1 (x - x_0) + a_2 (x - x_0) (x - x_1) + \ldots + a_n (x - x_0) \cdot \ldots \cdot (x - x_{n-1})
+    \]
+    wobei 
+    \[
+        N_j (x) = \prod_{i=0}^{j-1} \left( x - x_i \right)
+    \]
+    
+    Die $a_j$ lassen sich wie folgt mithilfe der \emph{Methode der dividierten Differenzen} berechnen.
+    
+    Es gilt 
+    \[ 
+        a_j = d_{n, 0}, \quad j = 0, \ldots, n
+    \]
+    
+    Dabei ist 
+    \[ 
+        d_{n, m} = \frac{d_{n, m+1} - d_{n-1, m}}{x_n - x_m}, \quad n > m
+    \]
+    mit 
+    \[
+        d_{i,i} = y_i, \quad i = 0, 1, \ldots    
+    \]
+    
+    Bei gegebenen Punkten $(x_i, y_i)$ kann damit punktweise (Zeile für Zeile) folgendes Schema aufgebaut werden:
+    \[
+        \begin{array}{cccccccccccccc}
+            y_0     & = & d_{0,0}      & =           & a_0                                                                                                              \\
+                    &   &              & \searrow                                                                                                                       \\
+            y_1     & = & d_{1,1}      & \rightarrow & d_{1,0}      & =           & a_1                                                                                 \\
+                    &   &              & \searrow    &              & \searrow                                                                                          \\
+            y_2     & = & d_{2,2}      & \rightarrow & d_{2,1}      & \rightarrow & d_{2,0}      & =      & a_2                                                         \\
+            \vdots  &   &              & \vdots      & \vdots       & \vdots      & \vdots       & \ddots                                                               \\
+            y_{n-1} & = & d_{n-1, n-1} & \rightarrow & d_{n-1, n-2} & \rightarrow & d_{n-1, n-3} & \cdots & \rightarrow & d_{n-1, 0} & =           & a_{n-1}            \\
+                    &   &              & \searrow    &              & \searrow    &              &        & \searrow    &            & \searrow                         \\
+            y_n     & = & d_{n,n}      & \rightarrow & d_{n, n-1}   & \rightarrow & d_{n, n-2}   & \cdots & \rightarrow & d_{n, 1}   & \rightarrow & d_{n, 0} & = & a_n
+        \end{array}
+    \]
+    
+    Wird ein Punkt hinzugefügt, wird das Schema lediglich um eine Zeile erweitert.
+    
+    Insgesamt ist das Newton-Interpolationspolynom also gegeben mit 
+    \[ 
+        p_n(x) = \sum_{j=0}^{n} d_{j,0} N_j(x)  
+    \]
+    \[  
+        = d_{0, 0} + d_{1, 0} (x - x_0) + d_{2, 0} (x - x_0) (x - x_1) + \ldots + d_{n, 0} (x - x_0) \cdot \ldots \cdot (x - x_{n-1})
+    \]
+\end{defi}
+
+\begin{example}{Newton-Interpolationspolynom}
+    Gegeben seien die folgenden Datenpunkte: 
+    
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|c|}
+            \hline
+            $x_i$ & -1 & 0 & 1 & 2 \\ 
+            \hline
+            $y_i$ & 2  & 2 & 2 & 8 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    
+    Berechnen Sie das zugehörige Newton-Interpolationspolynom.
+    
+    \exampleseparator
+    
+    Das Newton-Interpolationspolynom ist:
+    \[ 
+        p_3(x) = \sum_{j=0}^{3} d_{j,0} N_j(x) 
+    \]
+    \[ 
+        = a_0 + a_1 (x - x_0) + a_2 (x - x_0) (x - x_1) + a_3 (x - x_0) (x - x_1) (x - x_2) 
+    \]
+    
+    Es gilt:
+    
+    {
+    \footnotesize
+    \[
+        \begin{array}{llllllllllll}
+            y_0 & = & d_{0,0} = 2 & =           & a_0                                                                                                                                                                                                              \\
+                &   &             & \searrow                                                                                                                                                                                                                       \\
+            y_1 & = & d_{1,1} = 2 & \rightarrow & d_{1,0} = \frac{d_{1,1} - d_{0,0}}{x_1 - x_0} = \frac{2 - 2}{0 + 1} = 0 & =           & a_1                                                                                                                      \\
+                &   &             & \searrow    &                                                                         & \searrow                                                                                                                               \\
+            y_2 & = & d_{2,2} = 2 & \rightarrow & d_{2,1} = \frac{d_{2,2} - d_{1,1}}{x_2 - x_1} = \frac{2 - 2}{1 - 0} = 0 & \rightarrow & d_{2,0} = \frac{d_{2,1} - d_{1,0}}{x_2 - x_0} = \frac{0 - 0}{1 + 1} = 0  & =           & a_2                             \\
+                &   &             & \searrow    &                                                                         & \searrow    &                                                                          & \searrow                                      \\
+            y_3 & = & d_{3,3} = 8 & \rightarrow & d_{3,2} = \frac{d_{3,3} - d_{2,2}}{x_3 - x_2} = \frac{8 - 2}{2 - 1} = 6 & \rightarrow & d_{3, 1} = \frac{d_{3,2} - d_{2,1}}{x_3 - x_1} = \frac{6 - 0}{2 - 0} = 3 & \rightarrow & d_{3, 0} = \ldots = 1 & = & a_3 \\
+        \end{array}
+    \]
+    }
+    
+    Damit ist: 
+    \[ 
+        p_3(x) = 2 + 1 (x - x_0) (x - x_1) (x - x_2) = 2 + (x+1) x (x-1) = 2 + x(x^2 - 1) = 2 - x + x^3
+    \]
+    \qed
+\end{example}
+
+\subsection{Splines}
+
+\begin{defi}{Polynom-Spline}
+    Gegeben seien eine natürliche Zahl $n \in \N$ und $n+1$ Stützstellen $x_0 < x_1 < \ldots < x_{n} \in \R$ sowie $n+1$ Funktionswerte $y_0, y_1, \ldots, y_n \in \R$. 
+    
+    Gesucht ist eine stückweise polynomiale Funktion, ein \emph{Polynom-Spline}
+    \[ 
+        S: [x_0, x_n] \to \R
+    \]
+    mit $S(x_i) = y_i$ für $i = 0, 1, \ldots, n-1$, bei der für $i = 0, \ldots, n-1$ die Teilfunktionen 
+    \[
+        s_i := S|_{[x_{i},x_{i+1}]} : [x_i, x_{i+1}] \to \R
+    \]
+    auf die Teilintervalle $[x_{i}, x_{i+1}]$ Polynome sind.
+\end{defi}
+
+\begin{bonus}{Polygonzug}
+    Bei Polynomgrad $\leq 1$ auf $[x_i, x_{i+1}]$ und stetigen Übergängen erhalten wir einen interpolierenden \emph{Polygonzug}.
+    
+    TODO Grafik von Folie 495
+    
+    Es gilt: 
+    \[ 
+        s_i(x) = mx + b = \underbrace{\frac{y_{i+1} - y_i}{x_{i+1} - x_i}}_{= m} \cdot x + \underbrace{y_i - \frac{y_{i+1} - y_i}{x_{i+1} - x_i} \cdot x_i}_{= b = y_i - m \cdot x_i}
+    \]
+\end{bonus}
+
+\begin{defi}{Kubischer Polynom-Spline}
+    In der Praxis werden \emph{kubische Polynom-Splines} ($k = 3$) am häufigsten benutzt:
+    \[ 
+        s_i := S_3|_{[x_i, x_{i+1}]} = a_i + b_i x + c_i x^2 + d_i x^3
+    \]
+    
+    $S_3$ ist zweimal stetig differenzierbar auf $[x_0, x_n]$, also insbesondere an den Nahtstellen $x_i$, $i = 1, \ldots, n-1$.
+    
+    Wir haben $n$ Intervalle $[x_i, x_{i+1}]$, $i = 0, \ldots, n-1$, so dass $4n$ Koeffizienten $a_i, b_i, c_i, d_i$ zu bestimmen sind für die $n$ Polynome $s_i$. 
+    
+    Für alle kubischen Polynom-Splines gelten folgende Bedingungsgleichungen: 
+    \begin{itemize}
+        \item $2n$ Bedingungen für die Interpolation:
+              \begin{alignat*}{1}
+                  s_0(x_0)         & = y_0     \\
+                  s_0(x_1)         & = y_1     \\
+                  s_1(x_1)         & = y_1     \\
+                  s_1(x_2)         & = y_2     \\
+                  s_2(x_2)         & = y_2     \\
+                  \vdots           &           \\
+                  s_{n-1}(x_{n-1}) & = y_{n-1} \\
+                  s_{n-1}(x_n)     & = y_n     \\
+              \end{alignat*}
+        \item $n-1$ Glattheitsbedingungen für die erste Ableitung:
+              \begin{alignat*}{1}
+                  s'_0(x_1)         & = s'_1(x_1)         \\
+                  s'_1(x_2)         & = s'_2(x_2)         \\
+                  \vdots            &                     \\
+                  s'_{n-2}(x_{n-1}) & = s'_{n-1}(x_{n-1}) \\
+              \end{alignat*}
+        \item $n-1$ Glattheitsbedingungen für die zweite Ableitung:
+              \begin{alignat*}{1}
+                  s''_0(x_1)         & = s''_1(x_1)         \\
+                  s''_1(x_2)         & = s''_2(x_2)         \\
+                  \vdots             &                      \\
+                  s''_{n-2}(x_{n-1}) & = s''_{n-1}(x_{n-1}) \\
+              \end{alignat*}
+    \end{itemize}
+    
+    Damit haben wir $4n-2$ Gleichungen für $4n$ Unbekannte und brauchen zwei zusätzliche \emph{Abschlussbedingungen}.
+\end{defi}
+
+\begin{bonus}{Moment (Idee)}
+    Die zweite Ableitung eines kubischen Splines $S_3$ ist ein linearer Spline (Polygonzug). 
+    
+    Dieser kann wie folgt berechnet werden: 
+    \[ 
+        s''_i = \frac{x_{i+1} - x}{h_i} \cdot \beta_i + \frac{x - x_i}{h_i} \cdot \beta_{i-1}, \quad h_i = x_{i+1} - x_i, \quad i = 1, \ldots, n-1
+    \]
+    
+    $\beta_i$ sind die sogenannten \emph{Momente}, welche den Werten von $S''(x_i)$ an den Stützstellen entsprechen und noch zu berechnen sind. 
+    
+    Durch zweifache Integration entstehen aus diesen Gleichungen Polynome dritten Grades mit zwei Parametern $c_i$ und $d_i$ der Form: 
+    \[ 
+        \frac{1}{6} \left( \frac{(x_{i+1} - x)^3}{h_i} \cdot \beta_i + \frac{(x - x_i)^3}{h_i} \cdot \beta_{i+1} \right) + c_i \cdot (x - x_i) + d_i
+    \]
+    
+    Um die Stetigkeitsbedingungen $s_i(x_i) = y_i$ und $s_i(x_{i+1}) = y_{i+1}$ zu erfüllen, wählen wir
+    \[
+        d_i = y_i - \frac{h_i^2}{6}, \quad c = \frac{y_{i+1} - y_i}{h_i} - \frac{h_i}{6} \cdot (\beta_{i+1} - \beta_i)
+    \]
+    
+    So sind bereits die nullten und die zweiten Ableitungen der Einschränkungen $s_i$ an den Stützstellen korrekt.
+    Die Momente sind so zu wählen, dass auch die ersten Ableitungen an den Stützstellen gleich sind. 
+    
+    Mit
+    \[ 
+        s'_i(x) = \frac{1}{2} \left( - \frac{(x_{i+1} - x)^2}{h_i} \cdot \beta_i + \frac{(x - x_i)^2}{h_i} \cdot \beta_{i+1} \right) + c_i 
+    \]
+    und 
+    \[ 
+        s'_i(x_i) = s'_{i-1}(x_i)    
+    \]
+    lassen sich folgende Gleichungen aufstellen: 
+    \[
+        \frac{h_{i-1}}{6} \cdot M_{i-1} + \frac{h_{i-1}+h_{i}}{3} \cdot \beta_{i} + \frac{h_{i}}{6} \cdot \beta_{i+1} = \frac{y_{i+1}-y_{i}}{h_{i}} - \frac{y_{i}-y_{i-1}}{h_{i-1}}
+    \]
+    
+    Für $i = 0$ und $i = n$ fehlen zwei Gleichungen, die sich aus den \emph{Abschlussbedingungen} ergeben.
+    
+    Dieses lineare Gleichungssystem kann auch durch folgende, tridiagonale, streng diagonaldominante Matrix ausgedrückt werden: 
+    \[
+        \begin{pmatrix}
+            \mu_{0}         & \lambda_{0}           &                   &                         &                  &          \\
+            \frac{h_{0}}{6} & \frac{h_{0}+h_{1}}{3} & \frac {h_{1}}{6}  &                         &                  &          \\
+                            & \ddots                & \ddots            & \ddots                  &                  &          \\
+                            &                       & \frac{h_{i-1}}{6} & \frac{h_{i-1}+h_{i}}{3} & \frac {h_{i}}{6} &          \\
+                            &                       &                   & \ddots                  & \ddots           & \ddots   \\
+                            &                       &                   &                         & \lambda _{n}     & \mu _{n}
+        \end{pmatrix}
+        \cdot 
+        \begin{pmatrix}
+            M_{0} \\ M_{1} \\ \vdots \\ M_{i} \\ \vdots \\ M_{n}
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            b_{0}                                                       \\
+            \frac{y_{2}-y_{1}}{h_{1}} - \frac{y_{1}-y_{0}}{h_{0}}       \\
+            \vdots                                                      \\
+            \frac{y_{i+1}-y_{i}}{h_{i}} - \frac{y_{i}-y_{i-1}}{h_{i-1}} \\
+            \vdots                                                      \\
+            b_{n}
+        \end{pmatrix}
+    \]
+    Die Werte für die $\lambda_i$, $\mu_i$ und $b_i$ hängen von den Abschlussbedingungen ab.
+\end{bonus}
+
+\begin{defi}{Berechnung eines kubischen Polynom-Splines}
+    Berechne aus $x_i$ die $h_i = x_{i+1} - x_i$ und stelle das lineare Gleichungssystem 
+    \[
+        \underbrace{
+            \begin{pmatrix}
+                \mu_{0}         & \lambda_{0}           &                   &                         &                  &          \\
+                \frac{h_{0}}{6} & \frac{h_{0}+h_{1}}{3} & \frac {h_{1}}{6}  &                         &                  &          \\
+                                & \ddots                & \ddots            & \ddots                  &                  &          \\
+                                &                       & \frac{h_{i-1}}{6} & \frac{h_{i-1}+h_{i}}{3} & \frac {h_{i}}{6} &          \\
+                                &                       &                   & \ddots                  & \ddots           & \ddots   \\
+                                &                       &                   &                         & \lambda _{n}     & \mu _{n}
+            \end{pmatrix}
+        }_{A}
+        \cdot 
+        \underbrace{
+            \begin{pmatrix}
+                M_{0} \\ M_{1} \\ \vdots \\ M_{i} \\ \vdots \\ M_{n}
+            \end{pmatrix}
+        }_{x}
+        =
+        \underbrace{
+            \begin{pmatrix}
+                b_{0}                                                       \\
+                \frac{y_{2}-y_{1}}{h_{1}} - \frac{y_{1}-y_{0}}{h_{0}}       \\
+                \vdots                                                      \\
+                \frac{y_{i+1}-y_{i}}{h_{i}} - \frac{y_{i}-y_{i-1}}{h_{i-1}} \\
+                \vdots                                                      \\
+                b_{n}
+            \end{pmatrix}
+        }_{b}
+    \]
+    auf. 
+    Die Werte für die $\lambda_i$, $\mu_i$ und $b_i$ hängen von den Abschlussbedingungen ab.\footnote{Wir betrachten meist \emph{natürliche Splines}, also $\lambda_0 = \lambda_n = b_0 = b_n = 0, \quad \mu_0 = \mu_n = 1$.}
+    
+    $A$ ist symmetrisch, tridiagonale und streng diagonaldominant, also sehr einfach mit direkten oder iterativen Lösern zu bearbeiten. 
+    
+    Löse das lineare Gleichungssystem.
+    
+    Dann ist $s_i(x)$ auf dem Teilintervall $[x_i, x_{i+1}]$ gegeben mit
+    \[ 
+        s_i(x) = \alpha_i + \beta_i (x - x_{i}) + \gamma_i (x - x_{i})^2 + \delta_i (x - x_{i})^3
+    \]
+    wobei
+    \begin{alignat*}{1}
+        \alpha_i & = y_i                                                        \\ 
+        \beta_i  & = \frac{y_{i+1} - y_i}{h_i} - \frac{h_i}{6} (2M_i + M_{i+1}) \\
+        \gamma_i & = \frac{M_{i}}{2}                                            \\ 
+        \delta_i & = \frac{M_{i+1} - M_{i}}{6 h_i}
+    \end{alignat*}
+\end{defi}
+
+\begin{defi}{Abschlussbedingungen für kubische Polynom-Splines}
+    Prinzipiell gibt es ein Interpolationsintervall weniger als Stützstellen. 
+    Das heißt, dass zwei Gleichungen zur Bestimmung aller Koeffizienten fehlen. 
+    
+    Typische \emph{Abschlussbedingungen} sind: 
+    \begin{itemize}
+        \item \emph{Natürlicher Spline} (freier Rand):
+              \begin{itemize}
+                  \item Bedingung:
+                        \begin{alignat*}{1}
+                            s''_0(x_0)     & = 0 \\
+                            s''_{n-1}(x_n) & = 0
+                        \end{alignat*}
+                  \item Der Spline schließt mit Wendepunkten ab.
+                  \item Berechnung mit Momenten:
+                        \[
+                            \lambda_0 = \lambda_n = b_0 = b_n = 0, \quad \mu_0 = \mu_n = 1
+                        \]
+              \end{itemize}
+        \item \emph{Hermiter Spline} (eingespannter Rand):
+              \begin{itemize}
+                  \item Bedingung:
+                        \begin{alignat*}{1}
+                            s'_0(x_0)     & = f'(a) \\
+                            s'_{n-1}(x_n) & = f'(b)
+                        \end{alignat*}
+                  \item $f'(a)$ und $f'(b)$ sind vorgegeben, normalerweise entweder durch die Ableitung einer zu interpolierenden Funktion $f$ oder durch eine Approximation derselben.
+                  \item Berechnung mit Momenten:
+                        \[
+                            \lambda_0 = \frac{h_0}{6}, \quad \mu_0 = \frac{h_0}{3}, \quad b_0 = \frac{y_1 - y_0}{h_0} - f'(a)
+                        \]
+                        \[
+                            \lambda_n = \frac{h_{n-1}}{6}, \quad \mu_n = \frac{h_{n-1}}{3}, \quad b_n = - \frac{y_n - y_{n-1}}{h_{n-1}} + f'(b)
+                        \]
+              \end{itemize}
+        \item \emph{Periodischer Spline}:
+              \begin{itemize}
+                  \item Bedingung:
+                        \begin{alignat*}{1}
+                            s'_0(x_0)  & = s'_{n-1}(x_n)  \\
+                            s''_0(x_0) & = s''_{n-1}(x_n) \\
+                        \end{alignat*}
+                  \item Nullte, erste und zweite Ableitung von $S_3$ am Anfang und Ende des Intervalls gleich.
+                  \item Berechnung mit Momenten:
+                        \[
+                            \lambda_0 = \frac{h_0}{6}, \quad \mu_0 = \frac{h_n + h_0}{3}, \quad b_0 = \frac{y_1 - y_0}{h_0} - \frac{y_0 - y_n}{h_n}
+                        \]
+                        \[
+                            \lambda_n = \frac{h_{n-1}}{6}, \quad \mu_n = \frac{h_{n-1} + h_n}{3}, \quad b_n = \frac{y_0 - y_n}{h_n} - \frac{y_n - y_{n-1}}{h_{n-1}}
+                        \]
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Kubischer Polynom-Spline (Bedingungsgleichungen)}
+    Gegeben seien die folgenden Datenpunkte: 
+    
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|c|}
+            \hline
+            $x_i$ & -1 & 0 & 1 \\ 
+            \hline
+            $y_i$ & 1  & 0 & 1 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    
+    Berechnen Sie den zugehörigen kubischen Polynom-Spline mithilfe der Bedingungsgleichungen.
+    
+    \exampleseparator
+    
+    Wir wissen: 
+    \[ 
+        p(x) = a + bx + cx^2 + dx^3
+    \]
+    \[ 
+        p'(x) = b + 2cx + 3dx^2
+    \]
+    \[ 
+        p''(x) = 2c + 6dx
+    \]
+    
+    Wir haben folgende Bedingungsgleichungen:
+    \begin{alignat*}{3}
+        \text{Interpolation:} \qquad              & p_L(x_0)       = y_0        \quad & \implies \quad & a_L - b_L + c_L - d_L =  1 \\
+        \text{Interpolation:} \qquad              & p_L(x_1)       = y_1        \quad & \implies \quad & a_L =  0                   \\
+        \text{Interpolation:} \qquad              & p_R(x_1)       = y_1        \quad & \implies \quad & a_R = 0                    \\
+        \text{Interpolation:} \qquad              & p_R(x_2)       = y_2        \quad & \implies \quad & a_R + b_R + c_R + d_R = 1  \\
+        \text{Glattheit erste Ableitung:} \qquad  & p'_L(x_1)      = p'_R(x_1)  \quad & \implies \quad & b_L = b_R                  \\
+        \text{Glattheit zweite Ableitung:} \qquad & p''_L(x_1)     = p''_R(x_1) \quad & \implies \quad & 2c_L = 2c_R                \\
+        \text{natürlicher Spline:} \qquad         & p''_L(x_0)     = 0          \quad & \implies \quad & 2c_L - 6d_L = 0            \\
+        \text{natürlicher Spline:} \qquad         & p''_R(x_2) =     0          \quad & \implies \quad & 2c_R + 6d_R = 0
+    \end{alignat*}
+    
+    Wir erhalten das lineare Gleichungssystem: 
+    \[ 
+        \begin{pmatrix}
+            1 & -1 & 1 & -1 & 0 & 0  & 0  & 0  \\ 
+            1 & 0  & 0 & 0  & 0 & 0  & 0  & 0  \\
+            0 & 0  & 0 & 0  & 1 & 0  & 0  & 0  \\
+            0 & 0  & 0 & 0  & 1 & 1  & 1  & 1  \\
+            0 & 1  & 0 & 0  & 0 & -1 & 0  & 0  \\
+            0 & 0  & 2 & 0  & 0 & 0  & -2 & 0  \\
+            0 & 0  & 2 & -6 & 0 & 0  & 0  & 0  \\
+            0 & 0  & 0 & 0  & 0 & 0  & 2  & 6 
+        \end{pmatrix}
+        \begin{pmatrix}
+            a_L \\
+            b_L \\
+            c_L \\
+            d_L \\
+            a_R \\
+            b_R \\
+            c_R \\
+            d_R
+        \end{pmatrix}
+        = 
+        \begin{pmatrix}
+            1 \\
+            0 \\
+            0 \\
+            1 \\
+            0 \\
+            0 \\
+            0 \\
+            0
+        \end{pmatrix}
+    \]
+    
+    mit der Lösung: 
+    \[ 
+        \begin{pmatrix}
+            a_L & b_L & c_L & d_L & a_R & b_R & c_R & d_R
+        \end{pmatrix}^T
+        = 
+        \begin{pmatrix}
+            0 & 0 & \nicefrac{3}{2} & \nicefrac{1}{2} & 0 & 0 & \nicefrac{3}{2} & -\nicefrac{1}{2}
+        \end{pmatrix}^T
+    \]
+    
+    Daraus ergibt sich der kubische Polynom-Spline:
+    \[ 
+        s(x) = 
+        \begin{cases}
+            \frac{3}{2} x^2 + \frac{1}{2} x^3 & x \leq 0 \\ 
+            \frac{3}{2} x^2 - \frac{1}{2} x^3 & x > 0
+        \end{cases}
+    \]
+\end{example}
+
+\begin{example}{Kubischer Polynom-Spline (Momente)}
+    Gegeben seien die folgenden Datenpunkte: 
+    
+    \begin{center}
+        \begin{tabular}{|c||c|c|c|c|}
+            \hline
+            $x_i$ & -1 & 0 & 1 \\ 
+            \hline
+            $y_i$ & 1  & 0 & 1 \\
+            \hline
+        \end{tabular}
+    \end{center}
+    
+    Berechnen Sie den zugehörigen kubischen Polynom-Spline mithilfe der Momentgleichungen.
+    
+    \exampleseparator
+\end{example}
+
+\subsection{B-Splines}
+
+\begin{defi}{Unterteilung}
+    Ist $x_0 < x_1 < \cdots < x_n$ so heißt  
+    \[ 
+        \Omega_n = \{ x_0, \ldots, x_n \}
+    \]
+    \emph{Unterteilung} des Intervalls $[x_0, x_n]$. 
+    
+    $S_k(\Omega_n)$ ist dann die Menge aller Polynom-Splines der Ordnung $k$ zur Unterteilung $\Omega_n$.
+    
+    In $S_k(\Omega_n)$ gibt es genau $k+n$ linear unabhängige Splines, d. h. 
+    \[ 
+        \dim(S_k(\Omega_n)) = k + n
+    \]
+\end{defi}
+
+\begin{bonus}{B-Spline}
+    Es sei $\Omega_n = \{ x_0, \ldots, x_n \}$ eine Unterteilung von $[x_0, x_n]$.
+    
+    Wir wählen Hilfspunkte\footnote{Oft beschränken wir uns auf äquidistante Unterteilungen (mit äquidistanten Hilfspunkten) $x_i = i \cdot h$ mit $h > 0$.}
+    \[ 
+        x_{k-1} < \ldots < x_{-1}, \quad x_{n-1} < \ldots < x_{n + k}
+    \]
+    
+    Dann gibt es genau $k + n$ \emph{Basis-Splines} bzw. \emph{B-Splines}
+    \[
+        e_{k, i}(x), \quad i = -k, \ldots, n-1    
+    \]
+    der Ordnung $k$ mit folgenden Eigenschaften: 
+    \begin{itemize}
+        \item es ist
+              \[ 
+                  e_{k, i}(x) 
+                  \begin{cases}
+                      \geq 0 & x \in [x_i, x_{i+1}], \\
+                      = 0    & \text{sonst}
+                  \end{cases}
+              \]
+        \item es gilt
+              \[ 
+                  \sum_{i = -k}^{n-1} e_{k, i}(x) = 1, \quad \forall x \in [x_0, x_n]
+              \]
+        \item Die Spline-Funktionen $e_{k, i}$ bilden eine Basis von $S_k(\Omega_n)$.
+    \end{itemize}
+    
+    Ein Beispiel sind die rekursiv definierten Funktionen $e_{k, i}(x)$ mit $k \geq 1$ und $i = -k, \ldots, n-1$
+    \[ 
+        e_{0, i}(x) = 
+        \begin{cases}
+            1 & \text{falls} \quad x \in [x_i, x_{i+1}], \\
+            0 & \text{sonst}
+        \end{cases}
+    \]
+    \[ 
+        e_{k, i}(x) = \frac{x - x_i}{x_{i+k} - x_i} \cdot e_{k-1, i}(x) + \frac{x_{i+k+1} - x}{x_{i+k+1} - x_{i+1}} \cdot e_{k-1, i+1}(x)
+    \]
+    
+    Die $e_{k, i}$ sind dann Basis-Splines auf dem Intervall $[x_0, x_n]$.
+\end{bonus}
+
+% \subsection{Interpolierende Kurven}
+
+% \begin{bonus}{Wiederholung Kurven}
+%     Der Graph einer stetigen Abbildung 
+%     \[ 
+%         \gamma : \R \supset [a, b] \to \R^m, \quad t \to \gamma(t)
+%     \]
+%     heißt \emph{Kurve} in $\R^m$.
+%     $t \in [a, b]$ ist der \emph{Kurvenparameter}.
+% \end{bonus}

@@ -1,0 +1,806 @@
+\section{Elementare Datenstrukturen}
+
+% ADTs
+\begin{defi}{Abstrakte Datentypen (ADTs)}
+    Anforderungen an die Definition eines Datentyps:
+    \begin{itemize}
+        \item \emph{Spezifikation} eines Datentyps unabhängig von der Implementierung
+        \item Reduzierung der von außen sichtbaren Aspekte auf die \emph{Schnittstelle} des Datentyps
+    \end{itemize}
+
+    Daraus entstehen \textbf{zwei Prinzipien}:
+    \begin{itemize}
+        \item \emph{Kapselung:}
+              \subitem Zu einem ADT gehört eine Schnittstelle.
+              \subitem Zugriffe auf den ADT erfolgen ausschließlich über die Schnittstelle.
+        \item \emph{Geheimnisprinzip:}
+              \subitem Interne Realisierung eines ADT-Moduls bleibt verborgen.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Homogene Datenstruktur}
+    In einer \emph{homogenen Datenstruktur} haben alle Komponenten den \emph{gleichen} Datentyp.
+\end{defi}
+
+\begin{defi}{Heterogene Datenstruktur}
+    In einer \emph{heterogenen Datenstruktur} haben die Komponenten \emph{unterschiedliche} Datentypen.
+\end{defi}
+
+\begin{bonus}{ADTs in Java}
+    Viele wichtige abstrakte Datentypen werden in Java durch \emph{Interfaces} beschrieben.
+
+    Es gibt ein oder mehrere Implementierungen dieser Interfaces mit unterschiedlichen dahinter stehenden Konzepten.
+
+    In Java: Package \texttt{java.util}
+
+    Wichtig in der Vorlesung:
+
+    \begin{tabular}{l|l|l}
+        ADT                     & Grund-ADT/Interface & Java-Klassen                      \\
+        \hline
+        Feld                    &                     & (Felder), HashMap                 \\
+        Liste                   & List                & ArrayList, LinkedList             \\
+        Menge                   & Set                 & HashSet, TreeSet                  \\
+        Prioritätswarteschlange &                     & PriorityQueue                     \\
+        Stack                   & List                &                                   \\
+        Queue                   & List                &                                   \\
+        Deque                   & List                & Deque (Interface), ArrayDeque     \\
+        Map                     & Set                 & Map (Interface), HashMap, TreeMap \\
+        BidiMap                 & Map                 & BidiMap, BiMap (Interface)        \\
+        MultiSet, Bag           & Map                 & Bag, Multiset (Interface)
+    \end{tabular}
+\end{bonus}
+
+\subsection{Abstrakte Datentypen}
+
+\begin{defi}{Array}
+    Ein \emph{Array} hat folgende spezielle Eigenschaften:
+    \begin{itemize}
+        \item Feste Anzahl an Datenobjekten
+        \item Auf jedes Objekt kann direkt lesend oder schreibend zugegriffen werden
+    \end{itemize}
+
+    \begin{center}
+        \begin{tikzpicture}[
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+                \node [StackBlock, label=$0$] (0) {};
+                \node [StackBlock, label=$1$] (1) {};
+                \node [StackBlock, label=$2$] (2) {};
+                \node [StackBlock, label=$3$] (3) {};
+                \node [StackBlock, label=$\ldots$] (d1) {};
+                \node [StackBlock, label=$k$] (k) {};
+                \node [StackBlock, label=$\ldots$] (d2) {};
+                \node [StackBlock, label=$n-1$] (n1) {};
+                \node [StackBlock, label=$n$] (n) {};
+            }
+        \end{tikzpicture}
+    \end{center}
+
+    \textbf{Performance:}
+
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c}
+            Zugriff     & Suche       & Einf./Lösch. (Anfang) & Einf./Lösch. (Ende) & Einf./Lösch. (Mitte) \\
+            \hline
+            $\Theta(1)$ & $\Theta(n)$ & -                     & -                   & -                    \\
+        \end{tabular}
+    \end{center}
+\end{defi}
+
+\begin{defi}{Liste}
+    Eine Liste besteht aus Elementen, die wie in einem Array linear angeordnet sind.
+    Auf die Elemente einer Liste muss nicht wahlfrei zugegriffen werden können\footnote{Eine Ausnahme stellt der Listenanfang dar.}.
+
+    Die Größe einer Liste ist nicht von Anfang an bekannt und sie kann beliebig verlängert bzw. verkürzt werden.
+\end{defi}
+
+\begin{defi}{Stack}
+    \begin{itemize}
+        \item Daten können an einem Ende hinzugefügt oder entnommen werden.
+    \end{itemize}
+
+    \begin{center}
+        \begin{tikzpicture}[
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+                \node [StackBlock,draw=none] (0) {};
+
+                \node [StackBlock,xshift=4em] (1) {};
+                \node [StackBlock] (2) {};
+                \node [StackBlock] (3) {};
+                \node [StackBlock] (4) {};
+                \node [StackBlock] (5) {};
+
+                \node [StackBlock,xshift=4em,draw=none] (6) {};
+
+                \draw[->] ([yshift=0.5em, xshift=0.25em] 5.east) [out=0, in=180] to ([yshift=0.5em, xshift=-0.25em] 6.west);
+                \draw[->] ([yshift=-0.5em, xshift=-0.25em] 6.west) [out=180, in=0] to ([yshift=-0.5em, xshift=0.25em] 5.east);
+            }
+        \end{tikzpicture}
+    \end{center}
+\end{defi}
+
+\begin{defi}{Queue}
+    \begin{itemize}
+        \item Daten können an einem Ende hinzugefügt und am anderen Ende entnommen werden.
+    \end{itemize}
+
+    \begin{center}
+        \begin{tikzpicture}[
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+                \node [StackBlock,draw=none] (0) {};
+
+                \node [StackBlock,xshift=4em] (1) {};
+                \node [StackBlock] (2) {};
+                \node [StackBlock] (3) {};
+                \node [StackBlock] (4) {};
+                \node [StackBlock] (5) {};
+
+                \node [StackBlock,xshift=4em,draw=none] (6) {};
+
+                \draw[<-] ([xshift=0.25em] 0.east) [out=0, in=180] to ([xshift=-0.25em] 1.west);
+                \draw[->] ([xshift=-0.25em] 6.west) [out=180, in=0] to ([xshift=0.25em] 5.east);
+            }
+        \end{tikzpicture}
+    \end{center}
+\end{defi}
+
+\begin{defi}{Deque (\glqq Double ended queue\grqq)}
+    \begin{itemize}
+        \item Daten können an beiden Enden hinzugefügt und entnommen werden.
+    \end{itemize}
+
+    \begin{center}
+        \begin{tikzpicture}[
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+                \node [StackBlock,draw=none] (0) {};
+
+                \node [StackBlock,xshift=4em] (1) {};
+                \node [StackBlock] (2) {};
+                \node [StackBlock] (3) {};
+                \node [StackBlock] (4) {};
+                \node [StackBlock] (5) {};
+
+                \node [StackBlock,xshift=4em,draw=none] (6) {};
+
+                \draw[->] ([yshift=0.5em, xshift=0.25em] 5.east) [out=0, in=180] to ([yshift=0.5em, xshift=-0.25em] 6.west);
+                \draw[->] ([yshift=-0.5em, xshift=-0.25em] 6.west) [out=180, in=0] to ([yshift=-0.5em, xshift=0.25em] 5.east);
+
+                \draw[<-] ([yshift=0.5em, xshift=0.25em] 0.east) [out=0, in=180] to ([yshift=0.5em, xshift=-0.25em] 1.west);
+                \draw[<-] ([yshift=-0.5em, xshift=-0.25em] 1.west) [out=180, in=0] to ([yshift=-0.5em, xshift=0.25em] 0.east);
+            }
+        \end{tikzpicture}
+    \end{center}
+\end{defi}
+
+\begin{bonus}{Prioritätswarteschlange}
+    Eine \emph{Prioritätswarteschlange} ist eine Warteschlange, deren Elemente einen Schlüssel (\emph{Priorität}) besitzen.
+
+    \textbf{Implementierung:}
+
+    In Java dient zur Implementierung die Klasse \texttt{PriorityQueue}, alternativ auch \texttt{TreeSet}.
+\end{bonus}
+
+% Mengen
+\begin{defi}{Menge}
+    Eine \emph{Menge (Set)} ist eine Sammlung von Elementen des gleichen Datentyps.
+    Innerhalb der Menge sind die Elemente ungeordnet.
+    Jedes Element kann nur einmal in der Menge vorkommen.
+
+    \textbf{Implementierung:}
+
+    In Java ist \emph{Set} ein Interface, das unter anderem folgende Klassen implementiert:
+    \begin{itemize}
+        \item \texttt{TreeSet}: Basiert auf der Datenstruktur Rot-Schwarz-Baum, implementiert Erweiterung \texttt{SortedMap}.
+        \item \texttt{HashSet}: Basiert auf der Datenstruktur Hashtabelle.
+    \end{itemize}
+\end{defi}
+
+% Assoziative Felder
+\begin{defi}{Assoziatives Feld}
+    Ein \emph{assoziatives Feld} ist eine Sonderform des Feldes:
+    \begin{itemize}
+        \item Verwendet keinen numerischen Index zur Adressierung eines Elements.
+        \item Verwendet zur Adressierung einen Schlüssel (z.B. \texttt{a["Meier"]}).
+    \end{itemize}
+
+    Assoziative Felder eignen sich dazu, Datenelemente in einer großen Datenmenge aufzufinden.
+    Jedes Datenelement wird durch einen \emph{eindeutigen Schlüssel} identifiziert.
+
+    \textbf{Implementierung:}
+
+    In Java entspricht ein \emph{assoziatives Feld} dem Interface \texttt{java.util.Map}, das folgende Klassen implementiert:
+    \begin{itemize}
+        \item \texttt{TreeMap}: Basiert auf der Datenstruktur Rot-Schwarz-Baum, implementiert Erweiterung \texttt{SortedMap}.
+        \item \texttt{HashMap}: Basiert auf der Datenstruktur Hashtabelle.
+    \end{itemize}
+\end{defi}
+
+\subsection{Datenstrukturen}
+% Listen
+\begin{defi}{Einfach verkettete Liste}
+    Im Vergleich zu einem Array kann eine \emph{Liste} schrumpfen und wachsen.
+
+    \begin{center}
+        \begin{tikzpicture}[
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+                \node [StackBlock, label=$0$] (0) {};
+                \node [StackBlock, label=\texttt{next}] (0p) {};
+                \node [StackBlock, label=$1$,xshift=2em] (1) {};
+                \node [StackBlock, label=\texttt{next}] (1p) {};
+                \node [StackBlock, label=$2$,xshift=2em] (2) {};
+                \node [StackBlock, label=\texttt{next}] (2p) {};
+                \node [StackBlock, label=$\ldots$,xshift=2em] (dots) {};
+                \node [StackBlock] (dotsp) {};
+                \node [StackBlock, label=$n$,xshift=2em] (n) {};
+                \node [StackBlock, label=\texttt{next}] (np) {};
+                \node [StackBlock, label=\texttt{null}, xshift=2em] (null) {};
+
+
+                \draw[->] (0p.center) [out=0, in=180] to (1.west);
+                \draw[->] (1p.center) [out=0, in=180] to (2.west);
+                \draw[->] (2p.center) [out=0, in=180] to (dots.west);
+                \draw[->] (dotsp.center) [out=0, in=180] to (n.west);
+                \draw[->] (np.center) [out=0, in=180] to (null.west);
+            }
+        \end{tikzpicture}
+    \end{center}
+
+    \textbf{Performance:}
+
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c}
+            Zugriff     & Suche       & Einf./Lösch. (Anfang) & Einf./Lösch. (Ende)                                                                                 & Einf./Lösch. (Mitte)   \\
+            \hline
+            $\Theta(n)$ & $\Theta(n)$ & $\Theta(1)$           & $\Theta(1)/\Theta(n)$\footnote{$\Theta(1)$, wenn das letzte Element bekannt ist, $\Theta(n)$ sonst} & Suchzeit + $\Theta(1)$ \\
+        \end{tabular}
+    \end{center}
+\end{defi}
+
+
+\begin{defi}{Doppelt verkettete Liste}
+    Im Vergleich zu einer einfach verketteten Liste besitzt die \emph{doppelt verkettete Liste} zusätzlich einen Verweis auf den Vorgänger.
+
+    \begin{center}
+        \begin{tikzpicture}[
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+                \node [StackBlock,label=\texttt{null}] (nulll) {};
+
+                \node [StackBlock,label={[label distance=-.35ex]above:\texttt{prev}}, xshift=2em] (0p) {};
+                \node [StackBlock,label=$0$] (0) {};
+                \node [StackBlock,label=\texttt{next}] (0n) {};
+                \node [StackBlock,label={[label distance=-.35ex]above:\texttt{prev}},xshift=2em] (1p) {};
+                \node [StackBlock,label=$1$] (1) {};
+                \node [StackBlock,label=\texttt{next}] (1n) {};
+                \node [StackBlock,xshift=2em] (dotsp) {};
+                \node [StackBlock,label=$\ldots$] (dots) {};
+                \node [StackBlock] (dotsn) {};
+                \node [StackBlock,label={[label distance=-.35ex]above:\texttt{prev}},xshift=2em] (np) {};
+                \node [StackBlock,label=$n$] (n) {};
+                \node [StackBlock,label=\texttt{next}] (nn) {};
+
+                \node [StackBlock,label=\texttt{null}, xshift=2em] (nullr) {};
+
+                %\draw[->] ([yshift=0.5em, xshift=0.25em] 5.east) [out=0, in=180] to ([yshift=0.5em, xshift=-0.25em] 6.west);
+
+                % next arrows
+                \draw[->] ([yshift=0.5em] 0n.center) [out=0, in=180] to ([yshift=0.5em] 1p.west);
+                \draw[->] ([yshift=0.5em] 1n.center) [out=0, in=180] to ([yshift=0.5em] dotsp.west);
+                \draw[->] ([yshift=0.5em] dotsn.center) [out=0, in=180] to ([yshift=0.5em] np.west);
+
+                \draw[->] (nn.center) [out=0, in=180] to (nullr.west);
+
+                % prev arrows
+                \draw[<-] ([yshift=-0.5em] 0n.east) [out=0, in=180] to ([yshift=-0.5em] 1p.center);
+                \draw[<-] ([yshift=-0.5em] 1n.east) [out=0, in=180] to ([yshift=-0.5em] dotsp.center);
+                \draw[<-] ([yshift=-0.5em] dotsn.east) [out=0, in=180] to ([yshift=-0.5em] np.center);
+
+                \draw[->] (0p.center) [out=180, in=0] to (nulll.east);
+            }
+        \end{tikzpicture}
+    \end{center}
+
+    \textbf{Performance:}
+
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c}
+            Zugriff     & Suche       & Einf./Lösch. (Anfang) & Einf./Lösch. (Ende) & Einf./Lösch. (Mitte)   \\
+            \hline
+            $\Theta(n)$ & $\Theta(n)$ & $\Theta(1)$           & $\Theta(1)$         & Suchzeit + $\Theta(1)$ \\
+        \end{tabular}
+    \end{center}
+\end{defi}
+
+% Dynamische Felder
+\begin{defi}{Dynamisches Feld}
+    Ein \emph{dynamisches Feld} besteht aus:
+    \begin{itemize}
+        \item Einem normalen Feld, das nicht vollständig gefüllt ist.
+        \item Einem Zeiger, der anzeigt, welches das erste unbesetzte Element ist.
+    \end{itemize}
+
+    \begin{center}
+        \begin{tikzpicture}[
+            %  -{Stealth[length = 2.5pt]},
+            start chain,
+            node distance = 0pt,
+            StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+            \node [StackBlock, fill=red!50, label=$0$] (0) {};
+            \node [StackBlock, fill=red!50, label=$1$] (1) {};
+            \node [StackBlock, fill=red!50, label=$2$] (2) {};
+            \node [StackBlock, fill=red!50, label=$3$] (3) {};
+            \node [StackBlock, fill=red!50, label=$\ldots$] (d1) {};
+            \node [StackBlock, label=$k$] (k) {};
+            \node [StackBlock, label=$\ldots$] (d2) {};
+            \node [StackBlock, label=$n-1$] (n1) {};
+            \node [StackBlock, label=$n$] (n) {};
+
+            { [continue chain = going below]
+            \chainin (k);
+            \node[StackBlock,yshift=-1em] (pointer) {$k$};
+            \draw[->] (pointer.north) [out=90, in=-90] to (k.south);
+            }
+
+            }
+            %\begin{scope}[-{Stealth[length = 2.5pt]}]
+            %\draw (1.north) [out=25, in=155] to (2.north);
+            %\draw (1.north) [out=30, in=155] to (3.north);
+            %\draw (1.north) [out=35, in=155] to (4.north);
+            %\draw (6.north) [out=40, in=155] to (6.north);
+            %\end{scope}
+            %\draw[decorate,decoration={brace, amplitude=10pt, raise=5pt, mirror}]
+            %(2.south west) to node[black,midway,below= 15pt] {$k$-elements} (7.south east);%
+
+        \end{tikzpicture}
+    \end{center}
+
+    \textbf{Performance:}
+
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c}
+            Zugriff     & Suche       & Einf./Lösch. (Anfang) & Einf./Lösch. (Ende)                                                                                     & Einf./Lösch. (Mitte) \\
+            \hline
+            $\Theta(1)$ & $\Theta(n)$ & $\Theta(n)$           & $\Theta(1)/\Theta(n)$\footnote{Wenn das Feld schon voll ist, muss der komplette Inhalt kopiert werden.} & $\Theta(n)$          \\
+        \end{tabular}
+    \end{center}
+
+    Damit ist ein dynamisches Feld gut für einen \emph{Stack} geeignet!
+\end{defi}
+
+% Zirkuläre dynamische Felder
+\begin{defi}{Zirkuläres (dynamisches) Feld}
+    Ein \emph{zirkuläres Feld} besitzt einen Speicher fester Größe.
+    Dabei speichern zwei Zeiger jeweils den Anfang (\texttt{head}) des Speichers, bzw. auf die nächste freie Speicheradresse (\texttt{tail}) im Speicher.
+
+    Wird ein Element am Anfang \glqq abgearbeitet\grqq, bewegt sich \texttt{head} eine Position weiter.
+    Wird ein Element am Ende eingefügt, bewegt sich \texttt{tail} eine Position weiter.
+    \begin{center}
+        \begin{tikzpicture}[
+            %  -{Stealth[length = 2.5pt]},
+            start chain,
+            node distance = 0pt,
+            StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+            { start chain = going right
+            \node [StackBlock,label=above:$15$] (15) {};
+            \node [StackBlock,label=above:$0$, fill=red!50] (0) {};
+            \node [StackBlock,label=above:$1$, fill=red!50] (1) {};
+            \node [StackBlock,label=above:$2$, fill=red!50] (2) {};
+            \node [StackBlock,label=above:$3$, fill=red!50] (3) {};
+
+            { [continue chain = going below]
+            \chainin (3);
+            \node [StackBlock,label=right:$4$, fill=red!50] (4) {};
+            \node [StackBlock,label=right:$5$] (5) {};
+            \node [StackBlock,label=below:$6$] (6) {};
+            }
+
+            { [continue chain = going left]
+            \chainin (6);
+            \node [StackBlock,label=below:$7$] (7) {};
+            \node [StackBlock,label=below:$8$] (8) {};
+            \node [StackBlock,label=below:$9$] (9) {};
+            \node [StackBlock,label=below:$10$] (10) {};
+            \node [StackBlock,label=below:$11$] (11) {};
+            }
+
+            { [continue chain = going above]
+            \chainin (11);
+            \node [StackBlock,label=left:$12$] (12) {};
+            \node [StackBlock,label=left:$13$] (13) {};
+            \node [StackBlock,label=above:$14$] (14) {};
+            }
+
+
+            { [continue chain = going above]
+            \chainin (0);
+            \node[StackBlock,yshift=2em,xshift=-0.5em,label=\texttt{head}] (head) {$0$};
+            \draw[->] (head.south) [out=-90, in=90] to (0.north west);
+            }
+
+            { [continue chain = going right]
+            \chainin (5);
+            \node[StackBlock,yshift=0.5em,xshift=2em,label=above:\texttt{tail}] (tail) {$9$};
+            \draw[->] (tail.west) [out=180, in=0] to (5.north east);
+            }
+            }
+            %\begin{scope}[-{Stealth[length = 2.5pt]}]
+            %\draw (1.north) [out=25, in=155] to (2.north);
+            %\draw (1.north) [out=30, in=155] to (3.north);
+            %\draw (1.north) [out=35, in=155] to (4.north);
+            %\draw (6.north) [out=40, in=155] to (6.north);
+            %\end{scope}
+            %\draw[decorate,decoration={brace, amplitude=10pt, raise=5pt, mirror}]
+            %(2.south west) to node[black,midway,below= 15pt] {$k$-elements} (7.south east);%
+
+        \end{tikzpicture}
+    \end{center}
+
+    \textbf{Performance:} (dynamisch, bei unterliegender Datenstruktur Array)
+
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c}
+            Zugriff     & Suche       & Einf./Lösch. (Anfang)                                                                                   & Einf./Lösch. (Ende)                              & Einf./Lösch. (Mitte) \\
+            \hline
+            $\Theta(1)$ & $\Theta(n)$ & $\Theta(1)/\Theta(n)$\footnote{Wenn das Feld schon voll ist, muss der komplette Inhalt kopiert werden.} & $\Theta(1)/\Theta(n)$\footnote{Siehe Fußnote a.} & $\Theta(n)$          \\
+        \end{tabular}
+    \end{center}
+
+    Damit ist ein zirkuläres (dynamisches) Feld gut für eine \emph{Queue/Deque} geeignet!
+\end{defi}
+
+% Verkettete Listen
+
+\subsection{Hashing}
+
+% Hashtabellen
+
+\begin{defi}{Hashfunktion}
+    Eine Hashfunktion oder Streuwertfunktion ist eine Abbildung $h : S \to I$, die eine große Eingabemenge, die Schlüssel $S$, auf eine kleinere Zielmenge, die Hashwerte $I$, abbildet.\footnote{Eine Hashfunktion ist daher im Allgemeinen nicht injektiv, aber surjektiv.}
+
+    Die Bildmenge $h(S) \subseteq I$ bezeichnet die Menge der \emph{Hash-Indizes}.
+
+
+    \begin{center}
+        \begin{tikzpicture}[
+            %  -{Stealth[length = 2.5pt]},
+            start chain = going {right=of \tikzchainprevious.north east},
+            KeyBlock/.style={minimum width=4em, minimum height=2em, outer sep=0pt, on chain},
+            HashBlock/.style={minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            FunctionBlock/.style={minimum width=10em, minimum height=26em, outer sep=0pt, on chain, very thick,fill=blue!20},
+            every node/.style={draw, label distance=0.5em},
+            every on chain/.style={anchor=north west},
+            node distance=4em
+            ]
+            {
+            \node [KeyBlock, label=above:Schlüssel] (k0) {Jürgen};
+            \node [FunctionBlock, label=above:Hashfunktion] (fun) {};
+            \node [HashBlock, label=above:Hashwerte] (h00) {00};
+
+            { [continue chain = going {below=of \tikzchainprevious.south west}, node distance=2em]
+            \chainin (k0);
+            \node [KeyBlock] (k1) {Felix};
+            \node [KeyBlock] (k2) {Finn};
+            \node [KeyBlock] (k3) {Tim};
+            \node [KeyBlock] (k4) {Benno};
+            \node [KeyBlock] (k5) {Lukas};
+            \node [KeyBlock] (k6) {Julia};
+            }
+
+            { [continue chain = going {below=of \tikzchainprevious.south west}, node distance=0pt]
+            \chainin (h00);
+            \node [HashBlock] (h01) {01};
+            \node [HashBlock] (h02) {02};
+            \node [HashBlock] (h03) {03};
+            \node [HashBlock] (h04) {04};
+            \node [HashBlock] (h05) {05};
+            \node [HashBlock] (h06) {06};
+            \node [HashBlock] (h07) {07};
+            \node [HashBlock] (h08) {08};
+            \node [HashBlock] (h09) {09};
+            \node [HashBlock] (h10) {10};
+            \node [HashBlock] (hdots) {$\ldots$};
+            \node [HashBlock] (h15) {15};
+            }
+
+            \draw[->] (k0.east) -- ++(2, 0) -- ($(h05.west)-(2,0)$) -- (h05.west);
+            \draw[->] (k1.east) -- ++(2, 0) -- ($(h09.west)-(2,0)$) -- (h09.west);
+            \draw[->] (k2.east) -- ++(2, 0) -- ($(h00.west)-(2,0)$) -- (h00.west);
+            \draw[->] (k3.east) -- ++(2, 0) -- ($(h15.west)-(2,0)$) -- (h15.west);
+            \draw[->] (k4.east) -- ++(2, 0) -- ($(h02.west)-(2,0)$) -- (h02.west);
+            \draw[->] (k5.east) -- ++(2, 0) -- ($(h10.west)-(2,0)$) -- (h10.west);
+            \draw[->] (k6.east) -- ++(2, 0) -- ($(h03.west)-(2,0)$) -- (h03.west);
+            }
+        \end{tikzpicture}
+    \end{center}
+\end{defi}
+
+\begin{example}{Divisions-Hash}
+    Die \emph{Divisionsrest-Methode (Divisions-Hash)} um Integer zu hashen wird definiert durch:
+    $$
+        h(x) = x \operatorname{mod} N
+    $$
+
+    Sie wird bevorzugt, wenn die Schlüsselverteilung nicht bekannt ist.
+    Etwaige Regelmäßigkeiten in der Schlüsselverteilung sollte sich nicht in der Adressverteilung auswirken. Daher sollte $N$ eine Primzahl sein.
+\end{example}
+
+\begin{example}{Hashfunktionen für verschiedene Datentypen}
+    \begin{itemize}
+        \item Alle Datenypen: Verwenden der Speicheradresse
+        \item Strings: ASCII/Unicode-Werte addieren (evtl. von einigen Buchstaben, evtl. gewichtet)
+    \end{itemize}
+\end{example}
+
+\begin{defi}{Kollision}
+    Sei $S$ eine Schlüsselmenge und $h$ eine Hashfunktion.
+    Ist
+    $$
+        s_1, s_2 \in S, \ s_1 \neq s_2 : h(s_1) = h(s_2)
+    $$
+    so spricht man von einer \emph{Kollision}.
+
+    Die Wahrscheinlichkeit von Kollisionen ist abhängig von der gewählten Hashfunktion.
+    Hashfunktionen sollten also möglichst gut \emph{streuen}, aber dennoch effizient berechenbar sein.
+
+    \begin{center}
+        \begin{tikzpicture}[
+            %  -{Stealth[length = 2.5pt]},
+            start chain = going {right=of \tikzchainprevious.north east},
+            KeyBlock/.style={minimum width=4em, minimum height=2em, outer sep=0pt, on chain},
+            HashBlock/.style={minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            FunctionBlock/.style={minimum width=10em, minimum height=26em, outer sep=0pt, on chain,fill=blue!20},
+            every node/.style={draw, label distance=0.5em},
+            every on chain/.style={anchor=north west},
+            node distance=4em
+            ]
+            {
+            \node [KeyBlock, label=above:Schlüssel, very thick] (k0) {Jürgen};
+            \node [FunctionBlock, label=above:Hashfunktion] (fun) {};
+            \node [HashBlock, label=above:Hashwerte] (h00) {00};
+
+            { [continue chain = going {below=of \tikzchainprevious.south west}, node distance=2em]
+            \chainin (k0);
+            \node [KeyBlock] (k1) {Felix};
+            \node [KeyBlock] (k2) {Finn};
+            \node [KeyBlock] (k3) {Tim};
+            \node [KeyBlock] (k4) {Benno};
+            \node [KeyBlock] (k5) {Lukas};
+            \node [KeyBlock, very thick] (k6) {Julia};
+            }
+
+            { [continue chain = going {below=of \tikzchainprevious.south west}, node distance=0pt]
+            \chainin (h00);
+            \node [HashBlock] (h01) {01};
+            \node [HashBlock] (h02) {02};
+            \node [HashBlock] (h03) {03};
+            \node [HashBlock] (h04) {04};
+            \node [HashBlock, very thick] (h05) {05};
+            \node [HashBlock] (h06) {06};
+            \node [HashBlock] (h07) {07};
+            \node [HashBlock] (h08) {08};
+            \node [HashBlock] (h09) {09};
+            \node [HashBlock] (h10) {10};
+            \node [HashBlock] (hdots) {$\ldots$};
+            \node [HashBlock] (h15) {15};
+            }
+
+            \draw[->, very thick, color=red] (k0.east) -- ++(2, 0) -- ($(h05.west)-(2,0)$) -- (h05.west);
+            \draw[->] (k1.east) -- ++(2, 0) -- ($(h09.west)-(2,0)$) -- (h09.west);
+            \draw[->] (k2.east) -- ++(2, 0) -- ($(h00.west)-(2,0)$) -- (h00.west);
+            \draw[->] (k3.east) -- ++(2, 0) -- ($(h15.west)-(2,0)$) -- (h15.west);
+            \draw[->] (k4.east) -- ++(2, 0) -- ($(h02.west)-(2,0)$) -- (h02.west);
+            \draw[->] (k5.east) -- ++(2, 0) -- ($(h10.west)-(2,0)$) -- (h10.west);
+            \draw[->, very thick, color=red] (k6.east) -- ++(2, 0) -- ($(h05.west)-(2,0)$) -- (h05.west);
+            }
+        \end{tikzpicture}
+    \end{center}
+
+\end{defi}
+
+\begin{defi}{Kollisionsbehandlung}
+    Um Kollisionen zu handhaben, existieren verschiedene Strategien:
+    \begin{itemize}
+        \item \emph{Hashing mit Verkettung}
+              \begin{itemize}
+                  \item Hashtabelle besteht aus $N$ linearen Listen
+                  \item $h(s)$ gibt dann an, in welche Teilliste der Datensatz gehört
+                  \item Daten werden innerhalb der Teillisten sequentiell gespeichert
+              \end{itemize}
+        \item \emph{Hashing mit offener Adressierung}
+              \begin{itemize}
+                  \item Suchen einer alternativen Position innerhalb des Feldes
+                        \begin{enumerate}
+                            \item Lineares Sondieren (Verschiebung um konstantes Intervall)
+                            \item Doppeltes Hashing (Nutzen einer weiteren Hashfunktion)
+                            \item Quadratisches Sondieren (Intervall wird quadriert)
+                        \end{enumerate}
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Schrittzahl}
+    Die \emph{Schrittzahl} $S(s)$, die nötig ist, um den Datensatz mit Schlüssel $s$ zu speichern bzw. wiederzufinden, setzt sich z.B. beim Hashing mit Verkettung zusammen aus:
+    \begin{itemize}
+        \item der Berechnung der Hash-Funktion und
+        \item dem Aufwand für die Suche bzw. Speicherung innerhalb der Teilliste.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Füllgrad}
+    Der \emph{Füllgrad} einer Hashtabelle ist der Quotient
+    $$
+        \alpha = \frac{n}{N}
+    $$
+    mit
+    \begin{itemize}
+        \item $N$ als Größe der Hashtabelle
+        \item $n$ als Anzahl der gespeicherten Datensätze
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Schrittzahl beim Suchen in Teillisten}
+    Bei idealer Speicherung entfallen $\alpha$ Elemente auf jede Teilliste.
+    Dabei gilt:
+    \begin{itemize}
+        \item erfolgreiche Suche: $c_1 + c_2 \cdot \frac{\alpha}{2}$
+        \item erfolglose Suche: $c_1 + c_2 \cdot \alpha$
+    \end{itemize}
+    Damit ist der Suchaufwand in $\bigo(\alpha) = \bigo(\frac{n}{N})$.
+
+    Wird der Füllgrad $\alpha$ zu groß, sollte die Hashtabelle vergrößert werden.
+\end{example}
+
+\begin{defi}{Dynamisches Hashing}
+    Um viele Kollisionen zu vermeiden, muss die Hashtabelle ab einem gewissen Füllgrad vergrößert werden.\footnote{nach Sedgewick sollte stets $\alpha < 0.5$ gelten}
+
+    Als Folge muss die gesamte Hashtabelle aber auch neu aufgebaut werden.
+\end{defi}
+
+\begin{defi}{Offene Adressierung (Sondieren)}
+    Beim Speichern wird bei \emph{Hashing mit offener Adressieren (Sondierung)} so lang ein neuer Hashindex berechnet, bis dort ein freier Speicherplatz vorhanden ist.
+
+    Das Suchen funktioniert analog, allerdings ist das Löschen sehr aufwändig.
+
+    \begin{itemize}
+        \item Lineares Sondieren
+              \begin{itemize}
+                  \item Wird die Ersatzadresse bei jeder Kollision durch Erhöhen der alten Adresse um 1 berechnet, so spricht man von \emph{linearem Sondieren (linear probing)}.
+                  \item Die $i$-te Ersatzadresse für einen Schlüssel $s$ mit Hashindex $h(s)$ wird also wie folgt berechnet:
+                        $$
+                            h_i(s) = (h(s) + i) \operatorname{mod} N
+                        $$
+              \end{itemize}
+        \item Doppeltes Hashing
+              \begin{itemize}
+                  \item Schlüssel wird nicht um $1$ erhöht, sondern der Inkrement wird mit einer zweiten Hashfunktion berechnet.
+                  \item Beseitigt praktisch die Probleme der primären und sekundären Häufung.
+                  \item Nicht alle Felder werden durchprobiert. Im ungünstigsten Fall kann eine neues Element nicht eingefügt werden, auch wenn noch Felder frei sind.
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Primäre und sekundäre Häufung}
+    Bei der \emph{primären Häufung (primary clustering)} ist die Wahrscheinlichkeit, dass Plätze in einem dichtbelegten Bereich eher besetzt werden, deutlich höher.
+    Es kommt also zu Kettenbildung.
+
+    Besonders häufig tritt primäre Häufung z.B. beim linearen Sondieren auf.
+
+    \begin{center}
+        \begin{tikzpicture}
+            [
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+
+            \node [draw, minimum width=2em, minimum height=2em] (val) {$s$};
+
+            { start chain = going right
+            \node [StackBlock,right=2cm of val,fill=red!30] (0) {};
+            \node [StackBlock] (1) {};
+            \node [StackBlock] (2) {};
+            \node [StackBlock,fill=red!30] (3) {};
+            \node [StackBlock,fill=red!30] (4) {};
+            \node [StackBlock,fill=red!30] (5) {};
+            \node [StackBlock,fill=red!30] (6) {};
+            \node [StackBlock,fill=red!30] (7) {};
+            \node [StackBlock] (8) {$s$};
+            \node [StackBlock] (9) {};
+
+            \draw[->] (val.south) [out=-30, in=-150] to (4.south);
+            \draw[->] (4.south) [out=-45, in=-135] to (5.south);
+            \draw[->] (5.south) [out=-45, in=-135] to (6.south);
+            \draw[->] (6.south) [out=-45, in=-135] to (7.south);
+            \draw[->] (7.south) [out=-45, in=-135] to (8.south);
+            }
+        \end{tikzpicture}
+    \end{center}
+
+
+    Die \emph{sekundäre Häufung (secondary clustering)} hängt von der Hashfunktion ab.
+    Dabei durchlaufen zwei Schlüssel $h(s)$ und $h(s')$ stets dieselbe Sondierungsfolge.
+    Sie behindern sich also auf den Ausweichplätzen.
+
+    Besonders häufig tritt sekundäre Häufung z.B. beim quadratischen Sondieren auf.
+
+
+    \begin{center}
+        \begin{tikzpicture}
+            [
+                %  -{Stealth[length = 2.5pt]},
+                start chain,
+                node distance = 0pt,
+                StackBlock/.style={draw, minimum width=2em, minimum height=2em, outer sep=0pt, on chain},
+            ]
+
+            \node [minimum width=2em, minimum height=2em] (val) {};
+
+            { start chain = going right
+            \node [StackBlock,right=2cm of val] (0) {};
+            \node [StackBlock,fill=red!30] (1) {};
+            \node [StackBlock,fill=red!30] (2) {};
+            \node [StackBlock,fill=red!30] (3) {};
+            \node [StackBlock] (4) {};
+            \node [StackBlock,fill=red!30] (5) {};
+            \node [StackBlock] (6) {};
+            \node [StackBlock] (7) {};
+            \node [StackBlock] (8) {$s$};
+            \node [StackBlock] (9) {$s'$};
+
+            { [continue chain = going above]
+            \chainin (val);
+            \node [StackBlock] (val1) {$s$};
+            }
+
+            { [continue chain = going below]
+            \chainin (val);
+            \node [StackBlock] (val2) {$s'$};
+            }
+
+            \draw[->] (val1.east) [out=0, in=150] to (2.north);
+            \draw[->] (2.north) [out=45, in=135] to (3.north);
+            \draw[->] (3.north) [out=45, in=135] to (5.north);
+            \draw[->] (5.north) [out=45, in=135] to (8.north);
+
+            \draw[->] (val2.east) [out=0, in=-150] to (2.south);
+            \draw[->] (2.south) [out=-45, in=-135] to (3.south);
+            \draw[->] (3.south) [out=-45, in=-135] to (5.south);
+            \draw[->] (5.south) [out=-45, in=-135] to (8.south);
+            \draw[->] (8.south) [out=-45, in=-135] to (9.south);
+            }
+        \end{tikzpicture}
+    \end{center}
+\end{defi}

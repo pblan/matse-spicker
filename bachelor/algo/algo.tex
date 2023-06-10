@@ -1,0 +1,171 @@
+\documentclass[german]{../spicker}
+
+\usepackage{amsmath}
+
+\usepackage{graphicx}
+\usepackage{tabularx, multirow}
+\usepackage{forest}
+\usepackage{color, colortbl}
+
+\usetikzlibrary{tikzmark,bbox,calc,automata,arrows.meta,chains,decorations.pathreplacing,scopes,shapes.misc,shapes.multipart}
+
+\definecolor{javared}{rgb}{0.6,0,0} % for strings
+\definecolor{javagreen}{rgb}{0.25,0.5,0.35} % comments
+\definecolor{javapurple}{rgb}{0.5,0,0.35} % keywords
+\definecolor{javadocblue}{rgb}{0.25,0.35,0.75} % javadoc
+ 
+\lstset{language=Java,
+basicstyle=\ttfamily,
+keywordstyle=\color{javapurple}\bfseries,
+stringstyle=\color{javared},
+commentstyle=\color{javagreen},
+morecomment=[s][\color{javadocblue}]{/**}{*/},
+tabsize=4,
+showspaces=false,
+showstringspaces=false}
+
+\tikzset{
+    weight/.style = {
+        scale=0.7,
+        },
+    prim node/.style = {
+        fill = blue!50,
+        text = white,
+        },
+    prim edge/.style = {
+        draw=blue,
+        very thick,
+        },
+    current/.style = {
+        fill = teal!50,
+        },
+    marked/.style = {
+        fill = teal!25,
+        },
+    visited/.style = {
+        fill = teal!30,
+        %text=white,
+        opacity = 0.5,
+    },
+    new/.style = {
+        red,
+    },
+    index small/.style = {
+        minimum width=1.5em,
+        minimum height=0.5em,
+        fill = gray!25,
+    },
+    index/.style = {
+        minimum width=2em,
+        minimum height=0.5em,
+        fill = gray!25,
+    },
+    every state/.style = {
+        minimum size=2em
+    }
+}
+
+\forestset{%
+empty node/.style = {
+    dashed,
+    opacity = .2, 
+    fill opacity = 0.2,
+    edge = {opacity=.2},
+    },
+r/.style = {
+    fill = red!50,
+    text=white,
+    draw=red,
+    calign angle=30,
+    calign=fixed edge angles,
+    %fill opacity = 0.5,
+},
+b/.style = {
+    fill = black!50,
+    text=white,
+    draw=black,
+    calign angle=30,
+    calign=fixed edge angles,
+    %fill opacity = 0.5,
+},
+rbn/.style = { %red black not defined
+    fill = blue!50,
+    text=white,
+    draw=black,
+    calign angle=30,
+    calign=fixed edge angles,
+    %fill opacity = 0.5,
+},
+nil/.style = {
+    fill = black!50,
+    minimum size=1em,
+    calign angle=30,
+    calign=fixed edge angles,
+    %fill opacity = 0.5,
+},
+mpn/.style args = {#1/#2/#3/#4}{draw,
+rectangle split, rectangle split horizontal,
+rectangle split parts=4,
+on chain=A,
+draw=black!50,
+node contents={ \nodepart{one}    $#1$
+                \nodepart{two}    $#2$
+                \nodepart{three}  $#3$
+                \nodepart{four}   $#4$}
+                            },
+}
+
+\newcommand\mpnc[4]{\nodepart{one}      $#1$
+                    \nodepart{two}      $#2$                    
+                    \nodepart{three}    $#3$
+                    \nodepart{four}     $#4$
+                    }
+
+\addbibresource{algo.bib}
+
+\title{Algorithmen}
+\author{Patrick Gustav Blaneck}
+\makeindex[intoc]
+\makeindex[intoc, name=Beispiele,title=Beispiele]
+
+\newenvironment{allintypewriter}{\ttfamily}{\par}
+
+\newcommand{\BF}{\operatorname{BF}} 
+\newcommand{\vektor}[1]{\begin{pmatrix*}[c] #1 \end{pmatrix*}}
+
+\pgfmathsetmacro\twopi{2*pi}
+
+\pgfmathdeclarefunction{lngamma}{1}{%
+  \pgfmathsetmacro\lngammatmp{#1*#1*#1}%
+  \pgfmathparse{%
+    #1*ln(#1) - #1 - .5*ln(#1/\twopi)
+    + 1/12/#1 - 1/360/\lngammatmp + 1/1260/\lngammatmp/#1/#1
+  }%
+}  
+
+\pgfmathdeclarefunction{facreal}{1}{%
+  \pgfmathparse{exp(lngamma(#1+1))}% 
+}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\include{grundbegriffe.tex}
+
+\include{datenstrukturen.tex}
+
+\include{baeume.tex}
+
+\include{graphen.tex}
+
+\include{formale_sprachen.tex}
+
+\include{sortierverfahren.tex}
+
+\printindex
+\printindex[Beispiele]
+
+\printbibliography
+\end{document}
