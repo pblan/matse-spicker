@@ -1,0 +1,37 @@
+name: Compile Spicker
+on:
+  workflow_call:
+    inputs:
+        spicker-handle:
+          required: true
+          type: string
+        spicker-path:
+          required: true
+          type: string
+        spicker-fullname:
+          required: true
+          type: string
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Compiling LaTeX
+        uses: xu-cheng/latex-action@v2
+        env:
+         TEXINPUTS: ".:./tex//:"
+        with:
+          latexmk_use_xelatex: true
+          latexmk_shell_escape: true
+          working_directory: ${{ inputs.spicker-path }}
+          root_file: |
+            ${{ inputs.spicker-handle }}.tex
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ inputs.spicker-fullname }}
+          path: ${{ inputs.spicker-path }}/${{ inputs.spicker-handle }}.pdf
