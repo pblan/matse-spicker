@@ -1,5 +1,5 @@
 # from https://github.com/zoomoid/assignments/blob/main/tex/.gitignore
-**/*.cls
+# **/*.cls
 **/*.glo
 **/*.aux
 **/*.log
