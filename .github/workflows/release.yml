@@ -32,7 +32,7 @@ jobs:
         with:
           latexmk_use_xelatex: true
           latexmk_shell_escape: true
-          working_directory: ${{ steps.tag-info.outputs.folder_path }}/${{ steps.tag-info.outputs.subject }}
+          working_directory: ${{ steps.tag-info.outputs.folder_path }}
           root_file: |
             ${{ steps.tag-info.outputs.subject }}.tex
 
