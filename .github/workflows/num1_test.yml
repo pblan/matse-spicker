@@ -17,8 +17,8 @@ on:
 
 jobs:
   compile:
-    uses: ./.github/actions/compile.yml
-      with:
-        spicker-handle: num1
-        spicker-path: / 
-        spicker-fullname: Numerik 1
+    uses: pblan/matse-spicker/.github/workflows/compile.yml@main
+    with:
+       spicker-handle: num1
+       spicker-path: / 
+       spicker-fullname: Numerik 1
