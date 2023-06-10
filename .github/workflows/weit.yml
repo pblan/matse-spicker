@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: weit
        spicker-fullname: Web-Engineering und Internettechnologien
+       spicker-path: bachelor/weit

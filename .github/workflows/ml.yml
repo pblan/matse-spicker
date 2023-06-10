@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: ml
        spicker-fullname: Einführung in Machine Learning
+       spicker-path: bachelor/ml

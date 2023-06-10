@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: ds
        spicker-fullname: Einführung in Data Science
+       spicker-path: bachelor/ds

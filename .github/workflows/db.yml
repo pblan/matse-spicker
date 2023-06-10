@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: db
        spicker-fullname: Datenbanken
+       spicker-path: bachelor/db

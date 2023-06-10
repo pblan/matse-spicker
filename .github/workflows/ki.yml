@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: ki
        spicker-fullname: Einführung in Künstliche Intelligenz
+       spicker-path: bachelor/ki

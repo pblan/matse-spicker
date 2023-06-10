@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: mct
        spicker-fullname: Microcontrollertechnik
+       spicker-path: bachelor/mct

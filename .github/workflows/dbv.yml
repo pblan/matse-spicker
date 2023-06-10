@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: dbv
        spicker-fullname: Digitale Bildverarbeitung
+       spicker-path: master/dbv

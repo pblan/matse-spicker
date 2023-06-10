@@ -16,5 +16,5 @@ jobs:
     uses: pblan/matse-spicker/.github/workflows/compile.yml@main
     with:
        spicker-handle: num1
-       spicker-path: bachelor/num1
        spicker-fullname: Numerik 1
+       spicker-path: bachelor/num1

@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: kosy
        spicker-fullname: Einführung in Kommunikationssysteme
+       spicker-path: bachelor/kosy

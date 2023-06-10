@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: swt
        spicker-fullname: Softwaretechnik
+       spicker-path: bachelor/swt

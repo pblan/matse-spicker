@@ -17,3 +17,4 @@ jobs:
     with:
        spicker-handle: sm
        spicker-fullname: Statistische Modellierung
+       spicker-path: master/sm
