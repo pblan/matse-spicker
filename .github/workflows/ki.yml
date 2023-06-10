@@ -2,15 +2,9 @@ name: Einführung in Künstliche Intelligenz
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/ki/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/ki/**
 

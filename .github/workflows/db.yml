@@ -2,15 +2,9 @@ name: Datenbanken
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/db/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/db/**
 

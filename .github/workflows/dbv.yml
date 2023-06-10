@@ -2,15 +2,9 @@ name: Digitale Bildverarbeitung
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - master/dbv/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - master/dbv/**
 

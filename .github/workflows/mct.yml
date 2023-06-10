@@ -2,15 +2,9 @@ name: Microcontrollertechnik
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/mct/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/mct/**
 

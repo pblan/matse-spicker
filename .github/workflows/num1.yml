@@ -2,15 +2,9 @@ name: Numerik 1
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/num1/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/num1/**
 

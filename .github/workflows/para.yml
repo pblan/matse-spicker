@@ -2,15 +2,9 @@ name: Paralelle Rechnerarchitekturen
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - master/para/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - master/para/**
 

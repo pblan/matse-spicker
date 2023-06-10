@@ -2,15 +2,9 @@ name: Web-Engineering und Internettechnologien
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/weit/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/weit/**
 

@@ -2,15 +2,9 @@ name: Kommunikationssysteme
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/kosy/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/kosy/**
 

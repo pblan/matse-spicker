@@ -2,15 +2,9 @@ name: Einführung in Data Science
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/ds/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/ds/**
 

@@ -2,15 +2,9 @@ name: Softwaretechnik
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/swt/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/swt/**
 

@@ -2,15 +2,9 @@ name: Stochastik
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/sto/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/sto/**
 

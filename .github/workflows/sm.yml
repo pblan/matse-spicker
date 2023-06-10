@@ -2,15 +2,9 @@ name: Statistische Modellierung
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - master/sm/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - master/sm/**
 

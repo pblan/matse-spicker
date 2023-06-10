@@ -2,15 +2,9 @@ name: Einführung in Machine Learning
 
 on:
   push:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/ml/**
   pull_request:
-    branches:
-      - main
-      - development
     paths:
       - bachelor/ml/**
 
