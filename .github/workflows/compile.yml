@@ -24,6 +24,7 @@ jobs:
         env:
          TEXINPUTS: ".:$PWD/tex/latex/spicker//:"
         with:
+          pre_compile: "echo $PWD;" 
           latexmk_use_xelatex: true
           latexmk_shell_escape: true
           working_directory: ${{ inputs.spicker-path }}
