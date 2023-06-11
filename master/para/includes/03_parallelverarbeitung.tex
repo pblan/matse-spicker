@@ -1,15 +1,39 @@
-\section{Parallelverarbeitung}
+\section{Parallelverarbeitung}\label{sec:parallelverarbeitung}
 
 \begin{defi}{Parallelverarbeitung}
-
+    Durch Aufteilung einer Aufgabe in Teilaufgaben,
+    die gleichzeitig bearbeitet werden können,
+    soll eine Leistungssteigerung erzielt werden.\\
+    Man unterscheidet:
+    \begin{itemize}
+        \item[Sequentielle Verarbeitung:] nacheinander ausführen der Teilaufgaben
+        \item[Parallele Verarbeitung:] es gibt Zeitabschnitte in der Verarbeitung, in der Teilaufgaben gleichzeitig bearbeitet werden
+    \end{itemize}
+    \underline{Voraussetzungen:}
+    \begin{enumerate}
+        \item Aufteilungsmöglichkeit existiert und wird erkannt
+        \item mehrere Bearbeiter stehen zur Verfügung
+        \item gleichzeitig $\to$ möglichst unabhängig
+    \end{enumerate}
 \end{defi}
 
 \begin{defi}[Parallelverarbeitung]{Domain Decomposition}
-
+    Statische oder dynamische Aufteilung eines Datengebiets in Bereiche gleicher Prozessorarbeit.
+    Alle Gebiete werden mit demselben Programmteil parallel verarbeitet.
+    \begin{itemize}[$\to$]
+        \item Kommunikation erfordert \enquote{enggekoppelte} Prozessoren
+        \item geeignet für homogene Plattformen
+        \item am häufigsten verwendet in HPC
+    \end{itemize}
 \end{defi}
 
 \begin{defi}[Parallelverarbeitung]{Functional Decomposition}
-
+    Unterschiedliche Programmteile, Unterprogramme,
+    Module werden auf Prozessoren verteilt und parallel bearbeitet.
+    \begin{itemize}[$\to$]
+        \item verschiedene Rechnerarchitekturen für unterschiedliche Programmteile einsetzbar
+        \item aufwändiger zu Implementieren
+    \end{itemize}
 \end{defi}
 
 \begin{bonus}{Modular Supercomputing Architecture}
@@ -17,29 +41,84 @@
 \end{bonus}
 
 \begin{defi}{Speedup}
+    \ldots ist ein Maß für die Bewertung der Verarbeitung eines einzelnen Auftrages (Passagiers).
+\end{defi}
 
+\begin{defi}{Durchsatz}
+    \ldots ist ein Maß für die Bewertung der Verarbeitung einer gesamten Arbeitslast
+    (mit welchem Flugzeug kann eine Fluggesellschaft mehr Personen befördern ?).
 \end{defi}
 
 \begin{defi}{Amdahl's Law}
-
+    \begin{align}
+        \text{Speedup }S(p)=
+        \frac{\text{Laufzeit (sequentiell)}}{\text{Laufzeit (parallel)}} =
+        \frac{T_s}{T_S \cdot f + (1-f) \cdot \frac{T_s}{p}}
+    \end{align}
+    mit:
+    \begin{itemize}
+        \item $p:$ Anzahl der parallelen Bearbeitungselemente (Prozessoren)
+        \item $T_s:$ Laufzeit für die sequentielle Bearbeitung der gesamten Aufgabe
+        \item $f:$ Anteil der Laufzeit, die für Teile verbraucht wird, die nicht parallel ablaufen können
+    \end{itemize}
+    für:
+    \begin{itemize}
+        \item $p\to\infty: S(\infty) = \frac{1}{f} \text{, oder} T(\infty) = f \cdot T_s$
+        \item $f\to 0: S(p) = p \text{, oder} T(p) = \frac{T_s}{p}$
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Effizienz}
-
+    Effizienz definiert das Verhältnis von Speedup und eingesetzter Prozessoranzahl.
+    Sie drückt aus, welcher Anteil der Prozessorleistung nutzbar ist.
+    \begin{align}
+        E(p) = \frac{S(p)}{p} =
+        \frac{T(\text{sequentiell})}{p\cdot T(\text{parallel})},
+        0<E(p)\leq 1
+    \end{align}
 \end{defi}
 
 \begin{example}[Speedup]{Skalarprodukt}
-
+    Paralleler Algorithmus:
+    \begin{enumerate}
+        \item Aufteilen in $p$ Teilvektoren der Länge $\frac{n}{p}$
+        \item jeder Prozessor berechnet das Skalarprodukt des Teilvektors $T_* (p) = \left(2 \cdot \frac{n}{p} - 1\right) \cdot t_\text{flop}$
+        \item die Ergebnisse werden zu Prozessor 1 übertragen $T_t (p) = (p - 1) \cdot (t_\text{startup} + t_\text{word})$
+        \item und Addition der Teilergebnisse (reduzieren) $T_+ (p) = (p - 1) \cdot t_\text{flop}$
+    \end{enumerate}
+    für $p=2^d$:
+    \begin{align*}
+        S(p) = \frac{T(\text{seq})}{T(p)} = \ldots =
+        \frac{p}{\frac{p(\frac{2n}{p} + d-1)}{2n-1} + \frac{p\cdot d\cdot (t_\text{startup} + t_\text{word})}{(2n - 1)t_\text{flop}}}
+    \end{align*}
+    bei $n\gg p$:
+    \begin{align*}
+        \approx\frac{p}{
+            \underbrace{1 + p\cdot \log_2 p}_{\text{Algorithmus}} \cdot
+            \underbrace{\frac{1}{2n}}_{\text{Problemgröße}} \cdot
+            \underbrace{\frac{t_\text{startup}}{t_\text{flop}}}_{\text{Hardware}}}
+    \end{align*}
 \end{example}
 
 \begin{example}[Effizienz]{Skalarprodukt}
-
+    \begin{align*}
+        E(p)\approx\frac{1}{1 + p\cdot\log_2 p\cdot \frac{1}{2n} \cdot \frac{t_\text{startup}}{t_\text{flop}}}
+    \end{align*}
+    Die Effizienz \emph{steigt} mit wachsender Problemgröße $n$ (bei $p$ fest) und
+    \emph{sinkt} bei größerer Prozessoranzahl $p$ (mit $n$ fest)
 \end{example}
 
 \begin{defi}{Skalierbarkeit}
-
+    Eine Rechnerarchitektur bzw.\ ein Programm ist skalierbar,
+    wenn die Effizienz der Programmbearbeitung bei wachsender Prozessorzahl gleich bleibt.
 \end{defi}
 
 \begin{defi}{Pipelining}
-
+    Henry Ford hat 1913 mit Produktionsbeginn der \enquote{Tin Lizzy} als erster das Fließband in die industrielle Fabrikation eingeführt.
+    Prinzip: Ein komplexer Vorgang wird in eine Sequenz von einfacheren Teilaufgaben zerlegt. \\
+    Vorteile:
+    \begin{itemize}
+        \item Höherer Durchsatz ($\frac{\text{Lizzy}}{h}$)
+        \item Vereinfachung (und damit auch eine schnellere Bearbeitung) der Teilaufgaben (CISC $\to$ RISC)
+    \end{itemize}
 \end{defi}
