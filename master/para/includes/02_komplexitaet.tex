@@ -1,27 +1,99 @@
-\section{Komplexität}
+\section{Komplexität}\label{sec:komplexitaet}
 
 \begin{defi}{Komplexität}
-
+    \begin{itemize}
+        \item \ldots \emph{eines Algorithmus:} asymptotischer Aufwand (für $n\to\infty$) der Implementierung
+        \item \ldots \emph{eines Problems:} minimale Komplexität aus einer Menge möglicher Algorithmen, die das Problem lösen
+    \end{itemize}
+    Die Komplexitätsanalyse untersucht z.B.:
+    \begin{itemize}
+        \item Wie viel Rechenzeit wird bei einer gegebenen Problemgröße $n$ benötigt?
+        \item Wie ändert sich der Rechenzeitbedarf beim Anstieg von $n$?
+        \item Ist der Rechenzeitbedarf noch realistisch und welcher Rechner kann das Problem in überschaubarer Zeit abarbeiten?
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Problemgröße}
-
+    Die Problemgröße $n$ eines Programms/Algorithmus ist der Parameter,
+    der den Aufwand für die benötigte Rechenzeit \underline{oder} den benötigten Speicher bestimmt.
 \end{defi}
 
 \begin{example}[Komplexität]{Matrixmultiplikation}
-
+    Problemgröße: $n$, ges.: $f(n)$ Anzahl der Rechen-Operationen in Abhängigkeit von der Matrix-Größe\\
+    Notwendige Rechenzeit ist dann z.B.:
+    \[T(n)=a\cdot f(n) + t_b\]
+    mit $a$: Rechenzeit für eine Rechen- (Gleitkomma-) Operation,\\
+    $b$: Rechenzeit für die Initialisierung und Beendigung des Algorithmus\\
+    Formale Matrixmultiplikation:
+    \[c_{i, j} = \sum\limits_{k=1}^{n}a_{i, k}\cdot b_{k, j}\]
+    Bestimmung von $f(n)$: für jedes Element von $c$ sind $n$ Multiplikationen und $n-1$ Additionen durchzuführen.
+    Also ergibt sich bei $n^2$ Elementen von $c$:
+    \[f(n)=2\cdot n^3 - n^2\]
 \end{example}
 
 \begin{example}[Komplexität]{Strassen-Winograd}
-
+    Effiziente Matrixmultiplikation:
+    \begin{itemize}
+        \item Matrizen werden in je vier Teilmatrizen der Größe $\frac{n}{2} \times \frac{n}{2}$ zerlegt:
+        \begin{align}
+            \begin{pmatrix}
+                A_{11} & A_{12} \\
+                A_{21} & A_{22}
+            \end{pmatrix}
+            \cdot
+            \begin{pmatrix}
+                B_{11} & B_{12} \\
+                B_{21} & B_{22}
+            \end{pmatrix}
+            =
+            \begin{pmatrix}
+                C_{11} & C_{12} \\
+                C_{21} & C_{22}
+            \end{pmatrix}
+        \end{align}
+        \item Zusätzlich werden sieben neue Matrizen definiert:
+        \begin{itemize}
+            \item $M_1 = (A_{12} - A_{22})\cdot(B_{21} + B_{22})$,
+            \item $M_2 = (A_{11} + A_{22})\cdot(B_{11} + B_{22})$,
+            \item $M_3 = (A_{11} - A_{21})\cdot(B_{11} + B_{12})$,
+            \item $M_4 = (A_{11} + A_{12})\cdot B_{22}$,
+            \item $M_5 = A_{11}\cdot(B_{21} - B_{22})$,
+            \item $M_6 = A_{22}\cdot(B_{21} - B_{11})$,
+            \item $M_7 = (A_{21} - A_{22})\cdot B_{11}$
+        \end{itemize}
+        \item Die vier Teilmatrizen der Ergebnismatrix ergeben sich damit wie folgt:
+        \begin{itemize}
+            \item $C_{11} = M_1 + M_2 - M_4 + M_6$
+            \item $C_{12} = M_4 + M_5$
+            \item $C_{21} = M_6 + M_7$
+            \item $C_{22} = M_2 - M_3 + M_5 - M_7$
+        \end{itemize}
+    \end{itemize}
+    Komplexität: $O(n^{\log_2 7})\approx O(n^2.807)$
 \end{example}
 
 \begin{defi}{Landau-Notation}
-
+    Edmund Landau hat mit dem $O$-Symbol eine Notation geliefert,
+    die den bestimmenden Term einer Funktion bezeichnet. \\
+    $O(g(n))$ bezeichnet eine Klasse von Funktionen, wobei
+    \[f(n) \in O(g(n))\]
+    bedeutet, dass $f(n)$ höchstens so schnell wächst wie $g(n)$,
+    das heißt, es gibt zwei positive Konstanten $c$ und $n_0$,
+    für die gilt:
+    \[|f(n)| \leq c \cdot |g(n)| \forall n \geq n_0\]
+    (Definition hier nur für Funktionen über natürliche Zahlen)
 \end{defi}
 
 \begin{example}{Komplexitätsklassen}
-
+    \begin{tabular}{|l|l|}
+        $O(1)$        & das Programm wird nur einmal linear durchlaufen, ohne von der Problemgröße abzuhängen (d.h. ohne Schleifen über $n$) $\to$ konstante Rechenzeit \\
+        $O(\log n)$   & z.B.\ bei Zerlegung von Problemen in Teilprobleme und Bearbeitung eines Teilproblems (binäre Suche)                                             \\
+        $O(n)$        & Algorithmen mit Schleifen $i = n_0 \ldots n$ (sequentielle Suche)                                                                               \\
+        $O(n \log n)$ & z.B.\ bei Zerlegung des Problems in Teilprobleme mit Bearbeitung aller Teilprobleme (Quicksort)                                                 \\
+        $O(n^2)$      & z.B.\ verschachtelte Schleifen (Paarweiser Vergleich)                                                                                           \\
+        $O(n^3)$      & z.B.\ dreifach verschachtelten Schleifen (Matrixmultiplikation)                                                                                 \\
+        $O(2n)$       & z.B.\ Suche in allen Kombinationen, Paaren oder Teilmengen
+    \end{tabular}
 \end{example}
 
 
