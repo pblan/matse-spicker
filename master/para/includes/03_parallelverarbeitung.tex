@@ -50,11 +50,11 @@
 \end{defi}
 
 \begin{defi}{Amdahl's Law}
-    \begin{align}
+    \begin{align*}
         \text{Speedup }S(p)=
         \frac{\text{Laufzeit (sequentiell)}}{\text{Laufzeit (parallel)}} =
         \frac{T_s}{T_S \cdot f + (1-f) \cdot \frac{T_s}{p}}
-    \end{align}
+    \end{align*}
     mit:
     \begin{itemize}
         \item $p:$ Anzahl der parallelen Bearbeitungselemente (Prozessoren)
@@ -71,11 +71,11 @@
 \begin{defi}{Effizienz}
     Effizienz definiert das Verhältnis von Speedup und eingesetzter Prozessoranzahl.
     Sie drückt aus, welcher Anteil der Prozessorleistung nutzbar ist.
-    \begin{align}
+    \begin{align*}
         E(p) = \frac{S(p)}{p} =
         \frac{T(\text{sequentiell})}{p\cdot T(\text{parallel})},
         0<E(p)\leq 1
-    \end{align}
+    \end{align*}
 \end{defi}
 
 \begin{example}[Speedup]{Skalarprodukt}
