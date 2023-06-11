@@ -16,7 +16,6 @@
 \LoadClass[a4paper,parskip=half-,DIV=15,fontsize=11pt]{scrartcl}
 
 % Enable own macros
-\RequirePackage{colors}
 \RequirePackage{operators}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
