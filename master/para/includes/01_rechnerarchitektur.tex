@@ -1,6 +1,6 @@
-\section{Rechnerarchitekturen}
+\section{Rechnerarchitekturen}\label{sec:rechnerarchitekturen}
 
-\subsection{Einführung}
+\subsection{Einführung}\label{subsec:einfuehrung}
 
 \begin{defi}{Struktur}
     Unter \emph{Struktur} versteht man die Art der Verknüpfung der verschiedenen Hardwarekomponenten eines Rechner miteinander.
@@ -11,7 +11,7 @@
 \begin{defi}{Organisation}
     \emph{Organisation} steht für die zeitabhängigen Wechselwirkungen zwischen Komponenten und die Steuerung dieser Komponenten.
 
-    Dise Wechselwirkungen können \emph{dynamisch} sein.
+    Diese Wechselwirkungen können \emph{dynamisch} sein.
 \end{defi}
 
 \begin{defi}{Implementierung}
@@ -26,28 +26,28 @@
     Sie gibt die \emph{Geschwindigkeit} eines Systems an.
 \end{defi}
 
-\subsection{Von-Neumann-Rechner}
+\subsection{Von-Neumann-Rechner}\label{subsec:von-neumann-rechner}
 
 \begin{defi}{Von-Neumann-Rechner}
     Der \emph{Von-Neumann-Rechner} besteht aus folgenden Werken:
     \begin{itemize}
         \item \emph{Eingabe- bzw. Ausgabewerk:}
-              \begin{itemize}
-                  \item Schnittstelle zur Außenwelt
-              \end{itemize}
+        \begin{itemize}
+            \item Schnittstelle zur Außenwelt
+        \end{itemize}
         \item \emph{Leitwerk:}
-              \begin{itemize}
-                  \item interpretiert Befehle
-                  \item steuert Abläufe
-              \end{itemize}
+        \begin{itemize}
+            \item interpretiert Befehle
+            \item steuert Abläufe
+        \end{itemize}
         \item \emph{Haupt- bzw. Arbeitsspeicher:}
-              \begin{itemize}
-                  \item Speicher für Daten und Befehle
-              \end{itemize}
+        \begin{itemize}
+            \item Speicher für Daten und Befehle
+        \end{itemize}
         \item \emph{Rechenwerk:}
-              \begin{itemize}
-                  \item führt arithmetische und logische Operationen aus
-              \end{itemize}
+        \begin{itemize}
+            \item führt arithmetische und logische Operationen aus
+        \end{itemize}
     \end{itemize}
 
     Die Struktur des Rechners ist unabhängig von der Aufgabe, die er lösen soll.
@@ -63,48 +63,89 @@
 \end{defi}
 
 \begin{defi}[Von-Neumann-Rechner]{Arbeitsweise}
-
+    \begin{itemize}
+        \item Das Programm besteht aus einer \emph{Folge von Befehlen} (Instruktion),
+        die nacheinander (sequentiell) ausgeführt werden.
+        \item Von der Folge kann durch bedingte und unbedingte Sprungbefehle abgewichen werden, die die Programmfortsetzung an einer anderen Zelle bewirken.
+        (Die bedingten Sprünge sind von gespeicherten Werten abhängig)
+        \item Die Maschine benutzt Binärcodes, Zahlen werden dual dargestellt.
+        Befehle und andere Daten müssen geeignet kodiert werden.
+        Bitfolgen im Speicher sind nicht selbstidentifizierend.
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Flaschenhals}
-
+    \begin{itemize}
+        \item Prozessor/Speicherschnittstelle ist kritisch für die Leistung des Gesamtsystems
+        \item Daten werden vom Prozessor schneller verarbeitet als sie aus dem Speicher gelesen oder in den Speicher geschrieben werden können
+        \item Durch Fortschritte in der Halbleitertechnik wurde die Diskrepanz zwischen Prozessorgeschwindigkeit und Speicherzugriffszeiten immer größer $\to$ \textbf{Flaschenhals (bottleneck)}
+    \end{itemize}
 \end{defi}
 
-\subsection{Rechenleistung}
+\subsection{Rechenleistung}\label{subsec:rechenleistung}
 
-\begin{defi}{Clock-Rate}
-
+\begin{defi}{Leistung}
+    Physikalisch: $P = \frac{W}{t}$, mit Leistung $P$, Arbeit $W$ und Zeit $t$
 \end{defi}
 
-\begin{defi}{FLOPS}
+\begin{defi}{Arbeit}
+    Die Bearbeitung \ldots
+    \begin{itemize}
+        \item \ldots einer Instruktion (rechnerabhängig)
+        \item \ldots einer Gleitkomma-Operation
+        \item \ldots eines standardisierten Programms (Benchmark)
+    \end{itemize}
+\end{defi}
 
+\begin{defi}[Leistungsmaß]{Clock-Rate}
+    Die Taktfrequenz (engl.\ Clock-Rate) misst die Anzahl der Takte oder Zyklen, die von der CPU pro Sekunde durchgeführt werden in GHz (Gigahertz).
+\end{defi}
+
+\begin{defi}[Leistungsmaß]{FLOPS}
+    Floating Point Operations Per Second
 \end{defi}
 
 \begin{bonus}{Top500}
-
+    \begin{itemize}
+        \item Erstellung der Liste der 500 schnellsten Rechner der Welt (2x pro Jahr)
+        \item Leistungskriterium: Benchmark-Programme aus dem Gebiet der linearen Algebra (Linpack)
+    \end{itemize}
+    Aufbau:
+    \begin{tabular}{|l|l|}
+        Manufacturer      & Manufacturer or vendor                     \\
+        Computer Type     & Indicated by manufacturer or vendor        \\
+        Installation Site & Customer                                   \\
+        Location          & Location and country                       \\
+        Year              & Year of installation / last major update   \\
+        Customer Segment  & Academic, Research, Industry, Vendor Class \\
+        \# Processors     & Number of processors                       \\
+        R max             & Maximal LINPACK performance achieved       \\
+        R peak            & Theoretical peak performance               \\
+        N max             & Problem size for achieving R max           \\
+        N 1/2             & Problem size for achieving half of R max   \\
+        N world           & Position within the TOP500 ranking         \\
+    \end{tabular}
 \end{bonus}
 
 \begin{bonus}{Transistoren und Clock-Rate}
+    Die Weiterentwicklung bei der Chipherstellung (Lithographie) führt zu feineren Strukturen auf einem Chip.
 
+    Was passiert, wenn Leiterbahnen und Schaltelemente um einen Faktor $x$ schrumpfen ?
+    \begin{itemize}
+        \item Clock-Rate $f$ wächst um Faktor $x$ (Stromverbrauch, Abwärme $T \sim f^2$)
+        \item Die Anzahl der Transistoren pro Fläche wächst mit $x^2$
+        \item Die Rechenleistung des Chips wächst mit $x^4$ (aber der Zuwachs um $x^3$ beruht auf Architektur)
+    \end{itemize}
 \end{bonus}
+
+\begin{defi}{Moore's Law}
+    \label{defi:moores_law}
+    \emph{Gordon Moore} (Mitbegründer von Intel) sagte 1965 voraus:
+    \fbox{Die Anzahl der Transistoren auf einem Halbleiterchip verdoppelt sich ungefähr alle 18 Monate.}
+    \[N = a\cdot 10^{\frac{1}{5}\cdot t}\]
+\end{defi}
 
 \begin{bonus}{Leistungslücke Prozessor-Memory}
-
+    Aufgrund von~\nameref{defi:moores_law} wächst der \enquote{Performance Gap} (die Lesitungslücke) um ca.\ 50\% pro Jahr,
+    da bisher die CPU-Performance um ca.\ 60\% pro Jahr und die DRAM-Performance nur um ca.\ 7\% pro Jahr gewachsen ist.
 \end{bonus}
-
-\begin{defi}{Rekurrenzgleichung}
-
-\end{defi}
-
-\begin{example}{Rekurrenzgleichung}
-
-\end{example}
-
-\begin{defi}{Master-Theorem}
-
-\end{defi}
-
-\begin{example}{Master-Theorem}
-
-\end{example}
-

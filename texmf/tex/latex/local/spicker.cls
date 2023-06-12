@@ -108,6 +108,7 @@
 \usepackage{blindtext}
 \usepackage{footnote}
 \usepackage{pdfpages}
+\usepackage{tabularx}
 
 \usepackage{nicefrac}
 \usepackage{polynom}
@@ -282,11 +283,11 @@
 % https://xyquadrat.ch/2022/04/04/latex-boxes/
 \tcbset {
     base/.style={
-            arc=0mm, 
+            arc=0mm,
             % bottomtitle=0.5mm,
             boxrule=0mm,
             % colbacktitle=black!10!white, 
-            coltitle=white, 
+            coltitle=white,
             left=2.5mm,
             leftrule=2pt,
             rightrule=0pt,
@@ -309,7 +310,7 @@
     \fi
     \label{defi:#2}%
     \begin{tcolorbox}[%
-            colbacktitle=fhmint!75!black, 
+            colbacktitle=fhmint!75!black,
             colback=fhmint!5!white,%
             colframe=fhmint!75!black,%
             base={#2},%
@@ -337,7 +338,7 @@
         ]%
         }%
         {%
-        
+
     \end{tcolorbox}}
 
 
@@ -349,7 +350,7 @@
     \fi
     \label{bonus:#2}%
     \begin{tcolorbox}[%
-            colbacktitle=fhred!75!black, 
+            colbacktitle=fhred!75!black,
             colback=fhred!5!white,%
             colframe=fhred!75!black,%
             base={#2},%
@@ -377,7 +378,7 @@
         ]%
         }%
         {%
-        
+
     \end{tcolorbox}}
 
 
@@ -389,7 +390,7 @@
     \fi
     \label{example:#2}%
     \begin{tcolorbox}[%
-            colbacktitle=fhblue!75!black, 
+            colbacktitle=fhblue!75!black,
             colback=fhblue!5!white,%
             colframe=fhblue!75!black,%
             base={#2},%
@@ -417,7 +418,7 @@
         ]%
         }%
         {%
-        
+
     \end{tcolorbox}}
 
 \newenvironment{algo}[1]{%
@@ -473,7 +474,7 @@
 % Citations 
 
 \usepackage[
-    style=numeric, 
-    backend=bibtex, 
+    style=numeric,
+    backend=bibtex,
     sorting=none
 ]{biblatex}
