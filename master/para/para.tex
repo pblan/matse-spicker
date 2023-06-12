@@ -14,9 +14,20 @@
 \makeindex[intoc]
 \makeindex[intoc, name=Beispiele,title=Beispiele]
 
+% Setup for SI units
+\sisetup{
+  per-mode=fraction,
+  fraction-function=\tfrac
+}
+\DeclareSIUnit{\flops}{FLOPS}
+\DeclareSIUnit{\cores}{cores}
+\DeclareSIUnit{\cycle}{cycle}
+\DeclareSIUnit{\cycles}{cycles}
+
 \begin{document}
 \maketitle
 \tableofcontents
+\disclaimer
 
 \include{includes/01_rechnerarchitektur}
 \include{includes/02_komplexitaet}
