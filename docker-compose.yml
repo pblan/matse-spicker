@@ -6,7 +6,7 @@ services:
     image: ghcr.io/pblan/latex:latest
     volumes:
       # required
-      - tex:/root/tex/
+      - ./tex:/root/tex/
       # change lines below if necessary
       - ../matse-spicker:/mnt/matse-spicker/
     tty: true
