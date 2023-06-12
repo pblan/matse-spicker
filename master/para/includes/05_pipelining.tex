@@ -2,53 +2,80 @@
 \section{Pipelining}
 
 \begin{defi}{Pipelining}
-
+    Durch Aufteilen einer Instruktion in Teile, 
+    die in separaten Funktionseinheiten bearbeitet werden können, 
+    ist eine überlappte (pseudo-parallele) Verarbeitung der Instruktionen möglich.
 \end{defi}
 
 \begin{defi}[Pipelining]{Funktionseinheiten}
-
+    Eine 5-stufige Pipeline (z.B. MIPS-Prozessor) wird aus folgenden Funktionseinheiten gebildet:
+    \begin{itemize}
+        \item[IF:] Instruction Fetch
+        \item[ID:] Instruction Decode
+        \item[EX:] Execution
+        \item[MEM:] Memory Access
+        \item[WB:] Write Back
+    \end{itemize}
 \end{defi}
 
 \begin{defi}[Pipelining]{Latenz}
-
+    Wie groß ist die Laufzeit für eine einzelne Instruktion?
+    \[T_\text{instr} = T_\text{IF} + T_\text{ID} + T_\text{EX} + T_\text{MEM} + T_{WB}\]
 \end{defi}
 
 \begin{defi}[Pipelining]{Durchsatz}
-
+    Wie oft pro Zeiteinheit wird eine Instruktion fertig ?
+    \[X = \frac{1}{\max(T_\text{IF}, T_\text{ID}, T_\text{EX}, T_\text{MEM}, T_{WB})}\]
 \end{defi}
 
 \begin{defi}{Superskalarität}
-
+    
 \end{defi}
 
-\begin{defi}{Instruction Level Parallelism}
-
+\begin{defi}{Instruction Level Parallelism (ILP)}
+    Ziel bei ILP ist es, 
+    alle Funktionseinheiten aller Pipelines ohne Unterbrechungen (bubbles) ständig arbeiten zu lassen.
 \end{defi}
 
 \begin{defi}{Hazards}
-
+    \begin{itemize}
+        \item \underline{Structural hazards:}
+              Die HW kann nicht eine bestimmte Aufeinanderfolge von Instruktionen ausführen.
+        \item \underline{Data hazards:}
+              Instruktionen hängen vom Ergebnis vorheriger Schritte ab, 
+              die noch nicht die Pipeline verlassen haben.
+        \item \underline{Control hazards:}
+              Zwischen dem \enquote{fetch} von Instruktionen und dem Ändern des Kontrollflusses (branch) entstehen Verzögerungen.
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Schleifenparallelisierung}
-
+    Ziel ist es, 
+    den Schleifenkörper ohne stottern durch die vorhandenen Funktionsinheiten zu schicken.
+    Dazu sind Abhängigkeiten zwischen den Anweisungen zu finden und, 
+    wenn möglich, zu beseitigen.
 \end{defi}
 
 \begin{defi}{Abhängigkeitsgraph}
-
+    
 \end{defi}
 
 \begin{defi}{Predication}
-
+    Mit der Predication-Methode können bestimmte Control Hazards (branches) aufgelöst werden, 
+    z. B. 'If-then-else'-Konstrukte
 \end{defi}
 
 \begin{defi}{Data Speculation}
-
+    Durch Umstellen der Befehlsreihenfolge (z. B. Laden von Daten) kann Parallelität erhöht werden.
 \end{defi}
 
 \begin{defi}{Control Speculation}
-
+    Durch Umstellen der Befehlsreihenfolge (z. B. Ausführung von Operationen) kann Parallelität erhöht werden.
 \end{defi}
 
 \begin{defi}{Attached-Processor-Systeme}
-
+    Eine zusätzliche Einheit, 
+    die in einer Multiprozessor-Umgebung an die primäre CPU angeschlossen ist. 
+    Sie arbeitet als Erweiterung der primären CPU und 
+    nutzt die Systemsoftware und Peripheriegeräte gemeinsam.
 \end{defi}

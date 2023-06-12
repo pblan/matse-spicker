@@ -1,124 +1,182 @@
 \section{Mehrprozessorsysteme}
 
 \begin{defi}{Flynn'sche Klassifikation}
-
+    Von Flynn wurde 1972 eine sehr grobe aber heute noch häufig genutzte Unterscheidung von Parallelrechnern eingeführt.
+    Sie orientiert sich an der Anzahl der gleichzeitig vorhandenen Instruktions- und Datenströme.
+    
+    Parallelrechner:
+    \begin{itemize}
+        \item[SISD] Single Instruction Single Data (Von Neumann-Rechner $\to$ kein paralleles System)
+        \item[SIMD] Single Instruction Multiple Data
+        \item[MISD] Multiple Instruction Single Data $\to$ \textbf{irrelevant!}
+        \item[MIMD] Multiple Instruction Multiple Data
+    \end{itemize}
 \end{defi}
 
 \begin{bonus}[Flynn'sche Klassifikation]{Erweiterungen}
-
+    \begin{itemize}
+        \item[SIMD] Single Instruction Multiple Data
+        \begin{itemize}
+            \item Vektor-Prozessoren (auch Mischformen mit MIMD vorhanden!)
+            \item Array-Prozessoren
+        \end{itemize}
+        \item[MIMD] Multiple Instruction Multiple Data
+        \begin{itemize}
+            \item Speichergekoppelte Multiprozessoren
+            \begin{itemize}
+                \item Unified Memory Architecture (UMA)
+                \item Non-Uniform Memory Access (NUMA)
+            \end{itemize}
+            \item Nachrichtengekoppelte Multiprozessoren
+            \begin{itemize}
+                \item Massively Parallel Processing (MPP)
+                \item Cluster Of Workstations (COW)
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
 \end{bonus}
 
 \subsection{Speichergekoppelte Systeme}
 
 \begin{defi}{Speichergekoppelte Systeme}
+    Bei speichergekoppelten Multiprozessoren arbeiten alle Prozessoren in einem einheitlichen Adressraum.
+    
+    Je nach physiklischer Speicherorganisation unterscheidet man:
+    \begin{itemize}
+        \item Symmetrische Multiprozessoren (SMP, symmetric multiprocessor), 
+        bei denen gleichartige Prozessoren über ein Verbindungsnetzwerk mit einem gemeinsamen Speicher verbunden sind
+        \item Distributed-Shared-Memory Systeme, 
+        bei denen zwar ein einheitlicher Adressraum existiert, 
+        aber die Speicher physikalisch auf einzelnen Verarbeitungsknoten verteilt sind
+    \end{itemize}
 
+    \emph{Bemerkungen:}
+    \begin{itemize}
+        \item Speichergekoppelte Multiprozessoren gelten als einfacher programmierbar gegenüber nachrichtengekoppelten Multiprozessoren
+        \item Nutzbare Parallelität reicht von der Programmebene bis zur Blockebene
+        \item Autoparallelisierende Compiler nutzen insbesondere die Parallelisierung der Schleifenebene (einzelne Iterationen nebenläufig abarbeitbar)
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Uniform Memory Access}
-
+    Kapitel 5 Seite 8
 \end{defi}
 
 \begin{defi}{Non-Uniform Memory Access}
-
+    Kapitel 5 Seite 9
 \end{defi}
 
 \begin{defi}{Nachrichtengekoppelte Systeme}
-
+    Kapitel 5 Seite 10
 \end{defi}
 
 \subsection{Verbindungsnetzwerke}
 
 \begin{defi}{Verbindungsnetzwerk}
+     Ein Verbindungsnetzwerk ermöglicht den Datenaustausch (und die Verteilung des Programms) zwischen den Prozessoren.
+
+     Um einen hohen Datentransfer zu erhalten, 
+     wird eine große Anzahl von Drähten benötigt!
+
+     Ein VN gleicht einer Straße:
+     \begin{itemize}
+        \item Link = Straße
+        \item Switch = Kreuzung 
+        \item Distance/Hops = Anzahl der zurückgelegten Straßenblöcke
+        \item Routing algorithm = Reiseplan
+     \end{itemize}
 
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Latenz}
-
+    Zeit für den Transfer zwischen den Knoten
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Bandbreite}
-
+    \[\frac{\text{transferierte Daten}}{\text{Zeit}}\]
+    Bandbeite eines Link: $\text{bw} = w \cdot \frac{1}{t}\frac{\text{bit}}{\text{sec}}$
+    mit $w$: Anzahl der Drähte
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Durchmesser}
-
+    maximale Distanz zwischen zwei beliebigen Prozessoren
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Topologie}
-
+    Wie sind die Nachbarknoten angeordnet und erreichbar?
 \end{defi}
 
 \subsubsection{Statische Verbindungsnetzwerke}
 
 \begin{defi}{Lineare Anordnung}
-
+    
 \end{defi}
 
 \begin{defi}{Ring}
-
+    
 \end{defi}
 
 \begin{defi}{Torus}
-
+    
 \end{defi}
 
 \begin{defi}{Gitter}
-
+    
 \end{defi}
 
 \begin{defi}{Hypercube}
-
+    
 \end{defi}
 
 \begin{defi}{Baum}
-
+    
 \end{defi}
 
 \subsubsection{Dynamische Verbindungsnetzwerke}
 
 \begin{defi}{Bus}
-
+    
 \end{defi}
 
 \begin{defi}{Crossbar}
-
+    
 \end{defi}
 
 \begin{defi}{Zeilenbasierte Systeme}
-
+    
 \end{defi}
 
 \begin{defi}{Einstufige Netzwerke}
-
+    
 \end{defi}
 
 \begin{defi}{Mehrstufige Netzwerke}
-
+    
 \end{defi}
 
 \begin{defi}{Omega-Netzwerk}
-
+    
 \end{defi}
 
 \begin{defi}{Benes-Netzwerk}
-
+    
 \end{defi}
 
 \subsubsection{Cluster-Interconnects}
 
 \begin{defi}{Cluster-Interconnect}
-
+    
 \end{defi}
 
 \begin{defi}{Infiniband}
-
+    
 \end{defi}
 
 \begin{defi}{Gigabit Ethernet}
-
+    
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Klassifikation}
-
+    
 \end{defi}
 

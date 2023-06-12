@@ -107,18 +107,31 @@
 
 \subsection{Entwicklungslinien der Prozessoren}\label{subsec:entwicklungslinien-der-prozessoren}
 
-\begin{defi}{CISC}
-    Complex Instruction Set Computer
+\begin{defi}{Complex Instruction Set Computer (CISC)}
+    Befehls-Code ist Index auf Zeiger-Array für Mikroprogramm,
+    die Hardware führt die Sequenz der Mikrobefehle aus.
 \end{defi}
 
-\begin{defi}{RISC}
-    Reduced Instruction Set Computer
+\begin{defi}{Reduced Instruction Set Computer (RISC)}
+    Der Compiler erzeugt direkt \enquote{Mikrobefehle}. 
+    Es muss zwar mehr Code erzeugt werden, 
+    aber die Hardware wird einfacher und damit auch schneller.
 \end{defi}
 
-\begin{defi}{VLIW}
-    Very Long Instruction Word
+\begin{defi}{Very Long Instruction Word (VLIW)}
 \end{defi}
 
-\begin{defi}{EPIC}
-    Explicitly Parallel Instruction Computing
+\begin{defi}{Explicitly Parallel Instruction Computing (EPIC)}
+    Von HP und Intel wurde 1998/99 die Prozessorarchitektur EPIC entworfen 
+    und mit dem Intel Itanium ein erster Prozessor realisiert. 
+    Die Intel-Version der Architektur wird IA-64 (64 bit) genannt.
+
+    EPIC ist die moderne Weiterentwicklung des Konzepts des VLIW.
+    
+    Hierbei versucht der Compiler, 
+    möglichst viele voneinander unabhängige Instruktionen in einer Sequenz zusammenzustellen. 
+    Er kann dabei durch Umstellen der Befehle die Reihenfolge innerhalb der Sequenz verändern. 
+    Dies darf aber nicht zu anderen Ergebnissen führen!
+    
+    Eine solche Sequenz nennt Intel ein “bundle”.
 \end{defi}
