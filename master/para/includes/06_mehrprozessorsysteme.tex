@@ -109,57 +109,65 @@
 \subsubsection{Statische Verbindungsnetzwerke}
 
 \begin{defi}{Lineare Anordnung}
-    
+    Kapitel 5 Seite 16
 \end{defi}
 
 \begin{defi}{Ring}
-    
+    Kapitel 5 Seite 16
 \end{defi}
 
 \begin{defi}{Torus}
-    
+    Kapitel 5 Seite 16/17/18
 \end{defi}
 
 \begin{defi}{Gitter}
-    
+    Kapitel 5 Seite 17
 \end{defi}
 
 \begin{defi}{Hypercube}
-    
+    Kapitel 5 Seite 19
 \end{defi}
 
 \begin{defi}{Baum}
-    
+    Kapitel 5 Seite 21
 \end{defi}
 
 \subsubsection{Dynamische Verbindungsnetzwerke}
 
 \begin{defi}{Bus}
-    
+    \begin{itemize}
+        \item Durch die wahlweise Zuschaltung einzelner Verarbeitungsknoten zum Datentransfer an einen Bus ist das Bussystem eine typische dynamische Verbindungseinrichtung
+        \item Der Bus bildet die Engstelle im busgekoppelten Multiprozessorsystem,
+        so dass auch Doppelbusse oder allgemein Mehrfachbusse eingesetzt werden
+        \item Bussysteme und auch Mehrbussysteme werden für Systeme mit höchstens 30 Prozessoren eingesetzt, 
+        um Zugiffskonflikte in Grenzen zu halten
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Crossbar}
     
 \end{defi}
 
-\begin{defi}{Zeilenbasierte Systeme}
-    
+\begin{defi}{Zellenbasierte Systeme}
+    Zellen mit 2 Eingängen und 2 Ausgägen bilden die Basis für solche Systeme
 \end{defi}
 
 \begin{defi}{Einstufige Netzwerke}
-    
+    Eine Spalte von Schaltzellen wird durch Rückkopplung der Ausgänge auf die Eingänge Verbunden. 
+    Die Zellen werden mehrfach durchlaufen.
 \end{defi}
 
 \begin{defi}{Mehrstufige Netzwerke}
-    
+    Mehrere Spalten von Schaltzellen, auch mit Rückführungen, 
+    sind fest miteinander verbunden.
 \end{defi}
 
 \begin{defi}{Omega-Netzwerk}
-    
+    Kapitel 5 Seite 29
 \end{defi}
 
 \begin{defi}{Benes-Netzwerk}
-    
+    Kapitel 5 Seite 30
 \end{defi}
 
 \subsubsection{Cluster-Interconnects}
@@ -169,14 +177,48 @@
 \end{defi}
 
 \begin{defi}{Infiniband}
-    
+    \begin{itemize}
+        \item \ldots ist eine Architektur für Hochgeschwindigkeitsverbindungen zwischen Rechnern und externen Speicherservern.
+        \item \ldots wurde unter Führung von Intel entwickelt, später Mellanox, jetzt Nvidia.
+        \item \ldots eignet sich auch als Verbindungsnetzwerk von Rechen-Clustern.
+    \end{itemize}
+    aktuell: Infiniband EDR / HDR mit bis zu 200 Gbit/s
 \end{defi}
 
 \begin{defi}{Gigabit Ethernet}
-    
+    \begin{itemize}
+        \item \ldots wird vorwiegend in lokalen Netzwerken genutzt, 
+        auch für Heimanwender mit RJ45 Stecker für Kupferkabel (z.B. Lan-Buchsen am Router)
+        \item \ldots ist für Glasfaser und (twisted-pair) Kupferkabel spezifiziert, 
+        höhrere Bandbreiten aber nur über Glasfaser umsetzbar: bis zu 100 Gb/s
+        \item \ldots ist Switch-basiert und abwärtskompatibel
+        \item \ldots nutzt spezielle Kollisionserkennung / -vermeidung, 
+        wie CSMA / CD (Carrier Sense Multiple Access with Collision Detection)
+    \end{itemize}
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Klassifikation}
-    
+    \begin{itemize}
+        \item Statisch
+        \begin{itemize}
+            \item Ein-dimensional
+            \item Zwei-dimensional
+            \item Mehr-dimensional
+        \end{itemize}
+        \item Dynamisch
+        \begin{itemize}
+            \item Bussysteme 
+            \item Zellenbasierte Netze
+            \begin{itemize}
+                \item Einstufig
+                \item Mehrstufig
+                \begin{itemize}
+                    \item Blockierend
+                    \item Nicht-Blockierend
+                \end{itemize}
+            \end{itemize}
+            \item Kreuzschienenverteiler (Crossbars)
+        \end{itemize}
+    \end{itemize}
 \end{defi}
 
