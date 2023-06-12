@@ -1,74 +1,124 @@
-
-\section{Einzelprozessorsysteme}
+\section{Einzelprozessorsysteme}\label{sec:einzelprozessorsysteme}
 
 \begin{defi}{Überlappte Verarbeitung}
-
+    Erstes Ziel war die überlappte Verarbeitung von langsamen und schnellen Hardware-Komponenten. 
+    (Verstecken der langsamen Funktionseinheiten)
 \end{defi}
 
 \begin{defi}{Überlappter I/O}
-
+    Während des langsamen I/O kann nun gleichzeitig die \enquote{wertvolle} Ressource CPU genutzt werden.
 \end{defi}
 
-\subsection{Cache}
+\subsection{Cache}\label{subsec:cache}
 
 \begin{defi}{Cache}
-
+    \ldots ist ein schneller Speicher mit verhältnismäßig kleiner Speicherkapazität, 
+    der zwischen der Zentraleinheit (CPU) und dem Arbeitsspeicher positioniert ist.
 \end{defi}
 
 \begin{defi}{Direct Mapped Cache}
-
+    Feste Abbildung der Hauptspeicher-Adressen auf die Cache-Adressen
+    \begin{itemize}[$\to$]
+        \item Kein assoziativer Speicher nötig
+        \item Keine Verdrängungsstrategien nötig
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{N-way Set Associative Cache}
-
+    N-fache Mengenassoziativität: $N$ Einträge pro Cache-Index\\
+    $\to$ $N$ Caches mit direkter Abbildung, die parallel operieren
+    ($N$ liegt meist zwischen 2 und 4)\\
+    Beispiel: zweifach mengenassoziativer Cache
+    \begin{itemize}
+        \item Der Cache-Index bestimmt eine \enquote{Menge} von Blöcken im Cache
+        \item Die beiden Tags werden parallel verglichen.
+        \item Die Daten werden aufgrund des Tagvergleichs selektiert.
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Fully Associative Cache}
-
+    
 \end{defi}
 
 \begin{defi}{Ersetzungsstrategie}
-
+    \begin{itemize}
+        \item Trivial für Direct Mapped Cache
+        \item Bei Set Associative oder Fully Associative:
+        \begin{itemize}
+            \item Random
+            \item LRU (Least Recently Used) bzw. FIFO
+        \end{itemize}
+    \end{itemize}
+    Zurückschreiben von Daten:
+    \begin{itemize}
+        \item \underline{Write through:} Die Information wird sowohl in den Cache als auch ins
+        Memory zurückgeschrieben.
+        \item \underline{Write back:} Die Information wird nur in den Cache geschrieben. Die
+        veränderte Zeile wird erst dann ins Memory geschrieben, wenn die
+        Cache-Zeile mit Daten aus anderen Hauptspeicheradressen
+        überschrieben werden soll.
+        \begin{itemize}
+            \item \underline{Vorteil:} Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
+            \item \underline{Nachteil:} Ein Read-Miss kann zu einem Schreiben ins Memory führen.
+        \end{itemize}
+    \end{itemize}
 \end{defi}
 
 \begin{bonus}[Cache]{IBM Power 4}
-
+    
 \end{bonus}
 
 \begin{bonus}[Cache]{Intel Itanium}
-
+    
 \end{bonus}
 
 \begin{defi}{Cache Miss}
-
+    Ist keine Kopie der Hauptspeicherzelle a im Cache abgelegt, so 
+    \begin{itemize}
+        \item greift die CPU auf den Arbeitsspeicher zu,
+        \item lädt das Datum in den Cache und
+        \item lädt das Datum gleichzeitig in die CPU.
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Reduzierung der Cache Miss Rate}
-
+    \begin{itemize}
+        \item \underline{Cold start miss:} Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)
+        \item \underline{Capacity miss:} Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache)
+        \item \underline{Conflict miss:} Tritt auf, wenn ein Block ersetzt werden muß, der anschließend wieder benötigt wird (bei N-way associative Cache)
+        \item \underline{Coherence miss:} bei Mehrprozessorsystemen → wird später erklärt
+    \end{itemize}
 \end{defi}
 
 \begin{defi}[Reduzierung der Cache Miss Rate]{Programmierstrategien}
-
+    Verbessern der Speicherlokalität durch
+    \begin{itemize}[\ldots]
+        \item Datenstrukturierung
+        \item Ändern der Indexierung
+        \item Schleifenfusion
+        \item Bildung von Teilblöcken
+    \end{itemize}
 \end{defi}
 
 \begin{defi}{Table-Look-Aside Buffer}
-
+    Bei Rechnern mit virtueller Speicherverwaltung arbeitet der Prozessor mit virtuellen Adressen, 
+    die durch den TLB in reale Adressen umgesetzt werden.
 \end{defi}
 
-\subsection{Entwicklungslinien der Prozessoren}
+\subsection{Entwicklungslinien der Prozessoren}\label{subsec:entwicklungslinien-der-prozessoren}
 
 \begin{defi}{CISC}
-
+    Complex Instruction Set Computer
 \end{defi}
 
 \begin{defi}{RISC}
-
+    Reduced Instruction Set Computer
 \end{defi}
 
 \begin{defi}{VLIW}
-
+    Very Long Instruction Word
 \end{defi}
 
 \begin{defi}{EPIC}
-
+    Explicitly Parallel Instruction Computing
 \end{defi}

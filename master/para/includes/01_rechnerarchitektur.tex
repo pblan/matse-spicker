@@ -4,25 +4,25 @@
 
 \begin{defi}{Struktur}
     Unter \emph{Struktur} versteht man die Art der Verknüpfung der verschiedenen Hardwarekomponenten eines Rechner miteinander.
-
+    
     Sie ist in der Regel \emph{statisch}.
 \end{defi}
 
 \begin{defi}{Organisation}
     \emph{Organisation} steht für die zeitabhängigen Wechselwirkungen zwischen Komponenten und die Steuerung dieser Komponenten.
-
+    
     Diese Wechselwirkungen können \emph{dynamisch} sein.
 \end{defi}
 
 \begin{defi}{Implementierung}
     \emph{Implementierung} bezeichnet die Ausgestaltung einzelner Bausteine.
-
+    
     Sie gibt die \emph{Größe} eines Systems an.
 \end{defi}
 
 \begin{defi}{Leistung}
     \emph{Leistung} beschreibt das nach außen hin sichtbare Systemverhalten.
-
+    
     Sie gibt die \emph{Geschwindigkeit} eines Systems an.
 \end{defi}
 
@@ -32,45 +32,45 @@
     Der \emph{Von-Neumann-Rechner} besteht aus folgenden Werken:
     \begin{itemize}
         \item \emph{Eingabe- bzw. Ausgabewerk:}
-        \begin{itemize}
-            \item Schnittstelle zur Außenwelt
-        \end{itemize}
+              \begin{itemize}
+                  \item Schnittstelle zur Außenwelt
+              \end{itemize}
         \item \emph{Leitwerk:}
-        \begin{itemize}
-            \item interpretiert Befehle
-            \item steuert Abläufe
-        \end{itemize}
+              \begin{itemize}
+                  \item interpretiert Befehle
+                  \item steuert Abläufe
+              \end{itemize}
         \item \emph{Haupt- bzw. Arbeitsspeicher:}
-        \begin{itemize}
-            \item Speicher für Daten und Befehle
-        \end{itemize}
+              \begin{itemize}
+                  \item Speicher für Daten und Befehle
+              \end{itemize}
         \item \emph{Rechenwerk:}
-        \begin{itemize}
-            \item führt arithmetische und logische Operationen aus
-        \end{itemize}
+              \begin{itemize}
+                  \item führt arithmetische und logische Operationen aus
+              \end{itemize}
     \end{itemize}
-
+    
     Die Struktur des Rechners ist unabhängig von der Aufgabe, die er lösen soll.
     Hardware und Software sind voneinander \emph{getrennt}.
 \end{defi}
 
 \begin{defi}[Von-Neumann-Rechner]{Struktur}
-
+    
 \end{defi}
 
 \begin{defi}[Von-Neumann-Rechner]{Organisation}
-
+    
 \end{defi}
 
 \begin{defi}[Von-Neumann-Rechner]{Arbeitsweise}
     \begin{itemize}
         \item Das Programm besteht aus einer \emph{Folge von Befehlen} (Instruktion),
-        die nacheinander (sequentiell) ausgeführt werden.
+              die nacheinander (sequentiell) ausgeführt werden.
         \item Von der Folge kann durch bedingte und unbedingte Sprungbefehle abgewichen werden, die die Programmfortsetzung an einer anderen Zelle bewirken.
-        (Die bedingten Sprünge sind von gespeicherten Werten abhängig)
+              (Die bedingten Sprünge sind von gespeicherten Werten abhängig)
         \item Die Maschine benutzt Binärcodes, Zahlen werden dual dargestellt.
-        Befehle und andere Daten müssen geeignet kodiert werden.
-        Bitfolgen im Speicher sind nicht selbstidentifizierend.
+              Befehle und andere Daten müssen geeignet kodiert werden.
+              Bitfolgen im Speicher sind nicht selbstidentifizierend.
     \end{itemize}
 \end{defi}
 
@@ -110,8 +110,8 @@
         \item Erstellung der Liste der 500 schnellsten Rechner der Welt (2x pro Jahr)
         \item Leistungskriterium: Benchmark-Programme aus dem Gebiet der linearen Algebra (Linpack)
     \end{itemize}
-    Aufbau:
-    \begin{tabular}{|l|l|}
+    Aufbau:\\
+    \begin{tabularx}{\textwidth}{l|X}
         Manufacturer      & Manufacturer or vendor                     \\
         Computer Type     & Indicated by manufacturer or vendor        \\
         Installation Site & Customer                                   \\
@@ -124,12 +124,12 @@
         N max             & Problem size for achieving R max           \\
         N 1/2             & Problem size for achieving half of R max   \\
         N world           & Position within the TOP500 ranking         \\
-    \end{tabular}
+    \end{tabularx}
 \end{bonus}
 
 \begin{bonus}{Transistoren und Clock-Rate}
     Die Weiterentwicklung bei der Chipherstellung (Lithographie) führt zu feineren Strukturen auf einem Chip.
-
+    
     Was passiert, wenn Leiterbahnen und Schaltelemente um einen Faktor $x$ schrumpfen ?
     \begin{itemize}
         \item Clock-Rate $f$ wächst um Faktor $x$ (Stromverbrauch, Abwärme $T \sim f^2$)

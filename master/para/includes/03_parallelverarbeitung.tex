@@ -6,8 +6,8 @@
     soll eine Leistungssteigerung erzielt werden.\\
     Man unterscheidet:
     \begin{itemize}
-        \item[Sequentielle Verarbeitung:] nacheinander ausführen der Teilaufgaben
-        \item[Parallele Verarbeitung:] es gibt Zeitabschnitte in der Verarbeitung, in der Teilaufgaben gleichzeitig bearbeitet werden
+        \item \underline{Sequentielle Verarbeitung:} nacheinander ausführen der Teilaufgaben
+        \item \underline{Parallele Verarbeitung:} es gibt Zeitabschnitte in der Verarbeitung, in der Teilaufgaben gleichzeitig bearbeitet werden
     \end{itemize}
     \underline{Voraussetzungen:}
     \begin{enumerate}
@@ -37,7 +37,7 @@
 \end{defi}
 
 \begin{bonus}{Modular Supercomputing Architecture}
-
+    
 \end{bonus}
 
 \begin{defi}{Speedup}
@@ -94,9 +94,9 @@
     bei $n\gg p$:
     \begin{align*}
         \approx\frac{p}{
-            \underbrace{1 + p\cdot \log_2 p}_{\text{Algorithmus}} \cdot
-            \underbrace{\frac{1}{2n}}_{\text{Problemgröße}} \cdot
-            \underbrace{\frac{t_\text{startup}}{t_\text{flop}}}_{\text{Hardware}}}
+        \underbrace{1 + p\cdot \log_2 p}_{\text{Algorithmus}} \cdot
+        \underbrace{\frac{1}{2n}}_{\text{Problemgröße}} \cdot
+        \underbrace{\frac{t_\text{startup}}{t_\text{flop}}}_{\text{Hardware}}}
     \end{align*}
 \end{example}
 
