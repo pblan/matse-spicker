@@ -16,23 +16,23 @@
 \begin{bonus}[Flynn'sche Klassifikation]{Erweiterungen}
     \begin{itemize}
         \item[SIMD] Single Instruction Multiple Data
-        \begin{itemize}
-            \item Vektor-Prozessoren (auch Mischformen mit MIMD vorhanden!)
-            \item Array-Prozessoren
-        \end{itemize}
+              \begin{itemize}
+                  \item Vektor-Prozessoren (auch Mischformen mit MIMD vorhanden!)
+                  \item Array-Prozessoren
+              \end{itemize}
         \item[MIMD] Multiple Instruction Multiple Data
-        \begin{itemize}
-            \item Speichergekoppelte Multiprozessoren
-            \begin{itemize}
-                \item Unified Memory Architecture (UMA)
-                \item Non-Uniform Memory Access (NUMA)
-            \end{itemize}
-            \item Nachrichtengekoppelte Multiprozessoren
-            \begin{itemize}
-                \item Massively Parallel Processing (MPP)
-                \item Cluster Of Workstations (COW)
-            \end{itemize}
-        \end{itemize}
+              \begin{itemize}
+                  \item Speichergekoppelte Multiprozessoren
+                        \begin{itemize}
+                            \item Unified Memory Architecture (UMA)
+                            \item Non-Uniform Memory Access (NUMA)
+                        \end{itemize}
+                  \item Nachrichtengekoppelte Multiprozessoren
+                        \begin{itemize}
+                            \item Massively Parallel Processing (MPP)
+                            \item Cluster Of Workstations (COW)
+                        \end{itemize}
+              \end{itemize}
     \end{itemize}
 \end{bonus}
 
@@ -43,13 +43,13 @@
     
     Je nach physiklischer Speicherorganisation unterscheidet man:
     \begin{itemize}
-        \item Symmetrische Multiprozessoren (SMP, symmetric multiprocessor), 
-        bei denen gleichartige Prozessoren über ein Verbindungsnetzwerk mit einem gemeinsamen Speicher verbunden sind
-        \item Distributed-Shared-Memory Systeme, 
-        bei denen zwar ein einheitlicher Adressraum existiert, 
-        aber die Speicher physikalisch auf einzelnen Verarbeitungsknoten verteilt sind
+        \item Symmetrische Multiprozessoren (SMP, symmetric multiprocessor),
+              bei denen gleichartige Prozessoren über ein Verbindungsnetzwerk mit einem gemeinsamen Speicher verbunden sind
+        \item Distributed-Shared-Memory Systeme,
+              bei denen zwar ein einheitlicher Adressraum existiert, 
+              aber die Speicher physikalisch auf einzelnen Verarbeitungsknoten verteilt sind
     \end{itemize}
-
+    
     \emph{Bemerkungen:}
     \begin{itemize}
         \item Speichergekoppelte Multiprozessoren gelten als einfacher programmierbar gegenüber nachrichtengekoppelten Multiprozessoren
@@ -73,19 +73,19 @@
 \subsection{Verbindungsnetzwerke}
 
 \begin{defi}{Verbindungsnetzwerk}
-     Ein Verbindungsnetzwerk ermöglicht den Datenaustausch (und die Verteilung des Programms) zwischen den Prozessoren.
-
-     Um einen hohen Datentransfer zu erhalten, 
-     wird eine große Anzahl von Drähten benötigt!
-
-     Ein VN gleicht einer Straße:
-     \begin{itemize}
+    Ein Verbindungsnetzwerk ermöglicht den Datenaustausch (und die Verteilung des Programms) zwischen den Prozessoren.
+    
+    Um einen hohen Datentransfer zu erhalten, 
+    wird eine große Anzahl von Drähten benötigt!
+    
+    Ein VN gleicht einer Straße:
+    \begin{itemize}
         \item Link = Straße
-        \item Switch = Kreuzung 
+        \item Switch = Kreuzung
         \item Distance/Hops = Anzahl der zurückgelegten Straßenblöcke
         \item Routing algorithm = Reiseplan
-     \end{itemize}
-
+    \end{itemize}
+    
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Latenz}
@@ -109,7 +109,15 @@
 \subsubsection{Statische Verbindungsnetzwerke}
 
 \begin{defi}{Lineare Anordnung}
-    Kapitel 5 Seite 16
+    \begin{tikzpicture}
+        \node[circle, draw=black, fill=black] (d0) at (2, 8) {};
+        \node[circle, draw=black, fill=black] (d1) at (4, 8) {};
+        \node[circle, draw=black, fill=black] (d2) at (6, 8) {};
+        \node[circle, draw=black, fill=black] (d3) at (8, 8) {};
+        \draw (d0.center) to[out=0, in=180] (d1.center);
+        \draw (d1.center) to[out=0, in=180] (d2.center);
+        \draw (d2.center) to[out=0, in=180] (d3.center);
+    \end{tikzpicture}
 \end{defi}
 
 \begin{defi}{Ring}
@@ -138,9 +146,9 @@
     \begin{itemize}
         \item Durch die wahlweise Zuschaltung einzelner Verarbeitungsknoten zum Datentransfer an einen Bus ist das Bussystem eine typische dynamische Verbindungseinrichtung
         \item Der Bus bildet die Engstelle im busgekoppelten Multiprozessorsystem,
-        so dass auch Doppelbusse oder allgemein Mehrfachbusse eingesetzt werden
-        \item Bussysteme und auch Mehrbussysteme werden für Systeme mit höchstens 30 Prozessoren eingesetzt, 
-        um Zugiffskonflikte in Grenzen zu halten
+              so dass auch Doppelbusse oder allgemein Mehrfachbusse eingesetzt werden
+        \item Bussysteme und auch Mehrbussysteme werden für Systeme mit höchstens 30 Prozessoren eingesetzt,
+              um Zugiffskonflikte in Grenzen zu halten
     \end{itemize}
 \end{defi}
 
@@ -187,38 +195,38 @@
 
 \begin{defi}{Gigabit Ethernet}
     \begin{itemize}
-        \item \ldots wird vorwiegend in lokalen Netzwerken genutzt, 
-        auch für Heimanwender mit RJ45 Stecker für Kupferkabel (z.B. Lan-Buchsen am Router)
-        \item \ldots ist für Glasfaser und (twisted-pair) Kupferkabel spezifiziert, 
-        höhrere Bandbreiten aber nur über Glasfaser umsetzbar: bis zu 100 Gb/s
+        \item \ldots wird vorwiegend in lokalen Netzwerken genutzt,
+              auch für Heimanwender mit RJ45 Stecker für Kupferkabel (z.B. Lan-Buchsen am Router)
+        \item \ldots ist für Glasfaser und (twisted-pair) Kupferkabel spezifiziert,
+              höhrere Bandbreiten aber nur über Glasfaser umsetzbar: bis zu 100 Gb/s
         \item \ldots ist Switch-basiert und abwärtskompatibel
-        \item \ldots nutzt spezielle Kollisionserkennung / -vermeidung, 
-        wie CSMA / CD (Carrier Sense Multiple Access with Collision Detection)
+        \item \ldots nutzt spezielle Kollisionserkennung / -vermeidung,
+              wie CSMA / CD (Carrier Sense Multiple Access with Collision Detection)
     \end{itemize}
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Klassifikation}
     \begin{itemize}
         \item Statisch
-        \begin{itemize}
-            \item Ein-dimensional
-            \item Zwei-dimensional
-            \item Mehr-dimensional
-        \end{itemize}
+              \begin{itemize}
+                  \item Ein-dimensional
+                  \item Zwei-dimensional
+                  \item Mehr-dimensional
+              \end{itemize}
         \item Dynamisch
-        \begin{itemize}
-            \item Bussysteme 
-            \item Zellenbasierte Netze
-            \begin{itemize}
-                \item Einstufig
-                \item Mehrstufig
-                \begin{itemize}
-                    \item Blockierend
-                    \item Nicht-Blockierend
-                \end{itemize}
-            \end{itemize}
-            \item Kreuzschienenverteiler (Crossbars)
-        \end{itemize}
+              \begin{itemize}
+                  \item Bussysteme
+                  \item Zellenbasierte Netze
+                        \begin{itemize}
+                            \item Einstufig
+                            \item Mehrstufig
+                                  \begin{itemize}
+                                      \item Blockierend
+                                      \item Nicht-Blockierend
+                                  \end{itemize}
+                        \end{itemize}
+                  \item Kreuzschienenverteiler (Crossbars)
+              \end{itemize}
     \end{itemize}
 \end{defi}
 
