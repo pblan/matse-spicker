@@ -25,8 +25,8 @@
 \end{defi}
 
 \begin{defi}{N-way Set Associative Cache}
-    N-fache Mengenassoziativität: $N$ Einträge pro Cache-Index\\
-    $\to$ $N$ Caches mit direkter Abbildung, die parallel operieren
+    N-fache Mengenassoziativität: $N$ Einträge pro Cache-Index \\
+    \quad $\to$ $N$ Caches mit direkter Abbildung, die parallel operieren
     ($N$ liegt meist zwischen 2 und 4)\\
     Beispiel: zweifach mengenassoziativer Cache
     \begin{itemize}
@@ -44,23 +44,23 @@
     \begin{itemize}
         \item Trivial für Direct Mapped Cache
         \item Bei Set Associative oder Fully Associative:
-        \begin{itemize}
-            \item Random
-            \item LRU (Least Recently Used) bzw. FIFO
-        \end{itemize}
+              \begin{itemize}
+                  \item Random
+                  \item LRU (Least Recently Used) bzw. FIFO
+              \end{itemize}
     \end{itemize}
     Zurückschreiben von Daten:
     \begin{itemize}
         \item \underline{Write through:} Die Information wird sowohl in den Cache als auch ins
-        Memory zurückgeschrieben.
+              Memory zurückgeschrieben.
         \item \underline{Write back:} Die Information wird nur in den Cache geschrieben. Die
-        veränderte Zeile wird erst dann ins Memory geschrieben, wenn die
-        Cache-Zeile mit Daten aus anderen Hauptspeicheradressen
-        überschrieben werden soll.
-        \begin{itemize}
-            \item \underline{Vorteil:} Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
-            \item \underline{Nachteil:} Ein Read-Miss kann zu einem Schreiben ins Memory führen.
-        \end{itemize}
+              veränderte Zeile wird erst dann ins Memory geschrieben, wenn die
+              Cache-Zeile mit Daten aus anderen Hauptspeicheradressen
+              überschrieben werden soll.
+              \begin{itemize}
+                  \item \underline{Vorteil:} Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
+                  \item \underline{Nachteil:} Ein Read-Miss kann zu einem Schreiben ins Memory führen.
+              \end{itemize}
     \end{itemize}
 \end{defi}
 
@@ -125,7 +125,7 @@
     Von HP und Intel wurde 1998/99 die Prozessorarchitektur EPIC entworfen 
     und mit dem Intel Itanium ein erster Prozessor realisiert. 
     Die Intel-Version der Architektur wird IA-64 (64 bit) genannt.
-
+    
     EPIC ist die moderne Weiterentwicklung des Konzepts des VLIW.
     
     Hierbei versucht der Compiler, 

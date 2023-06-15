@@ -5,22 +5,25 @@
     Sie orientiert sich an der Anzahl der gleichzeitig vorhandenen Instruktions- und Datenströme.
     
     Parallelrechner:
-    \begin{itemize}
-        \item[SISD] Single Instruction Single Data (Von Neumann-Rechner $\to$ kein paralleles System)
-        \item[SIMD] Single Instruction Multiple Data
-        \item[MISD] Multiple Instruction Single Data $\to$ \textbf{irrelevant!}
-        \item[MIMD] Multiple Instruction Multiple Data
-    \end{itemize}
+    
+    \begin{center}
+        \begin{tabular}{ll}
+            SISD & Single Instruction Single Data (Von Neumann-Rechner $\to$ kein paralleles System) \\
+            SIMD & Single Instruction Multiple Data                                                  \\
+            MISD & Multiple Instruction Single Data $\to$ \textbf{irrelevant!}                       \\
+            MIMD & Multiple Instruction Multiple Data 
+        \end{tabular}
+    \end{center}
 \end{defi}
 
 \begin{bonus}[Flynn'sche Klassifikation]{Erweiterungen}
     \begin{itemize}
-        \item[SIMD] Single Instruction Multiple Data
+        \item \emph{SIMD} Single Instruction Multiple Data
               \begin{itemize}
                   \item Vektor-Prozessoren (auch Mischformen mit MIMD vorhanden!)
                   \item Array-Prozessoren
               \end{itemize}
-        \item[MIMD] Multiple Instruction Multiple Data
+        \item \emph{MIMD} Multiple Instruction Multiple Data
               \begin{itemize}
                   \item Speichergekoppelte Multiprozessoren
                         \begin{itemize}
@@ -109,27 +112,275 @@
 \subsubsection{Statische Verbindungsnetzwerke}
 
 \begin{defi}{Lineare Anordnung}
-    \begin{tikzpicture}
-        \node[circle, draw=black, fill=black] (d0) at (2, 8) {};
-        \node[circle, draw=black, fill=black] (d1) at (4, 8) {};
-        \node[circle, draw=black, fill=black] (d2) at (6, 8) {};
-        \node[circle, draw=black, fill=black] (d3) at (8, 8) {};
-        \draw (d0.center) to[out=0, in=180] (d1.center);
-        \draw (d1.center) to[out=0, in=180] (d2.center);
-        \draw (d2.center) to[out=0, in=180] (d3.center);
-    \end{tikzpicture}
+    \begin{center}
+        \begin{tikzpicture}
+            \node[circle, draw=blue, fill=blue] (d0) at (0, 0) {};
+            \node[circle, draw=blue, fill=blue] (d1) at (2, 0) {};
+            \node[circle, draw=blue, fill=blue] (d2) at (4, 0) {};
+            \node[circle, draw=blue, fill=blue] (d3) at (6, 0) {};
+            \draw (d0.center) to[out=0, in=180] (d1.center);
+            \draw (d1.center) to[out=0, in=180] (d2.center);
+            \draw (d2.center) to[out=0, in=180] (d3.center);
+        \end{tikzpicture}
+        Diameter = $N-1$
+    \end{center}
 \end{defi}
 
-\begin{defi}{Ring}
-    Kapitel 5 Seite 16
+\begin{defi}{Torus oder Ring}
+    \begin{center}
+        \begin{tikzpicture}
+            \node[circle, draw=blue, fill=blue] (d0) at (3.5, 0.5) {};
+            \node[circle, draw=blue, fill=blue] (d1) at (3.5, 3.5) {};
+            \node[circle, draw=blue, fill=blue] (d2) at (0.5, 3.5) {};
+            \node[circle, draw=blue, fill=blue] (d3) at (0.5, 0.5) {};
+            \draw (d0) to[bend right] node[left]{}(d1);
+            \draw (d1) to[bend right] node[left]{}(d2);
+            \draw (d2) to[bend right] node[left]{}(d3);
+            \draw (d3) to[bend right] node[left]{}(d0);
+        \end{tikzpicture}
+        Diameter = $\frac{N}{2}$
+    \end{center}
 \end{defi}
 
 \begin{defi}{Torus}
-    Kapitel 5 Seite 16/17/18
+    2D-Gitter:
+    \begin{center}
+        \begin{tikzpicture}
+            \node[circle, draw=blue, fill=blue] (d00) at (0, 0) {};
+            \node[circle, draw=blue, fill=blue] (d10) at (1, 0) {};
+            \node[circle, draw=blue, fill=blue] (d20) at (2, 0) {};
+            \node[circle, draw=blue, fill=blue] (d30) at (3, 0) {};
+            \node[circle, draw=blue, fill=blue] (d40) at (4, 0) {};
+            \node[circle, draw=blue, fill=blue] (d50) at (5, 0) {};
+            
+            \node[circle, draw=blue, fill=blue] (d01) at (0, 1) {};
+            \node[circle, draw=blue, fill=blue] (d11) at (1, 1) {};
+            \node[circle, draw=blue, fill=blue] (d21) at (2, 1) {};
+            \node[circle, draw=blue, fill=blue] (d31) at (3, 1) {};
+            \node[circle, draw=blue, fill=blue] (d41) at (4, 1) {};
+            \node[circle, draw=blue, fill=blue] (d51) at (5, 1) {};
+            
+            \node[circle, draw=blue, fill=blue] (d02) at (0, 2) {};
+            \node[circle, draw=blue, fill=blue] (d12) at (1, 2) {};
+            \node[circle, draw=blue, fill=blue] (d22) at (2, 2) {};
+            \node[circle, draw=blue, fill=blue] (d32) at (3, 2) {};
+            \node[circle, draw=blue, fill=blue] (d42) at (4, 2) {};
+            \node[circle, draw=blue, fill=blue] (d52) at (5, 2) {};
+            
+            \node[circle, draw=blue, fill=blue] (d03) at (0, 3) {};
+            \node[circle, draw=blue, fill=blue] (d13) at (1, 3) {};
+            \node[circle, draw=blue, fill=blue] (d23) at (2, 3) {};
+            \node[circle, draw=blue, fill=blue] (d33) at (3, 3) {};
+            \node[circle, draw=blue, fill=blue] (d43) at (4, 3) {};
+            \node[circle, draw=blue, fill=blue] (d53) at (5, 3) {};
+            
+            \node[circle, draw=blue, fill=blue] (d04) at (0, 4) {};
+            \node[circle, draw=blue, fill=blue] (d14) at (1, 4) {};
+            \node[circle, draw=blue, fill=blue] (d24) at (2, 4) {};
+            \node[circle, draw=blue, fill=blue] (d34) at (3, 4) {};
+            \node[circle, draw=blue, fill=blue] (d44) at (4, 4) {};
+            \node[circle, draw=blue, fill=blue] (d54) at (5, 4) {};
+            
+            \node[circle, draw=blue, fill=blue] (d05) at (0, 5) {};
+            \node[circle, draw=blue, fill=blue] (d15) at (1, 5) {};
+            \node[circle, draw=blue, fill=blue] (d25) at (2, 5) {};
+            \node[circle, draw=blue, fill=blue] (d35) at (3, 5) {};
+            \node[circle, draw=blue, fill=blue] (d45) at (4, 5) {};
+            \node[circle, draw=blue, fill=blue] (d55) at (5, 5) {};
+            
+            
+            \draw (d00) to[] node[left]{}(d10);
+            \draw (d00) to[] node[left]{}(d01);
+            \draw (d10) to[] node[left]{}(d20);
+            \draw (d10) to[] node[left]{}(d11);
+            \draw (d20) to[] node[left]{}(d30);
+            \draw (d20) to[] node[left]{}(d21);
+            \draw (d30) to[] node[left]{}(d40);
+            \draw (d30) to[] node[left]{}(d31);
+            \draw (d40) to[] node[left]{}(d50);
+            \draw (d40) to[] node[left]{}(d41);
+            \draw (d50) to[] node[left]{}(d51);
+            
+            \draw (d01) to[] node[left]{}(d11);
+            \draw (d01) to[] node[left]{}(d02);
+            \draw (d11) to[] node[left]{}(d21);
+            \draw (d11) to[] node[left]{}(d12);
+            \draw (d21) to[] node[left]{}(d31);
+            \draw (d21) to[] node[left]{}(d22);
+            \draw (d31) to[] node[left]{}(d41);
+            \draw (d31) to[] node[left]{}(d32);
+            \draw (d41) to[] node[left]{}(d51);
+            \draw (d41) to[] node[left]{}(d42);
+            \draw (d51) to[] node[left]{}(d52);
+            
+            \draw (d02) to[] node[left]{}(d12);
+            \draw (d02) to[] node[left]{}(d03);
+            \draw (d12) to[] node[left]{}(d22);
+            \draw (d12) to[] node[left]{}(d13);
+            \draw (d22) to[] node[left]{}(d32);
+            \draw (d22) to[] node[left]{}(d23);
+            \draw (d32) to[] node[left]{}(d42);
+            \draw (d32) to[] node[left]{}(d33);
+            \draw (d42) to[] node[left]{}(d52);
+            \draw (d42) to[] node[left]{}(d43);
+            \draw (d52) to[] node[left]{}(d53);
+            
+            \draw (d03) to[] node[left]{}(d13);
+            \draw (d03) to[] node[left]{}(d04);
+            \draw (d13) to[] node[left]{}(d23);
+            \draw (d13) to[] node[left]{}(d14);
+            \draw (d23) to[] node[left]{}(d33);
+            \draw (d23) to[] node[left]{}(d24);
+            \draw (d33) to[] node[left]{}(d43);
+            \draw (d33) to[] node[left]{}(d34);
+            \draw (d43) to[] node[left]{}(d53);
+            \draw (d43) to[] node[left]{}(d44);
+            \draw (d53) to[] node[left]{}(d54);
+            
+            \draw (d04) to[] node[left]{}(d14);
+            \draw (d04) to[] node[left]{}(d05);
+            \draw (d14) to[] node[left]{}(d24);
+            \draw (d14) to[] node[left]{}(d15);
+            \draw (d24) to[] node[left]{}(d34);
+            \draw (d24) to[] node[left]{}(d25);
+            \draw (d34) to[] node[left]{}(d44);
+            \draw (d34) to[] node[left]{}(d35);
+            \draw (d44) to[] node[left]{}(d54);
+            \draw (d44) to[] node[left]{}(d45);
+            \draw (d54) to[] node[left]{}(d55);
+            
+            \draw (d05) to[] node[left]{}(d15);
+            \draw (d15) to[] node[left]{}(d25);
+            \draw (d25) to[] node[left]{}(d35);
+            \draw (d35) to[] node[left]{}(d45);
+            \draw (d45) to[] node[left]{}(d55);
+            
+            \draw (d00) to[bend right] node[left]{}[d05]
+            \draw (d10) to[bend right] node[left]{}[d15]
+            \draw (d20) to[bend right] node[left]{}[d25]
+            \draw (d30) to[bend right] node[left]{}[d35]
+            \draw (d40) to[bend right] node[left]{}[d45]
+            \draw (d50) to[bend right] node[left]{}[d55]
+            
+        \end{tikzpicture}
+    \end{center}
 \end{defi}
 
 \begin{defi}{Gitter}
-    Kapitel 5 Seite 17
+    2D-Gitter:\\
+    Diameter = $2\cdot\left(sqrt{N} - 1\right)$
+    \begin{center}
+        \begin{tikzpicture}
+            \node[circle, draw=blue, fill=blue] (d00) at (0, 0) {};
+            \node[circle, draw=blue, fill=blue] (d10) at (1, 0) {};
+            \node[circle, draw=blue, fill=blue] (d20) at (2, 0) {};
+            \node[circle, draw=blue, fill=blue] (d30) at (3, 0) {};
+            \node[circle, draw=blue, fill=blue] (d40) at (4, 0) {};
+            \node[circle, draw=blue, fill=blue] (d50) at (5, 0) {};
+            
+            \node[circle, draw=blue, fill=blue] (d01) at (0, 1) {};
+            \node[circle, draw=blue, fill=blue] (d11) at (1, 1) {};
+            \node[circle, draw=blue, fill=blue] (d21) at (2, 1) {};
+            \node[circle, draw=blue, fill=blue] (d31) at (3, 1) {};
+            \node[circle, draw=blue, fill=blue] (d41) at (4, 1) {};
+            \node[circle, draw=blue, fill=blue] (d51) at (5, 1) {};
+            
+            \node[circle, draw=blue, fill=blue] (d02) at (0, 2) {};
+            \node[circle, draw=blue, fill=blue] (d12) at (1, 2) {};
+            \node[circle, draw=blue, fill=blue] (d22) at (2, 2) {};
+            \node[circle, draw=blue, fill=blue] (d32) at (3, 2) {};
+            \node[circle, draw=blue, fill=blue] (d42) at (4, 2) {};
+            \node[circle, draw=blue, fill=blue] (d52) at (5, 2) {};
+            
+            \node[circle, draw=blue, fill=blue] (d03) at (0, 3) {};
+            \node[circle, draw=blue, fill=blue] (d13) at (1, 3) {};
+            \node[circle, draw=blue, fill=blue] (d23) at (2, 3) {};
+            \node[circle, draw=blue, fill=blue] (d33) at (3, 3) {};
+            \node[circle, draw=blue, fill=blue] (d43) at (4, 3) {};
+            \node[circle, draw=blue, fill=blue] (d53) at (5, 3) {};
+            
+            \node[circle, draw=blue, fill=blue] (d04) at (0, 4) {};
+            \node[circle, draw=blue, fill=blue] (d14) at (1, 4) {};
+            \node[circle, draw=blue, fill=blue] (d24) at (2, 4) {};
+            \node[circle, draw=blue, fill=blue] (d34) at (3, 4) {};
+            \node[circle, draw=blue, fill=blue] (d44) at (4, 4) {};
+            \node[circle, draw=blue, fill=blue] (d54) at (5, 4) {};
+            
+            \node[circle, draw=blue, fill=blue] (d05) at (0, 5) {};
+            \node[circle, draw=blue, fill=blue] (d15) at (1, 5) {};
+            \node[circle, draw=blue, fill=blue] (d25) at (2, 5) {};
+            \node[circle, draw=blue, fill=blue] (d35) at (3, 5) {};
+            \node[circle, draw=blue, fill=blue] (d45) at (4, 5) {};
+            \node[circle, draw=blue, fill=blue] (d55) at (5, 5) {};
+            
+            
+            \draw (d00) to[] node[left]{}(d10);
+            \draw (d00) to[] node[left]{}(d01);
+            \draw (d10) to[] node[left]{}(d20);
+            \draw (d10) to[] node[left]{}(d11);
+            \draw (d20) to[] node[left]{}(d30);
+            \draw (d20) to[] node[left]{}(d21);
+            \draw (d30) to[] node[left]{}(d40);
+            \draw (d30) to[] node[left]{}(d31);
+            \draw (d40) to[] node[left]{}(d50);
+            \draw (d40) to[] node[left]{}(d41);
+            \draw (d50) to[] node[left]{}(d51);
+            
+            \draw (d01) to[] node[left]{}(d11);
+            \draw (d01) to[] node[left]{}(d02);
+            \draw (d11) to[] node[left]{}(d21);
+            \draw (d11) to[] node[left]{}(d12);
+            \draw (d21) to[] node[left]{}(d31);
+            \draw (d21) to[] node[left]{}(d22);
+            \draw (d31) to[] node[left]{}(d41);
+            \draw (d31) to[] node[left]{}(d32);
+            \draw (d41) to[] node[left]{}(d51);
+            \draw (d41) to[] node[left]{}(d42);
+            \draw (d51) to[] node[left]{}(d52);
+            
+            \draw (d02) to[] node[left]{}(d12);
+            \draw (d02) to[] node[left]{}(d03);
+            \draw (d12) to[] node[left]{}(d22);
+            \draw (d12) to[] node[left]{}(d13);
+            \draw (d22) to[] node[left]{}(d32);
+            \draw (d22) to[] node[left]{}(d23);
+            \draw (d32) to[] node[left]{}(d42);
+            \draw (d32) to[] node[left]{}(d33);
+            \draw (d42) to[] node[left]{}(d52);
+            \draw (d42) to[] node[left]{}(d43);
+            \draw (d52) to[] node[left]{}(d53);
+            
+            \draw (d03) to[] node[left]{}(d13);
+            \draw (d03) to[] node[left]{}(d04);
+            \draw (d13) to[] node[left]{}(d23);
+            \draw (d13) to[] node[left]{}(d14);
+            \draw (d23) to[] node[left]{}(d33);
+            \draw (d23) to[] node[left]{}(d24);
+            \draw (d33) to[] node[left]{}(d43);
+            \draw (d33) to[] node[left]{}(d34);
+            \draw (d43) to[] node[left]{}(d53);
+            \draw (d43) to[] node[left]{}(d44);
+            \draw (d53) to[] node[left]{}(d54);
+            
+            \draw (d04) to[] node[left]{}(d14);
+            \draw (d04) to[] node[left]{}(d05);
+            \draw (d14) to[] node[left]{}(d24);
+            \draw (d14) to[] node[left]{}(d15);
+            \draw (d24) to[] node[left]{}(d34);
+            \draw (d24) to[] node[left]{}(d25);
+            \draw (d34) to[] node[left]{}(d44);
+            \draw (d34) to[] node[left]{}(d35);
+            \draw (d44) to[] node[left]{}(d54);
+            \draw (d44) to[] node[left]{}(d45);
+            \draw (d54) to[] node[left]{}(d55);
+            
+            \draw (d05) to[] node[left]{}(d15);
+            \draw (d15) to[] node[left]{}(d25);
+            \draw (d25) to[] node[left]{}(d35);
+            \draw (d35) to[] node[left]{}(d45);
+            \draw (d45) to[] node[left]{}(d55);
+        \end{tikzpicture}
+    \end{center}
 \end{defi}
 
 \begin{defi}{Hypercube}
