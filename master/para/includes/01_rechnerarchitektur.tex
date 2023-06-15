@@ -3,26 +3,26 @@
 \subsection{Einführung}\label{subsec:einfuehrung}
 
 \begin{defi}{Struktur}
-    Unter \emph{Struktur} versteht man die Art der Verknüpfung der verschiedenen Hardwarekomponenten eines Rechner miteinander.
-    
+    Unter der \emph{Struktur} einer Rechnerarchitektur versteht man die Art der Verknüpfung der verschiedenen Hardwarekomponenten eines Rechner miteinander.
+
     Sie ist in der Regel \emph{statisch}.
 \end{defi}
 
 \begin{defi}{Organisation}
-    \emph{Organisation} steht für die zeitabhängigen Wechselwirkungen zwischen Komponenten und die Steuerung dieser Komponenten.
-    
+    Die \emph{Organisation} einer Rechnerarchitektur steht für die zeitabhängigen Wechselwirkungen zwischen Komponenten und die Steuerung dieser Komponenten.
+
     Diese Wechselwirkungen können \emph{dynamisch} sein.
 \end{defi}
 
 \begin{defi}{Implementierung}
-    \emph{Implementierung} bezeichnet die Ausgestaltung einzelner Bausteine.
-    
+    Die \emph{Implementierung} einer Rechnerarchitektur bezeichnet die Ausgestaltung einzelner Bausteine.
+
     Sie gibt die \emph{Größe} eines Systems an.
 \end{defi}
 
 \begin{defi}{Leistung}
     \emph{Leistung} beschreibt das nach außen hin sichtbare Systemverhalten.
-    
+
     Sie gibt die \emph{Geschwindigkeit} eines Systems an.
 \end{defi}
 
@@ -42,68 +42,102 @@
               \end{itemize}
         \item \emph{Haupt- bzw. Arbeitsspeicher:}
               \begin{itemize}
-                  \item Speicher für Daten und Befehle
+                  \item Speicher für Daten \emph{und} Befehle
+                  \item unterteilt in Zellen gleicher Größe geteilt, die durch fortlaufende Adressen identifiziert werden
               \end{itemize}
         \item \emph{Rechenwerk:}
               \begin{itemize}
                   \item führt arithmetische und logische Operationen aus
               \end{itemize}
     \end{itemize}
-    
+
     Die Struktur des Rechners ist unabhängig von der Aufgabe, die er lösen soll.
     Hardware und Software sind voneinander \emph{getrennt}.
 \end{defi}
 
 \begin{defi}[Von-Neumann-Rechner]{Struktur}
-    
+    TODO: Bild
 \end{defi}
 
 \begin{defi}[Von-Neumann-Rechner]{Organisation}
-    
+    TODO: Bild
 \end{defi}
 
 \begin{defi}[Von-Neumann-Rechner]{Arbeitsweise}
+    Die \emph{Von-Neumann-Architektur} erlaubt nacheinander (\emph{sequentiell}):
+
     \begin{itemize}
-        \item Das Programm besteht aus einer \emph{Folge von Befehlen} (Instruktion),
-              die nacheinander (sequentiell) ausgeführt werden.
-        \item Von der Folge kann durch bedingte und unbedingte Sprungbefehle abgewichen werden, die die Programmfortsetzung an einer anderen Zelle bewirken.
-              (Die bedingten Sprünge sind von gespeicherten Werten abhängig)
-        \item Die Maschine benutzt Binärcodes, Zahlen werden dual dargestellt.
-              Befehle und andere Daten müssen geeignet kodiert werden.
-              Bitfolgen im Speicher sind nicht selbstidentifizierend.
+        \item das Lesen eines Befehlscode-Worts oder
+        \item das Lesen eines Datenworts oder
+        \item das Schreiben eines Datenworts.
     \end{itemize}
+
+    Befehlscode-Lesen und Daten-Lesen und -Schreiben konkurrieren.
+
+    Von der Folge kann durch bedingte und unbedingte Sprungbefehle abgewichen werden, die die Programmfortsetzung an einer anderen Zelle bewirken.
+
+    Die Maschine benutzt Binärcodes, Zahlen werden dual dargestellt.
 \end{defi}
 
-\begin{defi}{Flaschenhals}
-    \begin{itemize}
-        \item Prozessor/Speicherschnittstelle ist kritisch für die Leistung des Gesamtsystems
-        \item Daten werden vom Prozessor schneller verarbeitet als sie aus dem Speicher gelesen oder in den Speicher geschrieben werden können
-        \item Durch Fortschritte in der Halbleitertechnik wurde die Diskrepanz zwischen Prozessorgeschwindigkeit und Speicherzugriffszeiten immer größer $\to$ \textbf{Flaschenhals (bottleneck)}
-    \end{itemize}
+\begin{defi}[Von-Neumann-Rechner]{Von-Neumann-Flaschenhals}
+    Der \emph{Von-Neumann-Flaschenhals} der Von-Neumann-Architektur beschreibt Performance-Verringerungen von Prozessoren durch konkurrierende Daten- und Befehlscode-Zugriffe über einen gemeinsamen Bus.
 \end{defi}
+
+\begin{bonus}[Von-Neumann-Rechner]{Von-Neumann-Flaschenhals}
+    % TODO: https://de.wikipedia.org/wiki/Von-Neumann-Architektur (Quelle)
+    Weitergehend beschreibt der \emph{Von-Neumann-Flaschenhals} auch das für diesen Sachverhalt verantwortliche Konzept des \enquote{immer nur eine Sache auf einmal} (eng.: \enquote{one-word-at-a-time thinking}), also den expliziten, erzwungenen Sequentialismus durch den einzigen Bus, über den alle Aktionen laufen.
+
+    % TODO: https://dl.acm.org/doi/10.1145/359576.359579 (Quelle)
+    John Backus beschreibt 1977 den \emph{Von-Neumann-Flaschenhals} wie folgt:
+    \begin{quotation}
+        Surely there must be a less primitive way of making big changes in the store than by pushing vast numbers of words back and forth through the von Neumann bottleneck.
+        Not only is this tube a literal bottleneck for the data traffic of a problem, but, more importantly, it is an intellectual bottleneck that has kept us tied to word-at-a-time thinking instead of encouraging us to think in terms of the larger conceptual units of the task at hand.
+        Thus programming is basically planning and detailing the enormous traffic of words through the von Neumann bottleneck, and much of that traffic concerns not significant data itself, but where to find it.
+    \end{quotation}
+\end{bonus}
 
 \subsection{Rechenleistung}\label{subsec:rechenleistung}
 
-\begin{defi}{Leistung}
-    Physikalisch: $P = \frac{W}{t}$, mit Leistung $P$, Arbeit $W$ und Zeit $t$
-\end{defi}
+% \begin{defi}{Leistung}
+%     Physikalisch: $P = \frac{W}{t}$, mit Leistung $P$, Arbeit $W$ und Zeit $t$
+% \end{defi}
 
-\begin{defi}{Arbeit}
-    Die Bearbeitung \ldots
-    \begin{itemize}
-        \item \ldots einer Instruktion (rechnerabhängig)
-        \item \ldots einer Gleitkomma-Operation
-        \item \ldots eines standardisierten Programms (Benchmark)
-    \end{itemize}
-\end{defi}
+% \begin{defi}{Arbeit}
+%     Die Bearbeitung \ldots
+%     \begin{itemize}
+%         \item \ldots einer Instruktion (rechnerabhängig)
+%         \item \ldots einer Gleitkomma-Operation
+%         \item \ldots eines standardisierten Programms (Benchmark)
+%     \end{itemize}
+% \end{defi}
 
 \begin{defi}[Leistungsmaß]{Clock-Rate}
-    Die Taktfrequenz (engl.\ Clock-Rate) misst die Anzahl der Takte oder Zyklen, die von der CPU pro Sekunde durchgeführt werden in GHz (Gigahertz).
+    Die Taktfrequenz $f$ (engl. \emph{Clock-Rate}) misst die Anzahl der Takte oder Zyklen, die von der CPU pro Sekunde durchgeführt werden in \emph{Hertz} \emph{Hz} ($\SI{1}{\hertz} = \SI{1}{\per\second}$).
 \end{defi}
 
 \begin{defi}[Leistungsmaß]{FLOPS}
-    Floating Point Operations Per Second
+    % TODO: https://de.wikipedia.org/wiki/Floating_Point_Operations_Per_Second (Quelle)
+    Gleitkommaoperationen pro Sekunde (engl. \emph{FLOPS}; \emph{Floating Point Operations Per Second}) ist ein Maß für die Leistungsfähigkeit von Computersystemen und bezeichnet die Anzahl der Gleitkommazahl-Operationen (Additionen oder Multiplikationen), die von ihnen pro Sekunde ausgeführt werden können.
+
+    In Domänen wie der numerischen Simulation ist die FLOPS-Angabe ein aussagekräftiges Maß für die Leistungsfähigkeit eines Computersystems als die Angabe der Clock-Rate allein.
+
+    FLOPS auf einem System mit einer einzelnen CPU können wie folgt berechnet werden:
+    \[
+        \si{\flops} = \si{\cores} \cdot \si{\cycles\per\second} \cdot \si{\flops\per\cycle}
+    \]
+
+    FLOPS können in verschiedener Präzision angegeben werden:
+    \begin{itemize}
+        \item \emph{Half Precision}: 16 Bit
+        \item \emph{Single Precision}: 32 Bit
+        \item \emph{Double Precision}: 64 Bit
+        \item \emph{Quadruple Precision}: 128 Bit
+    \end{itemize}
 \end{defi}
+
+\begin{example}[Leistungsmaß]{FLOPS}
+    TODO
+\end{example}
 
 \begin{bonus}{Top500}
     \begin{itemize}
@@ -111,7 +145,7 @@
         \item Leistungskriterium: Benchmark-Programme aus dem Gebiet der linearen Algebra (Linpack)
     \end{itemize}
     \underline{Aufbau:}\\
-    \begin{tabularx}{\textwidth}{l|X}
+    \begin{tabular}{|l|l|}
         Manufacturer      & Manufacturer or vendor                     \\
         Computer Type     & Indicated by manufacturer or vendor        \\
         Installation Site & Customer                                   \\
@@ -124,12 +158,14 @@
         N max             & Problem size for achieving R max           \\
         N 1/2             & Problem size for achieving half of R max   \\
         N world           & Position within the TOP500 ranking         \\
-    \end{tabularx}
+    \end{tabular}
+
+    TODO: Bild, Formatierung
 \end{bonus}
 
 \begin{bonus}{Transistoren und Clock-Rate}
     Die Weiterentwicklung bei der Chipherstellung (Lithographie) führt zu feineren Strukturen auf einem Chip.
-    
+
     Was passiert, wenn Leiterbahnen und Schaltelemente um einen Faktor $x$ schrumpfen ?
     \begin{itemize}
         \item Clock-Rate $f$ wächst um Faktor $x$ (Stromverbrauch, Abwärme $T \sim f^2$)
@@ -139,13 +175,16 @@
 \end{bonus}
 
 \begin{defi}{Moore's Law}
-    \label{defi:moores_law}
-    \emph{Gordon Moore} (Mitbegründer von Intel) sagte 1965 voraus:
-    \fbox{Die Anzahl der Transistoren auf einem Halbleiterchip verdoppelt sich ungefähr alle 18 Monate.}
-    \[N = a\cdot 10^{\frac{1}{5}\cdot t}\]
+    % TODO: https://de.wikipedia.org/wiki/Mooresches_Gesetz (Quelle)
+    \emph{Moore's Law} besagt, dass sich die Komplexität integrierter Schaltkreise mit minimalen Komponentenkosten regelmäßig verdoppelt; je nach Quelle werden 12, 18 oder 24 Monate als Zeitraum genannt.
+
+    Unter Komplexität verstand Gordon Moore, der das Gesetz 1965 formulierte, die Anzahl der Schaltkreiskomponenten auf einem integrierten Schaltkreis. Gelegentlich ist auch von einer Verdoppelung der Integrationsdichte die Rede, also der Anzahl an Transistoren pro Flächeneinheit.
+
+    TODO: Bild
 \end{defi}
 
 \begin{bonus}{Leistungslücke Prozessor-Memory}
-    Aufgrund von~\nameref{defi:moores_law} wächst der \enquote{Performance Gap} (die Lesitungslücke) um ca.\ 50\% pro Jahr,
-    da bisher die CPU-Performance um ca.\ 60\% pro Jahr und die DRAM-Performance nur um ca.\ 7\% pro Jahr gewachsen ist.
+    Aufgrund von Moore's Law wächst die Leistungslücke (engl. \emph{Performance Gap}) um ca. 50\% pro Jahr, da bisher die CPU-Performance um ca. 60\% pro Jahr und die DRAM-Performance nur um ca. 7\% pro Jahr gewachsen ist.
+
+    TODO: Bild, Formulierung
 \end{bonus}
