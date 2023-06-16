@@ -13,7 +13,9 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compact scrartcl format
-\LoadClass[a4paper,parskip=half-,DIV=15,fontsize=11pt]{scrartcl}
+% \LoadClass[a4paper,parskip=half-,DIV=15,fontsize=11pt]{scrartcl}
+\LoadClass[parskip=half-]{scrartcl}
+
 
 % Enable own macros
 \RequirePackage{operators}
@@ -21,8 +23,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Enable post-90s text processing
 \usepackage[default]{sourcesanspro} % upgrade default font
-\usepackage{sectsty}
-\allsectionsfont{\sffamily}
+% \usepackage{sectsty}
+% \allsectionsfont{\sffamily}
 % \usepackage{lmodern} % upgrade default font
 % \renewcommand\familydefault{\sfdefault}
 \let\emph\relax % there's no \RedeclareTextFontCommand
@@ -230,6 +232,7 @@
 \usetikzlibrary{tikzmark,bbox,calc,automata,arrows.meta,chains,decorations.pathreplacing,matrix,scopes,shapes.misc,shapes.multipart,backgrounds}
 
 \usepackage{pgfplots, pgfplotstable}
+\pgfplotsset{compat=1.17}
 \usepgfplotslibrary{fillbetween}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

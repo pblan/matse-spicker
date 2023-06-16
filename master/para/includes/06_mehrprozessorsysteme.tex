@@ -102,12 +102,11 @@
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Durchmesser}
-    Der \emph{Durchmesser} ist die maximale Distanz zwischen zwei beliebigen Prozessoren.
+    Der \emph{Durchmesser} beschreibt die maximale Distanz zwischen zwei beliebigen Prozessoren.
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Topologie}
-    Die Topologie beschreibet, 
-    wie die Nachbarknoten angeordnet und erreichbar sind?
+    Wie sind die Nachbarknoten angeordnet und erreichbar?
 \end{defi}
 
 \subsubsection{Statische Verbindungsnetzwerke}
@@ -157,19 +156,10 @@
             \foreach \y [count=\yi] in {0,...,4}
             \draw (\x\y)--(\x\yi) (\y\x)--(\yi\x); 
             
-            \draw (00) to[bend left] node[left]{}(05);
-            \draw (10) to[bend left] node[left]{}(15);
-            \draw (20) to[bend left] node[left]{}(25);
-            \draw (30) to[bend left] node[left]{}(35);
-            \draw (40) to[bend left] node[left]{}(45);
-            \draw (50) to[bend left] node[left]{}(55);
-            
-            \draw (00) to[bend left] node[left]{}(50);
-            \draw (01) to[bend left] node[left]{}(51);
-            \draw (02) to[bend left] node[left]{}(52);
-            \draw (03) to[bend left] node[left]{}(53);
-            \draw (04) to[bend left] node[left]{}(54);
-            \draw (05) to[bend left] node[left]{}(55);
+            \foreach \x in {0,...,5}
+            \draw (\x0) to[bend left] node[left]{}(\x5);
+            \foreach \y in {0,...,5}
+            \draw (0\y) to[bend left] node[left]{}(5\y);
         \end{tikzpicture}
     \end{center}
 \end{defi}
@@ -219,7 +209,8 @@
                       \draw (A) to[] node[left]{}(C);
                       \draw (B) to[] node[left]{}(D);
                   \end{tikzpicture} & 
-                  TODO !                                    \\
+                  TODO: tikzpicture                         \\
+                  \hline
                   0d                         & 1d & 2d & 4d \\
                   \hline
               \end{tabular}
@@ -232,6 +223,7 @@
         \item Planares Layout:
               TODO: tikzpicture
         \item Fetter Baum: (mehr Verbindungen erhöhen das Datenvolumen)
+              TODO: tikzpicture
     \end{itemize}
 \end{defi}
 
@@ -301,12 +293,12 @@
 \end{defi}
 
 \begin{defi}{Omega-Netzwerk}
-    \includegraphics[width = \textwidth]{includes/graphics/OmegaNetwork.jpg}
+    \includegraphics[width=\textwidth]{includes/graphics/OmegaNetwork.jpg}
     By Bjmyers17, CC BY-SA 3.0, \url{https://commons.wikimedia.org/w/index.php?curid=75639225}
 \end{defi}
 
 \begin{defi}{Benes-Netzwerk}
-    \includegraphics[width = \textwidth]{includes/graphics/Benesnetwork.png}
+    \includegraphics[width=\textwidth]{includes/graphics/Benesnetwork.png}
     By Piggly - Own work, Public Domain, \url{https://commons.wikimedia.org/w/index.php?curid=2988080}
 \end{defi}
 
@@ -362,3 +354,124 @@
     \end{itemize}
 \end{defi}
 
+\subsection{Cache-Kohärenz}
+
+\begin{defi}{Cache-Kohärenz}
+    \begin{itemize}
+        \item wichtig bei Mehrprozessorsystemen mit Shared-Memory oder Shared Virtual Memory $\to$ SMP
+        \item Maßnahmen zur Verhinderung von unterschiedlichen Versionen der gleichen Cache-Zeile in 2 oder mehreren Caches
+        \item Technische Lösungen:
+              \begin{itemize}
+                  \item \emph{Snooping Caches} (auf den Leitungen den Datenverkehr ausschnüffeln == to snoop) $\to$ Bus-basierte Systeme
+                  \item \emph{Directory-basierte Caches} $\to$ komplexere Verbindungsnetze
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}[Cache-Kohärenz]{Snooping Cache Protocols}
+    Es gibt mehrere Snoopy-Protokolle (z.B. MESI). 
+    Sie basieren auf der \enquote{Invalidate}-Strategie:
+    \begin{itemize}
+        \item beim Schreiben von \enquote{shared data} wird ein \enquote{invalidate}-Signal an alle anderen Caches gesendet,
+              die eine Kopie dieses Datums als ungültig kennzeichnen
+        \item beim Lesen kann jeder Prozessor seine gültige Version der Cache-Zeile verwenden
+        \item findet ein Prozessor beim Lesen kein gültiges Datum: Read-Miss
+              \begin{itemize}
+                  \item bei \enquote{write-through}-Caches befindet sich das Memory immer im aktuellen Zustand:
+                        Datum wird in den anfordernden Cache gelesen
+                  \item bei \enquote{write-back}-Caches:
+                        suche (snoop) in den anderen Caches nach einer gültigen Version
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{defi}[Cache-Kohärenz]{Directory-basierte Caches}
+    Bus-basierte Snooping-Protokolle skalieren nicht bei großen Netzwerken mit NUMA-Architektur 
+    $\to$ Directory-Protokolle $\to$ ccNUMA \\
+    Directory-basierte Protokolle sind ähnlich zu Snoopy-Protokoll.
+    Das Directory hat ein Zustandsfeld mit 3 möglichen Zuständen:
+    \begin{itemize}
+        \item \emph{Shared:}     $\geq$ 1 Prozessor besitzen Daten, Memory aktuell
+        \item \emph{Uncached:}   Kein Prozessor (kein Cache) besitzt gültige Daten
+        \item \emph{Exclusive:}  1 Prozessor (owner) besitzt die Daten, Memory nicht aktuell
+    \end{itemize}
+\end{defi}
+
+\section{Multithreading}
+
+\begin{defi}{Thread}
+    Ein Thread ist \ldots
+    \begin{itemize}[\ldots]
+        \item ein Stück Code zusammen mit einem Zustand,
+              gespeichert in:
+              \begin{itemize}
+                  \item Register File
+                  \item Stack
+                  \item Program pointer
+              \end{itemize}
+        \item eine \enquote{leichtgewichtige} Einheit für den Ablauf von Befehlen (light-weight)
+        \item in vielen Betriebssystemen die kleinste Einheit,
+              die verwaltet (schedule) werden kann
+        \item bildet die Basis für ein Programmiermodell bei parallelen Rechnern (SMP-Rechner: OpenMP)
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Multithreading}
+    \emph{Multithreading} beschreibt viele \enquote{gleichzeitig} verwaltbare und ablaufbare Threads bei \ldots
+    \begin{itemize}[\ldots]
+        \item gleichzeitig bearbeiteten Programmen (multi-programming)
+        \item einem parallelen Programm
+        \item verschiedenen, in der Regel unabhängigen, Teilen eines sequentiellen Programms,
+              z. B. verschiedene Iterationen einer Schleife
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Task vs Thread}
+    \emph{Process = Task} $\neq$ \emph{Thread}
+    \begin{itemize}
+        \item Ein Task enthält mindestens einen Thread
+        \item Multiple Threads können \enquote{gleichzeitig} in einem Prozessor bearbeitet werden
+        \item Tasks besitzen unabhängige Adressräume (address spaces),
+              wohingegen Threads einen Adressraum eines Tasks gemeinsam nutzen
+              \begin{itemize}
+                  \item \underline{Vorteil:} Die gemeinsame Nutzung des Adressraums führt zu einem schnelleren \enquote{context switch}
+                        (Umschalten des Prozessors von einem Thread zum anderen)
+                  \item \underline{Nachteil:} Multithreading erfordert Synchronisation für den Zugriff auf globale Daten
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Threads Anwendung und Einsatz}
+    Anwendungen für Threads:
+    \begin{itemize}
+        \item Web-Server: ein Thread für eine Anfrage
+        \item Router: ein Thread für ein Paket
+        \item Vordergrund / Hintergrund: ein Thread für ein GUI,
+              ein anderer zur Berechnung der Aufgabe
+    \end{itemize}
+    Library:
+    \begin{itemize}
+        \item Pthreads (nach einem POSIX-Standard)
+        \item Routinen für
+              \begin{itemize}
+                  \item Thread-Erzeugung, Beendigung
+                  \item Wechselseitiger Ausschluss und Semaphoren zur Synchronisation
+              \end{itemize}
+    \end{itemize}
+\end{example}
+
+\begin{defi}[Threads]{Simultaneous Multithreading (SMT)}
+    Bei Einprozessor-Systemen: \\
+    \begin{tabularx}{\textwidth}{|X|X|}
+        \hline
+        Fakt:    & Superskalare und VLIW Prozessoren holen (fetch) und führen (execute) mehrere Befehle pro Clock Cycle aus \\
+        \hline
+        Problem: & ein einzelner Thread besitzt nicht genug \enquote{instruction-level parallelism}                         \\
+        \hline
+        Lösung:  & Ausführen der Befehle von vielen parallelen Threads in einem Clock Cycle                                 \\
+        \hline
+        Vorteil: & die Leistung (performance) der einzelnen Threads wird nicht von anderen Threads beeinträchtigt           \\
+        \hline
+    \end{tabularx}
+    $\to$ bei Intel wird SMT “Hyper-threading” genannt.
+\end{defi}
