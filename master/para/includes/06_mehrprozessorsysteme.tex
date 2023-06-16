@@ -102,11 +102,12 @@
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Durchmesser}
-    maximale Distanz zwischen zwei beliebigen Prozessoren
+    Der \emph{Durchmesser} ist die maximale Distanz zwischen zwei beliebigen Prozessoren.
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Topologie}
-    Wie sind die Nachbarknoten angeordnet und erreichbar?
+    Die Topologie beschreibet, 
+    wie die Nachbarknoten angeordnet und erreichbar sind?
 \end{defi}
 
 \subsubsection{Statische Verbindungsnetzwerke}
@@ -195,32 +196,34 @@
         \item Diameter: $d = \log_2 N$
         \item Greycode Adressierung: Jeder Knoten verbunden mit $d$ anderen Knoten unterscheidet sich durch \emph{ein Bit} in der Adresse
         \item Beispiele: Intel iPSC und NCUBE
-        \item 0d:
-              \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-                  \node[circlestyle] (A) at (0,0) {};
-              \end{tikzpicture}
-        \item 1d:
-              \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-                  \node[circlestyle] (A) at (0,0) {};
-                  \node[circlestyle] (B) at (2,0) {};
-                  \draw (A) to[] node[left]{}(B);
-              \end{tikzpicture}
-        \item 2d:
-              \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-                  \node[circlestyle] (A) at (0,0) {};
-                  \node[circlestyle] (B) at (2,0) {};
-                  \draw (A) to[] node[left]{}(B);
-                  
-                  \node[circlestyle] (C) at (0.5, 1) {};
-                  \node[circlestyle] (D) at (2.5, 1) {};
-                  \draw (C) to[] node[left]{}(D);
-                  
-                  \draw (A) to[] node[left]{}(C);
-                  \draw (B) to[] node[left]{}(D);
-              \end{tikzpicture}
-        \item 4d: TODO!
+        \item Visualisierungen: \\
+              \begin{tabular}{|c|c|c|c|}
+                  \hline
+                  \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+                      \node[circlestyle] (A) at (0,0) {};
+                  \end{tikzpicture} & 
+                  \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+                      \node[circlestyle] (A) at (0,0) {};
+                      \node[circlestyle] (B) at (2,0) {};
+                      \draw (A) to[] node[left]{}(B);
+                  \end{tikzpicture} & 
+                  \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+                      \node[circlestyle] (A) at (0,0) {};
+                      \node[circlestyle] (B) at (2,0) {};
+                      \draw (A) to[] node[left]{}(B);
+                      
+                      \node[circlestyle] (C) at (0.5, 1) {};
+                      \node[circlestyle] (D) at (2.5, 1) {};
+                      \draw (C) to[] node[left]{}(D);
+                      
+                      \draw (A) to[] node[left]{}(C);
+                      \draw (B) to[] node[left]{}(D);
+                  \end{tikzpicture} & 
+                  TODO !                                    \\
+                  0d                         & 1d & 2d & 4d \\
+                  \hline
+              \end{tabular}
     \end{itemize}
-    TODO: tikzpicture
 \end{defi}
 
 \begin{defi}{Baum}
@@ -298,21 +301,13 @@
 \end{defi}
 
 \begin{defi}{Omega-Netzwerk}
-    TODO: Including images does not work!
-    % \begin{figure}[H]
-    %     \centering
-    %     \includegraphics{graphics/OmegaNetwork.jpg}
-    %     \caption{By Bjmyers17, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=75639225}
-    % \end{figure}
+    \includegraphics[width = \textwidth]{includes/graphics/OmegaNetwork.jpg}
+    By Bjmyers17, CC BY-SA 3.0, \url{https://commons.wikimedia.org/w/index.php?curid=75639225}
 \end{defi}
 
 \begin{defi}{Benes-Netzwerk}
-    TODO: Including images does not work!
-    % \begin{figure}[H]
-    %     \centering
-    %     \includegraphics{graphics/Benesnetwork.png}
-    %     \caption{By Piggly - Own work, Public Domain, https://commons.wikimedia.org/w/index.php?curid=2988080}
-    % \end{figure}
+    \includegraphics[width = \textwidth]{includes/graphics/Benesnetwork.png}
+    By Piggly - Own work, Public Domain, \url{https://commons.wikimedia.org/w/index.php?curid=2988080}
 \end{defi}
 
 \subsubsection{Cluster-Interconnects}
