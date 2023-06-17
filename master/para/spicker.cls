@@ -16,6 +16,7 @@
 % \LoadClass[a4paper,parskip=half-,DIV=15,fontsize=11pt]{scrartcl}
 \LoadClass[parskip=half-]{scrartcl}
 
+\usepackage[left=3cm, right=3cm, top=3cm, bottom=3cm]{geometry}
 
 % Enable own macros
 \RequirePackage{operators}

@@ -114,13 +114,11 @@
 \begin{defi}{Lineare Anordnung}
     \begin{center}
         \begin{tikzpicture}
-            \node[circle, draw=blue, fill=blue] (d0) at (0, 0) {};
-            \node[circle, draw=blue, fill=blue] (d1) at (2, 0) {};
-            \node[circle, draw=blue, fill=blue] (d2) at (4, 0) {};
-            \node[circle, draw=blue, fill=blue] (d3) at (6, 0) {};
-            \draw (d0.center) to[out=0, in=180] (d1.center);
-            \draw (d1.center) to[out=0, in=180] (d2.center);
-            \draw (d2.center) to[out=0, in=180] (d3.center);
+            \foreach \x in {0,...,5}
+            \node[circle, draw=blue, fill=blue] (\x0) at (\x, 0) {};
+            
+            \foreach \x [remember=\x as \lastx (initially 0)] in {1,...,5}
+            \draw (\lastx0) to[] node[left]{}(\x0);
         \end{tikzpicture}
         \\
         Diameter = $N-1$
@@ -130,14 +128,14 @@
 \begin{defi}{Torus oder Ring}
     \begin{center}
         \begin{tikzpicture}
-            \node[circle, draw=blue, fill=blue] (d0) at (3.5, 0.5) {};
-            \node[circle, draw=blue, fill=blue] (d1) at (3.5, 3.5) {};
-            \node[circle, draw=blue, fill=blue] (d2) at (0.5, 3.5) {};
-            \node[circle, draw=blue, fill=blue] (d3) at (0.5, 0.5) {};
-            \draw (d0) to[bend right] node[left]{}(d1);
-            \draw (d1) to[bend right] node[left]{}(d2);
-            \draw (d2) to[bend right] node[left]{}(d3);
-            \draw (d3) to[bend right] node[left]{}(d0);
+            \node[circle, draw=blue, fill=blue] (d0) at (0, 0) {};
+            \node[circle, draw=blue, fill=blue] (d1) at (0, 1) {};
+            \node[circle, draw=blue, fill=blue] (d2) at (1, 1) {};
+            \node[circle, draw=blue, fill=blue] (d3) at (1, 0) {};
+            \draw (d0) to[bend left] node[left]{}(d1);
+            \draw (d1) to[bend left] node[left]{}(d2);
+            \draw (d2) to[bend left] node[left]{}(d3);
+            \draw (d3) to[bend left] node[left]{}(d0);
         \end{tikzpicture}
         \\
         Diameter = $\frac{N}{2}$
@@ -194,16 +192,16 @@
                   \end{tikzpicture} & 
                   \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
                       \node[circlestyle] (A) at (0,0) {};
-                      \node[circlestyle] (B) at (2,0) {};
+                      \node[circlestyle] (B) at (1,0) {};
                       \draw (A) to[] node[left]{}(B);
                   \end{tikzpicture} & 
                   \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
                       \node[circlestyle] (A) at (0,0) {};
-                      \node[circlestyle] (B) at (2,0) {};
+                      \node[circlestyle] (B) at (1,0) {};
                       \draw (A) to[] node[left]{}(B);
                       
-                      \node[circlestyle] (C) at (0.5, 1) {};
-                      \node[circlestyle] (D) at (2.5, 1) {};
+                      \node[circlestyle] (C) at (0.5, 0.5) {};
+                      \node[circlestyle] (D) at (1.5, 0.5) {};
                       \draw (C) to[] node[left]{}(D);
                       
                       \draw (A) to[] node[left]{}(C);
