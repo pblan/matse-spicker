@@ -411,8 +411,8 @@
               \end{itemize}
         \item eine \enquote{leichtgewichtige} Einheit für den Ablauf von Befehlen (light-weight)
         \item in vielen Betriebssystemen die kleinste Einheit,
-              die verwaltet (schedule) werden kann
-        \item bildet die Basis für ein Programmiermodell bei parallelen Rechnern (SMP-Rechner: OpenMP)
+              die verwaltet (schedule) werden kann.
+        \item die Basis für ein Programmiermodell bei parallelen Rechnern (SMP-Rechner: OpenMP).
     \end{itemize}
 \end{defi}
 
@@ -462,7 +462,7 @@
 
 \begin{defi}[Threads]{Simultaneous Multithreading (SMT)}
     Bei Einprozessor-Systemen: \\
-    \begin{tabularx}{\textwidth}{|X|X|}
+    \begin{tabularx}{\textwidth}{|l|X|}
         \hline
         Fakt:    & Superskalare und VLIW Prozessoren holen (fetch) und führen (execute) mehrere Befehle pro Clock Cycle aus \\
         \hline
@@ -473,5 +473,6 @@
         Vorteil: & die Leistung (performance) der einzelnen Threads wird nicht von anderen Threads beeinträchtigt           \\
         \hline
     \end{tabularx}
-    $\to$ bei Intel wird SMT “Hyper-threading” genannt.
+    \\
+    $\to$ bei Intel wird SMT \enquote{Hyper-threading} genannt.
 \end{defi}
