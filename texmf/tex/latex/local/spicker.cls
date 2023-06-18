@@ -82,21 +82,21 @@
 \makeatletter
 \newenvironment{btHighlight}[1][]
 {\begingroup\tikzset{bt@Highlight@par/.style={#1}}\begin{lrbox}{\@tempboxa}}
-        {\end{lrbox}\bt@HL@box[bt@Highlight@par]{\@tempboxa}\endgroup}
+    {\end{lrbox}\bt@HL@box[bt@Highlight@par]{\@tempboxa}\endgroup}
 
 \newcommand\btHL[1][]{%
-    \begin{btHighlight}[#1]\bgroup\aftergroup\bt@HL@endenv%
-        }
-        \def\bt@HL@endenv{%
-    \end{btHighlight}%   
-    \egroup
+  \begin{btHighlight}[#1]\bgroup\aftergroup\bt@HL@endenv%
+    }
+    \def\bt@HL@endenv{%
+  \end{btHighlight}%   
+  \egroup
 }
 \newcommand{\bt@HL@box}[2][]{%
-    \tikz[#1]{%
-        \pgfpathrectangle{\pgfpoint{1pt}{0pt}}{\pgfpoint{\wd #2}{\ht #2}}%
-        \pgfusepath{use as bounding box}%
-        \node[anchor=base west, fill=orange!30,outer sep=0pt,inner xsep=1pt, inner ysep=0pt, rounded corners=3pt, minimum height=\ht\strutbox+1pt,#1]{\raisebox{1pt}{\strut}\strut\usebox{#2}};
-    }%
+  \tikz[#1]{%
+    \pgfpathrectangle{\pgfpoint{1pt}{0pt}}{\pgfpoint{\wd #2}{\ht #2}}%
+    \pgfusepath{use as bounding box}%
+    \node[anchor=base west, fill=orange!30,outer sep=0pt,inner xsep=1pt, inner ysep=0pt, rounded corners=3pt, minimum height=\ht\strutbox+1pt,#1]{\raisebox{1pt}{\strut}\strut\usebox{#2}};
+  }%
 }
 \makeatother
 
@@ -145,67 +145,67 @@
 % Custom Title Format
 \makeatletter
 \renewcommand*{\@maketitle}{%
-    \global\@topnum=\z@
-    \setparsizes{\z@}{\z@}{\z@\@plus 1fil}\par@updaterelative
-    \ifx\@titlehead\@empty \else
-        \begin{minipage}[t]{\textwidth}
-            \usekomafont{titlehead}{\@titlehead\par}%
-        \end{minipage}\par
+  \global\@topnum=\z@
+  \setparsizes{\z@}{\z@}{\z@\@plus 1fil}\par@updaterelative
+  \ifx\@titlehead\@empty \else
+    \begin{minipage}[t]{\textwidth}
+      \usekomafont{titlehead}{\@titlehead\par}%
+    \end{minipage}\par
+  \fi
+  \null
+  \vskip 2em%
+  \begin{center}%
+    % MATSE-Spicker 
+    {\usekomafont{spickerlink}{\href{https://matse.paddel.xyz/spicker}{https://matse.paddel.xyz/spicker} \par}}%
+    \vskip 1.5em
+    % Subject
+    \ifx\@subject\@empty \else
+      {\usekomafont{subject}{\@subject \par}}%
+      \vskip 1.5em
     \fi
-    \null
-    \vskip 2em%
-    \begin{center}%
-        % MATSE-Spicker 
-        {\usekomafont{spickerlink}{\href{https://matse.paddel.xyz/spicker}{https://matse.paddel.xyz/spicker} \par}}%
-        \vskip 1.5em
-        % Subject
-        \ifx\@subject\@empty \else
-            {\usekomafont{subject}{\@subject \par}}%
-            \vskip 1.5em
-        \fi
-        % University
-        \ifx\@university\@empty \else
-            {\usekomafont{university}{\@university\par}}%
-            % \vskip .5em
-        \fi
-        % Programme
-        \ifx\@programme\@empty \else
-            {\usekomafont{programme}{\@programme\par}}%
-            % \vskip .5em
-        \fi
-        \vskip 1em
-            % Title
-            {\usekomafont{title}{\Huge \@title \par}}%
-        \vskip .5em
-        % Subtitle
-        \ifx\@subtitle\@empty \else
-            {\usekomafont{subtitle}{\@subtitle \par}}%
-            % \vskip .5em
-        \fi
-        \ifx\@lecturer\@empty \else
-            {\usekomafont{subtitle}{\@lecturer \par}}%
-            % \vskip .5em
-        \fi
-        \vskip 1em
-            {%
-                \usekomafont{author}{%
-                    \lineskip .5em%
-                    \begin{tabular}[t]{@{}l}
-                        \@author
-                    \end{tabular}\par
-                }%
-            }%
-        \vskip .5em%
-            {\usekomafont{date}{\@date \par}}%
-        \vskip \z@ \@plus 1em
-            {\usekomafont{publishers}{\@publishers \par}}%
-        \ifx\@dedication\@empty \else
-            \vskip 2em
-                {\usekomafont{dedication}{\@dedication \par}}%
-        \fi
-    \end{center}%
-    \par
-    \vskip 2em
+    % University
+    \ifx\@university\@empty \else
+      {\usekomafont{university}{\@university\par}}%
+      % \vskip .5em
+    \fi
+    % Programme
+    \ifx\@programme\@empty \else
+      {\usekomafont{programme}{\@programme\par}}%
+      % \vskip .5em
+    \fi
+    \vskip 1em
+      % Title
+      {\usekomafont{title}{\Huge \@title \par}}%
+    \vskip .5em
+    % Subtitle
+    \ifx\@subtitle\@empty \else
+      {\usekomafont{subtitle}{\@subtitle \par}}%
+      % \vskip .5em
+    \fi
+    \ifx\@lecturer\@empty \else
+      {\usekomafont{subtitle}{\@lecturer \par}}%
+      % \vskip .5em
+    \fi
+    \vskip 1em
+      {%
+        \usekomafont{author}{%
+          \lineskip .5em%
+          \begin{tabular}[t]{@{}l}
+            \@author
+          \end{tabular}\par
+        }%
+      }%
+    \vskip .5em%
+      {\usekomafont{date}{\@date \par}}%
+    \vskip \z@ \@plus 1em
+      {\usekomafont{publishers}{\@publishers \par}}%
+    \ifx\@dedication\@empty \else
+      \vskip 2em
+        {\usekomafont{dedication}{\@dedication \par}}%
+    \fi
+  \end{center}%
+  \par
+  \vskip 2em
 }%
 
 
@@ -236,44 +236,44 @@
 
 % Just like the 'center' block, but without spacing around it.
 \newenvironment{tightcenter}{%
-    \setlength\topsep{0pt}
-    \setlength\parskip{0pt}
-    \begin{center}
-        }{%
-    \end{center}
+  \setlength\topsep{0pt}
+  \setlength\parskip{0pt}
+  \begin{center}
+    }{%
+  \end{center}
 }
 
 % LaTeX counter interface for \rownum
 % ---
 \makeatletter
 \@ifundefined{c@rownum}{%
-    \let\c@rownum\rownum
+  \let\c@rownum\rownum
 }{}
 \@ifundefined{therownum}{%
-    \def\therownum{\@arabic\rownum}%
+  \def\therownum{\@arabic\rownum}%
 }{}
 \makeatother
 
 %%%%%%%%%%%%%%%%
 % Links and Metadata, Context Blocks
-\usepackage{tcolorbox}
+\usepackage[most]{tcolorbox}
 \usepackage{nameref}
 
 \usepackage[]{imakeidx}
 \usepackage[
-    colorlinks,
-    citecolor = .,
-    linkcolor = matse,
-    urlcolor = matse
+  colorlinks,
+  citecolor = .,
+  linkcolor = matse,
+  urlcolor = matse
 ]{hyperref}
 \usepackage{bookmark}
 
 \makeatletter
 \AtBeginDocument{
-    \hypersetup{
-        pdftitle = {\@title},
-        pdfauthor = {\@author}
-    }
+  \hypersetup{
+    pdftitle = {\@title},
+    pdfauthor = {\@author}
+  }
 }
 \makeatother
 
@@ -281,243 +281,275 @@
 \newcommand{\SpickerAlgorithm}{\IfLanguageName{ngerman}{Algorithmus}{Algorithm}}
 \newcommand{\SpickerCode}{\IfLanguageName{ngerman}{Code}{Code}}
 
-% \tcbset{boxrule=0pt,toprule=1pt,parbox=false,on line}
-
 % https://xyquadrat.ch/2022/04/04/latex-boxes/
 \tcbset {
-    base/.style={
-            arc=0mm,
-            % bottomtitle=0.5mm,
-            boxrule=0mm,
-            % colbacktitle=black!10!white, 
-            coltitle=white,
-            left=2.5mm,
-            leftrule=1pt,
-            rightrule=1pt,
-            toprule=0pt,
-            bottomrule=1pt,
-            right=3.5mm,
-            % toptitle=0.5mm, 
-        }
+  base/.style={
+      enhanced,
+      arc=2mm,
+      boxrule=0mm,
+      coltitle=white,
+      left=2.5mm,
+      leftrule=1pt,
+      rightrule=1pt,
+      toprule=0pt,
+      bottomrule=1pt,
+      right=3.5mm,
+    }
 }
 
-\newkomafont{spickerboxtype}{\small\itshape}
-\newkomafont{spickerboxtitle}{\bfseries}
-\newkomafont{spickerboxsubtitle}{\small\itshape}
+\newkomafont{spickerboxtype}{\normalfont\small\itshape}
+\newkomafont{spickerboxtitle}{\normalfont\normalsize\bfseries}
+\newkomafont{spickerboxsubtitle}{\normalfont\footnotesize\itshape}
 
 \newenvironment{defi}[2][\empty]{%
-    \ifx\empty#1
-        \index{#2}%
-    \else
-        \index{#1!#2}%
-    \fi
-    \label{defi:#2}%
-    \begin{tcolorbox}[%
-            colbacktitle=fhmint!75!black,
-            colback=fhmint!5!white,%
-            colframe=fhmint!75!black,%
-            base={#2},%
-            title={%
-                    \vphantom{Hy}%
-                    {\usekomafont{spickerboxtype}{Definition \ }}%
-                    {\usekomafont{spickerboxtitle}{#2}}%
-                },
-            label={%
-                    \ifx\empty#1
-                    {defi:#2}%
-                    \else
-                    {defi:#1:#2}
-                    \fi
-                },
-            after title={
-                    \usekomafont{spickerboxsubtitle}{
-                        \ifx\empty#1
-                        {\hfill}
-                        \else
-                        {\hfill #1}
-                        \fi
-                    }
-                },
-        ]%
-        }%
-        {%
+  \ifx\empty#1
+    \index{#2}%
+  \else
+    \index{#1!#2}%
+  \fi
+  \label{defi:#2}%
+  \begin{tcolorbox}[%
+      colbacktitle=fhmint!75!black,
+      colback=fhmint!5!white,%
+      colframe=fhmint!75!black,%
+      base={#2},%
+      label={%
+          \ifx\empty#1
+          {defi:#2}%
+          \else
+          {defi:#1:#2}
+          \fi
+        },
+      % before title={%
+      %         {\usekomafont{spickerboxtype}{Definition:}\hspace*{5mm}}
+      %     },
+      title={%
+          \vphantom{Hy}%
+          \usekomafont{spickerboxtitle}{{#2}}%
+          \ifx\empty#1
+          {}
+          \else
+          {
+            \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+          }
+          \fi
+        },
+      after title={%
+          {\hfill\usekomafont{spickerboxtype}{Definition}}
+        },
+      % after title={
+      %         {\usekomafont{spickerboxsubtitle}{
+      %                     \ifx\empty#1
+      %                     {\hfill}
+      %                     \else
+      %                     {\hfill #1}
+      %                     \fi
+      %                 }}
+      %     },
+    ]%
+    }%
+    {%
 
-    \end{tcolorbox}}
+  \end{tcolorbox}}
 
 
 \newenvironment{bonus}[2][\empty]{%
-    \ifx\empty#1
-        \index{#2}%
-    \else
-        \index{#1!#2}%
-    \fi
-    \label{bonus:#2}%
-    \begin{tcolorbox}[%
-            colbacktitle=fhred!75!black,
-            colback=fhred!5!white,%
-            colframe=fhred!75!black,%
-            base={#2},%
-            title={%
-                    \vphantom{Hy}%
-                    {\usekomafont{spickerboxtype}{Bonus \ }}%
-                    {\usekomafont{spickerboxtitle}{#2}}%
-                },
-            label={%
-                    \ifx\empty#1
-                    {bonus:#2}%
-                    \else
-                    {bonus:#1:#2}
-                    \fi
-                },
-            after title={
-                    \usekomafont{spickerboxsubtitle}{
-                        \ifx\empty#1
-                        {\hfill}
-                        \else
-                        {\hfill #1}
-                        \fi
-                    }
-                },
-        ]%
-        }%
-        {%
+  \ifx\empty#1
+    \index{#2}%
+  \else
+    \index{#1!#2}%
+  \fi
+  \label{bonus:#2}%
+  \begin{tcolorbox}[%
+      colbacktitle=fhred!75!black,
+      colback=fhred!5!white,%
+      colframe=fhred!75!black,%
+      base={#2},%
+      label={%
+          \ifx\empty#1
+          {bonus:#2}%
+          \else
+          {bonus:#1:#2}
+          \fi
+        },
+      % before title={%
+      %         {\usekomafont{spickerboxtype}{Definition:}\hspace*{5mm}}
+      %     },
+      title={%
+          \vphantom{Hy}%
+          \usekomafont{spickerboxtitle}{{#2}}%
+          \ifx\empty#1
+          {}
+          \else
+          {
+            \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+          }
+          \fi
+        },
+      after title={%
+          {\hfill\usekomafont{spickerboxtype}{Bonus}}
+        },
+      % after title={
+      %         {\usekomafont{spickerboxsubtitle}{
+      %                     \ifx\empty#1
+      %                     {\hfill}
+      %                     \else
+      %                     {\hfill #1}
+      %                     \fi
+      %                 }}
+      %     },
+    ]%
+    }%
+    {%
 
-    \end{tcolorbox}}
+  \end{tcolorbox}}
 
 
 \newenvironment{example}[2][\empty]{%
-    \ifx\empty#1
-        \index[Beispiele]{#2}%
-    \else
-        \index[Beispiele]{#1!#2}%
-    \fi
-    \label{example:#2}%
-    \begin{tcolorbox}[%
-            colbacktitle=fhblue!75!black,
-            colback=fhblue!5!white,%
-            colframe=fhblue!75!black,%
-            base={#2},%
-            title={%
-                    \vphantom{Hy}%
-                    {\usekomafont{spickerboxtype}{{\IfLanguageName{ngerman}{Beispiel}{Example}} \ }}%
-                    {\usekomafont{spickerboxtitle}{#2}}%
-                },
-            label={%
-                    \ifx\empty#1
-                    {example:#2}%
-                    \else
-                    {example:#1:#2}
-                    \fi
-                },
-            after title={
-                    \usekomafont{spickerboxsubtitle}{
-                        \ifx\empty#1
-                        {\hfill}
-                        \else
-                        {\hfill #1}
-                        \fi
-                    }
-                },
-        ]%
-        }%
-        {%
+  \ifx\empty#1
+    \index[Beispiele]{#2}%
+  \else
+    \index[Beispiele]{#1!#2}%
+  \fi
+  \label{example:#2}%
+  \begin{tcolorbox}[%
+      colbacktitle=fhblue!75!black,
+      colback=fhblue!5!white,%
+      colframe=fhblue!75!black,%
+      base={#2},%
+      label={%
+          \ifx\empty#1
+          {example:#2}%
+          \else
+          {example:#1:#2}
+          \fi
+        },
+      % before title={%
+      %         {\usekomafont{spickerboxtype}{Definition:}\hspace*{5mm}}
+      %     },
+      title={%
+          \vphantom{Hy}%
+          \usekomafont{spickerboxtitle}{{#2}}%
+          \ifx\empty#1
+          {}
+          \else
+          {
+            \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+          }
+          \fi
+        },
+      after title={%
+          {\hfill\usekomafont{spickerboxtype}{\IfLanguageName{ngerman}{Beispiel}{Example}}}
+        },
+      % after title={
+      %         {\usekomafont{spickerboxsubtitle}{
+      %                     \ifx\empty#1
+      %                     {\hfill}
+      %                     \else
+      %                     {\hfill #1}
+      %                     \fi
+      %                 }}
+      %     },
+    ]%
+    }%
+    {%
 
-    \end{tcolorbox}}
+  \end{tcolorbox}}
 
 \newenvironment{algo}[1]{%
-    \index{#1}%
-    \setlist{nosep,leftmargin=*}%
-    \begin{tcolorbox}[colback=fhblue!5!white, colframe=fhblue!75!black, title={\usekomafont{spickerboxtype}{\SpickerAlgorithm:} #1}]
-        }{%
-    \end{tcolorbox}}
+  \index{#1}%
+  \setlist{nosep,leftmargin=*}%
+  \begin{tcolorbox}[colback=fhblue!5!white, colframe=fhblue!75!black, title={\usekomafont{spickerboxtype}{\SpickerAlgorithm:} #1}]
+    }{%
+  \end{tcolorbox}}
 
 \newenvironment{info}[1]{%
-    \setlist{nosep,leftmargin=*}%
-    \begin{tcolorbox}[colback=fhyellow!5!white, colframe=fhyellow!75!black, title={\usekomafont{spickerboxtype}{Information:} #1}]
-        }{%
-    \end{tcolorbox}}
+  \setlist{nosep,leftmargin=*}%
+  \begin{tcolorbox}[colback=fhyellow!5!white, colframe=fhyellow!75!black, title={\usekomafont{spickerboxtype}{Information:} #1}]
+    }{%
+  \end{tcolorbox}}
 
 \newenvironment{code}[1]{%
-    \index{#1}%
-    \begin{tcolorbox}[colback=fhpurple!5!white, colframe=fhpurple!75!black, title={\usekomafont{spickerboxtype}{\SpickerCode:} #1}]
-        }{%
-    \end{tcolorbox}}
+  \index{#1}%
+  \begin{tcolorbox}[colback=fhpurple!5!white, colframe=fhpurple!75!black, title={\usekomafont{spickerboxtype}{\SpickerCode:} #1}]
+    }{%
+  \end{tcolorbox}}
 
 %%%%%%%%%%%%%%
 % Split Blocks
 
 \newenvironment{halfboxl}{%
-    \noindent
-    \begin{minipage}[t]{0.4875\textwidth}
-        %\vspace{0pt}
-        %\vspace{\dimexpr\ht\strutbox-\topskip}
-        }{%
-    \end{minipage}\hspace{0.025\textwidth}}
+  \noindent
+  \begin{minipage}[t]{0.4875\textwidth}
+    %\vspace{0pt}
+    %\vspace{\dimexpr\ht\strutbox-\topskip}
+    }{%
+  \end{minipage}\hspace{0.025\textwidth}}
 \newenvironment{halfboxr}{%
-    \begin{minipage}[t]{0.4875\textwidth}
-        \vspace{0pt}
-        }{%
-    \end{minipage}\bigbreak}
+  \begin{minipage}[t]{0.4875\textwidth}
+    \vspace{0pt}
+    }{%
+  \end{minipage}\bigbreak}
 
 \newenvironment{thirdboxl}{%
-    \begin{minipage}[t]{0.3166\textwidth}
-        }{%
-    \end{minipage}\hspace{0.025\textwidth}}
+  \begin{minipage}[t]{0.3166\textwidth}
+    }{%
+  \end{minipage}\hspace{0.025\textwidth}}
 \newenvironment{thirdboxm}{%
-    \begin{minipage}[t]{0.3166\textwidth}
-        }{%
-    \end{minipage}\hspace{0.025\textwidth}}
+  \begin{minipage}[t]{0.3166\textwidth}
+    }{%
+  \end{minipage}\hspace{0.025\textwidth}}
 \newenvironment{thirdboxr}{%
-    \begin{minipage}[t]{0.3166\textwidth}
-        }{%
-    \end{minipage}\bigbreak}
+  \begin{minipage}[t]{0.3166\textwidth}
+    }{%
+  \end{minipage}\bigbreak}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Citations 
 
 \usepackage[
-    style=numeric,
-    backend=bibtex,
-    sorting=none
+  style=numeric,
+  backend=bibtex,
+  sorting=none
 ]{biblatex}
 
 % Add Disclaimer
 \newcommand{\disclaimer}{%
-    \clearpage
-    \thispagestyle{empty}
-    \vspace*{\fill}
-    \begin{center}
-        \section*{Haftungsausschluss}
-    \end{center}
-    \vspace{0.5cm}
-    Liebe:r Leser:in,
+  \clearpage
+  \thispagestyle{empty}
+  \vspace*{\fill}
+  \begin{center}
+    \section*{Haftungsausschluss}
+  \end{center}
+  \vspace{0.5cm}
+  Liebe:r Leser:in,
 
-    die folgende Zusammenfassung wurden mit viel Sorgfalt erstellt, um Dir einen Überblick über die vollständigen Vorlesungen zu geben.
-    Als Referenzmaterial wurden in der Regel die Unterlagen des jeweiligen Semesters verwendet, es sei denn, es wurde ausdrücklich anders angegeben.
+  die folgende Zusammenfassung wurden mit viel Sorgfalt erstellt, um Dir einen Überblick über die vollständigen Vorlesungen zu geben.
+  Als Referenzmaterial wurden in der Regel die Unterlagen des jeweiligen Semesters verwendet, es sei denn, es wurde ausdrücklich anders angegeben.
 
-    Bitte beachte jedoch, dass diese Zusammenfassungen meine persönliche Interpretation der Vorlesungen widerspiegeln und möglicherweise nicht alle Facetten der behandelten Themen erfassen.
-    Jede:r Dozent:in hat eigenen Stil und Schwerpunkt, wodurch sich die Inhalte von Semester zu Semester leicht verändern können.
+  Bitte beachte jedoch, dass diese Zusammenfassungen meine persönliche Interpretation der Vorlesungen widerspiegeln und möglicherweise nicht alle Facetten der behandelten Themen erfassen.
+  Jede:r Dozent:in hat eigenen Stil und Schwerpunkt, wodurch sich die Inhalte von Semester zu Semester leicht verändern können.
 
-    Es ist mir wichtig zu betonen, dass diese Zusammenfassungen nicht als Ersatz für den direkten Besuch der Vorlesungen oder das Studium der offiziellen Lehrmaterialien dienen sollen.
-    Sie dienen lediglich als Unterstützung, um Dir einen Anhaltspunkt zu geben und Dir beim Lernen zu helfen.
+  Es ist mir wichtig zu betonen, dass diese Zusammenfassungen nicht als Ersatz für den direkten Besuch der Vorlesungen oder das Studium der offiziellen Lehrmaterialien dienen sollen.
+  Sie dienen lediglich als Unterstützung, um Dir einen Anhaltspunkt zu geben und Dir beim Lernen zu helfen.
 
-    Ich übernehme keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Informationen.
-    Es liegt in Deiner Verantwortung, Deine Kenntnisse durch den persönlichen Besuch der Vorlesungen und das Studium der offiziellen Unterlagen zu vertiefen.
+  Ich übernehme keine Gewähr für die Richtigkeit, Vollständigkeit oder Aktualität der bereitgestellten Informationen.
+  Es liegt in Deiner Verantwortung, Deine Kenntnisse durch den persönlichen Besuch der Vorlesungen und das Studium der offiziellen Unterlagen zu vertiefen.
 
-    Betrachte diese Zusammenfassungen gern als Ausgangspunkt für Deine eigenen Notizen.
-    Nutze sie als Sprungbrett, um tiefer in die Materie einzusteigen und Dein Verständnis zu erweitern.
-    Ergänze Dein Wissen durch Diskussionen mit Kommiliton:innen, den Austausch mit Dozent:innen und das Hinzuziehen weiterer zuverlässiger Quellen und Fachliteratur.
+  Betrachte diese Zusammenfassungen gern als Ausgangspunkt für Deine eigenen Notizen.
+  Nutze sie als Sprungbrett, um tiefer in die Materie einzusteigen und Dein Verständnis zu erweitern.
+  Ergänze Dein Wissen durch Diskussionen mit Kommiliton:innen, den Austausch mit Dozent:innen und das Hinzuziehen weiterer zuverlässiger Quellen und Fachliteratur.
 
-    Solltest Du Fehler finden oder Verbesserungsvorschläge haben, freue ich mich über Deine Rückmeldung über \href{https://github.com/pblan/matse-spicker}{GitHub}.
-    Du kannst mich alternativ per \href{mailto:patrick.blaneck@rwth-aachen.de}{E-Mail} erreichen.
+  Solltest Du Fehler finden oder Verbesserungsvorschläge haben, freue ich mich über Deine Rückmeldung über \href{https://github.com/pblan/matse-spicker}{GitHub}.
+  Du kannst mich alternativ per \href{mailto:patrick.blaneck@rwth-aachen.de}{E-Mail} erreichen.
 
-    Vielen Dank und viel Erfolg bei Deinem Studium!
+  Vielen Dank und viel Erfolg bei Deinem Studium!
 
-    \vspace{0.5cm}
+  \vspace{0.5cm}
 
-    Herzliche Grüße\\
-    Patrick Gustav Blaneck
-    \vspace*{\fill}
-    \clearpage
+  Herzliche Grüße\\
+  Patrick Gustav Blaneck
+  \vspace*{\fill}
+  \clearpage
 }

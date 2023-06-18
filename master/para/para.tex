@@ -9,7 +9,7 @@
 \programme{Angewandte Mathematik und Informatik, M. Sc.}
 \lecturer{Dr. Marcus Richter, Jochen Kreutz}
 
-\author{Sven Bergmann, Patrick Gustav Blaneck}
+\author{Patrick Gustav Blaneck, Sven Bergmann}
 
 \makeindex[intoc]
 \makeindex[intoc, name=Beispiele,title=Beispiele]
@@ -24,6 +24,61 @@
 \DeclareSIUnit{\cycle}{cycle}
 \DeclareSIUnit{\cycles}{cycles}
 
+% Forschungszentrum Jülich color
+\definecolor{fzj}{rgb}{0, 0.24, 0.42}
+
+
+\newenvironment{jsc}[2][\empty]{%
+\ifx\empty#1
+\index[Beispiele]{#2}%
+\else
+\index[Beispiele]{#1!#2}%
+\fi
+\label{jsc:#2}%
+\begin{tcolorbox}[%
+        colbacktitle=fzj!75!black,
+        colback=fzj!5!white,%
+        colframe=fzj!75!black,%
+        base={#2},%
+        label={%
+                \ifx\empty#1
+                {jsc:#2}%
+                \else
+                {jsc:#1:#2}
+                \fi
+            },
+        % before title={%
+        %         {\usekomafont{spickerboxtype}{Definition:}\hspace*{5mm}}
+        %     },
+        title={%
+                \vphantom{Hy}%
+                \usekomafont{spickerboxtitle}{{#2}}%
+                \ifx\empty#1
+                {}
+                \else
+                {
+                    \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+                }
+                \fi
+            },
+        after title={%
+                {\hfill\usekomafont{spickerboxtype}{Jülich Supercomputing Centre}}
+            },
+        % after title={
+        %         {\usekomafont{spickerboxsubtitle}{
+        %                     \ifx\empty#1
+        %                     {\hfill}
+        %                     \else
+        %                     {\hfill #1}
+        %                     \fi
+        %                 }}
+        %     },
+    ]%
+    }%
+    {%
+
+\end{tcolorbox}}
+
 \begin{document}
 \maketitle
 \tableofcontents
@@ -33,8 +88,8 @@
 \include{includes/02_komplexitaet}
 \include{includes/03_parallelverarbeitung}
 \include{includes/04_einzelprozessorsysteme}
-\include{includes/05_pipelining}
-\include{includes/06_mehrprozessorsysteme}
+% \include{includes/05_pipelining}
+% \include{includes/06_mehrprozessorsysteme}
 % \include{includes/07_cache.tex}
 % \include{includes/08_mehrprozessorsysteme.tex}
 % \include{includes/09_multithreading.tex}
