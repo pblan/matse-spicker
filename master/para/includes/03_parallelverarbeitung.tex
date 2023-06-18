@@ -55,13 +55,6 @@
     \emph{Functional Decomposition} bzw. \emph{Funktionsaufteilung} beschreibt die Zerlegung eines Problems in unterschiedliche Programmteile, Unterprogramme oder Module, die dann auf Prozessoren verteilt und parallel bearbeitet werden.
 
     Dabei können die Programmteile auf jeweils unterschiedlichen, eventuell spezialisierten, Rechnerarchitekturen ausgeführt werden.
-
-    Unterschiedliche Programmteile, Unterprogramme,
-    Module werden auf Prozessoren verteilt und parallel bearbeitet.
-    \begin{itemize}[$\to$]
-        \item verschiedene Rechnerarchitekturen für unterschiedliche Programmteile einsetzbar
-        \item aufwändiger zu Implementieren
-    \end{itemize}
 \end{defi}
 
 \begin{jsc}[Functional Decomposition]{Modulare Supercomputing Architektur}
@@ -107,26 +100,6 @@
 \begin{bonus}{Durchsatz}
     \emph{Durchsatz} ist ein Maß für die Bewertung der Verarbeitung einer gesamten Arbeitslast
     (mit welchem Flugzeug kann eine Fluggesellschaft mehr Personen befördern ?).
-
-\begin{defi}{Amdahl's Law}
-    \begin{align*}
-        \text{Speedup }S(p)=
-        \frac{\text{Laufzeit (sequentiell)}}{\text{Laufzeit (parallel)}} =
-        \frac{T_s}{T_S \cdot f + (1-f) \cdot \frac{T_s}{p}}
-    \end{align*}
-    mit:
-    \begin{itemize}
-        \item $p:$ Anzahl der parallelen Bearbeitungselemente (Prozessoren)
-        \item $T_s:$ Laufzeit für die sequentielle Bearbeitung der gesamten Aufgabe
-        \item $f:$ Anteil der Laufzeit, die für Teile verbraucht wird, die nicht parallel ablaufen können
-    \end{itemize}
-    für:
-    \begin{itemize}
-        \item $p\to\infty: S(\infty) = \frac{1}{f} \text{, oder } T(\infty) = f \cdot T_s$
-        \item $f\to 0: S(p) = p \text{, oder } T(p) = \frac{T_s}{p}$
-    \end{itemize}
-\end{defi}
-    TODO: Definition
 \end{bonus}
 
 \begin{defi}{Effizienz}
