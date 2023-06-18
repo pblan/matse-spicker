@@ -1,33 +1,61 @@
 \section{Parallelverarbeitung}\label{sec:parallelverarbeitung}
 
 \begin{defi}{Parallelverarbeitung}
-    Durch Aufteilung einer Aufgabe in Teilaufgaben,
-    die gleichzeitig bearbeitet werden können,
-    soll eine Leistungssteigerung erzielt werden.\\
-    Man unterscheidet:
+    % TODO: https://de.wikipedia.org/wiki/Nebenl%C3%A4ufigkeit (Quelle)
+    Die \emph{Parallelverarbeitung} (engl. \enquote{concurrency}), zielt darauf ab, mehrere Aufgaben, Berechnungen, Anweisungen oder Befehle gleichzeitig ausführen zu können.
+    Es kann sich dabei um völlig unabhängige Anweisungen handeln, bis hin zur gemeinsamen Bearbeitung einer Aufgabe.
+
+    Ziel ist eine \emph{Leistungssteigerung}.
+
+    Voraussetzungen sind, dass
     \begin{itemize}
-        \item \underline{Sequentielle Verarbeitung:} nacheinander ausführen der Teilaufgaben
-        \item \underline{Parallele Verarbeitung:} es gibt Zeitabschnitte in der Verarbeitung, in der Teilaufgaben gleichzeitig bearbeitet werden
+        \item eine Aufteilungsmöglichkeit existiert und erkannt wird,
+        \item mehrere Bearbeiter zur Verfügung stehen und
+        \item diese gleichzeitig und dabei möglichst unabhängig agieren können.
     \end{itemize}
-    \underline{Voraussetzungen:}
-    \begin{enumerate}
-        \item Aufteilungsmöglichkeit existiert und wird erkannt
-        \item mehrere Bearbeiter stehen zur Verfügung
-        \item gleichzeitig $\to$ möglichst unabhängig
-    \end{enumerate}
 \end{defi}
 
-\begin{defi}[Parallelverarbeitung]{Domain Decomposition}
-    Statische oder dynamische Aufteilung eines Datengebiets in Bereiche gleicher Prozessorarbeit.
+\begin{defi}{Domain Decomposition}
+    \emph{Domain Decomposition} bzw. \emph{Gebietszerlegung} beschreibt die statische oder dynamische Aufteilung eines Datengebiets in Bereiche gleicher Prozessorarbeit.
     Alle Gebiete werden mit demselben Programmteil parallel verarbeitet.
-    \begin{itemize}[$\to$]
-        \item Kommunikation erfordert \enquote{enggekoppelte} Prozessoren
-        \item geeignet für homogene Plattformen
-        \item am häufigsten verwendet in HPC
-    \end{itemize}
+
+    Domain Decomposition ist insbesondere geeignet für \emph{homogene Plattformen}.
+
+    Im High-Performance-Computing (HPC) wird diese Art der Parallelisierung häufigsten verwendet.
 \end{defi}
 
-\begin{defi}[Parallelverarbeitung]{Functional Decomposition}
+\begin{defi}[Domain Decomposition]{Statische Aufteilung}
+    % TODO: https://de.wikipedia.org/wiki/Lastverteilung_(Informatik) (Quelle)
+    \emph{Statische Aufteilung} der Domain Decomposition berücksichtigt den Zustand verschiedener Maschinen nicht.
+    Sie soll z. B. die Kommunikation zwischen Prozessoren minimieren, oder bestimmte Hardware-Eigenschaften des Verbindungsnetzwerkes ausnutzen.
+
+    Der Vorteil statischer Aufteilung ist, dass sie leicht zu implementieren und bei relativ regelmäßigen Aufgaben äußerst effizient ist.
+\end{defi}
+
+\begin{example}[Domain Decomposition]{Statische Aufteilung}
+    TODO: Grafik
+\end{example}
+
+\begin{defi}[Domain Decomposition]{Dynamische Aufteilung}
+    % TODO: https://de.wikipedia.org/wiki/Lastverteilung_(Informatik) (Quelle)
+    \emph{Dynamische Aufteilung} der Domain Decomposition soll ein Gebiet in Bereiche gleicher Prozessorarbeit aufteilen.
+
+    Im Gegensatz zur statischen Aufteilung wird bei der dynamische Variante die aktuelle Last jeder der Recheneinheiten im System berücksichtigt.
+    Bei diesem Ansatz können Aufgaben dynamisch von einem überlasteten Knoten zu einem unterlasteten Knoten verschoben werden, um eine schnellere Verarbeitung zu erhalten.
+
+    Obwohl diese Algorithmen viel komplizierter zu entwerfen sind, können sie hervorragende Ergebnisse liefern, insbesondere wenn die Ausführungszeit von einer Aufgabe zur anderen stark variiert.
+
+\end{defi}
+
+\begin{example}[Domain Decomposition]{Dynamische Aufteilung}
+    TODO: Grafik
+\end{example}
+
+\begin{defi}{Functional Decomposition}
+    \emph{Functional Decomposition} bzw. \emph{Funktionsaufteilung} beschreibt die Zerlegung eines Problems in unterschiedliche Programmteile, Unterprogramme oder Module, die dann auf Prozessoren verteilt und parallel bearbeitet werden.
+
+    Dabei können die Programmteile auf jeweils unterschiedlichen, eventuell spezialisierten, Rechnerarchitekturen ausgeführt werden.
+
     Unterschiedliche Programmteile, Unterprogramme,
     Module werden auf Prozessoren verteilt und parallel bearbeitet.
     \begin{itemize}[$\to$]
@@ -36,18 +64,49 @@
     \end{itemize}
 \end{defi}
 
-\begin{bonus}{Modular Supercomputing Architecture}
+\begin{jsc}[Functional Decomposition]{Modulare Supercomputing Architektur}
+    % TODO: https://www.fz-juelich.de/de/ias/jsc/ueber-uns/struktur/forschungsgruppen/jsc-rg-proto/modulare-supercomputing-architektur (Quelle)
+    Die \emph{Modular Supercomputing Architecture} (\emph{MSA}) ist ein Systemdesign zur Integration heterogener Ressourcen und zur Erfüllung der Anforderungen eines breiten Spektrums von Anwendungsbereichen, die von rechenintensiven, hochskalierenden Simulationscodes bis hin zu datenintensiven Workflows der künstlichen Intelligenz reichen.
 
-\end{bonus}
+    \vspace{1em}
+
+    \centering
+    \includegraphics[width=0.9\linewidth]{images/modular_supercomputing_architecture.png}
+\end{jsc}
 
 \begin{defi}{Speedup}
-    \emph{Speedup} ist ein Maß für die Bewertung der Verarbeitung eines einzelnen Auftrages (Passagiers).
+    % TODO: https://de.wikipedia.org/wiki/Speedup
+    \emph{Speedup} beschreibt mathematisch den Zusammenhang zwischen der seriellen und der parallelen Ausführungszeit eines Programmteils.
+
+    Der \emph{reale Speedup} $S$ einer parallelen Ausführung, der zur realen Messung herangezogen wird, kann wie folgt definiert werden:
+    \[
+        S = \frac{t_S}{t_p}
+    \]
+    Dabei sind $t_S$ und $t_p$ die serielle bzw. die parallele Ausführungszeit bei $p$ parallelen Bearbeitungseinheiten (Prozessoren).
 \end{defi}
 
-\begin{defi}{Durchsatz}
+\begin{defi}{Amdahl's Law}
+    % TODO: https://de.wikipedia.org/wiki/Speedup (Quelle)
+    % TODO: https://de.wikipedia.org/wiki/Amdahlsches_Gesetz (Quelle)
+    Das \emph{Amdahlsche Gesetz} (engl. \emph{Amdahl's Law}) ist ein Modell über die Beschleunigung von Programmen durch parallele Ausführung.
+    Nach Amdahl wird der Geschwindigkeitszuwachs vor allem durch den sequentiellen Anteil des Problems beschränkt, da sich dessen Ausführungszeit durch Parallelisierung nicht verringern lässt.
+
+    Der \emph{theoretische Speedup} $\eta_S$ nach Amdahl kann wie folgt definiert werden:
+    \[
+        \eta_S = \frac{t_S}{t_S \cdot f + t_S \cdot \frac{1-f}{p} } = \frac{t_S}{t_S \left((1 - f) + \frac{f}{n_P}\right)}
+    \]
+    Dabei sind $t_S$ und $t_p$ die serielle bzw. die parallele Ausführungszeit bei $p$ parallelen Bearbeitungseinheiten (Prozessoren);
+    $f$ ist der Anteil der Laufzeit bzw. des Programms, der nicht parallel ablaufen kann und $n_P$ die Anzahl der Anzahl der Prozessoren, die zur Berechnung eingesetzt werden können.
+
+    Es gelten weiterhin folgende Grenzwerte:
+    \[
+        \lim_{p \to \infty} \eta_S = \frac{1}{f} \quad \text{und} \quad \lim_{f \to 0 } \eta_S = n_P
+    \]
+\end{defi}
+
+\begin{bonus}{Durchsatz}
     \emph{Durchsatz} ist ein Maß für die Bewertung der Verarbeitung einer gesamten Arbeitslast
     (mit welchem Flugzeug kann eine Fluggesellschaft mehr Personen befördern ?).
-\end{defi}
 
 \begin{defi}{Amdahl's Law}
     \begin{align*}
@@ -67,10 +126,17 @@
         \item $f\to 0: S(p) = p \text{, oder } T(p) = \frac{T_s}{p}$
     \end{itemize}
 \end{defi}
+    TODO: Definition
+\end{bonus}
 
 \begin{defi}{Effizienz}
-    Effizienz definiert das Verhältnis von Speedup und eingesetzter Prozessoranzahl.
+    \emph{Effizienz} definiert das Verhältnis von Speedup und eingesetzter Prozessoranzahl.
     Sie drückt aus, welcher Anteil der Prozessorleistung nutzbar ist.
+
+    Sie kann definiert werden als:
+    \[
+        E = \frac{S}{n_P} = \frac{t_S}{n_P\cdot t_P} \in (0; 1)
+    \]
     \begin{align*}
         E(p) = \frac{S(p)}{p} =
         \frac{T(\text{sequentiell})}{p\cdot T(\text{parallel})},
@@ -98,27 +164,89 @@
         \underbrace{\frac{1}{2n}}_{\text{Problemgröße}} \cdot
         \underbrace{\frac{t_\text{startup}}{t_\text{flop}}}_{\text{Hardware}}}
     \end{align*}
+
+    TODO: Darstellung
 \end{example}
 
 \begin{example}[Effizienz]{Skalarprodukt}
-    \begin{align*}
-        E(p)\approx\frac{1}{1 + p\cdot\log_2 p\cdot \frac{1}{2n} \cdot \frac{t_\text{startup}}{t_\text{flop}}}
-    \end{align*}
-    Die Effizienz \emph{steigt} mit wachsender Problemgröße $n$ (bei $p$ fest) und
-    \emph{sinkt} bei größerer Prozessoranzahl $p$ (mit $n$ fest)
+    \[
+        E(p) \approx \frac{1}{1 + n_P \cdot \log_2 n_P \cdot \frac{1}{2n} \cdot \frac{t_\text{startup}}{t_\text{flop}}}
+    \]
+    Die Effizienz
+    \begin{itemize}
+        \item \emph{steigt} mit wachsender Problemgröße $n$ (bei $n_P$ fest) und
+        \item \emph{sinkt} bei größerer Prozessoranzahl $n_p$ (mit $n$ fest).
+    \end{itemize}
+
+    TODO: Darstellung\\
+    TODO: Wie muss die Problemgröße $n$ wachsen bei festem $n_P$ und konstanter Effizienz?
 \end{example}
 
 \begin{defi}{Skalierbarkeit}
-    Eine Rechnerarchitektur bzw.\ ein Programm ist skalierbar,
-    wenn die Effizienz der Programmbearbeitung bei wachsender Prozessorzahl gleich bleibt.
+    Eine Rechnerarchitektur bzw. ein Programm ist \emph{skalierbar}, wenn die Effizienz der Programmbearbeitung bei wachsender Prozessorzahl gleich bleibt.
+    Dies kann im Allgemeinen nur durch gleichzeitige Vergrößerung der Problemgröße erfolgen.
+
+    Ein Programm bzw. ein Algorithmus ist \emph{perfekt skalierbar}, wenn $n \in \mathcal{O}(n_P)$ ist, also linear in $n_P$.
+
+    TODO: Was soll das heißen?
+\end{defi}
+
+\begin{defi}{Paralleler Overhead}
+
+    Der Speedup kann sich reduzieren durch zusätzlichen \emph{parallelen Overhead}.
+
+    \[
+        V(n_P) = n_P \cdot t_P - t_S
+    \]
+
+    Der \emph{durchschnittliche parallele Overhead} ist definiert als:
+    \[
+        \overline{V}(n_P) = \frac{V(n_P)}{n_P}
+    \]
+
+    Er wird verursacht durch:
+    \begin{itemize}
+        \item Kosten für das Starten eines Vorgangs (\enquote{startup}),
+        \item Kosten für das Verteilen bzw. Verwalten gemeinsamer Daten, oder
+        \item Kosten für Synchronisation.
+    \end{itemize}
+
+    Daher gilt abzuwägen zwischen:
+    \begin{itemize}
+        \item Verkleinern der Kommunikation durch größere Arbeitspakete (\emph{grobkörnige Granualität})
+        \item Kleine Arbeitspaketen, damit viele Prozessoren arbeiten (\emph{feinkörnige Granualität})
+    \end{itemize}
+
+    TODO: Sinnvolle Definition finden
 \end{defi}
 
 \begin{defi}{Pipelining}
-    Henry Ford hat 1913 mit Produktionsbeginn der \enquote{Tin Lizzy} als erster das Fließband in die industrielle Fabrikation eingeführt.
-    Prinzip: Ein komplexer Vorgang wird in eine Sequenz von einfacheren Teilaufgaben zerlegt. \\
-    Vorteile:
-    \begin{itemize}
-        \item Höherer Durchsatz ($\frac{\text{Lizzy}}{h}$)
-        \item Vereinfachung (und damit auch eine schnellere Bearbeitung) der Teilaufgaben (CISC $\to$ RISC)
-    \end{itemize}
+    \emph{Pipelining} beschreibt eine Implementierungstechnik, bei der komplexe Vorgänge in eine Sequenz von einfacheren Teilaufgaben zerlegt wird.
+
+    Die \emph{Stufen} der Pipeline (engl. \enquote{pipe stages}) werden hintereinander und verschachtelt ausgeführt.
+    Dabei sollen so viele Instruktionen wie möglich in einer Zeiteinheit ausgeführt werden, dadurch wird der Durchsatz erhöht.
+    Die Laufzeit einer einzelnen Pipeline bleibt jedoch unverändert.
 \end{defi}
+
+\begin{example}{Pipelining}
+    \emph{Pipelining} beschreibt eine Implementierungstechnik, bei der komplexe Vorgänge in eine Sequenz von einfacheren Teilaufgaben zerlegt wird.
+
+    Die \emph{Stufen} der Pipeline (engl. \enquote{pipe stages}) werden hintereinander und verschachtelt ausgeführt.
+    Dabei sollen so viele Instruktionen wie möglich in einer Zeiteinheit ausgeführt werden, dadurch wird der Durchsatz erhöht.
+    Die Laufzeit einer einzelnen Pipeline bleibt jedoch unverändert.
+\end{example}
+
+\begin{defi}[Pipelining]{Speedup}
+    Der bestmögliche \emph{Speedup} beim Pipelining entspricht der Anzahl der Pipeline-Stufen.
+    Er wird reduziert durch unausgewogene Ausführungslängen.
+    Die Geschwindigkeit der Pipeline ist also direkt beschränkt durch die langsamste Pipeline-Stufe.
+
+    Eine effiziente Pipeline-Nutzung setzt voraus, dass eine möglichst hohe Anzahl von Aufträgen (Prozesse) verarbeitet wird.
+    Bei nur einem Auftrag entartet die Pipeline zu einer reinen sequentiellen Verarbeitung.
+
+    TODO: Formeln
+\end{defi}
+
+\begin{example}[Pipelining]{RISC vs. CISC}
+    TODO: Grafik
+\end{example}
