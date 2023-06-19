@@ -17,26 +17,26 @@
 \end{defi}
 
 \begin{bonus}[Flynn'sche Klassifikation]{Erweiterungen}
-    \begin{itemize}
-        \item \emph{SIMD} Single Instruction Multiple Data
-              \begin{itemize}
-                  \item Vektor-Prozessoren (auch Mischformen mit MIMD vorhanden!)
-                  \item Array-Prozessoren
-              \end{itemize}
-        \item \emph{MIMD} Multiple Instruction Multiple Data
-              \begin{itemize}
-                  \item Speichergekoppelte Multiprozessoren
-                        \begin{itemize}
-                            \item Unified Memory Architecture (UMA)
-                            \item Non-Uniform Memory Access (NUMA)
-                        \end{itemize}
-                  \item Nachrichtengekoppelte Multiprozessoren
-                        \begin{itemize}
-                            \item Massively Parallel Processing (MPP)
-                            \item Cluster Of Workstations (COW)
-                        \end{itemize}
-              \end{itemize}
-    \end{itemize}
+    \begin{center}
+        \begin{forest}for tree={inner sep=2pt,outer sep=0pt,align=center,font=\sffamily\footnotesize,draw}
+            [Parallelrechner
+                [\emph{SIMD} \\ Single \\ Instruction \\ Multiple \\ Data
+                        [Vektor- \\ Prozessoren \\ (auch Mischformen \\ mit MIMD vorhanden!)]
+                        [Array- \\ Prozessoren]
+                ]
+                [\emph{MIMD} \\ Multiple \\ Instruction \\ Multiple \\ Data
+                        [Speichergekoppelte \\ Multiprozessoren
+                                [Unified \\ Memory \\ Architecture \\ (UMA)]
+                                [Non-Uniform \\ Memory \\ Access \\ (NUMA)]
+                        ]
+                        [Nachrichtengekoppelte \\ Multiprozessoren
+                                [Massively \\ Parallel \\ Processing \\ (MPP)]
+                                [Cluster Of \\ Workstations \\ (COW)]
+                        ]
+                ]
+            ]
+        \end{forest}
+    \end{center}
 \end{bonus}
 
 \subsection{Speichergekoppelte Systeme}
@@ -114,11 +114,13 @@
 \begin{defi}{Lineare Anordnung}
     \begin{center}
         \begin{tikzpicture}
-            \foreach \x in {0,...,5}
-            \node[circle, draw=blue, fill=blue] (\x0) at (\x, 0) {};
+            \foreach \x in {0,...,5} {
+                    \node[circle, draw=blue, fill=blue] (\x0) at (\x, 0) {};
+                }
             
-            \foreach \x [remember=\x as \lastx (initially 0)] in {1,...,5}
-            \draw (\lastx0) to[] node[left]{}(\x0);
+            \foreach \x [remember=\x as \lastx (initially 0)] in {1,...,5} {
+                    \draw (\lastx0) to[] node[left]{}(\x0);
+                }
         \end{tikzpicture}
         \\
         Diameter = $N-1$
@@ -146,35 +148,48 @@
     2D-Torus:
     \begin{center}
         \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-            \foreach \x in {0, ..., 5}
-            \foreach \y in {0, ..., 5}
-            \node[circlestyle] (\x\y) at (\x, \y) {};
+            \foreach \x in {0, ..., 5} {
+                    \foreach \y in {0, ..., 5} {
+                            \node[circlestyle] (\x\y) at (\x, \y) {};
+                        }
+                }
             
-            \foreach \x in {0,...,5}
-            \foreach \y [count=\yi] in {0,...,4}
-            \draw (\x\y)--(\x\yi) (\y\x)--(\yi\x); 
+            \foreach \x in {0,...,5}{
+                    \foreach \y [count=\yi] in {0,...,4}{
+                            \draw (\x\y)--(\x\yi) (\y\x)--(\yi\x); 
+                        }
+                }
             
-            \foreach \x in {0,...,5}
-            \draw (\x0) to[bend left] node[left]{}(\x5);
-            \foreach \y in {0,...,5}
-            \draw (0\y) to[bend left] node[left]{}(5\y);
+            \foreach \x in {0,...,5} {
+                    \draw (\x0) to[bend left] node[left]{}(\x5);
+                }
+            \foreach \y in {0,...,5}{
+                    \draw (0\y) to[bend left] node[left]{}(5\y);
+                }
         \end{tikzpicture}
+        \\
+        Diameter = $\sqrt{N}$
     \end{center}
 \end{defi}
 
 \begin{defi}{Gitter}
     2D-Gitter:\\
-    Diameter = $2\cdot\left(\sqrt{N} - 1\right)$
     \begin{center}
         \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-            \foreach \x in {0, ..., 5}
-            \foreach \y in {0, ..., 5}
-            \node[circlestyle] (\x\y) at (\x, \y) {};
+            \foreach \x in {0, ..., 5}{
+                    \foreach \y in {0, ..., 5}{
+                            \node[circlestyle] (\x\y) at (\x, \y) {};
+                        }
+                }
             
-            \foreach \x in {0,...,5}
-            \foreach \y [count=\yi] in {0,...,4}
-            \draw (\x\y)--(\x\yi) (\y\x)--(\yi\x); 
+            \foreach \x in {0,...,5}{
+                    \foreach \y [count=\yi] in {0,...,4}{
+                            \draw (\x\y)--(\x\yi) (\y\x)--(\yi\x); 
+                        }
+                }
         \end{tikzpicture}
+        \\
+        Diameter = $2\cdot\left(\sqrt{N} - 1\right)$
     \end{center}
 \end{defi}
 
@@ -193,19 +208,19 @@
                   \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
                       \node[circlestyle] (A) at (0,0) {};
                       \node[circlestyle] (B) at (1,0) {};
-                      \draw (A) to[] node[left]{}(B);
+                      \draw (A) -- (B);
                   \end{tikzpicture} & 
                   \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
                       \node[circlestyle] (A) at (0,0) {};
                       \node[circlestyle] (B) at (1,0) {};
-                      \draw (A) to[] node[left]{}(B);
+                      \draw (A) -- (B);
                       
                       \node[circlestyle] (C) at (0.5, 0.5) {};
                       \node[circlestyle] (D) at (1.5, 0.5) {};
-                      \draw (C) to[] node[left]{}(D);
+                      \draw (C) -- (D);
                       
-                      \draw (A) to[] node[left]{}(C);
-                      \draw (B) to[] node[left]{}(D);
+                      \draw (A) -- (C);
+                      \draw (B) -- (D);
                   \end{tikzpicture} & 
                   TODO: tikzpicture                         \\
                   \hline
@@ -216,20 +231,53 @@
 \end{defi}
 
 \begin{defi}{Baum}
-    Diameter = $\log_2 N$
-    \begin{itemize}
-        \item Planares Layout:
-              TODO: tikzpicture
-        \item Fetter Baum: (mehr Verbindungen erhöhen das Datenvolumen)
-              TODO: tikzpicture
-    \end{itemize}
+    Diameter = $\log_2 N$ \\
+    \begin{tabularx}{\textwidth}{|X|X|}
+        \toprule
+        Planares Layout: & Fetter Baum: (mehr Verbindungen erhöhen das Datenvolumen) \\
+        \midrule
+        \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+            \foreach \y in {0, ..., 3}{
+                    \node[circlestyle] (0\y) at (0,\y) {};
+                    \node[circlestyle] (1\y) at (1,\y) {};
+                    \node[circlestyle] (3\y) at (3,\y) {};
+                    \node[circlestyle] (4\y) at (4,\y) {};
+                }
+            % Connections between nodes
+            \draw (00) -- (01);
+            \draw (10) -- (11);
+            \draw (30) -- (31);
+            \draw (40) -- (41);
+            
+            \draw (02) -- (03);
+            \draw (12) -- (13);
+            \draw (32) -- (33);
+            \draw (42) -- (43);
+            %%%
+            % Connections between connections
+            \draw (0, 0.5) -- (1, 0.5);
+            \draw (3, 0.5) -- (4, 0.5);
+            
+            \draw (0, 2.5) -- (1, 2.5);
+            \draw (3, 2.5) -- (4, 2.5);
+            
+            \draw (0.5, 0.5) -- (0.5, 2.5);
+            \draw (3.5, 0.5) -- (3.5, 2.5);
+            
+            \draw (0.5, 1.5) -- (3.5, 1.5);
+            %%%
+        \end{tikzpicture}
+                         & 
+        TODO: tikzpicture                                                            \\
+        \bottomrule
+    \end{tabularx}
 \end{defi}
 
 \begin{bonus}{Übersicht statischer Verbindungsnetzwerke}
     \begin{tabularx}{\textwidth}{|l|X|X|X|}
-        \hline
+        \toprule
         Topologie          & Anzahl der Verbindungskanäle pro Knoten & Maximale Entfernung (Diameter) & Gesamtanzahl der Verbindungskanäle \\
-        \hline
+        \midrule
         Ring               & 2                                       & $\frac{N}{2}$                  & $N-1$                              \\
         \hline
         Baum               & 3                                       & $2\cdot (\log_2 N - 1)$        & $N-1$                              \\
@@ -243,7 +291,7 @@
         Hypercube          & $\log_2 N$                              & $\log_2 N$                     & $N \log_2 \frac{N}{2}$             \\
         \hline
         Vollst. Vernetzung & $N - 1$                                 & 1                              & $N \cdot \frac{N-1}{2}$            \\
-        \hline
+        \bottomrule
     \end{tabularx}
 \end{bonus}
 
@@ -300,13 +348,7 @@
     By Piggly - Own work, Public Domain, \url{https://commons.wikimedia.org/w/index.php?curid=2988080}
 \end{defi}
 
-\subsubsection{Cluster-Interconnects}
-
-\begin{defi}{Cluster-Interconnect}
-    
-\end{defi}
-
-\begin{defi}{Infiniband}
+\begin{defi}[Cluster-Interconnect]{Infiniband}
     \begin{itemize}
         \item \ldots ist eine Architektur für Hochgeschwindigkeitsverbindungen zwischen Rechnern und externen Speicherservern.
         \item \ldots wurde unter Führung von Intel entwickelt, später Mellanox, jetzt Nvidia.
@@ -315,7 +357,7 @@
     aktuell: Infiniband EDR / HDR mit bis zu 200 Gbit/s
 \end{defi}
 
-\begin{defi}{Gigabit Ethernet}
+\begin{defi}[Cluster-Interconnect]{Gigabit Ethernet}
     \begin{itemize}
         \item \ldots wird vorwiegend in lokalen Netzwerken genutzt,
               auch für Heimanwender mit RJ45 Stecker für Kupferkabel (z.B. Lan-Buchsen am Router)
@@ -328,28 +370,28 @@
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Klassifikation}
-    \begin{itemize}
-        \item Statisch
-              \begin{itemize}
-                  \item Ein-dimensional
-                  \item Zwei-dimensional
-                  \item Mehr-dimensional
-              \end{itemize}
-        \item Dynamisch
-              \begin{itemize}
-                  \item Bussysteme
-                  \item Zellenbasierte Netze
-                        \begin{itemize}
-                            \item Einstufig
-                            \item Mehrstufig
-                                  \begin{itemize}
-                                      \item Blockierend
-                                      \item Nicht-Blockierend
-                                  \end{itemize}
-                        \end{itemize}
-                  \item Kreuzschienenverteiler (Crossbars)
-              \end{itemize}
-    \end{itemize}
+    \begin{center}
+        \begin{forest}for tree={inner sep=2pt,outer sep=0pt,align=center,font=\sffamily\footnotesize,draw}
+            [Verbindungsnetzwerk
+                [statisch
+                        [ein-\\dimensional]
+                        [zwei-\\dimensional]
+                        [mehr-\\dimensional]
+                ]
+                [dynamisch
+                        [Bussysteme]
+                        [Zellenbasierte Netze
+                                [einstufig]
+                                [mehrstufig
+                                        [blockierend]
+                                        [nicht-blockierend]
+                                ]
+                        ]
+                        [Kreuzschienenverteiler \\ (Crossbars)]
+                ]
+            ]
+        \end{forest}
+    \end{center}
 \end{defi}
 
 \subsection{Cache-Kohärenz}
