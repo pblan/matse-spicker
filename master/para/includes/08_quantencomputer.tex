@@ -38,9 +38,43 @@
 \end{defi}
 
 \begin{defi}[Quantencomputer]{D-WAVE QUANTENANNEALER}
-
+    Löst spezielles Optimierungsproblem \enquote{QUBO} schnell und effizient:
+    \begin{align*}
+        \min\limits_{q_i = 0,1}\left(\sum\limits_i a_i q_i + \sum\limits_{i<j} b_{ij} q_i q_j\right)
+    \end{align*}
 \end{defi}
 
 \begin{bonus}[Quantencomputer]{Zusammenfassung}
-
+    \begin{itemize}
+        \item Quantencomputer = Idee aus Quantentheorie
+        \item Kleinste Recheneinheit: 1 \nameref{defi:Qubit}
+        \item Messung von \nameref{defi:Qubit} liefert Bit 0 oder 1
+        \item Program = Schaltung aus Quantengattern
+        \item Besondere Form: D-Wave Quantenannealer
+        \item Werden digitale Computer durch Quantencomputer ersetzt? Nein!
+        \item Nutzermodell: Programme schicken spezielle Teilprobleme an Quantencomputer
+        \item Relevant für z. B. Faktorisierung, Suche in Datenbanken, Optimierung, \ldots
+    \end{itemize}
 \end{bonus}
+
+\begin{jsc}{JUNIQ - Jülicher Nutzer-Infrastruktur für Quantencomputing}
+    Das Ziel ist die Bereitstellung von \ldots
+    \begin{itemize}[\ldots]
+        \item Quantencomputer-Simulatoren (JUQCS, Atos QLM-30) über Cloud-Zugriff
+        \item Zugängen zu verfügbaren Systemen für Anwender aus Wissenschaft und Industrie
+        \begin{itemize}
+            \item Für diese sind Systeme mit verschiedenen technologischen Reifegraden (QTRL) verfügbar
+            \item Benutzer können erstmals das bevorzugte System auf einer QTRL-Rampe wählen:
+            \begin{itemize}
+                \item Zugriff auf aufkommende experimentelle Systeme
+                \item Zugriff auf Multi-Qubit-Systeme für Quantencomputing ohne Fehlerkorrektur (IBM, Google, Rigetti)
+                \item Hosting und Betrieb eines Systems für Quantenannealing (D-Wave Systems)
+            \end{itemize}
+        \end{itemize}
+        \item hochkarätiger Anwenderunterstützung in allen Aspekten der HPC- und Quantencomputer-Nutzung
+        \begin{itemize}
+            \item Einrichtung eines unterstützenden Simulationslabors \enquote{Quantencomputing}
+            \item Forschungsteams für Quantenalgorithmen, Protokolle, Workflows und Software-Werkzeuge
+        \end{itemize} 
+    \end{itemize}    
+\end{jsc}
