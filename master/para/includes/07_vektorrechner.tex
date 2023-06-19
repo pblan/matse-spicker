@@ -85,4 +85,34 @@
     \end{itemize}
 \end{defi}
 
-\section{Aufgaben}
+\subsection{Aufgaben}
+
+\aufgabe[]{Vektorprozessoren}
+{
+    Welche Eigenschaften müssen die Programmiersprache bzw. der Compiler haben um Vektorprozessoren nutzen zu können?
+}
+{
+    Die Programmiersprache muss Konstrukte zur Beschreibung der Vektoroperationen enthalten
+    \underline{oder} der Compiler muss automatisch Programmteile als vektorisierbar erkennen.
+}
+
+\aufgabe[]{Parallelität}
+{
+    Erklären Sie den Unterschied zwischen ILP und DLP.
+}
+{
+    \begin{itemize}
+        \item ILP („Instruction-Level Parallelism") bezieht sich auf die Fähigkeit eines Prozessors,
+              mehrere Anweisungen gleichzeitig auszuführen,
+              indem er Anweisungen analysiert und versucht,
+              Anweisungen zu finden,
+              die unabhängig voneinander ausgeführt werden können.
+              Der Prozessor kann dann diese Anweisungen parallel ausführen,
+              um die Geschwindigkeit der Ausführung zu erhöhen.
+        \item DLP(„Data-Level Parallelism") hingegen bezieht sich auf die Fähigkeit eines Prozessors,
+              mehrere Datenströme parallel zu verarbeiten.
+              Ein Beispiel für DLP ist die Verwendung von Vektorprozessoren,
+              die in der Lage sind,
+              mehrere Elemente eines Vektors gleichzeitig zu verarbeiten.
+    \end{itemize}
+}

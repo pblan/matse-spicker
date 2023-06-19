@@ -91,9 +91,11 @@
 \fi
 \label{Aufgabe:#2}
 \begin{tcolorbox}[
-        colbacktitle=red!75!black,
-        colback=red!5!white,
-        colframe=red!75!black,
+        bicolor,
+        colbacktitle=fhmint!75!black,
+        colback=fhmint!5!white,
+        colbacklower=fhmint!50!black,
+        colframe=fhmint!75!black,
         base={#2},
         label={
                 \ifx\empty#1
@@ -118,38 +120,39 @@
             },
     ]
     % \tcbsubtitle{Frage}
-    % #3
-    % \tcbsubtitle{Antwort}
-    % #4
-    \begin{tcolorbox}[enhanced, 
-        title = Frage,
-        attach boxed title to top right = {yshift=-2mm},
-        boxed title style={
-            colframe=red!75!black,
-            colback=red!75!black
-        },
-        colback=red!5!white,
-        colframe=red!75!black,
-        % frame style={draw=none,fill=none},
-        % watermark text = Frage,
-        ]
-        #3
-    \end{tcolorbox}
+    #3
     \tcblower
-    \begin{tcolorbox}[enhanced, 
-        title = Antwort,
-        attach boxed title to top right = {yshift=-2mm},
-        boxed title style={
-            colframe=red!75!black,
-            colback=red!75!black
-        },
-        colback=red!5!white,
-        colframe=red!75!black,
-        % frame style={draw=none,fill=none},
-        % watermark text = Antwort,
-        ]
-        #4
-    \end{tcolorbox}
+    % \tcbsubtitle{Antwort}
+    #4
+    % \begin{tcolorbox}[enhanced, 
+    %     % title = Frage,
+    %     % attach boxed title to top right = {yshift=-2mm},
+    %     % boxed title style={
+    %     %     colframe=red!75!black,
+    %     %     colback=red!75!black
+    %     % },
+    %     colback=fhmint!5!white,
+    %     % colframe=red!75!black,
+    %     frame style={draw=none,fill=none},
+    %     watermark text = Frage,
+    %     ]
+    %     #3
+    % \end{tcolorbox}
+    % \tcblower
+    % \begin{tcolorbox}[enhanced, 
+    %     % title = Antwort,
+    %     % attach boxed title to top right = {yshift=-2mm},
+    %     % boxed title style={
+    %     %     colframe=red!75!black,
+    %     %     colback=red!75!black
+    %     % },
+    %     colback=fhmint!5!white,
+    %     % colframe=red!75!black,
+    %     frame style={draw=none,fill=none},
+    %     watermark text = Antwort,
+    %     ]
+    %     #4
+    % \end{tcolorbox}
 \end{tcolorbox}
 }
 

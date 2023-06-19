@@ -254,7 +254,7 @@
 
 %%%%%%%%%%%%%%%%
 % Links and Metadata, Context Blocks
-\usepackage[most]{tcolorbox}
+\usepackage[most, skins]{tcolorbox}
 \usepackage{nameref}
 
 \usepackage[]{imakeidx}
