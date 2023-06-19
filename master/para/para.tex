@@ -14,6 +14,8 @@
 
 \makeindex[intoc]
 \makeindex[intoc, name=Beispiele,title=Beispiele]
+\makeindex[intoc, name=Aufgaben,title=Aufgaben]
+
 
 % Setup for SI units
 \sisetup{
@@ -80,6 +82,77 @@
 
 \end{tcolorbox}}
 
+
+\newcommand{\aufgabe}[4][\empty]{
+\ifx\empty#1
+\index[Aufgaben]{#2}
+\else
+\index[Aufgaben]{#1!#2}
+\fi
+\label{Aufgabe:#2}
+\begin{tcolorbox}[
+        colbacktitle=red!75!black,
+        colback=red!5!white,
+        colframe=red!75!black,
+        base={#2},
+        label={
+                \ifx\empty#1
+                {Aufgabe:#2}%
+                \else
+                {Aufgabe:#1:#2}
+                \fi
+            },
+        title={
+                \vphantom{Hy}
+                \usekomafont{spickerboxtitle}{{#2}}
+                \ifx\empty#1
+                {}
+                \else
+                {
+                    \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+                }
+                \fi
+            },
+        after title={
+                {\hfill\usekomafont{spickerboxtype}{Aufgabe}}
+            },
+    ]
+    % \tcbsubtitle{Frage}
+    % #3
+    % \tcbsubtitle{Antwort}
+    % #4
+    \begin{tcolorbox}[enhanced, 
+        title = Frage,
+        attach boxed title to top right = {yshift=-2mm},
+        boxed title style={
+            colframe=red!75!black,
+            colback=red!75!black
+        },
+        colback=red!5!white,
+        colframe=red!75!black,
+        % frame style={draw=none,fill=none},
+        % watermark text = Frage,
+        ]
+        #3
+    \end{tcolorbox}
+    \tcblower
+    \begin{tcolorbox}[enhanced, 
+        title = Antwort,
+        attach boxed title to top right = {yshift=-2mm},
+        boxed title style={
+            colframe=red!75!black,
+            colback=red!75!black
+        },
+        colback=red!5!white,
+        colframe=red!75!black,
+        % frame style={draw=none,fill=none},
+        % watermark text = Antwort,
+        ]
+        #4
+    \end{tcolorbox}
+\end{tcolorbox}
+}
+
 \begin{document}
 \maketitle
 \tableofcontents
@@ -93,8 +166,6 @@
 \include{includes/06_mehrprozessorsysteme}
 \include{includes/07_vektorrechner}
 \include{includes/08_quantencomputer}
-% \include{includes/08_mehrprozessorsysteme.tex}
-% \include{includes/09_multithreading.tex}
 
 \printindex
 \printindex[Beispiele]

@@ -21,7 +21,7 @@
   TODO: Sinnvolle Definition und Voraussetzungen
 
   TODO: Grafik
-    Während des langsamen I/O kann nun gleichzeitig die \enquote{wertvolle} Ressource CPU genutzt werden.
+  Während des langsamen I/O kann nun gleichzeitig die \enquote{wertvolle} Ressource CPU genutzt werden.
 \end{defi}
 
 \subsection{Cache}\label{subsec:cache}
@@ -53,6 +53,8 @@
 \end{defi}
 
 \begin{example}[Cachehierarchie]{Harvard-Architektur}
+  \includegraphics[width=\textwidth]{images/harvard_architektur.png}
+  Boris Jakubaschk, \url{https://www.homecomputermuseum.de/technik/rechnerarchitektur/harvard-architektur/}, zuletz aufgerufen am: 19.06.2023
   % TODO: https://en.wikipedia.org/wiki/Cache_hierarchy (Quelle, Grafiken)
 \end{example}
 
@@ -113,27 +115,27 @@
 \end{defi}
 
 \begin{defi}{Ersetzungsstrategie}
-    \begin{itemize}
-        \item Trivial für Direct Mapped Cache
-        \item Bei Set Associative oder Fully Associative:
-              \begin{itemize}
-                  \item Random
-                  \item LRU (Least Recently Used) bzw. FIFO
-              \end{itemize}
-    \end{itemize}
-    Zurückschreiben von Daten:
-    \begin{itemize}
-        \item \underline{Write through:} Die Information wird sowohl in den Cache als auch ins
-              Memory zurückgeschrieben.
-        \item \underline{Write back:} Die Information wird nur in den Cache geschrieben. Die
-              veränderte Zeile wird erst dann ins Memory geschrieben, wenn die
-              Cache-Zeile mit Daten aus anderen Hauptspeicheradressen
-              überschrieben werden soll.
-              \begin{itemize}
-                  \item \underline{Vorteil:} Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
-                  \item \underline{Nachteil:} Ein Read-Miss kann zu einem Schreiben ins Memory führen.
-              \end{itemize}
-    \end{itemize}
+  \begin{itemize}
+    \item Trivial für Direct Mapped Cache
+    \item Bei Set Associative oder Fully Associative:
+          \begin{itemize}
+            \item Random
+            \item LRU (Least Recently Used) bzw. FIFO
+          \end{itemize}
+  \end{itemize}
+  Zurückschreiben von Daten:
+  \begin{itemize}
+    \item \underline{Write through:} Die Information wird sowohl in den Cache als auch ins
+          Memory zurückgeschrieben.
+    \item \underline{Write back:} Die Information wird nur in den Cache geschrieben. Die
+          veränderte Zeile wird erst dann ins Memory geschrieben, wenn die
+          Cache-Zeile mit Daten aus anderen Hauptspeicheradressen
+          überschrieben werden soll.
+          \begin{itemize}
+            \item \underline{Vorteil:} Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
+            \item \underline{Nachteil:} Ein Read-Miss kann zu einem Schreiben ins Memory führen.
+          \end{itemize}
+  \end{itemize}
 \end{defi}
 
 \begin{bonus}[Cache]{IBM Power 4}
@@ -145,65 +147,150 @@
 \end{bonus}
 
 \begin{defi}{Cache Miss}
-    Ist keine Kopie der Hauptspeicherzelle a im Cache abgelegt, so
-    \begin{itemize}
-        \item greift die CPU auf den Arbeitsspeicher zu,
-        \item lädt das Datum in den Cache und
-        \item lädt das Datum gleichzeitig in die CPU.
-    \end{itemize}
+  Ist keine Kopie der Hauptspeicherzelle a im Cache abgelegt, so
+  \begin{itemize}
+    \item greift die CPU auf den Arbeitsspeicher zu,
+    \item lädt das Datum in den Cache und
+    \item lädt das Datum gleichzeitig in die CPU.
+  \end{itemize}
 \end{defi}
 
 \begin{defi}{Reduzierung der Cache Miss Rate}
-    \begin{itemize}
-        \item \underline{Cold start miss:} Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)
-        \item \underline{Capacity miss:} Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache)
-        \item \underline{Conflict miss:} Tritt auf, wenn ein Block ersetzt werden muß, der anschließend wieder benötigt wird (bei N-way associative Cache)
-        \item \underline{Coherence miss:} bei Mehrprozessorsystemen → wird später erklärt
-    \end{itemize}
+  \begin{itemize}
+    \item \underline{Cold start miss:} Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)
+    \item \underline{Capacity miss:} Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache)
+    \item \underline{Conflict miss:} Tritt auf, wenn ein Block ersetzt werden muß, der anschließend wieder benötigt wird (bei N-way associative Cache)
+    \item \underline{Coherence miss:} bei Mehrprozessorsystemen → wird später erklärt
+  \end{itemize}
 \end{defi}
 
 \begin{defi}[Reduzierung der Cache Miss Rate]{Programmierstrategien}
-    Verbessern der Speicherlokalität durch
-    \begin{itemize}[\ldots]
-        \item Datenstrukturierung
-        \item Ändern der Indexierung
-        \item Schleifenfusion
-        \item Bildung von Teilblöcken
-    \end{itemize}
+  Verbessern der Speicherlokalität durch
+  \begin{itemize}[\ldots]
+    \item Datenstrukturierung
+    \item Ändern der Indexierung
+    \item Schleifenfusion
+    \item Bildung von Teilblöcken
+  \end{itemize}
 \end{defi}
 
 \begin{defi}{Table-Look-Aside Buffer}
-    Bei Rechnern mit virtueller Speicherverwaltung arbeitet der Prozessor mit virtuellen Adressen,
-    die durch den TLB in reale Adressen umgesetzt werden.
+  Bei Rechnern mit virtueller Speicherverwaltung arbeitet der Prozessor mit virtuellen Adressen,
+  die durch den TLB in reale Adressen umgesetzt werden.
 \end{defi}
 
 \subsection{Entwicklungslinien der Prozessoren}\label{subsec:entwicklungslinien-der-prozessoren}
 
 \begin{defi}{Complex Instruction Set Computer (CISC)}
-    Befehls-Code ist Index auf Zeiger-Array für Mikroprogramm,
-    die Hardware führt die Sequenz der Mikrobefehle aus.
+  Befehls-Code ist Index auf Zeiger-Array für Mikroprogramm,
+  die Hardware führt die Sequenz der Mikrobefehle aus.
 \end{defi}
 
 \begin{defi}{Reduced Instruction Set Computer (RISC)}
-    Der Compiler erzeugt direkt \enquote{Mikrobefehle}.
-    Es muss zwar mehr Code erzeugt werden,
-    aber die Hardware wird einfacher und damit auch schneller.
+  Der Compiler erzeugt direkt \enquote{Mikrobefehle}.
+  Es muss zwar mehr Code erzeugt werden,
+  aber die Hardware wird einfacher und damit auch schneller.
 \end{defi}
 
 \begin{defi}{Very Long Instruction Word (VLIW)}
 \end{defi}
 
 \begin{defi}{Explicitly Parallel Instruction Computing (EPIC)}
-    Von HP und Intel wurde 1998/99 die Prozessorarchitektur EPIC entworfen
-    und mit dem Intel Itanium ein erster Prozessor realisiert.
-    Die Intel-Version der Architektur wird IA-64 (64 bit) genannt.
+  Von HP und Intel wurde 1998/99 die Prozessorarchitektur EPIC entworfen
+  und mit dem Intel Itanium ein erster Prozessor realisiert.
+  Die Intel-Version der Architektur wird IA-64 (64 bit) genannt.
 
-    EPIC ist die moderne Weiterentwicklung des Konzepts des VLIW.
+  EPIC ist die moderne Weiterentwicklung des Konzepts des VLIW.
 
-    Hierbei versucht der Compiler,
-    möglichst viele voneinander unabhängige Instruktionen in einer Sequenz zusammenzustellen.
-    Er kann dabei durch Umstellen der Befehle die Reihenfolge innerhalb der Sequenz verändern.
-    Dies darf aber nicht zu anderen Ergebnissen führen!
+  Hierbei versucht der Compiler,
+  möglichst viele voneinander unabhängige Instruktionen in einer Sequenz zusammenzustellen.
+  Er kann dabei durch Umstellen der Befehle die Reihenfolge innerhalb der Sequenz verändern.
+  Dies darf aber nicht zu anderen Ergebnissen führen!
 
-    Eine solche Sequenz nennt Intel ein “bundle”.
+  Eine solche Sequenz nennt Intel ein \enquote{bundle}.
 \end{defi}
+
+\subsection{Aufgaben}
+
+\aufgabe[Caches]{Ersetzungsstrategie}
+{
+  Welche Ersetzungsstrategien bei Konflikten können beim Set Associative oder Fully Associative Cache eingesetzt werden?
+}
+{
+  Es können die Ersetzungsstrategien \enquote{Random},
+  \enquote{Last Recently Used (LRU)} oder \enquote{First In First Out (FIFO)} eingesetzt werden.
+}
+
+\aufgabe[Caches]{Write-Back Cache}
+{
+  Welchen Vorteil bietet ein Write Back Cache?
+}
+{
+  Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
+}
+
+\aufgabe[Cache]{Cache-Miss}
+{
+  Nennen und erklären Sie vier verschiedene Typen eines Cache-Miss.
+}
+{
+  Es existieren folgende Typen eines Cache-Miss:\\
+  \begin{tabularx}{\textwidth}{|l|X|}
+    \toprule
+    Typ              & Erklärung                                                                                                                                          \\
+    \midrule
+    Cold start miss: & Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)                 \\
+    \midrule
+    Capacity miss:   & Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache) \\
+    \midrule
+    Conflict miss:   & Tritt auf, wenn ein Block ersetzt werden muss, der anschließend wieder benötigt wird (bei N-way associative Cache)                                 \\
+    \midrule
+    Coherence miss:  & Tritt in einem mehrprozessorfähigen Cache auf,
+    wenn ein Prozessor eine Adresse in den Cache schreibt und ein anderer Prozessor auf die gleiche Adresse zugreifen möchte,
+    bevor die Änderungen in den Hauptspeicher geschrieben wurden.                                                                                                         \\
+    \bottomrule
+  \end{tabularx}
+}
+
+\aufgabe[Cache]{Virtuelle Adressen}
+{
+  Im Cache befinden sich stets reale Adressen.
+  Wie heißt der \enquote{Cache} für virtuelle Adressen?
+}
+{
+  Der \enquote{Cache} für virtuelle Adressen heißt \enquote{Translation Lookaside Buffer (TLB)}.
+}
+
+\aufgabe[Parallelität]{Risiken}
+{
+  Nennen und erklären Sie drei Risiken,
+  die beim ILP zum Abreißen der gleichmäßigen Instruktionsbearbeitung führen können.
+}
+{
+  \begin{tabularx}{\textwidth}{|l|X|}
+    \toprule
+    Risiko              & Erklärung                                                                                                           \\
+    \midrule
+    Structural hazards: & Die HW kann nicht eine bestimmte Aufeinanderfolge von Instruktionen ausführen.                                      \\
+    \midrule
+    Data hazards:       & Instruktionen hängen vom Ergebnis vorheriger Schritte ab,
+    die noch nicht die Pipeline verlassen haben.                                                                                              \\
+    \midrule
+    Control hazards:    & Zwischen dem \enquote{fetch} von Instruktionen und dem Ändern des Kontrollflusses (branch) entstehen Verzögerungen. \\
+    \bottomrule
+  \end{tabularx}
+}
+
+\aufgabe[]{Prozessoren}
+{
+  Nennen Sie drei Methoden,
+  die im Itanium Prozessor eingesetzt werden,
+  um Instruktionen beschleunigt abarbeiten zu können.
+}
+{
+  \begin{itemize}
+    \item Predication
+    \item Data Speculation
+    \item Control Speculation
+  \end{itemize}
+}
