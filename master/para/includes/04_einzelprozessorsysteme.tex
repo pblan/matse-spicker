@@ -20,8 +20,8 @@
 
     TODO: Sinnvolle Definition und Voraussetzungen
 
-  TODO: Grafik
-  Während des langsamen I/O kann nun gleichzeitig die \enquote{wertvolle} Ressource CPU genutzt werden.
+    TODO: Grafik
+    Während des langsamen I/O kann nun gleichzeitig die \enquote{wertvolle} Ressource CPU genutzt werden.
 \end{defi}
 
 \subsection{Cache}\label{subsec:cache}
@@ -52,10 +52,18 @@
     In letzterem Fall muss auf den langsamen Hintergrundspeicher zugegriffen werden.
 \end{defi}
 
+\begin{example}[Cachehierarchie]{IBM Power 4}
+    TODO
+\end{example}
+
+\begin{example}[Cachehierarchie]{Intel Itanium}
+    TODO
+\end{example}
+
 \begin{example}[Cachehierarchie]{Harvard-Architektur}
-  \includegraphics[width=\textwidth]{images/harvard_architektur.png}
-  Boris Jakubaschk, \url{https://www.homecomputermuseum.de/technik/rechnerarchitektur/harvard-architektur/}, zuletz aufgerufen am: 19.06.2023
-  % TODO: https://en.wikipedia.org/wiki/Cache_hierarchy (Quelle, Grafiken)
+    \includegraphics[width=\textwidth]{images/harvard_architektur.png}
+    Boris Jakubaschk, \url{https://www.homecomputermuseum.de/technik/rechnerarchitektur/harvard-architektur/}, zuletz aufgerufen am: 19.06.2023
+    % TODO: https://en.wikipedia.org/wiki/Cache_hierarchy (Quelle, Grafiken)
 \end{example}
 
 \begin{defi}[Cache]{Zugriffszeit}
@@ -246,129 +254,154 @@
 \end{bonus}
 
 \begin{defi}{Reduzierung der Cache Miss Rate}
-  \begin{itemize}
-    \item \underline{Cold start miss:} Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)
-    \item \underline{Capacity miss:} Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache)
-    \item \underline{Conflict miss:} Tritt auf, wenn ein Block ersetzt werden muß, der anschließend wieder benötigt wird (bei N-way associative Cache)
-    \item \underline{Coherence miss:} bei Mehrprozessorsystemen → wird später erklärt
-  \end{itemize}
+    \begin{itemize}
+        \item \underline{Cold start miss:} Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)
+        \item \underline{Capacity miss:} Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache)
+        \item \underline{Conflict miss:} Tritt auf, wenn ein Block ersetzt werden muß, der anschließend wieder benötigt wird (bei N-way associative Cache)
+        \item \underline{Coherence miss:} bei Mehrprozessorsystemen → wird später erklärt
+    \end{itemize}
 \end{defi}
 
 \begin{defi}[Reduzierung der Cache Miss Rate]{Programmierstrategien}
-  Verbessern der Speicherlokalität durch
-  \begin{itemize}[\ldots]
-    \item Datenstrukturierung
-    \item Ändern der Indexierung
-    \item Schleifenfusion
-    \item Bildung von Teilblöcken
-  \end{itemize}
+    Verbessern der Speicherlokalität durch
+    \begin{itemize}[\ldots]
+        \item Datenstrukturierung
+        \item Ändern der Indexierung
+        \item Schleifenfusion
+        \item Bildung von Teilblöcken
+    \end{itemize}
 \end{defi}
 
-\begin{defi}{Table-Look-Aside Buffer}
-  Bei Rechnern mit virtueller Speicherverwaltung arbeitet der Prozessor mit virtuellen Adressen,
-  die durch den TLB in reale Adressen umgesetzt werden.
+\begin{example}[Reduzierung der Cache Miss Rate]{Programmierung}
+    TODO
+\end{example}
+
+\begin{defi}{Translation-Lookaside-Buffer}
+    % TODO: https://de.wikipedia.org/wiki/Translation_Lookaside_Buffer (Quelle)
+    Der Begriff \emph{Übersetzungspuffer} bzw. \emph{Translation Lookaside Buffer} (\emph{TLB}) bezeichnet eine funktionale Einheit der Speicherverwaltung.
+
+    Wenn virtueller Speicher verwendet wird, muss zu den virtuellen Adressen die jeweils zugehörige physische Adresse ermittelt werden.
+    Da diese Arbeitsschritte verhältnismäßig zeitintensiv sind, werden die zuletzt ermittelten $n$ Werte für die Adresse der physischen Speicherseite im TLB zwischengespeichert, wodurch erneute Zugriffe auf Adressen in dieser Seite nicht aufwändig neu ermittelt werden müssen, sondern aus dieser Liste entnommen werden können.
+
+    Der TLB kann eine begrenzte Menge dieser Referenzen halten (üblicherweise nicht mehr als 1024 Einträge) und kann dadurch die Ausführung von Speicherzugriffen deutlich beschleunigen.
+
+    Bei Rechnern mit virtuellen Adressen wird bei einem Task-Wechsel zu Beginn der Cache invalidiert.
+    Daher kommt es für die neue Task zu Cold Start Misses!
+
+    TODO: Grafik
 \end{defi}
 
 \subsection{Entwicklungslinien der Prozessoren}\label{subsec:entwicklungslinien-der-prozessoren}
 
-\begin{defi}{Complex Instruction Set Computer (CISC)}
-  Befehls-Code ist Index auf Zeiger-Array für Mikroprogramm,
-  die Hardware führt die Sequenz der Mikrobefehle aus.
+\begin{defi}[Befehlssatzarchitektur]{CISC}
+    % TODO: https://de.wikipedia.org/wiki/Complex_Instruction_Set_Computer (Quelle)
+    Anfänglich wurden die Befehlssätze der Prozessoren immer umfangreicher, um auch komplexere Rechenschritte \enquote{auf einmal} mit nur einem Maschinenbefehl ausführen zu können, um dadurch schneller und leistungsfähiger zu werden.
+    Zugleich wurde dadurch jedoch auch der Prozessor komplex und schwierig weiterzuentwickeln -- und auch schwieriger zu programmieren.
+
+    Viele Hersteller setzten zunächst auf die Mikroprogrammierung der Rechenwerke, um Problemfälle leichter korrigieren zu können -- dennoch nahm die Komplexität immer weiter zu.
+
+    Die Bezeichnung \emph{Complex Instruction Set Computer} (\emph{CISC}) wurde in den 1970er Jahren von IBM als Retronym gewählt, um klassische Befehlssätze von einer neuartigen Form abzugrenzen, dem Reduced Instruction Set Computer (RISC).
+
+    TODO: Grafik
 \end{defi}
 
-\begin{defi}{Reduced Instruction Set Computer (RISC)}
-  Der Compiler erzeugt direkt \enquote{Mikrobefehle}.
-  Es muss zwar mehr Code erzeugt werden,
-  aber die Hardware wird einfacher und damit auch schneller.
-\end{defi}
+\begin{defi}[Befehlssatzarchitektur]{RISC}
+    % TODO: https://de.wikipedia.org/wiki/Reduced_Instruction_Set_Computer (Quelle)
+    \emph{Reduced Instruction Set Computer} (\emph{RISC}) ist eine Designphilosophie für Computerprozessoren.
+    Das Designziel war der Verzicht auf einen komplexen, für die Assemblerprogrammierung komfortablen Befehlssatz hin zu einfach zu dekodierenden und schnell auszuführenden Befehlen (\enquote{eigentliche Befehlsausführung} meist nur 1 Takt).
+    Dies ermöglichte zudem höhere Taktfrequenzen.
 
-\begin{defi}{Very Long Instruction Word (VLIW)}
-\end{defi}
+    Der Compiler erzeugt direkt Mikrobefehle.
+    Es muss zwar mehr Code erzeugt werden, aber die Hardware wird einfacher und damit auch schneller.
 
-\begin{defi}{Explicitly Parallel Instruction Computing (EPIC)}
-  Von HP und Intel wurde 1998/99 die Prozessorarchitektur EPIC entworfen
-  und mit dem Intel Itanium ein erster Prozessor realisiert.
-  Die Intel-Version der Architektur wird IA-64 (64 bit) genannt.
+    TODO: Grafik
+    \begin{defi}{Very Long Instruction Word (VLIW)}
+    \end{defi}
 
-  EPIC ist die moderne Weiterentwicklung des Konzepts des VLIW.
+    \begin{defi}{Explicitly Parallel Instruction Computing (EPIC)}
+        Von HP und Intel wurde 1998/99 die Prozessorarchitektur EPIC entworfen
+        und mit dem Intel Itanium ein erster Prozessor realisiert.
+        Die Intel-Version der Architektur wird IA-64 (64 bit) genannt.
 
-  Hierbei versucht der Compiler,
-  möglichst viele voneinander unabhängige Instruktionen in einer Sequenz zusammenzustellen.
-  Er kann dabei durch Umstellen der Befehle die Reihenfolge innerhalb der Sequenz verändern.
-  Dies darf aber nicht zu anderen Ergebnissen führen!
+        EPIC ist die moderne Weiterentwicklung des Konzepts des VLIW.
 
-  Eine solche Sequenz nennt Intel ein \enquote{bundle}.
-\end{defi}
+        Hierbei versucht der Compiler,
+        möglichst viele voneinander unabhängige Instruktionen in einer Sequenz zusammenzustellen.
+        Er kann dabei durch Umstellen der Befehle die Reihenfolge innerhalb der Sequenz verändern.
+        Dies darf aber nicht zu anderen Ergebnissen führen!
 
-\subsection{Aufgaben}
+        Eine solche Sequenz nennt Intel ein \enquote{bundle}.
+    \end{defi}
 
-\begin{aufgabe}[Caches]{Ersetzungsstrategie}
-  Welche Ersetzungsstrategien bei Konflikten können beim Set Associative oder Fully Associative Cache eingesetzt werden?
-  \tcblower
-  Es können die Ersetzungsstrategien \enquote{Random},
-  \enquote{Last Recently Used (LRU)} oder \enquote{First In First Out (FIFO)} eingesetzt werden.
-\end{aufgabe}
+    \subsection{Aufgaben}
 
-\begin{aufgabe}[Caches]{Write-Back Cache}
-  Welchen Vorteil bietet ein Write Back Cache?
-  \tcblower
-  Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
-\end{aufgabe}
+    \begin{aufgabe}[Caches]{Ersetzungsstrategie}
+        Welche Ersetzungsstrategien bei Konflikten können beim Set Associative oder Fully Associative Cache eingesetzt werden?
+        \tcblower
+        Es können die Ersetzungsstrategien \enquote{Random},
+        \enquote{Last Recently Used (LRU)} oder \enquote{First In First Out (FIFO)} eingesetzt werden.
+    \end{aufgabe}
 
-\begin{aufgabe}[Cache]{Cache-Miss}
-  Nennen und erklären Sie vier verschiedene Typen eines Cache-Miss.
-  \tcblower
-  Es existieren folgende Typen eines Cache-Miss:\\
-  \begin{tabularx}{\textwidth}{|l|X|}
-    \toprule
-    Typ              & Erklärung                                                                                                                                          \\
-    \midrule
-    Cold start miss: & Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)                 \\
-    \midrule
-    Capacity miss:   & Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache) \\
-    \midrule
-    Conflict miss:   & Tritt auf, wenn ein Block ersetzt werden muss, der anschließend wieder benötigt wird (bei N-way associative Cache)                                 \\
-    \midrule
-    Coherence miss:  & Tritt in einem mehrprozessorfähigen Cache auf,
-    wenn ein Prozessor eine Adresse in den Cache schreibt und ein anderer Prozessor auf die gleiche Adresse zugreifen möchte,
-    bevor die Änderungen in den Hauptspeicher geschrieben wurden.                                                                                                         \\
-    \bottomrule
-  \end{tabularx}
-\end{aufgabe}
+    \begin{aufgabe}[Caches]{Write-Back Cache}
+        Welchen Vorteil bietet ein Write Back Cache?
+        \tcblower
+        Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
+    \end{aufgabe}
 
-\begin{aufgabe}[Cache]{Virtuelle Adressen}
-  Im Cache befinden sich stets reale Adressen.
-  Wie heißt der \enquote{Cache} für virtuelle Adressen?
-  \tcblower
-  Der \enquote{Cache} für virtuelle Adressen heißt \enquote{Translation Lookaside Buffer (TLB)}.
-\end{aufgabe}
+    \begin{aufgabe}[Cache]{Cache-Miss}
+        Nennen und erklären Sie vier verschiedene Typen eines Cache-Miss.
+        \tcblower
+        Es existieren folgende Typen eines Cache-Miss:\\
+        \begin{tabularx}{\textwidth}{|l|X|}
+            \toprule
+            Typ              & Erklärung                                                                                                                                          \\
+            \midrule
+            Cold start miss: & Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)                 \\
+            \midrule
+            Capacity miss:   & Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache) \\
+            \midrule
+            Conflict miss:   & Tritt auf, wenn ein Block ersetzt werden muss, der anschließend wieder benötigt wird (bei N-way associative Cache)                                 \\
+            \midrule
+            Coherence miss: & Tritt in einem mehrprozessorfähigen Cache auf,
+            wenn ein Prozessor eine Adresse in den Cache schreibt und ein anderer Prozessor auf die gleiche Adresse zugreifen möchte,
+            bevor die Änderungen in den Hauptspeicher geschrieben wurden. \\
+            \bottomrule
+        \end{tabularx}
+    \end{aufgabe}
 
-\begin{aufgabe}[Parallelität]{Risiken}
-  Nennen und erklären Sie drei Risiken,
-  die beim ILP zum Abreißen der gleichmäßigen Instruktionsbearbeitung führen können.
-  \tcblower
-  \begin{tabularx}{\textwidth}{|l|X|}
-    \toprule
-    Risiko              & Erklärung                                                                                                           \\
-    \midrule
-    Structural hazards: & Die HW kann nicht eine bestimmte Aufeinanderfolge von Instruktionen ausführen.                                      \\
-    \midrule
-    Data hazards:       & Instruktionen hängen vom Ergebnis vorheriger Schritte ab,
-    die noch nicht die Pipeline verlassen haben.                                                                                              \\
-    \midrule
-    Control hazards:    & Zwischen dem \enquote{fetch} von Instruktionen und dem Ändern des Kontrollflusses (branch) entstehen Verzögerungen. \\
-    \bottomrule
-  \end{tabularx}
-\end{aufgabe}
+    \begin{aufgabe}[Cache]{Virtuelle Adressen}
+        Im Cache befinden sich stets reale Adressen.
+        Wie heißt der \enquote{Cache} für virtuelle Adressen?
+        \tcblower
+        Der \enquote{Cache} für virtuelle Adressen heißt \enquote{Translation Lookaside Buffer (TLB)}.
+    \end{aufgabe}
 
-\begin{aufgabe}{Prozessoren}
-  Nennen Sie drei Methoden,
-  die im Itanium Prozessor eingesetzt werden,
-  um Instruktionen beschleunigt abarbeiten zu können.
-  \tcblower
-  \begin{itemize}
-    \item Predication
-    \item Data Speculation
-    \item Control Speculation
-  \end{itemize}
-\end{aufgabe}
+    \begin{aufgabe}[Parallelität]{Risiken}
+        Nennen und erklären Sie drei Risiken,
+        die beim ILP zum Abreißen der gleichmäßigen Instruktionsbearbeitung führen können.
+        \tcblower
+        \begin{tabularx}{\textwidth}{|l|X|}
+            \toprule
+            Risiko              & Erklärung                                                                                                           \\
+            \midrule
+            Structural hazards: & Die HW kann nicht eine bestimmte Aufeinanderfolge von Instruktionen ausführen.                                      \\
+            \midrule
+            Data hazards: & Instruktionen hängen vom Ergebnis vorheriger Schritte ab,
+            die noch nicht die Pipeline verlassen haben. \\
+            \midrule
+            Control hazards:    & Zwischen dem \enquote{fetch} von Instruktionen und dem Ändern des Kontrollflusses (branch) entstehen Verzögerungen. \\
+            \bottomrule
+        \end{tabularx}
+    \end{aufgabe}
+
+    \begin{aufgabe}{Prozessoren}
+        Nennen Sie drei Methoden,
+        die im Itanium Prozessor eingesetzt werden,
+        um Instruktionen beschleunigt abarbeiten zu können.
+        \tcblower
+        \begin{itemize}
+            \item Predication
+            \item Data Speculation
+            \item Control Speculation
+        \end{itemize}
+    \end{aufgabe}
