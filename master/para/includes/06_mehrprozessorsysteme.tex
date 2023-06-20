@@ -231,7 +231,6 @@
 \end{defi}
 
 \begin{defi}{Baum}
-    Diameter = $\log_2 N$ \\
     \begin{tabularx}{\textwidth}{|X|X|}
         \toprule
         Planares Layout: & Fetter Baum: (mehr Verbindungen erhöhen das Datenvolumen) \\
@@ -268,9 +267,61 @@
             %%%
         \end{tikzpicture}
                          & 
-        TODO: tikzpicture                                                            \\
+        \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+            \foreach \y in {0, ..., 3}{
+                    \node[circlestyle] (0\y) at (0,\y) {};
+                    \node[circlestyle] (1\y) at (1,\y) {};
+                    \node[circlestyle] (3\y) at (3,\y) {};
+                    \node[circlestyle] (4\y) at (4,\y) {};
+                }
+            % Connections between nodes
+            \draw (00) -- (01);
+            \draw (10) -- (11);
+            \draw (30) -- (31);
+            \draw (40) -- (41);
+            
+            \draw (02) -- (03);
+            \draw (12) -- (13);
+            \draw (32) -- (33);
+            \draw (42) -- (43);
+            %%%
+            % Connections between connections
+            \draw (0, 0.4) -- (1, 0.4);
+            \draw (0, 0.5) -- (1, 0.5);
+            \draw (0, 0.6) -- (1, 0.6);
+            
+            \draw (3, 0.4) -- (4, 0.4);
+            \draw (3, 0.5) -- (4, 0.5);
+            \draw (3, 0.6) -- (4, 0.6);
+            
+            \draw (0, 2.4) -- (1, 2.4);
+            \draw (0, 2.5) -- (1, 2.5);
+            \draw (0, 2.6) -- (1, 2.6);
+            
+            \draw (3, 2.4) -- (4, 2.4);
+            \draw (3, 2.5) -- (4, 2.5);
+            \draw (3, 2.6) -- (4, 2.6);
+            
+            \draw (0.4, 0.4) -- (0.4, 2.6);
+            \draw (0.5, 0.4) -- (0.5, 2.6);
+            \draw (0.6, 0.4) -- (0.6, 2.6);
+            
+            \draw (3.4, 0.4) -- (3.4, 2.6);
+            \draw (3.5, 0.4) -- (3.5, 2.6);                            
+            \draw (3.6, 0.4) -- (3.6, 2.6);
+            
+            \draw (0.4, 1.4) -- (3.6, 1.4);
+            \draw (0.4, 1.5) -- (3.6, 1.5);
+            \draw (0.4, 1.6) -- (3.6, 1.6);
+            
+            %%%
+        \end{tikzpicture}
+        \\
         \bottomrule
     \end{tabularx}
+    \begin{center}
+        Diameter = $\log_2 N$
+    \end{center}
 \end{defi}
 
 \begin{bonus}{Übersicht statischer Verbindungsnetzwerke}
@@ -279,17 +330,17 @@
         Topologie          & Anzahl der Verbindungskanäle pro Knoten & Maximale Entfernung (Diameter) & Gesamtanzahl der Verbindungskanäle \\
         \midrule
         Ring               & 2                                       & $\frac{N}{2}$                  & $N-1$                              \\
-        \hline
+        \midrule
         Baum               & 3                                       & $2\cdot (\log_2 N - 1)$        & $N-1$                              \\
-        \hline
+        \midrule
         2D - Gitter        & 4                                       & $2\cdot \sqrt{N}$              & $2\cdot N$                         \\
-        \hline
+        \midrule
         3D - Gitter        & 6                                       & $3\cdot \sqrt[3]{N}$           & $3\cdot N$                         \\
-        \hline
+        \midrule
         Hexagon. Gitter    & 6                                       & $3\cdot \sqrt[3]{N}$           & $3\cdot N$                         \\ 
-        \hline
+        \midrule
         Hypercube          & $\log_2 N$                              & $\log_2 N$                     & $N \log_2 \frac{N}{2}$             \\
-        \hline
+        \midrule
         Vollst. Vernetzung & $N - 1$                                 & 1                              & $N \cdot \frac{N-1}{2}$            \\
         \bottomrule
     \end{tabularx}
@@ -349,22 +400,24 @@
 \end{defi}
 
 \begin{defi}[Cluster-Interconnect]{Infiniband}
-    \begin{itemize}
-        \item \ldots ist eine Architektur für Hochgeschwindigkeitsverbindungen zwischen Rechnern und externen Speicherservern.
-        \item \ldots wurde unter Führung von Intel entwickelt, später Mellanox, jetzt Nvidia.
-        \item \ldots eignet sich auch als Verbindungsnetzwerk von Rechen-Clustern.
+    Infiniband \ldots
+    \begin{itemize}[\ldots]
+        \item ist eine Architektur für Hochgeschwindigkeitsverbindungen zwischen Rechnern und externen Speicherservern.
+        \item wurde unter Führung von Intel entwickelt, später Mellanox, jetzt Nvidia.
+        \item eignet sich auch als Verbindungsnetzwerk von Rechen-Clustern.
     \end{itemize}
     aktuell: Infiniband EDR / HDR mit bis zu 200 Gbit/s
 \end{defi}
 
 \begin{defi}[Cluster-Interconnect]{Gigabit Ethernet}
-    \begin{itemize}
-        \item \ldots wird vorwiegend in lokalen Netzwerken genutzt,
+    Gigabit Ethernet \ldots
+    \begin{itemize}[\ldots]
+        \item wird vorwiegend in lokalen Netzwerken genutzt,
               auch für Heimanwender mit RJ45 Stecker für Kupferkabel (z.B. Lan-Buchsen am Router)
-        \item \ldots ist für Glasfaser und (twisted-pair) Kupferkabel spezifiziert,
+        \item ist für Glasfaser und (twisted-pair) Kupferkabel spezifiziert,
               höhrere Bandbreiten aber nur über Glasfaser umsetzbar: bis zu 100 Gb/s
-        \item \ldots ist Switch-basiert und abwärtskompatibel
-        \item \ldots nutzt spezielle Kollisionserkennung / -vermeidung,
+        \item ist Switch-basiert und abwärtskompatibel
+        \item nutzt spezielle Kollisionserkennung / -vermeidung,
               wie CSMA / CD (Carrier Sense Multiple Access with Collision Detection)
     \end{itemize}
 \end{defi}
@@ -437,86 +490,6 @@
     \end{itemize}
 \end{defi}
 
-\section{Multithreading}
-
-\begin{defi}{Thread}
-    Ein Thread ist \ldots
-    \begin{itemize}[\ldots]
-        \item ein Stück Code zusammen mit einem Zustand,
-              gespeichert in:
-              \begin{itemize}
-                  \item Register File
-                  \item Stack
-                  \item Program pointer
-              \end{itemize}
-        \item eine \enquote{leichtgewichtige} Einheit für den Ablauf von Befehlen (light-weight)
-        \item in vielen Betriebssystemen die kleinste Einheit,
-              die verwaltet (schedule) werden kann.
-        \item die Basis für ein Programmiermodell bei parallelen Rechnern (SMP-Rechner: OpenMP).
-    \end{itemize}
-\end{defi}
-
-\begin{defi}{Multithreading}
-    \emph{Multithreading} beschreibt viele \enquote{gleichzeitig} verwaltbare und ablaufbare Threads bei \ldots
-    \begin{itemize}[\ldots]
-        \item gleichzeitig bearbeiteten Programmen (multi-programming)
-        \item einem parallelen Programm
-        \item verschiedenen, in der Regel unabhängigen, Teilen eines sequentiellen Programms,
-              z. B. verschiedene Iterationen einer Schleife
-    \end{itemize}
-\end{defi}
-
-\begin{defi}{Task vs Thread}
-    \emph{Process = Task} $\neq$ \emph{Thread}
-    \begin{itemize}
-        \item Ein Task enthält mindestens einen Thread
-        \item Multiple Threads können \enquote{gleichzeitig} in einem Prozessor bearbeitet werden
-        \item Tasks besitzen unabhängige Adressräume (address spaces),
-              wohingegen Threads einen Adressraum eines Tasks gemeinsam nutzen
-              \begin{itemize}
-                  \item \underline{Vorteil:} Die gemeinsame Nutzung des Adressraums führt zu einem schnelleren \enquote{context switch}
-                        (Umschalten des Prozessors von einem Thread zum anderen)
-                  \item \underline{Nachteil:} Multithreading erfordert Synchronisation für den Zugriff auf globale Daten
-              \end{itemize}
-    \end{itemize}
-\end{defi}
-
-\begin{example}{Threads Anwendung und Einsatz}
-    Anwendungen für Threads:
-    \begin{itemize}
-        \item Web-Server: ein Thread für eine Anfrage
-        \item Router: ein Thread für ein Paket
-        \item Vordergrund / Hintergrund: ein Thread für ein GUI,
-              ein anderer zur Berechnung der Aufgabe
-    \end{itemize}
-    Library:
-    \begin{itemize}
-        \item Pthreads (nach einem POSIX-Standard)
-        \item Routinen für
-              \begin{itemize}
-                  \item Thread-Erzeugung, Beendigung
-                  \item Wechselseitiger Ausschluss und Semaphoren zur Synchronisation
-              \end{itemize}
-    \end{itemize}
-\end{example}
-
-\begin{defi}[Threads]{Simultaneous Multithreading (SMT)}
-    Bei Einprozessor-Systemen: \\
-    \begin{tabularx}{\textwidth}{|l|X|}
-        \hline
-        Fakt:    & Superskalare und VLIW Prozessoren holen (fetch) und führen (execute) mehrere Befehle pro Clock Cycle aus \\
-        \hline
-        Problem: & ein einzelner Thread besitzt nicht genug \enquote{instruction-level parallelism}                         \\
-        \hline
-        Lösung:  & Ausführen der Befehle von vielen parallelen Threads in einem Clock Cycle                                 \\
-        \hline
-        Vorteil: & die Leistung (performance) der einzelnen Threads wird nicht von anderen Threads beeinträchtigt           \\
-        \hline
-    \end{tabularx}
-    \\
-    $\to$ bei Intel wird SMT \enquote{Hyper-threading} genannt.
-\end{defi}
-
 \subsection{Aufgaben}
 
 \begin{aufgabe}{Multiprozessoren}
@@ -558,19 +531,19 @@
 \begin{aufgabe}{Verbindungsnetzwerk}
     Nennen und erklären Sie kurz die fünf grundlegenden Eigenschaften eines Verbindungsnetzwerkes.
     \tcblower
-    \begin{tabularx}{\textwidth}{|l|X|}
+    \begin{tabularx}{\textwidth}{|X|X|}
         \toprule
-        Eigenschaft            & Erklärung                                                                                                                                           \\
+        Eigenschaft            & Erklärung                                                                                                                                                    \\
         \midrule
-        Latenz (latency)       & Zeit für den Transfer zwischen den Knoten                                                                                                           \\
+        Latenz (latency)       & Zeit für den Transfer zwischen den Knoten                                                                                                                    \\
         \midrule
-        Bandbreite (bandwidth) & $\frac{\text{transferierte Daten}}{Zeit}$, Bandbreite eines Link: $\text{bw} = \omega \cdot \frac{1}{t} \left(\frac{\text{bit}}{\text{sec}}\right)$ \\
+        Bandbreite (bandwidth) & $\frac{\text{transferierte Daten}}{Zeit}$, \newline Bandbreite eines Link: $\text{bw} = \omega \cdot \frac{1}{t} \left(\frac{\text{bit}}{\text{sec}}\right)$ \\
         \midrule
-        Diameter               & maximale Distanz zwischen zwei beliebigen Prozessoren                                                                                               \\
+        Diameter               & maximale Distanz zwischen zwei beliebigen Prozessoren                                                                                                        \\
         \midrule
-        Topologie              & wie sind die Nachbarknoten angeordnet und erreichbar                                                                                                \\
+        Topologie              & wie sind die Nachbarknoten angeordnet und erreichbar                                                                                                         \\
         \midrule
-        Statische oder dynamische Leitungswege                                                                                                                                       \\
+        Statische oder \newline dynamische Leitungswege                                                                                                                                       \\
         \bottomrule
     \end{tabularx}
 \end{aufgabe}
@@ -649,32 +622,5 @@
         \item Shared: $\geq$ 1 Prozessor besitzen Daten, Memory aktuell
         \item Uncached: Kein Prozessor (kein Cache) besitzt gültige Daten
         \item Exclusive: 1 Prozessor (owner) besitzt die Daten, Memory nicht aktuell
-    \end{itemize}
-\end{aufgabe}
-
-\begin{aufgabe}{Multithreading}
-    Was ist ein Thread?
-    \tcblower
-    Ein Thread \ldots
-    \begin{itemize}[$\ldots$]
-        \item ist ein Stück Code zusammen mit einem Zustand, gespeichert in:
-              \begin{itemize}
-                  \item Register File
-                  \item Stack
-                  \item Program pointer
-              \end{itemize}
-        \item ist eine \enquote{leichtgewichtige} Einheit für den Ablauf von Befehlen (light-weight)
-        \item ist in vielen Betriebssystemen die kleinste Einheit, die verwaltet (schedule) werden kann
-        \item bildet die Basis für ein Programmiermodell bei parallelen Rechnern (SMP-Rechner: OpenMP)
-    \end{itemize}
-\end{aufgabe}
-
-\begin{aufgabe}{Multithreading}
-    Wodurch unterscheidet sich ein Task (Prozess) von einem Thread?
-\tcblower
-    \begin{itemize}
-        \item Ein Prozess enthält mindestens einen Thread
-        \item Multiple Threads können \enquote{gleichzeitig} in einem Prozessor bearbeitet werden
-        \item Prozesse besitzen unabhängige Adressräume (address spaces), wohingegen Threads einen Adressraum eines Prozesses gemeinsam nutzen
     \end{itemize}
 \end{aufgabe}

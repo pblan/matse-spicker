@@ -1,5 +1,7 @@
 \section{Parallelverarbeitung}\label{sec:parallelverarbeitung}
 
+\subsection{Parallele Bearbeitung einer Aufgabe}
+
 \begin{defi}{Parallelverarbeitung}
     % TODO: https://de.wikipedia.org/wiki/Nebenl%C3%A4ufigkeit (Quelle)
     Die \emph{Parallelverarbeitung} (engl. \enquote{concurrency}), zielt darauf ab, mehrere Aufgaben, Berechnungen, Anweisungen oder Befehle gleichzeitig ausführen zu können.
@@ -66,6 +68,8 @@
     \centering
     \includegraphics[width=0.9\linewidth]{images/modular_supercomputing_architecture.png}
 \end{jsc}
+
+\subsection{Speedup, Effizienz, Skalierbarkeit}
 
 \begin{defi}{Speedup}
     % TODO: https://de.wikipedia.org/wiki/Speedup
@@ -192,37 +196,6 @@
     
     TODO: Sinnvolle Definition finden
 \end{defi}
-
-\begin{defi}{Pipelining}
-    \emph{Pipelining} beschreibt eine Implementierungstechnik, bei der komplexe Vorgänge in eine Sequenz von einfacheren Teilaufgaben zerlegt wird.
-    
-    Die \emph{Stufen} der Pipeline (engl. \enquote{pipe stages}) werden hintereinander und verschachtelt ausgeführt.
-    Dabei sollen so viele Instruktionen wie möglich in einer Zeiteinheit ausgeführt werden, dadurch wird der Durchsatz erhöht.
-    Die Laufzeit einer einzelnen Pipeline bleibt jedoch unverändert.
-\end{defi}
-
-\begin{example}{Pipelining}
-    \emph{Pipelining} beschreibt eine Implementierungstechnik, bei der komplexe Vorgänge in eine Sequenz von einfacheren Teilaufgaben zerlegt wird.
-    
-    Die \emph{Stufen} der Pipeline (engl. \enquote{pipe stages}) werden hintereinander und verschachtelt ausgeführt.
-    Dabei sollen so viele Instruktionen wie möglich in einer Zeiteinheit ausgeführt werden, dadurch wird der Durchsatz erhöht.
-    Die Laufzeit einer einzelnen Pipeline bleibt jedoch unverändert.
-\end{example}
-
-\begin{defi}[Pipelining]{Speedup}
-    Der bestmögliche \emph{Speedup} beim Pipelining entspricht der Anzahl der Pipeline-Stufen.
-    Er wird reduziert durch unausgewogene Ausführungslängen.
-    Die Geschwindigkeit der Pipeline ist also direkt beschränkt durch die langsamste Pipeline-Stufe.
-    
-    Eine effiziente Pipeline-Nutzung setzt voraus, dass eine möglichst hohe Anzahl von Aufträgen (Prozesse) verarbeitet wird.
-    Bei nur einem Auftrag entartet die Pipeline zu einer reinen sequentiellen Verarbeitung.
-    
-    TODO: Formeln
-\end{defi}
-
-\begin{example}[Pipelining]{RISC vs. CISC}
-    TODO: Grafik
-\end{example}
 
 \subsection{Aufgaben}
 

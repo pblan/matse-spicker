@@ -2,9 +2,11 @@
 \section{Pipelining}
 
 \begin{defi}{Pipelining}
-    Durch Aufteilen einer Instruktion in Teile, 
-    die in separaten Funktionseinheiten bearbeitet werden können, 
-    ist eine überlappte (pseudo-parallele) Verarbeitung der Instruktionen möglich.
+    \emph{Pipelining} beschreibt eine Implementierungstechnik, bei der komplexe Vorgänge in eine Sequenz von einfacheren Teilaufgaben zerlegt wird.
+    
+    Die \emph{Stufen} der Pipeline (engl. \enquote{pipe stages}) werden hintereinander und verschachtelt ausgeführt.
+    Dabei sollen so viele Instruktionen wie möglich in einer Zeiteinheit ausgeführt werden, dadurch wird der Durchsatz erhöht.
+    Die Laufzeit einer einzelnen Pipeline bleibt jedoch unverändert.
 \end{defi}
 
 \begin{defi}[Pipelining]{Funktionseinheiten}
@@ -29,6 +31,21 @@
     Wie oft pro Zeiteinheit wird eine Instruktion fertig ?
     \[X = \frac{1}{\max(T_\text{IF}, T_\text{ID}, T_\text{EX}, T_\text{MEM}, T_{WB})}\]
 \end{defi}
+
+\begin{defi}[Pipelining]{Speedup}
+    Der bestmögliche \emph{Speedup} beim Pipelining entspricht der Anzahl der Pipeline-Stufen.
+    Er wird reduziert durch unausgewogene Ausführungslängen.
+    Die Geschwindigkeit der Pipeline ist also direkt beschränkt durch die langsamste Pipeline-Stufe.
+    
+    Eine effiziente Pipeline-Nutzung setzt voraus, dass eine möglichst hohe Anzahl von Aufträgen (Prozesse) verarbeitet wird.
+    Bei nur einem Auftrag entartet die Pipeline zu einer reinen sequentiellen Verarbeitung.
+    
+    TODO: Formeln
+\end{defi}
+
+\begin{example}[Pipelining]{RISC vs. CISC}
+    TODO: Grafik
+\end{example}
 
 \begin{defi}{Superskalarität}
     

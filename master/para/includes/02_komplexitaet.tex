@@ -159,38 +159,3 @@
     \end{itemize}
     Komplexität: $O(n^{\log_2 7})\approx O(n^2.807)$
 \end{example}
-
-\begin{defi}{Landau-Notation}
-    Edmund Landau hat mit dem $O$-Symbol eine Notation geliefert,
-    die den bestimmenden Term einer Funktion bezeichnet. \\
-    $O(g(n))$ bezeichnet eine Klasse von Funktionen, wobei
-    \[f(n) \in O(g(n))\]
-    bedeutet, dass $f(n)$ höchstens so schnell wächst wie $g(n)$,
-    das heißt, es gibt zwei positive Konstanten $c$ und $n_0$,
-    für die gilt:
-    \[|f(n)| \leq c \cdot |g(n)| \forall n \geq n_0\]
-    (Definition hier nur für Funktionen über natürliche Zahlen)
-\end{defi}
-
-\begin{example}{Komplexitätsklassen}
-    \begin{tabularx}{\textwidth}{|l|X|}
-        \hline
-        $O(1)$        & das Programm wird nur einmal linear durchlaufen, ohne von der Problemgröße abzuhängen (d.h. ohne Schleifen über $n$) $\to$ konstante Rechenzeit \\
-        \hline
-        $O(\log n)$   & z.B.\ bei Zerlegung von Problemen in Teilprobleme und Bearbeitung eines Teilproblems (binäre Suche)                                             \\
-        \hline
-        $O(n)$        & Algorithmen mit Schleifen $i = n_0 \ldots n$ (sequentielle Suche)                                                                               \\
-        \hline
-        $O(n \log n)$ & z.B.\ bei Zerlegung des Problems in Teilprobleme mit Bearbeitung aller Teilprobleme (Quicksort)                                                 \\
-        \hline
-        $O(n^2)$      & z.B.\ verschachtelte Schleifen (Paarweiser Vergleich)                                                                                           \\
-        \hline
-        $O(n^3)$      & z.B.\ dreifach verschachtelten Schleifen (Matrixmultiplikation)                                                                                 \\
-        \hline
-        $O(2n)$       & z.B.\ Suche in allen Kombinationen, Paaren oder Teilmengen                                                                                      \\
-        \hline
-    \end{tabularx}
-\end{example}
-
-
-
