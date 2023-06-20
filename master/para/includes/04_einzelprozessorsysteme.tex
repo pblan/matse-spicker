@@ -248,31 +248,50 @@
 \end{bonus}
 
 \begin{defi}{Reduzierung der Cache Miss Rate}
-
+    TODO
 \end{defi}
 
-\begin{defi}[Reduzierung der Cache Miss Rate]{Programmierstrategien}
+\begin{example}[Reduzierung der Cache Miss Rate]{Programmierung}
+    TODO
+\end{example}
 
-\end{defi}
+\begin{defi}{Translation-Lookaside-Buffer}
+    % TODO: https://de.wikipedia.org/wiki/Translation_Lookaside_Buffer (Quelle)
+    Der Begriff \emph{Übersetzungspuffer} bzw. \emph{Translation Lookaside Buffer} (\emph{TLB}) bezeichnet eine funktionale Einheit der Speicherverwaltung.
 
-\begin{defi}{Table-Look-Aside Buffer}
+    Wenn virtueller Speicher verwendet wird, muss zu den virtuellen Adressen die jeweils zugehörige physische Adresse ermittelt werden.
+    Da diese Arbeitsschritte verhältnismäßig zeitintensiv sind, werden die zuletzt ermittelten $n$ Werte für die Adresse der physischen Speicherseite im TLB zwischengespeichert, wodurch erneute Zugriffe auf Adressen in dieser Seite nicht aufwändig neu ermittelt werden müssen, sondern aus dieser Liste entnommen werden können.
 
+    Der TLB kann eine begrenzte Menge dieser Referenzen halten (üblicherweise nicht mehr als 1024 Einträge) und kann dadurch die Ausführung von Speicherzugriffen deutlich beschleunigen.
+
+    Bei Rechnern mit virtuellen Adressen wird bei einem Task-Wechsel zu Beginn der Cache invalidiert.
+    Daher kommt es für die neue Task zu Cold Start Misses!
+
+    TODO: Grafik
 \end{defi}
 
 \subsection{Entwicklungslinien der Prozessoren}
 
-\begin{defi}{CISC}
+\begin{defi}[Befehlssatzarchitektur]{CISC}
+    % TODO: https://de.wikipedia.org/wiki/Complex_Instruction_Set_Computer (Quelle)
+    Anfänglich wurden die Befehlssätze der Prozessoren immer umfangreicher, um auch komplexere Rechenschritte \enquote{auf einmal} mit nur einem Maschinenbefehl ausführen zu können, um dadurch schneller und leistungsfähiger zu werden.
+    Zugleich wurde dadurch jedoch auch der Prozessor komplex und schwierig weiterzuentwickeln -- und auch schwieriger zu programmieren.
 
+    Viele Hersteller setzten zunächst auf die Mikroprogrammierung der Rechenwerke, um Problemfälle leichter korrigieren zu können -- dennoch nahm die Komplexität immer weiter zu.
+
+    Die Bezeichnung \emph{Complex Instruction Set Computer} (\emph{CISC}) wurde in den 1970er Jahren von IBM als Retronym gewählt, um klassische Befehlssätze von einer neuartigen Form abzugrenzen, dem Reduced Instruction Set Computer (RISC).
+
+    TODO: Grafik
 \end{defi}
 
-\begin{defi}{RISC}
+\begin{defi}[Befehlssatzarchitektur]{RISC}
+    % TODO: https://de.wikipedia.org/wiki/Reduced_Instruction_Set_Computer (Quelle)
+    \emph{Reduced Instruction Set Computer} (\emph{RISC}) ist eine Designphilosophie für Computerprozessoren.
+    Das Designziel war der Verzicht auf einen komplexen, für die Assemblerprogrammierung komfortablen Befehlssatz hin zu einfach zu dekodierenden und schnell auszuführenden Befehlen (\enquote{eigentliche Befehlsausführung} meist nur 1 Takt).
+    Dies ermöglichte zudem höhere Taktfrequenzen.
 
-\end{defi}
+    Der Compiler erzeugt direkt Mikrobefehle.
+    Es muss zwar mehr Code erzeugt werden, aber die Hardware wird einfacher und damit auch schneller.
 
-\begin{defi}{VLIW}
-
-\end{defi}
-
-\begin{defi}{EPIC}
-
+    TODO: Grafik
 \end{defi}

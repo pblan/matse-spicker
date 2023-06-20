@@ -1,124 +1,243 @@
 \section{Mehrprozessorsysteme}
 
-\begin{defi}{Flynn'sche Klassifikation}
+\begin{defi}{Flynnsche Klassifikation}
+    % https://de.wikipedia.org/wiki/Flynnsche_Klassifikation (Quelle)
+    Die \emph{flynnsche Klassifikation}  ist eine Unterteilung von Rechnerarchitekturen, welche 1966 von Michael J. Flynn publiziert wurde.
+    Dabei werden die Architekturen nach der Anzahl der vorhandenen Befehls- (Instruction Streams) und Datenströme (Data Streams) unterteilt.
 
+    Die vier Kategorien sind:
+    \begin{itemize}
+        \item \emph{SISD}: Single Instruction, Single Data
+              \begin{itemize}
+                  \item nicht parallel
+                  \item z. B. Von-Neumann-Rechner
+              \end{itemize}
+        \item \emph{SIMD}: Single Instruction, Multiple Data
+              \begin{itemize}
+                  \item z. B. Vektor- oder Arrayprozessoren
+              \end{itemize}
+        \item \emph{MISD}: Multiple Instruction, Single Data
+              \begin{itemize}
+                  \item irrelevant
+              \end{itemize}
+        \item \emph{MIMD}: Multiple Instruction, Multiple Data
+              \begin{itemize}
+                  \item speichergekoppelte Multiprozessoren (Shared Memory)
+                  \item nachrichtengekoppelte Multiprozessoren
+              \end{itemize}
+    \end{itemize}
+
+    \centering
+    % TODO: https://en.wikipedia.org/wiki/Flynn%27s_taxonomy (Quelle)
+    \begin{tabular}{cc}
+    \end{tabular}
 \end{defi}
 
-\begin{bonus}[Flynn'sche Klassifikation]{Erweiterungen}
+\begin{defi}{Shared Memory}
+    % TODO: https://de.wikipedia.org/wiki/Shared_Memory (Quelle)
+    Bei MIMD-Architekturen unterscheidet man eng gekoppelte und lose gekoppelte Systeme, wobei Mehrprozessorsysteme zur Klasse der eng gekoppelten Systeme gehören.
+    In eng gekoppelten Mehrprozessorsystemen teilen sich die verschiedenen Prozessoren einen gemeinsamen Speicher (\emph{Shared Memory}).
 
-\end{bonus}
+    Gegenüber lose gekoppelten MIMD-Architekturen hat dies folgende Vorteile:
+    \begin{itemize}
+        \item die Prozessoren haben alle dieselbe Sicht auf die Daten und können daher auf einfache Art und Weise miteinander kommunizieren
+        \item der Zugriff auf den gemeinsamen Speicher erfolgt sehr schnell
+    \end{itemize}
 
-\subsection{Speichergekoppelte Systeme}
+    Aus diesen Gründen ist ein eng gekoppeltes MIMD-System in der Regel einfacher zu programmieren als ein lose gekoppeltes MIMD-System.
 
-\begin{defi}{Speichergekoppelte Systeme}
-
+    Allerdings kann der gemeinsam genutzte Speicher auch schnell zum Flaschenhals werden, wenn zu viele Prozessoren vorhanden sind, da (bei einem gemeinsam genutzten Speicherbus) zu einer Zeit immer nur ein Prozessor auf den Speicher zugreifen kann.
 \end{defi}
 
-\begin{defi}{Uniform Memory Access}
+\begin{defi}[Shared Memory]{Uniform Memory Access}
+    % TODO: https://de.wikipedia.org/wiki/Uniform_Memory_Access (Quelle)
+    \emph{Uniform Memory Access} (\emph{UMA}) steht allgemein für eine Speicherarchitektur in Mehrprozessorsystemen.
+    Dabei gibt es nur einen globalen Speicher, auf den von allen Prozessoren aus einheitlich zugegriffen werden kann.
+    Im Idealfall jeweils mit derselben Bandbreite und Latenzzeit, weshalb solch ein System auch \emph{Symmetrisches Multiprozessorsystem} (\emph{SMP}) genannt wird.
 
+    Das Konzept steht im Gegensatz zu NUMA, bei dem die Zugriffszeit auf den Speicher vom Ort des Speichers abhängen.
+
+    TODO: Grafik
 \end{defi}
 
-\begin{defi}{Non-Uniform Memory Access}
+\begin{defi}[Shared Memory]{Non-Uniform Memory Access}
+    % TODO: https://de.wikipedia.org/wiki/Non-Uniform_Memory_Access (Quelle)
+    \emph{Non-Uniform Memory Access} (\emph{NUMA}) ist eine Computer-Arbeitsspeicher-Architektur für Multiprozessorsysteme, bei denen jeder Prozessor einen eigenen, \enquote{lokalen} Arbeitsspeicher hat, aber anderen Prozessoren über einen gemeinsamen Adressraum \enquote{direkten} Zugriff darauf gewährt (\emph{Distributed Shared Memory}).
 
+    Die Speicherzugriffszeiten für eine CPU in einem solchen Verbund hängen daher davon ab, ob sich eine Speicheradresse im CPU-eigenen \enquote{lokalen} oder im \enquote{fremden} Speicher (einer anderen CPU) befindet.
+
+    TODO: Grafik
 \end{defi}
 
 \begin{defi}{Nachrichtengekoppelte Systeme}
+    % TODO: https://pc2.uni-paderborn.de/fileadmin/pc2/lecture_APRS19/VL_APCS.03.pdf (Quelle)
+    Beim \emph{nachrichtengekoppelten Multiprozessorsystem} besitzen alle Prozessoren nur räumlich verteilte Speicher und prozessorlokale Adressräume.
 
+    Die Kommunikation geschieht durch Austausch von Nachrichten.
+
+    TODO: Grafik
 \end{defi}
 
 \subsection{Verbindungsnetzwerke}
 
 \begin{defi}{Verbindungsnetzwerk}
+    % TODO: https://de.wikipedia.org/wiki/Verbindungsnetzwerk (Quelle)
+    Das \emph{Verbindungsnetzwerk} ermöglicht den Datenaustausch und die Verteilung des Programms zwischen den Prozessoren.
 
-\end{defi}
-
-\begin{defi}[Verbindungsnetzwerk]{Latenz}
-
-\end{defi}
-
-\begin{defi}[Verbindungsnetzwerk]{Bandbreite}
-
-\end{defi}
-
-\begin{defi}[Verbindungsnetzwerk]{Durchmesser}
-
+    Um einen hohen Datentransfer zu erhalten, wird eine große Anzahl von physischen Verbindungen benötigt.
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Topologie}
+    % TODO: https://de.wikipedia.org/wiki/Verbindungsnetzwerk (Quelle)
+    % TODO: https://de.wikipedia.org/wiki/Topologie_(Rechnernetz) (Quelle)
+    Die \emph{Topologie} ist der wesentlichste Parameter eines Verbindungsnetzwerkes.
+    Sie ist wesentlich verantwortlich für die fundamentalen Merkmale und Begrenzungen des Verbindungsnetzwerkes.
 
+    Die Topologie eines Rechnernetzes beschreibt die spezifische Anordnung der Geräte und Leitungen, die ein Rechnernetz bilden, über das die Computer untereinander verbunden sind und Daten austauschen.
+
+    Topologien werden grafisch (nach der Graphentheorie) mit Knoten und Kanten dargestellt.
+    Dabei sind Knoten die Kommunikationsteilnehmer des Netzwerkes und Kanten die physikalischen oder logischen Verbindungen.
+\end{defi}
+
+\begin{defi}[Verbindungsnetzwerk]{Latenz}
+    Die \emph{Latenz} eines Verbindungsnetzwerkes gibt die Zeit für den Transfer zwischen den Knoten an.
+\end{defi}
+
+\begin{defi}[Verbindungsnetzwerk]{Bandbreite}
+    Die \emph{Bandbreite} eines Verbindungsnetzwerkes gibt das Verhältnis der transferierten Daten zur Zeit an.
+\end{defi}
+
+\begin{defi}[Verbindungsnetzwerk]{Durchmesser}
+    % TODO: https://de.wikipedia.org/wiki/Topologie_(Rechnernetz) (Quelle)
+    Der \emph{Durchmesser} einer Topologie bzw. eines Verbindungsnetzwerkes beschreibt die maximale direkte Entfernung zwischen zwei Knoten in Hops.
+
+    Damit ist er ein direktes Maß für die zu erwartenden maximalen Transferzeiten, d. h. je größer der Durchmesser, desto größer die Transferzeit im ungünstigsten Fall.
 \end{defi}
 
 \subsubsection{Statische Verbindungsnetzwerke}
 
-\begin{defi}{Lineare Anordnung}
+\begin{defi}{Statisches Verbindungsnetzwerk}
+    % TODO: https://de.wikipedia.org/wiki/Verbindungsnetzwerk (Quelle)
+    \emph{Statische Verbindungsnetzwerke} sind fest verdrahtet.
+    Jeder Knoten besitzt eine feste Anzahl von Nachbarn nebst entsprechenden direkten Verbindungen (Links) zu ihnen.
 
+    Das Netzwerk selbst besteht nur aus den Leitungen, besitzt also keinerlei Vermittlungsfunktion.
+    Diese wird indirekt über die beteiligten Knoten ausgeführt.
+
+    Netze dieser Art sind einmal aufgebaut nicht rekonfigurierbar.
+    Beispiele für statische Verbindungsnetzwerke sind Gitter oder Ringe, Bäume und Hypercubes
 \end{defi}
 
-\begin{defi}{Ring}
-
+\begin{defi}[Statisches Verbindungsnetzwerk]{Lineare Anordnung}
+    *hier Svens TikZ*
 \end{defi}
 
-\begin{defi}{Torus}
+\begin{defi}[Statisches Verbindungsnetzwerk]{Ring}
+    Bei der Vernetzung in \emph{Ring-Topologie} werden jeweils zwei Teilnehmer über Zweipunktverbindungen miteinander verbunden, so dass ein geschlossener Ring entsteht. Die zu übertragende Information wird von Teilnehmer zu Teilnehmer weitergeleitet, bis sie ihren Bestimmungsort erreicht.
 
+    *hier Svens TikZ*
 \end{defi}
 
-\begin{defi}{Gitter}
-
+\begin{defi}[Statisches Verbindungsnetzwerk]{Torus}
+    *hier Svens TikZ*
 \end{defi}
 
-\begin{defi}{Hypercube}
-
+\begin{defi}[Statisches Verbindungsnetzwerk]{Gitter}
+    *hier Svens TikZ*
 \end{defi}
 
-\begin{defi}{Baum}
+\begin{defi}[Statisches Verbindungsnetzwerk]{Hypercube}
+    *hier Svens TikZ*
+\end{defi}
 
+\begin{defi}[Statisches Verbindungsnetzwerk]{Baum}
+    % TODO: https://de.wikipedia.org/wiki/Topologie_(Rechnernetz) (Quelle)
+    \emph{Baum-Topologien} sind dadurch gekennzeichnet, dass sie eine Wurzel (der erste bzw. obere Knoten) haben, von der eine oder mehrere Kanten (Links) ausgehen.
+    Diese führen weiterhin zu einem Blatt (Endknoten) oder \enquote{rekursiv} zu inneren Knoten von Teilbäumen.
+
+    *hier Svens TikZ*
 \end{defi}
 
 \subsubsection{Dynamische Verbindungsnetzwerke}
 
-\begin{defi}{Bus}
+\begin{defi}{Dynamisches Verbindungsnetzwerk}
+    % TODO: https://de.wikipedia.org/wiki/Verbindungsnetzwerk (Quelle)
+    \emph{Dynamische Verbindungsnetzwerke} zeichnen sich dadurch aus, dass die Verbindungen zwischen den Knoten über zum Netz gehörende Koppelelemente realisiert werden.
+
+    Dabei können diese Koppelelemente in mehreren Stufen hintereinander angeordnet sein, weshalb man diese Art der Verbindungsnetzwerke nochmals in einstufige und mehrstufige Netze unterteilt.
+    Eine Stufe enthält dabei eine gewisse Anzahl Koppelelemente.
+
+    Genauer gesagt sorgt das Netz dafür, dass Senderknoten mittels einer Permutationsfunktion auf Empfängerknoten geschaltet werden.
+    Dabei können entweder alle $n!$ Permutationen geschaltet werden, oder nur einige.
+\end{defi}
+
+\begin{defi}[Dynamisches Verbindungsnetzwerk]{Bus}
+    % TODO: https://de.wikipedia.org/wiki/Verbindungsnetzwerk (Quelle)
+    Bei einer \emph{Bus-Topologie} sind alle Geräte direkt mit demselben Übertragungsmedium, dem Bus verbunden.
+    Es gibt keine aktiven Komponenten zwischen den Geräten und dem Medium.
+
+    Durch die wahlweise Zuschaltung einzelner Verarbeitungsknoten zum Datentransfer an einen Bus ist das Bussystem eine typische dynamische Verbindungseinrichtung.
+
+    Der Bus bildet die Engstelle im busgekoppelten Multiprozessorsystem, so dass auch Doppelbusse oder allgemein Mehrfachbusse eingesetzt werden.
+\end{defi}
+
+\begin{defi}[Dynamisches Verbindungsnetzwerk]{Crossbar}
 
 \end{defi}
 
-\begin{defi}{Crossbar}
+\begin{defi}[Dynamisches Verbindungsnetzwerk]{Einstufiges Netzwerk}
+    % TODO: https://de.wikipedia.org/wiki/Verbindungsnetzwerk (Quelle)
+    \emph{Einstufige dynamische Verbindungsnetzwerke} bestehen aus nur einer so genannten Stufe von Schaltzellen beziehungsweise nur aus der Schaltzelle selbst.
 
+    Die Zellen sind in der Regel eine mehr oder weniger komplexe Form eines Kreuzschienenverteilers (Crossbar), der selbst schon ein einstufiges dynamisches Verbindungsnetzwerk darstellt.
+
+    TODO: Grafik
 \end{defi}
 
-\begin{defi}{Zeilenbasierte Systeme}
+\begin{defi}[Dynamisches Verbindungsnetzwerk]{Mehrstufiges Netzwerk}
+    \emph{Mehrstufige dynamische Verbindungsnetzwerke} zeichnen sich dadurch aus, dass mehrere Stufen von Schaltzellen hintereinander geschaltet werden.
+    Zwischen den Stufen besteht eine feste Verdrahtung.
 
+    TODO: Grafik
 \end{defi}
 
-\begin{defi}{Einstufige Netzwerke}
+\begin{defi}[Dynamisches Verbindungsnetzwerk]{Zelle}
+    % Die \emph{Zell-Topologie} kommt hauptsächlich bei drahtlosen Netzen zum Einsatz.
 
+    % Eine Zelle ist der Bereich um eine Basisstation (z. B. Wireless Access Point), in dem eine Kommunikation zwischen den Endgeräten und der Basisstation möglich ist.
+    % Innerhalb einer Zelle entspricht die Zell-Topologie der Bus-Topologie.
 \end{defi}
 
-\begin{defi}{Mehrstufige Netzwerke}
-
+\begin{defi}[Dynamisches Verbindungsnetzwerk]{Omega-Netzwerk}
+    TODO
 \end{defi}
 
-\begin{defi}{Omega-Netzwerk}
-
-\end{defi}
-
-\begin{defi}{Benes-Netzwerk}
-
+\begin{defi}[Dynamisches Verbindungsnetzwerk]{Benes-Netzwerk}
+    TODO
 \end{defi}
 
 \subsubsection{Cluster-Interconnects}
 
 \begin{defi}{Cluster-Interconnect}
+    % TODO: https://de.wikipedia.org/wiki/Cluster_Interconnect (Quelle)
+    Der \emph{Cluster-Interconnect} ist eine Verbindung zwischen den Cluster-Membern, über die alle Arten von relevanten Daten ausgetauscht werden.
 
+    Sie wird in aller Regel als privates Netzwerksegment konzipiert, um höchstmögliche Betriebssicherheit zu gewährleisten oder auch andere Netzwerkarchitekturen abbilden zu können;
+    denn diese Zwischenverbindung ist -- in Abhängigkeit von der Größe des Clusters -- mit möglichst geringer Latenz und hoher Übertragungsrate auszustatten, um keinen Flaschenhals zu schaffen.
+
+    Dazu häufig verwendete Technologien sind Gigabit-Ethernet oder auch das teurere InfiniBand.
 \end{defi}
 
-\begin{defi}{Infiniband}
+\begin{defi}[Cluster-Interconnect]{InfiniBand}
+    % TODO: https://de.wikipedia.org/wiki/InfiniBand (Quelle)
+    \emph{InfiniBand} ist eine Spezifikation einer Hardwareschnittstelle zur seriellen Hochgeschwindigkeitsübertragung auf kurzen Distanzen mit geringer Latenz.
 
+    Sie wird bevorzugt in Rechenzentren verwendet, beispielsweise für die Verbindungen der Server in Computerclustern untereinander und zur Verbindung zwischen Servern und benachbarten Massenspeichersystemen wie Storage Area Networks (SAN).
+
+    InfiniBand benutzt bidirektionale Punkt-zu-Punkt-Verbindungen zur latenzarmen Datenübertragung mit Verzögerungszeiten unter \SI{2}{\micro\second}, und erreicht theoretische Datenübertragungsraten pro Kanal zwischen \SI{2,5}{\giga\bit\per\second} (SDR) und \SI{50}{\giga\bit\per\second} (HDR) in beide Richtungen.
+    Bei InfiniBand können mehrere Kanäle zur Skalierung in einem Kabel transparent gebündelt werden.
 \end{defi}
 
-\begin{defi}{Gigabit Ethernet}
+\begin{defi}[Cluster-Interconnect]{Gigabit Ethernet}
 
 \end{defi}
-
-\begin{defi}[Verbindungsnetzwerk]{Klassifikation}
-
-\end{defi}
-
