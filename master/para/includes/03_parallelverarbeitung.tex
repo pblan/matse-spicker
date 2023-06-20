@@ -226,12 +226,10 @@
 
 \subsection{Aufgaben}
 
-\aufgabe[]{Speedup}
-{ 
+\begin{aufgabe}{Speedup}
     Ein sequentielles Programm lasse sich zu $80\%$ parallelisieren. 
     Welcher Speedup kann mit 20 Prozessoren erzielt werden?
-}
-{
+    \tcblower
     Der Speedup ist definiert durch: 
     \begin{align*}
         \eta_S = \frac{t_S}{t_S \cdot f + t_S \cdot \frac{1-f}{p}}
@@ -240,23 +238,19 @@
     \begin{align*}
         \eta_S = \frac{1}{1 \cdot 0.2 + 1 \cdot \frac{0.8}{20}} = \frac{25}{6} \approx 4.1667
     \end{align*}
-}
+\end{aufgabe}
 
-\aufgabe[]{Skalierbarkeit}
-{
+\begin{aufgabe}{Skalierbarkeit}
     Wann ist eine Rechnerarchitektur bzw. ein Programm skalierbar?
-}
-{
+    \tcblower
     Wenn die Effizienz der Programmbearbeitung bei wachsender Prozessorzahl gleich bleibt.
-}
+\end{aufgabe}
 
-\aufgabe[]{Pipelining}
-{
+\begin{aufgabe}{Pipelining}
     Wie berechnet sich der Speedup $\eta_S$ bei Pipeline-Nutzung mit n Aufträgen und k Stufen?
-}
-{
+    \tcblower
     Der Speedup berechnet sich durch: 
     \begin{align*}
         \eta_S = \frac{n\cdot k}{n+k-1}
     \end{align*}
-}
+\end{aufgabe}

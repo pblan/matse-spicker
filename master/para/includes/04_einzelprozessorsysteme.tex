@@ -212,28 +212,22 @@
 
 \subsection{Aufgaben}
 
-\aufgabe[Caches]{Ersetzungsstrategie}
-{
+\begin{aufgabe}[Caches]{Ersetzungsstrategie}
   Welche Ersetzungsstrategien bei Konflikten können beim Set Associative oder Fully Associative Cache eingesetzt werden?
-}
-{
+  \tcblower
   Es können die Ersetzungsstrategien \enquote{Random},
   \enquote{Last Recently Used (LRU)} oder \enquote{First In First Out (FIFO)} eingesetzt werden.
-}
+\end{aufgabe}
 
-\aufgabe[Caches]{Write-Back Cache}
-{
+\begin{aufgabe}[Caches]{Write-Back Cache}
   Welchen Vorteil bietet ein Write Back Cache?
-}
-{
+  \tcblower
   Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
-}
+\end{aufgabe}
 
-\aufgabe[Cache]{Cache-Miss}
-{
+\begin{aufgabe}[Cache]{Cache-Miss}
   Nennen und erklären Sie vier verschiedene Typen eines Cache-Miss.
-}
-{
+  \tcblower
   Es existieren folgende Typen eines Cache-Miss:\\
   \begin{tabularx}{\textwidth}{|l|X|}
     \toprule
@@ -250,23 +244,19 @@
     bevor die Änderungen in den Hauptspeicher geschrieben wurden.                                                                                                         \\
     \bottomrule
   \end{tabularx}
-}
+\end{aufgabe}
 
-\aufgabe[Cache]{Virtuelle Adressen}
-{
+\begin{aufgabe}[Cache]{Virtuelle Adressen}
   Im Cache befinden sich stets reale Adressen.
   Wie heißt der \enquote{Cache} für virtuelle Adressen?
-}
-{
+  \tcblower
   Der \enquote{Cache} für virtuelle Adressen heißt \enquote{Translation Lookaside Buffer (TLB)}.
-}
+\end{aufgabe}
 
-\aufgabe[Parallelität]{Risiken}
-{
+\begin{aufgabe}[Parallelität]{Risiken}
   Nennen und erklären Sie drei Risiken,
   die beim ILP zum Abreißen der gleichmäßigen Instruktionsbearbeitung führen können.
-}
-{
+  \tcblower
   \begin{tabularx}{\textwidth}{|l|X|}
     \toprule
     Risiko              & Erklärung                                                                                                           \\
@@ -279,18 +269,16 @@
     Control hazards:    & Zwischen dem \enquote{fetch} von Instruktionen und dem Ändern des Kontrollflusses (branch) entstehen Verzögerungen. \\
     \bottomrule
   \end{tabularx}
-}
+\end{aufgabe}
 
-\aufgabe[]{Prozessoren}
-{
+\begin{aufgabe}{Prozessoren}
   Nennen Sie drei Methoden,
   die im Itanium Prozessor eingesetzt werden,
   um Instruktionen beschleunigt abarbeiten zu können.
-}
-{
+  \tcblower
   \begin{itemize}
     \item Predication
     \item Data Speculation
     \item Control Speculation
   \end{itemize}
-}
+\end{aufgabe}

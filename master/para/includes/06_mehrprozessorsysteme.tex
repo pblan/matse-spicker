@@ -519,55 +519,45 @@
 
 \subsection{Aufgaben}
 
-\aufgabe[]{Multiprozessoren}
-{
+\begin{aufgabe}{Multiprozessoren}
     Nennen Sie zwei verschiedene Arten von nachrichtengekoppelten Multiprozessoren.
-}
-{
+    \tcblower
     \begin{itemize}
         \item Massively Parallel Processor (MPP)
         \item Cluster Of Workstation (COW)
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Multiprozessoren}
-{
+\begin{aufgabe}{Multiprozessoren}
     Welche beiden Arten von speichergekoppelten Multiprozessor-Systemen wurden in der Vorlesung unterschieden?
-}
-{
+    \tcblower
     \begin{itemize}
         \item Uniform Memory Access (UMA)
         \item Non Uniform Memory Access (NUMA)
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Multiprozessoren}
-{
+\begin{aufgabe}{Multiprozessoren}
     Zwischen welchen speichergekoppelten Multiprozessoren unterscheidet man je nach physikalischer Speicherorganisation?
-}
-{
+    \tcblower
     \begin{itemize}
         \item Symmetric multiprocessor (SMP)
         \item Distributed shared memory Systeme
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Distributed Memory Machines}
-{
+\begin{aufgabe}{Distributed Memory Machines}
     Auf welche beiden Arten kann eine Distributed Memory Machine realisiert werden?
-}
-{
+    \tcblower
     \begin{itemize}
         \item speichergekoppelt als shared virtual memory (SVM) $\to$ NUMA
         \item nachrichtengekoppelt (z.B. Cray T3E)
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Verbindungsnetzwerk}
-{
+\begin{aufgabe}{Verbindungsnetzwerk}
     Nennen und erklären Sie kurz die fünf grundlegenden Eigenschaften eines Verbindungsnetzwerkes.
-}
-{
+    \tcblower
     \begin{tabularx}{\textwidth}{|l|X|}
         \toprule
         Eigenschaft            & Erklärung                                                                                                                                           \\
@@ -583,110 +573,88 @@
         Statische oder dynamische Leitungswege                                                                                                                                       \\
         \bottomrule
     \end{tabularx}
-}
+\end{aufgabe}
 
-\aufgabe[]{Verbindungsnetzwerk}
-{
+\begin{aufgabe}{Verbindungsnetzwerk}
     Nennen Sie drei unterschiedliche Verbindungsnetzwerk-Topologien.
-}
-{
+    \tcblower
     \begin{itemize}
         \item Torus
         \item (Hyper)cube / Mesh
         \item Tree / Fat Tree
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Verbindungsnetzwerk}
-{
+\begin{aufgabe}{Verbindungsnetzwerk}
     Durch welche physikalische Maßnahme kann bei einem Tree-Netzwerk der Durchsatz erhöht werden?
-}
-{
+    \tcblower
     Man erstellt eine zunehmende Anzahl an Leitungen zur Wurzel hin ($\to$ Fat Tree).
-}
+\end{aufgabe}
 
-\aufgabe[]{Verbindungsnetzwerk}
-{
+\begin{aufgabe}{Verbindungsnetzwerk}
     Wie groß ist der Durchmesser eines 2D Torus mit N Gitterpunkten?
-}
-{
+    \tcblower
     $$\sqrt{N}$$
-}
+\end{aufgabe}
 
-\aufgabe[]{Verbindungsnetzwerk}
-{
+\begin{aufgabe}{Verbindungsnetzwerk}
     Was sind die zwei gebräuchlichsten Netzwerktypen im HPC-Bereich?
-}
-{
+    \tcblower
     \begin{itemize}
         \item Gbit Ethernet
         \item Infiniband
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Cache-Kohärenz}
-{
+\begin{aufgabe}{Cache-Kohärenz}
     Bei Mehrprozessorsystemen mit welchem Speicher ist Cache-Kohärenz wichtig?
-}
-{
+    \tcblower
     \begin{itemize}
         \item Shared Memory
         \item Shared Virtual Memory
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Cache-Kohärenz}
-{
+\begin{aufgabe}{Cache-Kohärenz}
     Geben Sie zwei technische Lösungen an, um Cache-Kohärenz herzustellen.
-}
-{
+    \tcblower
     \begin{itemize}
         \item Snooping Caches
         \item Directory-basierte Systeme
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Cache-Kohärenz}
-{
+\begin{aufgabe}{Cache-Kohärenz}
     Durch welches Hilfsmittel kann in Bus-basierten Systemen mit \enquote{write-back}-Caches Cache-Kohärenz realisiert werden?
-}
-{
+    \tcblower
     Snoopy-Protokolle
-}
+\end{aufgabe}
 
-\aufgabe[]{Cache-Kohärenz}
-{
+\begin{aufgabe}{Cache-Kohärenz}
     Auf welcher Strategie basieren Snoopy-Protokolle?
-}
-{
+    \tcblower
     Invalidate Strategie
-}
+\end{aufgabe}
 
-\aufgabe[]{Cache-Kohärenz}
-{
+\begin{aufgabe}{Cache-Kohärenz}
     Womit lässt sich Cache-Kohärenz bei Distributed Memory Systemen realisieren?
-}
-{
+    \tcblower
     Directory basierte Protokolle
-}
+\end{aufgabe}
 
-\aufgabe[]{Cache-Kohärenz}
-{
+\begin{aufgabe}{Cache-Kohärenz}
     Wie lauten die drei möglichen Zustände des Zustandsfeldes der Directory bei einem Directory-basierten Protokoll?
-}
-{
+    \tcblower
     \begin{itemize}
         \item Shared: $\geq$ 1 Prozessor besitzen Daten, Memory aktuell
         \item Uncached: Kein Prozessor (kein Cache) besitzt gültige Daten
         \item Exclusive: 1 Prozessor (owner) besitzt die Daten, Memory nicht aktuell
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Multithreading}
-{
+\begin{aufgabe}{Multithreading}
     Was ist ein Thread?
-}
-{
+    \tcblower
     Ein Thread \ldots
     \begin{itemize}[$\ldots$]
         \item ist ein Stück Code zusammen mit einem Zustand, gespeichert in:
@@ -699,16 +667,14 @@
         \item ist in vielen Betriebssystemen die kleinste Einheit, die verwaltet (schedule) werden kann
         \item bildet die Basis für ein Programmiermodell bei parallelen Rechnern (SMP-Rechner: OpenMP)
     \end{itemize}
-}
+\end{aufgabe}
 
-\aufgabe[]{Multithreading}
-{
+\begin{aufgabe}{Multithreading}
     Wodurch unterscheidet sich ein Task (Prozess) von einem Thread?
-}
-{
+\tcblower
     \begin{itemize}
         \item Ein Prozess enthält mindestens einen Thread
         \item Multiple Threads können \enquote{gleichzeitig} in einem Prozessor bearbeitet werden
         \item Prozesse besitzen unabhängige Adressräume (address spaces), wohingegen Threads einen Adressraum eines Prozesses gemeinsam nutzen
     \end{itemize}
-}
+\end{aufgabe}
