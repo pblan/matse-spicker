@@ -43,9 +43,7 @@
 
 \begin{defi}{Aufbau CPU vs. GPU}
     \includegraphics[width=\textwidth]{images/CPUvsGPU.png}
-    Pradeep Gupta, CUDA Refresher: Reviewing the Origins of GPU Computing,
-    \url{CUDA Refresher: Reviewing the Origins of GPU Computing},
-    zuletzt aufgerufen am 17.06.2023
+    % TODO: Pradeep Gupta, CUDA Refresher: Reviewing the Origins of GPU Computing, \url{CUDA Refresher: Reviewing the Origins of GPU Computing}, zuletzt aufgerufen am 17.06.2023
 
     Mit \enquote{ALU} als \enquote{algorithmic logic unit} oder \enquote{arithmetisch-logische Einheit}.
 
@@ -95,14 +93,14 @@
     Erklären Sie den Unterschied zwischen ILP und DLP.
     \tcblower
     \begin{itemize}
-        \item ILP (Instruction-Level Parallelism) bezieht sich auf die Fähigkeit eines Prozessors,
+        \item \emph{ILP (Instruction-Level Parallelism)} bezieht sich auf die Fähigkeit eines Prozessors,
               mehrere Anweisungen gleichzeitig auszuführen,
               indem er Anweisungen analysiert und versucht,
               Anweisungen zu finden,
               die unabhängig voneinander ausgeführt werden können.
               Der Prozessor kann dann diese Anweisungen parallel ausführen,
               um die Geschwindigkeit der Ausführung zu erhöhen.
-        \item DLP (Data-Level Parallelism) hingegen bezieht sich auf die Fähigkeit eines Prozessors,
+        \item \emph{DLP (Data-Level Parallelism)} hingegen bezieht sich auf die Fähigkeit eines Prozessors,
               mehrere Datenströme parallel zu verarbeiten.
               Ein Beispiel für DLP ist die Verwendung von Vektorprozessoren,
               die in der Lage sind,

@@ -63,16 +63,11 @@
 
 \begin{defi}[Threads]{Simultaneous Multithreading (SMT)}
     Bei Einprozessor-Systemen: \\
-    \begin{tabularx}{\textwidth}{|lX|}
-        \toprule
+    \begin{tabularx}{\textwidth}{@{}lX@{}}
         Fakt:    & Superskalare und VLIW Prozessoren holen (fetch) und führen (execute) mehrere Befehle pro Clock Cycle aus \\
-        \midrule
         Problem: & Ein einzelner Thread besitzt nicht genug \enquote{instruction-level parallelism}                         \\
-        \midrule
         Lösung:  & Ausführen der Befehle von vielen parallelen Threads in einem Clock Cycle                                 \\
-        \midrule
         Vorteil: & Die Leistung (performance) der einzelnen Threads wird nicht von anderen Threads beeinträchtigt           \\
-        \bottomrule
     \end{tabularx}
     \\
     $\to$ bei Intel wird SMT \enquote{Hyper-threading} genannt.

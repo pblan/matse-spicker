@@ -32,6 +32,7 @@
 \usepackage{microtype}
 \usepackage{csquotes}
 \usepackage{booktabs}
+\renewcommand{\arraystretch}{1.2} 
 \usepackage{listings}
 \usepackage{soul}
 

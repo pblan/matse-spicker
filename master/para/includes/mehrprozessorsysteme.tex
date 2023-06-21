@@ -149,9 +149,6 @@
 
 \begin{defi}[Verbindungsnetzwerk]{Bandbreite}
     Die \emph{Bandbreite} eines Verbindungsnetzwerkes gibt das Verhältnis der transferierten Daten zur Zeit an.
-    \[\text{Bandbreite} = \frac{\text{transferierte Daten}}{\text{Zeit}}\]
-    Bandbeite eines Link: $\text{bw} = w \cdot \frac{1}{t}\frac{\text{bit}}{\text{sec}}$
-    mit $w$: Anzahl der Drähte
 \end{defi}
 
 \begin{defi}[Verbindungsnetzwerk]{Durchmesser}
@@ -263,153 +260,142 @@
         \item Diameter: $d = \log_2 N$
         \item Greycode Adressierung: Jeder Knoten verbunden mit $d$ anderen Knoten unterscheidet sich durch \emph{ein Bit} in der Adresse
         \item Beispiele: Intel iPSC und NCUBE
-        \item Visualisierungen: \\
-              \begin{tabular}{|c|c|c|c|}
-                  \hline
-                  \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-                      \node[circlestyle] (A) at (0,0) {};
-                  \end{tikzpicture} & 
-                  \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-                      \node[circlestyle] (A) at (0,0) {};
-                      \node[circlestyle] (B) at (1,0) {};
-                      \draw (A) -- (B);
-                  \end{tikzpicture} & 
-                  \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-                      \node[circlestyle] (A) at (0,0) {};
-                      \node[circlestyle] (B) at (1,0) {};
-                      \draw (A) -- (B);
-                      
-                      \node[circlestyle] (C) at (0.5, 0.5) {};
-                      \node[circlestyle] (D) at (1.5, 0.5) {};
-                      \draw (C) -- (D);
-                      
-                      \draw (A) -- (C);
-                      \draw (B) -- (D);
-                  \end{tikzpicture} & 
-                  TODO: tikzpicture                         \\
-                  \hline
-                  0d                         & 1d & 2d & 4d \\
-                  \hline
-              \end{tabular}
     \end{itemize}
+    \tcblower
+    \begin{center}
+        \begin{tabular}{@{}cccc@{}}
+            \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+                \node[circlestyle] (A) at (0,0) {};
+            \end{tikzpicture} & 
+            \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+                \node[circlestyle] (A) at (0,0) {};
+                \node[circlestyle] (B) at (1,0) {};
+                \draw (A) -- (B);
+            \end{tikzpicture} & 
+            \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+                \node[circlestyle] (A) at (0,0) {};
+                \node[circlestyle] (B) at (1,0) {};
+                \draw (A) -- (B);
+                
+                \node[circlestyle] (C) at (0.5, 0.5) {};
+                \node[circlestyle] (D) at (1.5, 0.5) {};
+                \draw (C) -- (D);
+                
+                \draw (A) -- (C);
+                \draw (B) -- (D);
+            \end{tikzpicture} & 
+            TODO: tikzpicture                         \\
+            0d                         & 1d & 2d & 4d \\
+        \end{tabular}
+    \end{center}
 \end{defi}
 
 \begin{defi}[Statisches Verbindungsnetzwerk]{Baum}
     % TODO: https://de.wikipedia.org/wiki/Topologie_(Rechnernetz) (Quelle)
     \emph{Baum-Topologien} sind dadurch gekennzeichnet, dass sie eine Wurzel (der erste bzw. obere Knoten) haben, von der eine oder mehrere Kanten (Links) ausgehen.
     Diese führen weiterhin zu einem Blatt (Endknoten) oder \enquote{rekursiv} zu inneren Knoten von Teilbäumen.
-    \begin{tabularx}{\textwidth}{|X|X|}
-        \toprule
-        Planares Layout: & Fetter Baum: (mehr Verbindungen erhöhen das Datenvolumen) \\
-        \midrule
-        \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-            \foreach \y in {0, ..., 3}{
-                    \node[circlestyle] (0\y) at (0,\y) {};
-                    \node[circlestyle] (1\y) at (1,\y) {};
-                    \node[circlestyle] (3\y) at (3,\y) {};
-                    \node[circlestyle] (4\y) at (4,\y) {};
-                }
-            % Connections between nodes
-            \draw (00) -- (01);
-            \draw (10) -- (11);
-            \draw (30) -- (31);
-            \draw (40) -- (41);
-            
-            \draw (02) -- (03);
-            \draw (12) -- (13);
-            \draw (32) -- (33);
-            \draw (42) -- (43);
-            %%%
-            % Connections between connections
-            \draw (0, 0.5) -- (1, 0.5);
-            \draw (3, 0.5) -- (4, 0.5);
-            
-            \draw (0, 2.5) -- (1, 2.5);
-            \draw (3, 2.5) -- (4, 2.5);
-            
-            \draw (0.5, 0.5) -- (0.5, 2.5);
-            \draw (3.5, 0.5) -- (3.5, 2.5);
-            
-            \draw (0.5, 1.5) -- (3.5, 1.5);
-            %%%
-        \end{tikzpicture}
-                         & 
-        \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
-            \foreach \y in {0, ..., 3}{
-                    \node[circlestyle] (0\y) at (0,\y) {};
-                    \node[circlestyle] (1\y) at (1,\y) {};
-                    \node[circlestyle] (3\y) at (3,\y) {};
-                    \node[circlestyle] (4\y) at (4,\y) {};
-                }
-            % Connections between nodes
-            \draw (00) -- (01);
-            \draw (10) -- (11);
-            \draw (30) -- (31);
-            \draw (40) -- (41);
-            
-            \draw (02) -- (03);
-            \draw (12) -- (13);
-            \draw (32) -- (33);
-            \draw (42) -- (43);
-            %%%
-            % Connections between connections
-            \draw (0, 0.4) -- (1, 0.4);
-            \draw (0, 0.5) -- (1, 0.5);
-            \draw (0, 0.6) -- (1, 0.6);
-            
-            \draw (3, 0.4) -- (4, 0.4);
-            \draw (3, 0.5) -- (4, 0.5);
-            \draw (3, 0.6) -- (4, 0.6);
-            
-            \draw (0, 2.4) -- (1, 2.4);
-            \draw (0, 2.5) -- (1, 2.5);
-            \draw (0, 2.6) -- (1, 2.6);
-            
-            \draw (3, 2.4) -- (4, 2.4);
-            \draw (3, 2.5) -- (4, 2.5);
-            \draw (3, 2.6) -- (4, 2.6);
-            
-            \draw (0.4, 0.4) -- (0.4, 2.6);
-            \draw (0.5, 0.4) -- (0.5, 2.6);
-            \draw (0.6, 0.4) -- (0.6, 2.6);
-            
-            \draw (3.4, 0.4) -- (3.4, 2.6);
-            \draw (3.5, 0.4) -- (3.5, 2.6);
-            \draw (3.6, 0.4) -- (3.6, 2.6);
-            
-            \draw (0.4, 1.4) -- (3.6, 1.4);
-            \draw (0.4, 1.5) -- (3.6, 1.5);
-            \draw (0.4, 1.6) -- (3.6, 1.6);
-            
-            %%%
-        \end{tikzpicture}
-        \\
-        \bottomrule
-    \end{tabularx}
+    \tcblower
     \begin{center}
+        \begin{tabular}{@{}cc@{}}
+            Planares Layout & Fetter Baum \\
+            \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+                \foreach \y in {0, ..., 3}{
+                        \node[circlestyle] (0\y) at (0,\y) {};
+                        \node[circlestyle] (1\y) at (1,\y) {};
+                        \node[circlestyle] (3\y) at (3,\y) {};
+                        \node[circlestyle] (4\y) at (4,\y) {};
+                    }
+                % Connections between nodes
+                \draw (00) -- (01);
+                \draw (10) -- (11);
+                \draw (30) -- (31);
+                \draw (40) -- (41);
+                
+                \draw (02) -- (03);
+                \draw (12) -- (13);
+                \draw (32) -- (33);
+                \draw (42) -- (43);
+                %%%
+                % Connections between connections
+                \draw (0, 0.5) -- (1, 0.5);
+                \draw (3, 0.5) -- (4, 0.5);
+                
+                \draw (0, 2.5) -- (1, 2.5);
+                \draw (3, 2.5) -- (4, 2.5);
+                
+                \draw (0.5, 0.5) -- (0.5, 2.5);
+                \draw (3.5, 0.5) -- (3.5, 2.5);
+                
+                \draw (0.5, 1.5) -- (3.5, 1.5);
+                %%%
+            \end{tikzpicture}
+                            & 
+            \begin{tikzpicture}[circlestyle/.style={circle, draw=blue, fill=blue}]
+                \foreach \y in {0, ..., 3}{
+                        \node[circlestyle] (0\y) at (0,\y) {};
+                        \node[circlestyle] (1\y) at (1,\y) {};
+                        \node[circlestyle] (3\y) at (3,\y) {};
+                        \node[circlestyle] (4\y) at (4,\y) {};
+                    }
+                % Connections between nodes
+                \draw (00) -- (01);
+                \draw (10) -- (11);
+                \draw (30) -- (31);
+                \draw (40) -- (41);
+                
+                \draw (02) -- (03);
+                \draw (12) -- (13);
+                \draw (32) -- (33);
+                \draw (42) -- (43);
+                %%%
+                % Connections between connections
+                \draw (0, 0.4) -- (1, 0.4);
+                \draw (0, 0.5) -- (1, 0.5);
+                \draw (0, 0.6) -- (1, 0.6);
+                
+                \draw (3, 0.4) -- (4, 0.4);
+                \draw (3, 0.5) -- (4, 0.5);
+                \draw (3, 0.6) -- (4, 0.6);
+                
+                \draw (0, 2.4) -- (1, 2.4);
+                \draw (0, 2.5) -- (1, 2.5);
+                \draw (0, 2.6) -- (1, 2.6);
+                
+                \draw (3, 2.4) -- (4, 2.4);
+                \draw (3, 2.5) -- (4, 2.5);
+                \draw (3, 2.6) -- (4, 2.6);
+                
+                \draw (0.4, 0.4) -- (0.4, 2.6);
+                \draw (0.5, 0.4) -- (0.5, 2.6);
+                \draw (0.6, 0.4) -- (0.6, 2.6);
+                
+                \draw (3.4, 0.4) -- (3.4, 2.6);
+                \draw (3.5, 0.4) -- (3.5, 2.6);
+                \draw (3.6, 0.4) -- (3.6, 2.6);
+                
+                \draw (0.4, 1.4) -- (3.6, 1.4);
+                \draw (0.4, 1.5) -- (3.6, 1.5);
+                \draw (0.4, 1.6) -- (3.6, 1.6);
+                %%%
+            \end{tikzpicture}
+        \end{tabular}
+
         Diameter = $\log_2 N$
     \end{center}
 \end{defi}
 
 \begin{bonus}{Übersicht statischer Verbindungsnetzwerke}
-    \begin{tabularx}{\textwidth}{|l|X|X|X|}
+    \begin{tabularx}{\textwidth}{@{}lXXX@{}}
         \toprule
         Topologie          & Anzahl der Verbindungskanäle pro Knoten & Maximale Entfernung (Diameter) & Gesamtanzahl der Verbindungskanäle \\
         \midrule
         Ring               & 2                                       & $\frac{N}{2}$                  & $N-1$                              \\
-        \midrule
         Baum               & 3                                       & $2\cdot (\log_2 N - 1)$        & $N-1$                              \\
-        \midrule
         2D - Gitter        & 4                                       & $2\cdot \sqrt{N}$              & $2\cdot N$                         \\
-        \midrule
         3D - Gitter        & 6                                       & $3\cdot \sqrt[3]{N}$           & $3\cdot N$                         \\
-        \midrule
         Hexagon. Gitter    & 6                                       & $3\cdot \sqrt[3]{N}$           & $3\cdot N$                         \\
-        \midrule
         Hypercube          & $\log_2 N$                              & $\log_2 N$                     & $N \log_2 \frac{N}{2}$             \\
-        \midrule
         Vollst. Vernetzung & $N - 1$                                 & 1                              & $N \cdot \frac{N-1}{2}$            \\
-        \bottomrule
     \end{tabularx}
 \end{bonus}
 
@@ -475,7 +461,7 @@
 
 \begin{defi}{Omega-Netzwerk}
     \includegraphics[width=\textwidth]{images/OmegaNetwork.jpg}
-    By Bjmyers17, CC BY-SA 3.0, \url{https://commons.wikimedia.org/w/index.php?curid=75639225}
+    % TODO: By Bjmyers17, CC BY-SA 3.0, \url{https://commons.wikimedia.org/w/index.php?curid=75639225}
 \end{defi}
 
 \begin{defi}[Dynamisches Verbindungsnetzwerk]{Zelle}
@@ -488,7 +474,7 @@
 
 \begin{defi}{Benes-Netzwerk}
     \includegraphics[width=\textwidth]{images/Benesnetwork.png}
-    By Piggly - Own work, Public Domain, \url{https://commons.wikimedia.org/w/index.php?curid=2988080}
+    % TODO: By Piggly - Own work, Public Domain, \url{https://commons.wikimedia.org/w/index.php?curid=2988080}
 \end{defi}
 
 \subsubsection{Cluster-Interconnects}
@@ -635,20 +621,15 @@
 \begin{aufgabe}{Verbindungsnetzwerk}
     Nennen und erklären Sie kurz die fünf grundlegenden Eigenschaften eines Verbindungsnetzwerkes.
     \tcblower
-    \begin{tabularx}{\textwidth}{|X|X|}
+    \begin{tabularx}{\textwidth}{@{}lX@{}}
         \toprule
-        Eigenschaft            & Erklärung                                                                                                                                                    \\
+        Eigenschaft            & Erklärung                                                                                                                                           \\
         \midrule
-        Latenz (latency)       & Zeit für den Transfer zwischen den Knoten                                                                                                                    \\
-        \midrule
-        Bandbreite (bandwidth) & $\frac{\text{transferierte Daten}}{Zeit}$, \newline Bandbreite eines Link: $\text{bw} = \omega \cdot \frac{1}{t} \left(\frac{\text{bit}}{\text{sec}}\right)$ \\
-        \midrule
-        Diameter               & maximale Distanz zwischen zwei beliebigen Prozessoren                                                                                                        \\
-        \midrule
-        Topologie              & wie sind die Nachbarknoten angeordnet und erreichbar                                                                                                         \\
-        \midrule
-        Statische oder \newline dynamische Leitungswege                                                                                                                                       \\
-        \bottomrule
+        Latenz (latency)       & Zeit für den Transfer zwischen den Knoten                                                                                                           \\
+        Bandbreite (bandwidth) & $\frac{\text{transferierte Daten}}{Zeit}$, Bandbreite eines Link: $\text{bw} = \omega \cdot \frac{1}{t} \left(\frac{\text{bit}}{\text{sec}}\right)$ \\
+        Diameter               & maximale Distanz zwischen zwei beliebigen Prozessoren                                                                                               \\
+        Topologie              & wie sind die Nachbarknoten angeordnet und erreichbar                                                                                                \\
+        \multicolumn{2}{@{}l@{}}{Statische oder dynamische Leitungswege}
     \end{tabularx}
 \end{aufgabe}
 

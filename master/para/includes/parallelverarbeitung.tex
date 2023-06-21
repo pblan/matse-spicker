@@ -61,7 +61,7 @@
     
     Unterschiedliche Programmteile, Unterprogramme,
     Module werden auf Prozessoren verteilt und parallel bearbeitet.
-    \begin{itemize}[$\to$]
+    \begin{itemize}
         \item verschiedene Rechnerarchitekturen für unterschiedliche Programmteile einsetzbar
         \item aufwändiger zu Implementieren
     \end{itemize}
@@ -125,13 +125,8 @@
     
     Sie kann definiert werden als:
     \[
-        E = \frac{S}{n_P} = \frac{t_S}{n_P\cdot t_P} \in (0; 1)
+        E = \frac{S}{n_P} = \frac{t_S}{n_P\cdot t_P} \in (0, 1)
     \]
-    \begin{align*}
-        E(p) = \frac{S(p)}{p} =
-        \frac{T(\text{sequentiell})}{p\cdot T(\text{parallel})},
-        0<E(p)\leq 1
-    \end{align*}
 \end{defi}
 
 \begin{example}[Speedup]{Skalarprodukt}
@@ -217,9 +212,6 @@
 %     Dabei sollen so viele Instruktionen wie möglich in einer Zeiteinheit ausgeführt werden, dadurch wird der Durchsatz erhöht.
 %     Die Laufzeit einer einzelnen Pipeline bleibt jedoch unverändert.
 % \end{defi}
-
-% \begin{example}{Pipelining}
-%     \emph{Pipelining} beschreibt eine Implementierungstechnik, bei der komplexe Vorgänge in eine Sequenz von einfacheren Teilaufgaben zerlegt wird.
 
 \begin{defi}[Pipelining]{Speedup}
     Der bestmögliche \emph{Speedup} beim Pipelining entspricht der Anzahl der Pipeline-Stufen.
