@@ -34,8 +34,25 @@
     
     % TODO: https://commons.wikimedia.org/wiki/File:5_Stage_Pipeline.svg (Quelle)
     \centering
-    \includegraphics[width=0.5\linewidth]{images/5_stage_pipeline.png}
-    TODO: Bild in Tabelle umwandeln.
+    % \includegraphics[width=0.5\linewidth]{images/5_stage_pipeline.png}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+        \toprule
+        Instr. No.  & \multicolumn{7}{c|}{Pipeline Stage}                                   \\
+        \toprule
+        1           & IF                                  & ID & EX & MEM & WB  &     &     \\
+        \midrule
+        2           &                                     & IF & ID & EX  & MEM & WB  &     \\
+        \midrule
+        3           &                                     &    & IF & ID  & EX  & MEM &     \\
+        \midrule
+        4           &                                     &    &    & IF  & ID  & EX  & MEM \\
+        \midrule
+        5           &                                     &    &    &     & IF  & ID  & EX  \\
+        \midrule
+        \midrule
+        Clock Cycle & 1                                   & 2  & 3  & 4   & 5   & 6   & 7   \\
+        \bottomrule
+    \end{tabular}
 \end{defi}
 
 \begin{defi}[Pipelining]{Taktung}
