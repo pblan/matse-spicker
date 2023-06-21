@@ -8,19 +8,19 @@
     % TODO: https://de.wikipedia.org/wiki/Direct_Memory_Access (Quelle)
     Unter \emph{Direct Memory Access} versteht man, wenn Hardware-Komponenten selbstständig ohne Beteiligung der CPU Daten übertragen können.
     Diese Technik erlaubt anderen Komponenten ohne Umweg über die CPU direkt mit dem Arbeitsspeicher zu kommunizieren.
-
+    
     Der Vorteil des DMA ist die schnellere Datenübertragung bei gleichzeitiger Entlastung des Prozessors.
-
+    
     Anders als der Name vermuten lässt, ist die wesentliche Eigenschaft von Direct Memory Access nicht der Speicherzugriff, sondern dass der Datentransfer von einer anderen Komponente und nicht von der CPU selbst initiiert wird. Dabei braucht es zu keinen Speicherzugriffen zu kommen, es sind auch direkte Kommunikationen zwischen Peripheriegeräten möglich
-
+    
     TODO: Grafik
 \end{example}
 
 \begin{defi}{Überlappter I/O}
-
     TODO: Sinnvolle Definition und Voraussetzungen
-
+    
     TODO: Grafik
+    
     Während des langsamen I/O kann nun gleichzeitig die \enquote{wertvolle} Ressource CPU genutzt werden.
 \end{defi}
 
@@ -29,24 +29,24 @@
 \begin{defi}{Cache}
     % TODO: https://de.wikipedia.org/wiki/Cache (Quelle)
     \emph{Cache} bezeichnet einen schnellen Pufferspeicher, der (wiederholte) Zugriffe auf ein langsames Hintergrundmedium oder aufwendige Neuberechnungen zu vermeiden hilft.
-
+    
     Daten, die bereits einmal geladen oder generiert wurden, verbleiben im Cache, so dass sie bei späterem Bedarf schneller aus diesem abgerufen werden können.
-
+    
     Auch können Daten, die vermutlich bald benötigt werden, vorab vom Hintergrundmedium abgerufen und vorerst im Cache bereitgestellt werden (\emph{read-ahead}).
-
+    
     Da es technisch aufwändig und damit meist wirtschaftlich nicht sinnvoll ist, einen Cache zu bauen, der sowohl groß als auch schnell ist, kann man mehrere Caches verwenden -- z. B. einen kleinen schnellen und einen deutlich größeren, jedoch etwas langsameren Cache (der aber immer noch viel schneller ist als der zu cachende Hintergrundspeicher).
-
+    
     Damit kann man die konkurrierenden Ziele von geringer Zugriffszeit und großem Cacheumfang gemeinsam realisieren.
     Das ist wichtig für die \emph{Hit Rate}.
 \end{defi}
 
 \begin{defi}{Cachehierarchie}
     Existieren mehrere Caches, so bilden diese eine \emph{Cachehierarchie}, die Teil der Speicherhierarchie ist.
-
+    
     Die einzelnen Caches werden nach ihrer Hierarchieebene (engl. \emph{level}) durchnummeriert, also Level-1 bis Level-n oder kurz L1, L2 usw.
     Je niedriger die Nummer, desto näher liegt der Cache an der (schnell) verarbeitenden Komponente;
     die niedrigste Nummer bezeichnet daher den Cache mit der schnellsten Zugriffszeit, dieser wird als erstes durchsucht.
-
+    
     Enthält der L1-Cache die benötigten Daten nicht, wird der (meist etwas langsamere, aber größere) L2-Cache durchsucht usw.
     Das geschieht solange, bis die Daten entweder in einer Cacheebene gefunden (\emph{Cache Hit}) oder alle Caches ohne Erfolg durchsucht wurden (\emph{Cache Miss}).
     In letzterem Fall muss auf den langsamen Hintergrundspeicher zugegriffen werden.
@@ -62,26 +62,26 @@
 
 \begin{example}[Cachehierarchie]{Harvard-Architektur}
     \includegraphics[width=\textwidth]{images/harvard_architektur.png}
-    Boris Jakubaschk, \url{https://www.homecomputermuseum.de/technik/rechnerarchitektur/harvard-architektur/}, zuletz aufgerufen am: 19.06.2023
+    Von Matthias Kleine (April 2005) - \url{Matthias Kleine, CC BY-SA 3.0, https://de.wikipedia.org/w/index.php?curid=624441}, zuletz aufgerufen am: 19.06.2023
     % TODO: https://en.wikipedia.org/wiki/Cache_hierarchy (Quelle, Grafiken)
 \end{example}
 
 \begin{defi}[Cache]{Zugriffszeit}
     Durch die Aufteilung des L1-Cache in Daten- und Instruktions-Cache (Harvard-Architektur) können bei Pipeline-basierten Rechnern gleichzeitig neue Instruktionen zum Füllen der Pipeline geholt werden und bei der Bearbeitung der Operanden die Daten ausgelesen werden.
-
+    
     Die \emph{Zugriffszeit} $t_Z$ eines Caches kann wie folgt definiert werden:
     \[
         t_Z = t_{C} + (1 - h) \cdot t_{M}
     \]
     Dabei ist $t_C$ die Zugriffszeit des Prozessors für Werte aus dem Cache, $t_M$ die für Daten aus dem Memory und $h$ die Hit-Rate.
-
+    
     Wenn die Hit-Rate groß sein soll, sind sowohl ein Programm mit hoher räumlicher und zeitlicher Lokalität, sowie ein großer Cache (meist L1, L2 und L3) erforderlich.
 \end{defi}
 
 \begin{defi}{Cache Hits und Misses}
     % TODO: https://de.wikipedia.org/wiki/Cache#Organisation (Quelle)
     Den Vorgang, dass die Daten einer Anfrage an einen Cache in selbigem vorrätig sind, bezeichnet man als \emph{Cache Hit}, den umgekehrten Fall als \emph{Cache Miss}.
-
+    
     Man unterscheidet zwischen folgenden Cache Misses:
     \begin{itemize}
         \item \emph{Cold Start Miss}; tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel.
@@ -94,10 +94,10 @@
 \begin{defi}{Hit und Miss Rate}
     % TODO: https://de.wikipedia.org/wiki/Cache#Organisation (Quelle)
     Um quantitative Maßzahlen für die Bewertung der Effizienz eines Caches zu erhalten, definiert man zwei Größen.
-
+    
     Die Anzahl der Anfragen, bei denen ein Cache Hit auftrat, geteilt durch die Anzahl der insgesamt an diesen Cache gestellten Anfragen bezeichnet man als \emph{Hit Rate}.
     Wie man aus der Definition leicht sehen kann, liegt diese Größe zwischen Null und Eins. Eine Hit Rate von z. B. 70 \% bedeutet, dass bei 70 \% aller Anfragen an den Cache dieser die Daten sofort liefern konnte und bei 30 \% aller Anfragen passen musste.
-
+    
     Analog zur Hit Rate ist die \emph{Miss Rate} als die Anzahl der Anfragen definiert, bei denen die Daten nicht im Cache vorhanden waren geteilt durch die Anzahl der gesamten Anfragen.
     Offensichtlich gilt:
     \[
@@ -109,7 +109,7 @@
     Die Cache-Lines (Blöcke) eines Caches können in so genannte \emph{Sätze} zusammengefasst werden.
     Für eine bestimmte Adresse ist dann immer nur einer der Sätze zuständig.
     Innerhalb eines Satzes bedienen alle Cache-Lines also nur einen Teil aller vorhandenen Adressen.
-
+    
     Im Folgenden stehe die Variable $m$ für die Gesamtanzahl der Cache-Liness und $n$ für die Anzahl der Cache-Lines pro Satz, die so genannte \emph{Assoziativität}.
     Dann besteht der Cache also aus $\frac{m}{n}$ Sätzen.
 \end{defi}
@@ -118,26 +118,26 @@
     % TODO: https://en.wikipedia.org/wiki/Cache_placement_policies#Direct-mapped_cache (Quelle)
     Bei einem \emph{Direct Mapped Cache} wird jeder Block repräsentiert einen durch eigenen Satz, es gibt also so viele Sätze wie Cache-Lines.
     Somit ist für eine gegebene Adresse exakt ein Cacheblock zuständig.
-
+    
     Platzieren eines Speicherblocks im Cache:
     \begin{itemize}
-        \item Bestimmen der Zeilenadresse im Cache, basierend auf Adresse um Hauptspeicher
+        \item Bestimmen der Zeilenadresse im Cache, basierend auf Adresse im Hauptspeicher
         \item Speicherblock wird entsprechend im Cache gespeichert, als Tag wird die Hauptspeicheradresse verwendet
         \item vorher gespeicherte Daten werden überschrieben
     \end{itemize}
-
+    
     Suchen im Cache:
     \begin{itemize}
-        \item Bestimmen der Zeilenadresse im Cache, basierend auf Adresse um Hauptspeicher
+        \item Bestimmen der Zeilenadresse im Cache, basierend auf Adresse im Hauptspeicher
         \item Tags (Hauptspeicheradressen) werden verglichen
         \item bei gleichen Tags \emph{Cache-Hit}, sonst \emph{Cache-Miss}
-        \item bei einem Cache-Miss muss der Speicherblock in Cache geladen werden
+        \item bei einem Cache-Miss muss der Speicherblock in den Cache geladen werden
     \end{itemize}
-
+    
     Vorteile des Direct Mapped Cache sind, dass nicht alle Adressen im Cache durchsucht werden müssen und das Vorgehen sehr simpel ist.
-
+    
     Im Gegenzug ist die Effizienz des Caches eingeschränkt, da möglicherweise freie Cacheblöcke vorhanden sind, die nicht genutzt werden.
-
+    
     \centering
     % TODO: https://diveintosystems.org/book/C11-MemHierarchy/caching.html (Quelle)
     \includegraphics[width=.6\linewidth]{images/direct_mapped_cache.png}
@@ -147,25 +147,25 @@
 \begin{defi}[Cache-Assoziativität]{Fully Associative Cache}
     % TODO: https://de.wikipedia.org/wiki/Cache#Organisation (Quelle)
     Ein \emph{Fully Associative Cache} hat nur einen Satz, der alle Blöcke beinhaltet.
-    Somit kann jede Adresse in jedem Cacheblock gecachet werden.
-
+    Somit kann jede Adresse in jedem Cacheblock gecached werden.
+    
     Bei einer Anfrage an den Cache ist es daher notwendig, alle Cache-Tags zu überprüfen.
     Da Caches möglichst schnell sein müssen, wird das parallel ausgeführt, was den notwendigen Hardwareaufwand an Tag-Vergleichern vergrößert.
-
+    
     Der Vorteil ist aber, dass der Cache stets Daten aufnehmen kann, solange noch ein beliebiger Cacheblock frei ist.
 \end{defi}
 
 \begin{defi}[Cache-Assoziativität]{N-way Set Associative Cache}
     % TODO: https://de.wikipedia.org/wiki/Cache#Organisation (Quelle)
     Ein \emph{N-way Set Associative Cache} reduziert Konflikte beim Zwischenlagern im Cache durch $N$ \emph{Cache-Sets}.
-
+    
     Beim \emph{2-way Set Associative Cache} werden bei der Anforderung einer Hauptspeicheradresse in den beiden Cache-Sets parallel an der entsprechenden Stelle der Tag verglichen.
     Stimmt ein Tag überein, kann direkt aus dem Cache gelesen werden (\emph{Cache-Hit}).
     Sind beide Tags verschieden, muss in einem Cache-Set eine Zeile neu aus dem Hauptspeicher geladen werden (\emph{Cache-Miss}).
-
+    
     Diese Cacheform stellt einen Kompromiss aus Hardwareaufwand und Effizienz des Caches dar:
     Gegenüber einem DM-Cache gewinnt man Effizienz, gegenüber einem FA-Cache spart man Hardware.
-
+    
     % TODO: https://diveintosystems.org/book/C11-MemHierarchy/caching.html (Quelle)
     \centering
     \includegraphics[width=.9\linewidth]{images/2-way_set_associative_cache_request.png}
@@ -178,37 +178,43 @@
 \end{defi}
 
 \begin{defi}[Ersetzungsstrategie]{LRU}
-    Eine häufig verwendete Ersetzungsstrategie ist die \emph{LRU} (engl. Least Recently Used), bei welcher immer der Block ausgetauscht wird, auf den am längsten nicht mehr zugegriffen wurde.
-
+    Eine häufig verwendete Ersetzungsstrategie ist die \emph{LRU} (engl. Least Recently Used), 
+    bei welcher immer der Block ausgetauscht wird, auf den am längsten nicht mehr zugegriffen wurde.
+    
     Moderne Prozessoren (z. B. der AMD Athlon) implementieren meist eine Pseudo-LRU-Ersetzungsstrategie, die fast wie echtes LRU arbeitet, aber leichter in Hardware zu implementieren ist.
 \end{defi}
 
 \begin{defi}[Ersetzungsstrategie]{FIFO}
-    Ähnlich funktioniert die \emph{FIFO-Strategie} (engl. First In First Out), bei der schlicht der jeweils älteste Eintrag verdrängt wird.
+    Ähnlich funktioniert die \emph{FIFO-Strategie} (engl. First In First Out), 
+    bei der schlicht der jeweils älteste Eintrag verdrängt wird.
 \end{defi}
 
 \begin{defi}[Ersetzungsstrategie]{Random}
     Ebenfalls üblich ist, dass ein zufälliger Eintrag verdrängt wird (\emph{Random-Strategie}).
+    
+    Meistens wird diese \emph{Ersetzungsstrategie} genommen, 
+    da diese am einfachsten zu implementieren ist, 
+    kein Overhead produziert und gleiche Leistung bringt.
 \end{defi}
 
 \begin{defi}{Schreibstrategie}
     Bei einem Schreibzugriff muss generell unterschieden werden, ob ein Block bereits im Cache, oder noch ungeladen im Hauptspeicher ist.
     Es muss also eine \emph{Schreibstrategie} gewählt werden.
-
+    
     Bei einem Schreibzugriff auf einen Block, der im Cache vorhanden ist, gibt es prinzipiell zwei Möglichkeiten:
     \begin{itemize}
         \item Durchgängiges Schreiben (Write-Through)
         \item Zurückkopieren (Write-Back)
     \end{itemize}
-
+    
     Analog zu Obigem gibt es bei einem Schreibzugriff auf einen Block, der nicht im Cache vorhanden ist, prinzipiell ebenso zwei Möglichkeiten:
     \begin{itemize}
         \item Write-Allocate
         \item Non-Write-Allocate
     \end{itemize}
-
+    
     Einige Befehlssätze enthalten Befehle, die es dem Programmierer ermöglichen, explizit anzugeben, ob zu schreibende Daten am Cache vorbeizuschreiben sind.
-
+    
     Normalerweise wird entweder die Kombination Write-Back mit Write-Allocate oder Write-Through mit Non-Write-Allocate verwendet.
     Die erste Kombination hat den Vorteil, dass aufeinander folgende Schreibzugriffe auf denselben Block (Lokalitätsprinzip) komplett im Cache abgewickelt werden (bis auf den ersten Miss).
     Dies gibt im zweiten Fall keinen Vorteil, da sowieso jeder Schreibzugriff zum Hauptspeicher muss, weshalb die Kombination Write-Through mit Write-Allocate eher unüblich ist.
@@ -218,7 +224,7 @@
     % TODO: https://de.wikipedia.org/wiki/Cache#Organisation (Quelle)
     Bei \emph{Write-Through} wird der zu schreibende Block sofort in der nächsthöheren Speicherebene abgelegt.
     Damit ist die Konsistenz gesichert.
-
+    
     Damit der Prozessor nicht jedes Mal warten muss, bis der Block in der nächsthöheren Speicherebene (die ja langsamer als der Cache ist) abgelegt ist, benutzt man einen Pufferspeicher (write buffer).
     Wenn dieser voll läuft, muss der Prozessor jedoch anhalten und warten.
 \end{defi}
@@ -226,15 +232,15 @@
 \begin{defi}[Schreibstrategie]{Write-Back}
     % TODO: https://de.wikipedia.org/wiki/Cache#Organisation (Quelle)
     Bei \emph{Write-Back} wird der zu schreibende Block nicht sofort in der nächsthöheren Speicherebene abgelegt, sondern zunächst im Cache.
-
+    
     Dabei entsteht eine Inkonsistenz zwischen Cache und zu cachendem Speicher.
     Letzterer enthält somit veraltete Information.
     Erst wenn das Wort aus dem Cache verdrängt wird, wird es auch in die nächsthöhere Speicherebene geschrieben.
     Dazu bekommt jeder Cacheblock ein sogenanntes Dirty Bit, das anzeigt, ob der Block beim Ersetzen zurückkopiert werden muss.
-
+    
     Das führt bei Speicherzugriff durch andere Prozessoren oder DMA-Geräte zu Problemen, weil diese veraltete Informationen lesen würden.
     Abhilfe schaffen hier Cache-Kohärenz-Protokolle wie z. B. MESI für UMA-Systeme.
-
+    
     Ein Vorteil ist, dass mehrfaches Ändern eines Wertes nur im Cache durchgeführt wird.
     Allerdings kann ein Read-Miss zu einem Schreiben in den Hauptspeicher führen.
 \end{defi}
@@ -248,19 +254,10 @@
 \begin{bonus}[Schreibstrategie]{Non-Write-Allocate}
     % TODO: https://de.wikipedia.org/wiki/Cache#Organisation (Quelle)
     Bei \emph{Non-Write-Allocate} wird am Cache vorbei in die nächsthöhere Speicherebene geschrieben, ohne dass der dazugehörige Block in den Cache geladen wird.
-
+    
     Das kann für manche Anwendungen Vorteile bringen, bei denen viele geschriebene Daten nie wieder gelesen werden.
     Durch die Verwendung von Non-Write-Allocate verhindert man das Verdrängen von anderen, möglicherweise wichtigen Blöcken und reduziert somit die Miss Rate.
 \end{bonus}
-
-\begin{defi}{Reduzierung der Cache Miss Rate}
-    \begin{itemize}
-        \item \underline{Cold start miss:} Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)
-        \item \underline{Capacity miss:} Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache)
-        \item \underline{Conflict miss:} Tritt auf, wenn ein Block ersetzt werden muß, der anschließend wieder benötigt wird (bei N-way associative Cache)
-        \item \underline{Coherence miss:} bei Mehrprozessorsystemen → wird später erklärt
-    \end{itemize}
-\end{defi}
 
 \begin{defi}[Reduzierung der Cache Miss Rate]{Programmierstrategien}
     Verbessern der Speicherlokalität durch
@@ -273,21 +270,21 @@
 \end{defi}
 
 \begin{example}[Reduzierung der Cache Miss Rate]{Programmierung}
-    TODO
+    TODO: Beispiel Umsortierung der Schleifen um Zeilen und Spalten einer Matrix andersrum zu durchlaufen.
 \end{example}
 
 \begin{defi}{Translation-Lookaside-Buffer}
     % TODO: https://de.wikipedia.org/wiki/Translation_Lookaside_Buffer (Quelle)
     Der Begriff \emph{Übersetzungspuffer} bzw. \emph{Translation Lookaside Buffer} (\emph{TLB}) bezeichnet eine funktionale Einheit der Speicherverwaltung.
-
+    
     Wenn virtueller Speicher verwendet wird, muss zu den virtuellen Adressen die jeweils zugehörige physische Adresse ermittelt werden.
     Da diese Arbeitsschritte verhältnismäßig zeitintensiv sind, werden die zuletzt ermittelten $n$ Werte für die Adresse der physischen Speicherseite im TLB zwischengespeichert, wodurch erneute Zugriffe auf Adressen in dieser Seite nicht aufwändig neu ermittelt werden müssen, sondern aus dieser Liste entnommen werden können.
-
+    
     Der TLB kann eine begrenzte Menge dieser Referenzen halten (üblicherweise nicht mehr als 1024 Einträge) und kann dadurch die Ausführung von Speicherzugriffen deutlich beschleunigen.
-
+    
     Bei Rechnern mit virtuellen Adressen wird bei einem Task-Wechsel zu Beginn der Cache invalidiert.
     Daher kommt es für die neue Task zu Cold Start Misses!
-
+    
     TODO: Grafik
 \end{defi}
 
@@ -295,113 +292,99 @@
 
 \begin{defi}[Befehlssatzarchitektur]{CISC}
     % TODO: https://de.wikipedia.org/wiki/Complex_Instruction_Set_Computer (Quelle)
-    Anfänglich wurden die Befehlssätze der Prozessoren immer umfangreicher, um auch komplexere Rechenschritte \enquote{auf einmal} mit nur einem Maschinenbefehl ausführen zu können, um dadurch schneller und leistungsfähiger zu werden.
-    Zugleich wurde dadurch jedoch auch der Prozessor komplex und schwierig weiterzuentwickeln -- und auch schwieriger zu programmieren.
-
+    Anfänglich wurden die Befehlssätze der Prozessoren immer umfangreicher, um auch komplexere Rechenschritte \enquote{auf einmal} mit nur einem Maschinenbefehl ausführen zu können, 
+    um dadurch schneller und leistungsfähiger zu werden.
+    Zugleich wurde dadurch jedoch auch der Prozessor komplex und schwierig weiterzuentwickeln, sowie auch schwieriger zu programmieren.
+    
     Viele Hersteller setzten zunächst auf die Mikroprogrammierung der Rechenwerke, um Problemfälle leichter korrigieren zu können -- dennoch nahm die Komplexität immer weiter zu.
-
+    
     Die Bezeichnung \emph{Complex Instruction Set Computer} (\emph{CISC}) wurde in den 1970er Jahren von IBM als Retronym gewählt, um klassische Befehlssätze von einer neuartigen Form abzugrenzen, dem Reduced Instruction Set Computer (RISC).
-
+    
     TODO: Grafik
 \end{defi}
 
 \begin{defi}[Befehlssatzarchitektur]{RISC}
     % TODO: https://de.wikipedia.org/wiki/Reduced_Instruction_Set_Computer (Quelle)
     \emph{Reduced Instruction Set Computer} (\emph{RISC}) ist eine Designphilosophie für Computerprozessoren.
-    Das Designziel war der Verzicht auf einen komplexen, für die Assemblerprogrammierung komfortablen Befehlssatz hin zu einfach zu dekodierenden und schnell auszuführenden Befehlen (\enquote{eigentliche Befehlsausführung} meist nur 1 Takt).
+    Das Designziel war der Verzicht auf einen komplexen, 
+    für die Assemblerprogrammierung komfortablen Befehlssatz hin zu einfach zu dekodierenden und schnell auszuführenden Befehlen (\enquote{eigentliche Befehlsausführung} meist nur 1 Takt).
     Dies ermöglichte zudem höhere Taktfrequenzen.
-
+    
     Der Compiler erzeugt direkt Mikrobefehle.
     Es muss zwar mehr Code erzeugt werden, aber die Hardware wird einfacher und damit auch schneller.
-
+    
     TODO: Grafik
-    \begin{defi}{Very Long Instruction Word (VLIW)}
-    \end{defi}
+\end{defi}
 
-    \begin{defi}{Explicitly Parallel Instruction Computing (EPIC)}
-        Von HP und Intel wurde 1998/99 die Prozessorarchitektur EPIC entworfen
-        und mit dem Intel Itanium ein erster Prozessor realisiert.
-        Die Intel-Version der Architektur wird IA-64 (64 bit) genannt.
+\subsection{Aufgaben}
 
-        EPIC ist die moderne Weiterentwicklung des Konzepts des VLIW.
+\begin{aufgabe}[Caches]{Ersetzungsstrategie}
+    Welche Ersetzungsstrategien bei Konflikten können beim Set Associative oder Fully Associative Cache eingesetzt werden?
+    \tcblower
+    Es können die Ersetzungsstrategien \enquote{Random},
+    \enquote{Last Recently Used (LRU)} oder \enquote{First In First Out (FIFO)} eingesetzt werden.
+\end{aufgabe}
 
-        Hierbei versucht der Compiler,
-        möglichst viele voneinander unabhängige Instruktionen in einer Sequenz zusammenzustellen.
-        Er kann dabei durch Umstellen der Befehle die Reihenfolge innerhalb der Sequenz verändern.
-        Dies darf aber nicht zu anderen Ergebnissen führen!
+\begin{aufgabe}[Caches]{Write-Back Cache}
+    Welchen Vorteil bietet ein Write Back Cache?
+    \tcblower
+    Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
+\end{aufgabe}
 
-        Eine solche Sequenz nennt Intel ein \enquote{bundle}.
-    \end{defi}
+\begin{aufgabe}[Cache]{Cache-Miss}
+    Nennen und erklären Sie vier verschiedene Typen eines Cache-Miss.
+    \tcblower
+    Es existieren folgende Typen eines Cache-Miss:\\
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \toprule
+        Typ              & Erklärung                                                                                                                                          \\
+        \midrule
+        Cold start miss: & Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)                 \\
+        \midrule
+        Capacity miss:   & Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache) \\
+        \midrule
+        Conflict miss:   & Tritt auf, wenn ein Block ersetzt werden muss, der anschließend wieder benötigt wird (bei N-way associative Cache)                                 \\
+        \midrule
+        Coherence miss:  & Tritt in einem mehrprozessorfähigen Cache auf,
+        wenn ein Prozessor eine Adresse in den Cache schreibt und ein anderer Prozessor auf die gleiche Adresse zugreifen möchte,
+        bevor die Änderungen in den Hauptspeicher geschrieben wurden.                                                                                                         \\
+        \bottomrule
+    \end{tabularx}
+\end{aufgabe}
 
-    \subsection{Aufgaben}
+\begin{aufgabe}[Cache]{Virtuelle Adressen}
+    Im Cache befinden sich stets reale Adressen.
+    Wie heißt der \enquote{Cache} für virtuelle Adressen?
+    \tcblower
+    Der \enquote{Cache} für virtuelle Adressen heißt \enquote{Translation Lookaside Buffer (TLB)}.
+\end{aufgabe}
 
-    \begin{aufgabe}[Caches]{Ersetzungsstrategie}
-        Welche Ersetzungsstrategien bei Konflikten können beim Set Associative oder Fully Associative Cache eingesetzt werden?
-        \tcblower
-        Es können die Ersetzungsstrategien \enquote{Random},
-        \enquote{Last Recently Used (LRU)} oder \enquote{First In First Out (FIFO)} eingesetzt werden.
-    \end{aufgabe}
+\begin{aufgabe}[Parallelität]{Risiken}
+    Nennen und erklären Sie drei Risiken,
+    die beim ILP zum Abreißen der gleichmäßigen Instruktionsbearbeitung führen können.
+    \tcblower
+    \begin{tabularx}{\textwidth}{|l|X|}
+        \toprule
+        Risiko              & Erklärung                                                                                                           \\
+        \midrule
+        Structural hazards: & Die HW kann nicht eine bestimmte Aufeinanderfolge von Instruktionen ausführen.                                      \\
+        \midrule
+        Data hazards:       & Instruktionen hängen vom Ergebnis vorheriger Schritte ab,
+        die noch nicht die Pipeline verlassen haben.                                                                                              \\
+        \midrule
+        Control hazards:    & Zwischen dem \enquote{fetch} von Instruktionen und dem Ändern des Kontrollflusses (branch) entstehen Verzögerungen. \\
+        \bottomrule
+    \end{tabularx}
+\end{aufgabe}
 
-    \begin{aufgabe}[Caches]{Write-Back Cache}
-        Welchen Vorteil bietet ein Write Back Cache?
-        \tcblower
-        Mehrfaches Ändern eines Wertes wird nur im Cache durchgeführt.
-    \end{aufgabe}
-
-    \begin{aufgabe}[Cache]{Cache-Miss}
-        Nennen und erklären Sie vier verschiedene Typen eines Cache-Miss.
-        \tcblower
-        Es existieren folgende Typen eines Cache-Miss:\\
-        \begin{tabularx}{\textwidth}{|l|X|}
-            \toprule
-            Typ              & Erklärung                                                                                                                                          \\
-            \midrule
-            Cold start miss: & Tritt auf beim ersten Zugriff auf einen Block nach dem Start des Programms oder dem Task-Wechsel (auch bei unendlich großem Cache)                 \\
-            \midrule
-            Capacity miss:   & Tritt auf, wenn der Cache nicht alle Blocks speichern kann, die bei der Ausführung durch die CPU benötigt werden (nur bei fully associative Cache) \\
-            \midrule
-            Conflict miss:   & Tritt auf, wenn ein Block ersetzt werden muss, der anschließend wieder benötigt wird (bei N-way associative Cache)                                 \\
-            \midrule
-            Coherence miss: & Tritt in einem mehrprozessorfähigen Cache auf,
-            wenn ein Prozessor eine Adresse in den Cache schreibt und ein anderer Prozessor auf die gleiche Adresse zugreifen möchte,
-            bevor die Änderungen in den Hauptspeicher geschrieben wurden. \\
-            \bottomrule
-        \end{tabularx}
-    \end{aufgabe}
-
-    \begin{aufgabe}[Cache]{Virtuelle Adressen}
-        Im Cache befinden sich stets reale Adressen.
-        Wie heißt der \enquote{Cache} für virtuelle Adressen?
-        \tcblower
-        Der \enquote{Cache} für virtuelle Adressen heißt \enquote{Translation Lookaside Buffer (TLB)}.
-    \end{aufgabe}
-
-    \begin{aufgabe}[Parallelität]{Risiken}
-        Nennen und erklären Sie drei Risiken,
-        die beim ILP zum Abreißen der gleichmäßigen Instruktionsbearbeitung führen können.
-        \tcblower
-        \begin{tabularx}{\textwidth}{|l|X|}
-            \toprule
-            Risiko              & Erklärung                                                                                                           \\
-            \midrule
-            Structural hazards: & Die HW kann nicht eine bestimmte Aufeinanderfolge von Instruktionen ausführen.                                      \\
-            \midrule
-            Data hazards: & Instruktionen hängen vom Ergebnis vorheriger Schritte ab,
-            die noch nicht die Pipeline verlassen haben. \\
-            \midrule
-            Control hazards:    & Zwischen dem \enquote{fetch} von Instruktionen und dem Ändern des Kontrollflusses (branch) entstehen Verzögerungen. \\
-            \bottomrule
-        \end{tabularx}
-    \end{aufgabe}
-
-    \begin{aufgabe}{Prozessoren}
-        Nennen Sie drei Methoden,
-        die im Itanium Prozessor eingesetzt werden,
-        um Instruktionen beschleunigt abarbeiten zu können.
-        \tcblower
-        \begin{itemize}
-            \item Predication
-            \item Data Speculation
-            \item Control Speculation
-        \end{itemize}
-    \end{aufgabe}
+\begin{aufgabe}{Prozessoren}
+    Nennen Sie drei Methoden,
+    die im Itanium Prozessor eingesetzt werden,
+    um Instruktionen beschleunigt abarbeiten zu können.
+    \tcblower
+    \begin{itemize}
+        \item Predication
+        \item Data Speculation
+        \item Control Speculation
+    \end{itemize}
+\end{aufgabe}

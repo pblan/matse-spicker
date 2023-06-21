@@ -28,35 +28,36 @@
         vc[n] & = va[n] \pm vb[n]
     \end{align*}
     Dies braucht (im Idealfall!) für alle $n$ Elemente nicht mehr Rechenzyklen als die Berechnung für eine entsprechende Skalaroperation.
-    Analog zum \enquote{Instruction Level Parallelism} (ILP) ist das Vector Processing eine Form des \enquote{Data Level Parallelism} (DLP).
+    Analog zum \enquote{Instruction Level Parallelism}[TODO: ref] (ILP) ist das Vector Processing eine Form des \enquote{Data Level Parallelism} (DLP).
 \end{defi}
 
-\begin{defi}{Data Level Parallelism (DLP)}\label{defi:dlp}
+\begin{defi}{Data Level Parallelism (DLP)}
     \emph{Data Level Parallelism (DLP)} oder Datenparallelität ist die Parallelisierung über mehrere Prozessoren in parallelen Rechenumgebungen.
     Sie konzentriert sich auf die Verteilung der Daten auf verschiedene Knoten, die die Daten parallel bearbeiten.
     Sie kann auf reguläre Datenstrukturen wie Arrays und Matrizen angewendet werden, indem jedes Element parallel bearbeitet wird.
 \end{defi}
 
-\begin{defi}{Instruktions-Pipeline}
-
-\end{defi}
-
 \begin{defi}{Vektor-Pipeline}
-
+    TODO: Sinnvolle Definition
 \end{defi}
 
 \begin{defi}{Aufbau CPU vs. GPU}
     \includegraphics[width=\textwidth]{images/CPUvsGPU.png}
     Pradeep Gupta, CUDA Refresher: Reviewing the Origins of GPU Computing,
     \url{CUDA Refresher: Reviewing the Origins of GPU Computing},
-    zuletzt aufgerufen am 17.06.2023 \\
+    zuletzt aufgerufen am 17.06.2023
+
     Mit \enquote{ALU} als \enquote{algorithmic logic unit} oder \enquote{arithmetisch-logische Einheit}.
+
+    Die CPU verfolgt das Konzept der geringen Latenz,
+    wobei die GPU eine hohe Bandbreite anstrebt.
 \end{defi}
 
 \begin{defi}{GPU}{Programmausführung}
     \begin{enumerate}
         \item Kopieren der Eingabedaten vom CPU Speicher in den DRAM der GPU.
-        \item Laden und Ausführen des Programms auf der GPU, wobei Caching für eine bessere Performance genutzt wird.
+        \item Laden und Ausführen des Programms auf der GPU,
+              wobei Caching für eine bessere Performance genutzt wird.
         \item Kopieren der Ergebnisse vom DRAM der GPU zurück in den CPU Speicher.
     \end{enumerate}
 \end{defi}
