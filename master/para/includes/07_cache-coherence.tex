@@ -1,0 +1,116 @@
+
+\section{Cache-Kohärenz}
+
+\begin{defi}{Cache-Kohärenz}
+    % TODO: https://de.wikipedia.org/wiki/Cache-Koh%C3%A4renz (Quelle)
+    Durch die Sicherstellung von \emph{Cache-Kohärenz} wird bei Mehrprozessorsystemen mit mehreren CPU-Caches verhindert, dass die einzelnen Caches für dieselbe Speicheradresse unterschiedliche (inkonsistente) Daten zurückliefern.
+
+    Eine temporäre Inkonsistenz zwischen Speicher und den Caches ist zulässig, sofern diese spätestens bei lesenden Zugriffen identifiziert und behoben wird.
+
+    Inkonsistenzen werden z. B. durch das Rückschreibeverfahren (Write-Back) erzeugt, das im Gegensatz zu einem Durchschreibeverfahren (Write-Through) beim Schreiben in den Cache-Speicher nicht sofort den Hauptspeicher aktualisiert.
+\end{defi}
+
+\begin{defi}{Cache-Konsistenz}
+    % TODO: https://de.wikipedia.org/wiki/Cache-Konsistenz (Quelle)
+    \emph{Cache-Konsistenz} ist der Zustand, in dem alle Kopien eines Speicherwortes in den Caches und im Hauptspeicher identisch sind.
+
+    Beinhaltet ein Cache neu geschriebene Daten, die so noch nicht in den Hauptspeicher geschrieben wurden, so ist er vorübergehend inkonsistent.
+
+    Dies wird bei Write-Back-Caches mit einem sogenannten \emph{Dirty} oder \emph{Modified Bit} markiert.
+
+    Inkonsistenz kann aber auch durch Schreibzugriffe anderer Komponenten auf den gemeinsamen Hauptspeicher entstehen.
+    Dabei kann es sich um weitere Caches wie bei Mehrprozessorsystemen mit Split-Cache oder andere schreibende Komponenten wie Peripheriegeräten mit DMA handeln.
+\end{defi}
+
+\begin{bonus}{Unterschied Cache-Kohärenz und Cache-Konsistenz}
+    % TODO: https://de.wikipedia.org/wiki/Cache-Konsistenz (Quelle)
+    Cache-Konsistenz beschreibt einen Zustand.
+
+    Cache-Kohärenz beschreibt dagegen eine Eigenschaft mehrerer an einem gemeinsamen Hauptspeicher arbeitender Caches.
+
+    Das gesamte System aus Caches und Hauptspeicher wird dabei als cache-kohärent bezeichnet, wenn bei jedem Lesezugriff immer der zuletzt geschriebene Wert geliefert wird.
+    Dabei darf es keinen Unterschied machen, in welchen Cache zuletzt geschrieben wurde.
+
+    Ein cache-kohärentes System kann vorübergehend inkonsistent sein.
+    Diese vorübergehende Inkonsistenz ist sogar notwendig, da ständige Konsistenz bedeuten würde, dass das gesamte System sich beim Schreiben nach der langsamsten Komponente (meist dem Hauptspeicher) richten muss (Write-Through).
+
+    Um Kohärenz auch ohne ständige Konsistenz herstellen zu können, werden Cache-Kohärenz-Protokolle wie etwa MESI eingesetzt.
+    Salopp ausgedrückt verwaltet ein Cache-Kohärenz-Protokoll genau diese Inkonsistenz innerhalb aller auf den Hauptspeicher zugreifenden Komponenten.
+
+    Cache-Konsistenz beschreibt also den einheitlichen Zustand mehrerer beteiligter Speicher, während Cache-Kohärenz die einheitliche Sicht der Daten für die verarbeitenden Komponenten (meist CPUs) bezeichnet.
+\end{bonus}
+
+\begin{defi}{Cache-Kohärenz-Protokoll}
+    % TODO: https://de.wikipedia.org/wiki/Cache-Koh%C3%A4renz (Quelle)
+    Ein \emph{Cache-Kohärenz-Protokoll} hat die Aufgabe, den Status eines gecachten Speicherblocks zu verfolgen.
+\end{defi}
+
+\begin{defi}[Cache-Kohärenz-Protokoll]{Snooping-Based}
+    % TODO: https://de.wikipedia.org/wiki/Cache-Koh%C3%A4renz (Quelle)
+    Bei einem \emph{Snooping-Based} Cache-Kohärenz-Protokoll laufen laufen Zugriffe auf den zentralen Speicher üblicherweise über ein gemeinsames Medium (z. B. Bus oder Switch).
+
+    Alle angeschlossenen Cache-Controller können dieses Medium beobachten und Schreib- oder Lesezugriffe auf Blöcke identifizieren, die sie selbst zwischengespeichert haben.
+    Die genaue Reaktion des Controllers ist im Protokoll festgelegt.
+\end{defi}
+
+\begin{example}[Snooping-Based Cache-Kohärenz-Protokoll]{MESI}
+    % TODO: https://de.wikipedia.org/wiki/MESI (Quelle)
+    \emph{MESI} (\emph{Modified Exclusive Shared Invalid}, Akronym der Bezeichnungen der definierten Zustände) ist ein Snooping-Based Cache-Kohärenz-Protokoll zur Wahrung der Cache-Kohärenz in speichergekoppelten Multiprozessorsystemen.
+
+    Beim MESI-Protokoll werden jeder Cache-Line zwei Statusbits zugeordnet, durch die einer der folgenden vier Zustände beschrieben wird:
+    \begin{enumerate}
+        \item \emph{(Exclusive) Modified}:
+              Diese Cache-Line wurde lokal geändert.
+              Die im Hauptspeicher befindliche (alte) Kopie ist daher ungültig.
+              Will ein anderer Rechner diese Daten im Hauptspeicher lesen, so muss die Zeile zuerst vom Cache-Speicher in den Hauptspeicher zurückgeschrieben werden.
+        \item \emph{Exclusive (Unmodified)}:
+              Dieser Cache ist der einzige, der diesen Datenblock enthält.
+              Der Wert im Hauptspeicher ist gültig.
+              Liest ein anderer Rechner diese Daten im Hauptspeicher, so muss die Zeile als Shared gekennzeichnet werden.
+              Werden die Daten im Hauptspeicher verändert, so müssen sie im Cache als ungültig erklärt werden, damit sie beim nächsten Zugriff neu aus dem Hauptspeicher geladen werden.
+        \item \emph{Shared (Unmodified)}:
+              Mehrere Caches enthalten diesen Datenblock.
+              Da alle aber bisher nur gelesen haben, ist der Wert im Hauptspeicher gültig.
+              Schreibzugriffe auf eine Shared-Zeile müssen immer zu einem Zugriff auf den externen Bus führen um den Hauptspeicher nachzuführen, damit die Zeilen in anderen Cache-Speichern als ungültig erklärt werden können.
+        \item \emph{Invalid}:
+              Der Inhalt dieser Cache-Line ist nicht aktuell oder es befindet sich noch gar kein Wert in dieser Cache-Line (\emph{Compulsory Miss}).
+    \end{enumerate}
+
+    Die Übergänge zwischen diesen vier Zuständen können nun auf zwei verschiedene Arten ausgelöst werden:
+    Entweder
+    \begin{itemize}
+        \item direkt durch das Schreiben oder Lesen der Daten vom Programm, oder
+        \item indirekt durch das Belauschen (Bus snooping) der Aktionen eines anderen Prozessors auf dem Bus durch den Cache.
+    \end{itemize}
+
+
+\end{example}
+
+\begin{defi}[Cache-Kohärenz-Protokoll]{Directory-Based}
+    % TODO: https://de.wikipedia.org/wiki/Cache-Koh%C3%A4renz (Quelle)
+    Ein \emph{Directory-Based} Cache-Kohärenz-Protokoll führt eine zentrale Liste mit dem Status aller gecachten Blöcke.
+
+    Dort ist hinterlegt, welche Prozessoren zurzeit eine Read-Only-Kopie (Status \emph{Shared}), oder welcher Prozessor exklusiven Schreibzugriff (Status \emph{Exclusive}) auf einen Block hat.
+    Das Protokoll regelt den Übergang zwischen den verschiedenen Status und das Verhalten bei Read Miss, Write Miss bzw. Data Write Back.
+\end{defi}
+
+
+\begin{example}[Directory-Based Cache-Kohärenz-Protokoll]{ccNUMA}
+    % TODO: https://de.wikipedia.org/wiki/Non-Uniform_Memory_Access (Quelle)
+    Bei Verwendung von NUMA sorgt das Beibehalten der Cache-Kohärenz über den verteilten Speicher für zusätzlichen Overhead.
+
+    Als Beispiel stelle man sich vor, dass sich ein Prozessor Daten aus dem Speicher eines anderen Prozessors holt, damit Berechnungen anstellt und die Ergebnisse in seinen lokalen Cache schreibt.
+    Der Cache des Prozessors, von dem die Daten stammen (und vielleicht auch noch weitere Caches im System) müssen dann synchronisiert werden.
+
+    Nicht Cache-kohärente NUMA-Systeme sind zwar einfacher zu entwickeln und zu bauen, aber mit dem Standard-Programmiermodell von Neumanns nur schwer programmierbar.
+    Daher besitzen alle derzeit im Einsatz befindlichen NUMA-Systeme spezielle Hardware, um die Cache-Kohärenz sicherzustellen, und werden deshalb auch als \emph{cache-coherent NUMA} (\emph{ccNUMA}) bezeichnet.
+
+    Dies wird meistens durch Inter-Prozessor-Kommunikation zwischen den Cache-Controllern erreicht, die so für kohärente Speicherinhalte sorgen, falls die gleiche Speicherstelle in mehr als einem Cache gespeichert ist.
+
+    ccNUMA leidet unter schlechter Performance, wenn mehrere Prozessoren schnell nacheinander auf dieselbe Speicherstelle zugreifen wollen.
+    Daher versucht ein Betriebssystem mit NUMA-Unterstützung die Häufigkeit solcher Zugriffe zu minimieren, indem Prozessoren und Speicher auf NUMA-freundliche Art und Weise alloziert werden:
+    \begin{itemize}
+        \item zusammengehörige Threads werden bevorzugt den CPU-Kernen immer desselben Prozessors zugeordnet;
+        \item wenn sie Speicher anfordern, erhalten sie vorzugsweise Speicher dieses Prozessors.
+    \end{itemize}
+\end{example}
