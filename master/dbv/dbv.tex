@@ -13,12 +13,50 @@
 \makeindex[intoc]
 \makeindex[intoc, name=Beispiele,title=Beispiele]
 
+% Declare custom units
+\DeclareSIUnit{\ppi}{ppi}
+\DeclareSIUnit{\ppc}{ppc}
+\DeclareSIUnit{\pixel}{Pixel}
+
 \begin{document}
 \maketitle
 \tableofcontents
-\newpage
+\disclaimer
 
-% \include{includes/einleitung.tex}
+% Until 06/25/2023
+\include{includes/01_einleitung} % VL 01
+\include{includes/02_bildaufnahme} % VL 01
+\include{includes/03_bayer-matrix} % VL 01
+\include{includes/04_digitale-bilder} % VL 01, VL 02
+
+% Until 06/26/2023
+\include{includes/05_bildtransformationen} % VL 02
+\include{includes/06_histogramme} % VL 02
+
+% Until 06/27/2023
+% \include{includes/07_punktoperatoren} % VL 03
+% \include{includes/08_filter} % VL 04
+
+% Until 06/28/2023
+% \include{includes/09_kanten-und-konturen} % VL 05
+% \include{includes/10_morphologische-filter} % VL 05
+
+% Until 06/29/2023
+% \include{includes/11_fourier} % VL 06
+% \include{includes/12_farben} % VL 06
+
+% Until 06/30/2023
+% \include{includes/13_evaluation-von-segmentierungsergebnissen} % VL 07
+% \include{includes/14_segmentierung} % VL 07, VL 08, VL 09
+
+% Until 07/01/2023
+% \include{includes/15_merkmalsextraktion} % VL 10
+
+% Until 07/02/2023
+% \include{includes/16_template-matching} % VL 11
+
+% Until 07/03/2023
+% \include{includes/17_machine-learning} % VL 11, VL 12
 
 \printindex
 \printindex[Beispiele]

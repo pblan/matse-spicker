@@ -1,0 +1,101 @@
+\section{Digitale Bilder}
+
+\begin{defi}{Bild}
+    Ein \emph{Bild} ist eine Abbildung $f$ von räumlichen Koordinaten $\mathcal{P}$ auf einen Wertebereich $\mathcal{C}$
+    \[
+        f: \mathcal{P} \to \mathcal{C}
+    \]
+
+    Ein $n$-dimensionales \emph{digitales Bild} mit $m$ Komponenten hat endliche diskrete Bereiche
+    \[
+        \mathcal{P} \subseteq \mathbb{N}^n, \quad \mathcal{C} \subseteq \mathbb{W}^m, \quad \mathbb{W} \subseteq \{ x \mid 0 \leq x \leq 2^b - 1 \}
+    \]
+
+    \begin{tabularx}{\linewidth}{lXl}
+        \toprule
+        $(n, m, b)$  & Wertebereich                                                                                                                               & Beispiel                 \\
+        \midrule
+        $(2, 1, 1)$  & $\mathcal{P} \subseteq \mathbb{N}^2, \quad \mathcal{C} \subseteq \mathbb{W}, \quad \mathbb{W} \subseteq \{ x \mid 0 \leq x \leq 1 \}$      & Binärbild                \\
+        $(2, 1, 8)$  & $\mathcal{P} \subseteq \mathbb{N}^2, \quad \mathcal{C} \subseteq \mathbb{W}, \quad \mathbb{W} \subseteq \{ x \mid 0 \leq x \leq 255 \}$    & Graustufenbild           \\
+        $(3, 1, 16)$ & $\mathcal{P} \subseteq \mathbb{N}^3, \quad \mathcal{C} \subseteq \mathbb{W}, \quad \mathbb{W} \subseteq \{ x \mid 0 \leq x \leq  65535 \}$ & Typisch für CT           \\
+        $(2, 3, 8)$  & $\mathcal{P} \subseteq \mathbb{N}^2, \quad \mathcal{C} \subseteq \mathbb{W}^3, \quad \mathbb{W} \subseteq \{ x \mid 0 \leq x \leq 255 \}$  & True Color Fotos         \\
+        $(2, 4, 8)$  & $\mathcal{P} \subseteq \mathbb{N}^2, \quad \mathcal{C} \subseteq \mathbb{W}^4, \quad \mathbb{W} \subseteq \{ x \mid 0 \leq x \leq 255 \}$  & Zusätzlicher Alpha-Kanal \\
+        \bottomrule
+    \end{tabularx}
+\end{defi}
+
+\begin{defi}{Tagged Image File Format (TIFF)}
+    TODO
+\end{defi}
+
+\begin{defi}{Graphics Interchange Format (GIF)}
+    TODO
+\end{defi}
+
+\begin{defi}{Windows Bitmap (BMP)}
+    TODO
+\end{defi}
+
+\begin{defi}{Joint Photographic Expert Group (JPEG)}
+    TODO
+\end{defi}
+
+\begin{defi}{Portable Network Graphics (PNG)}
+    TODO
+\end{defi}
+
+\begin{defi}{Pixel}
+    Die einzelnen Elemente eines 2D-Bildes heißen \emph{Pixel}.
+\end{defi}
+
+\begin{defi}{Voxel}
+    Die einzelnen Elemente eines 3D-Bildes heißen \emph{Voxel}.
+\end{defi}
+
+\begin{defi}{Bildgröße}
+    Die \emph{Bildgröße} wird in Pixel (2D) bzw. Voxel (3D) angegeben.
+\end{defi}
+
+\begin{defi}{Bildauflösung}
+    Die \emph{Bildauflösung} im physikalischen Sinne wird als \emph{Punktdichte} angegeben.
+
+    Die Punktdichte bestimmt die Ausgabegröße in Abhängigkeit der Bildgröße:
+    \[
+        \si{\ppi} = \frac{\text{Input Size} \ [\si{\pixel}]}{\text{Output Size} \ [\si{\cm}]} \cdot \SI{2,54}{\cm}
+    \]
+\end{defi}
+
+\begin{defi}[Bild]{Nachbarschaft}
+    Oftmals werden in der Bildverarbeitung nur bestimmte Nachbarn eines Pixels betrachtet.
+
+    Die \emph{4-Nachbarschaft} $N_4(p)$ eines Pixels $p$ sind die vertikalen und horizontalen Nachbarn.
+
+    Die \emph{diagonalen Nachbarn} eines Pixels $p$ heißen $N_D(p)$.
+
+    Die \emph{8-Nachbarschaft} $N_8(p)$ eines Pixels $p$ besteht aus $N_4(p)$ und $N_D(p)$.
+
+    TODO: Grafik
+\end{defi}
+
+
+\begin{bonus}[Bild]{Rechenoperationen}
+    Digitale Bilder der Höhe $m$ und der Breite $n$ können als Matrizen oder Arrays $M$ interpretiert werden:
+    \[
+        M_{m.n} =
+        \begin{pmatrix}
+            m_{0, 0}   & m_{0, 1}   & \cdots & m_{0, n-1}   \\
+            m_{1, 0}   & m_{1, 1}   & \cdots & m_{1, n-1}   \\
+            \vdots     & \vdots     & \ddots & \vdots       \\
+            m_{m-1, 0} & m_{m-1, 1} & \cdots & m_{m-1, n-1}
+        \end{pmatrix}
+    \]
+
+    Entsprechend können auch elementweise arithmetische Operationen (z. B. Addition, Subtraktion, Multiplikation, Division) durchgeführt werden.
+
+    Konkret beachten muss man, dass \emph{Datentypen} eingehalten werden, durch z. B.
+    \begin{itemize}
+        \item Konvertierungen in einen passenden Datentypen,
+        \item Clipping oder
+        \item andere Rechenvorschriften.
+    \end{itemize}
+\end{bonus}
