@@ -1,0 +1,172 @@
+\section{Punktoperatoren}
+
+\begin{defi}{Punktoperator}
+    Als \emph{Punktoperatoren} bezeichnet man eine umfangreiche Klasse von Bildverarbeitungsoperationen in der digitalen Bildverarbeitung, die sich -- gegenüber lokalen und globalen Operatoren -- dadurch auszeichnen, dass bei allen Verfahren dieser Klasse ein neuer Farb- oder Grauwert eines Pixels allein in Abhängigkeit von seinem eigenen bisherigen Farb- oder Grauwert und seiner eigenen bisherigen Position im Bild berechnet wird, ohne sich dabei um seine Nachbarschaft und/oder den Kontext des Pixels zu kümmern.
+
+    Ein Punktoperator $T$ ordnet einem Eingabebild $f$ durch Transformation der Grauwerte der einzelnen Pixel ein Ergebnisbild $f^*$ zu.
+    Der Grauwert $f(x,y)$ eines Pixels $(x,y)$ wird dabei nur in Abhängigkeit vom Grauwert selbst und eventuell von der Position des Pixels im Bild modifiziert:
+    \[
+        f^*(x, y) = T_{xy}(f(x, y))
+    \]
+
+    Ist die Transformation von der Position des Pixels im Bild abhängig, so heißt sie \emph{inhomogen}.
+    Die Indizes $x$ und $y$ von $T$ sollen diese Abhängigkeit verdeutlichen.
+
+    In der Mehrheit der Fälle kommen jedoch \emph{homogene} Transformationen zum Einsatz, bei denen diese Abhängigkeit nicht gegeben ist.
+    Die Indizes werden dann überflüssig:
+    \[
+        f^*(x, y) = T(f(x, y))
+    \]
+\end{defi}
+
+\begin{defi}[Homogener Punktoperator]{Helligkeit}
+    Um die \emph{Helligkeit} zu verändern, wird zu jedem Pixel ein konstanter Wert $c$ addiert:
+    \[
+        T_{\text{Brightness}}(f) = f + c
+    \]
+
+    TODO: Beispiel
+
+    Eine Änderung der Helligkeit führt zu einer \emph{Histogrammverschiebung}.
+
+    TODO: Beispiel
+\end{defi}
+
+\begin{defi}[Homogener Punktoperator]{Kontrast}
+    Um den \emph{Kontrast} zu verändern, wird jeder Pixel mit einem konstanten Wert $c$ multipliziert:
+    \[
+        T_{\text{Contrast}}(f) = f \cdot c
+    \]
+
+    TODO: Beispiel
+
+    Eine Änderung des Kontrasts führt zu einer \emph{Histogrammspreizung}.
+
+    TODO: Beispiel
+\end{defi}
+
+\begin{defi}[Homogener Punktoperator!Kontrast]{Automatischer Kontrast}
+    Die \emph{automatische Kontrastanpassung} soll Pixelwerte so verändern, dass der verfügbare Wertebereich ausgenutzt wird.
+
+    Unter den Annahmen, dass
+    \begin{itemize}
+        \item der Wertebereich durch $[v_{\min}; v_{\max}]$ beschränkt ist, und
+        \item $v_{\low}$ und $v_{\high}$ der kleinste bzw. größte vorhandene Pixelwert sind,
+    \end{itemize}
+    gilt:
+    \[
+        T_{\text{Auto-Contrast}}(f) = v_{\min} + (f - v_{\low}) \cdot \frac{v_{\max} - v_{\min}}{v_{\high} - v_{\low}}
+    \]
+
+    Diese Variante des automatischen Kontrasts ist stark beeinflussbar durch wenige Pixel, die nicht repräsentativ sind (\enquote{Ausreißer}).
+
+    TODO: Beispiel
+
+    TODO: Beispiel
+\end{defi}
+
+\begin{defi}[Homogener Punktoperator!Kontrast]{Verbesserter automatischer Kontrast}
+    Die \emph{verbesserte automatische Kontrastanpassung} bestimmt einen Prozentsatz $s_{\low}$ bzw. $s_{\high}$, der Pixel am oberen und unteren Ende in die Sättigung treiben soll.
+
+    Analog zu diesen Perzentilen müssen zwei Schwellwerte $v'_{\low}$ und $v'_{\high}$ gefunden werden:
+    \[
+        v'_{\low} = \min \{ i \mid H(i) \geq \width \cdot \height \cdot s_{\low} \}
+    \]
+    \[
+        v'_{\high} = \min \{ i \mid H(i) \geq \width \cdot \height \cdot (1 - s_{\high}) \}
+    \]
+    Werte außerhalb von $v'_{\low}$ und $v'_{\high}$ werden dann auf $v_{\min}$ bzw. $v_{\high}$ abgebildet, Werte dazwischen linear auf das Intervall $[v_{\min}; v_{\max}]$:
+    \[
+        T_{\text{Improved-Auto-Contrast}}(f) =
+        \begin{cases}
+            v_{\min}                                                                            & f \leq v'_{\low}           \\
+            v_{\min} + (f - v'_{\low}) \cdot \frac{v_{\max} - v_{\min}}{v'_{\high} - v'_{\low}} & v'_{\low} < f < v'_{\high} \\
+            v_{\max}                                                                            & f \geq v'_{\high}
+        \end{cases}
+    \]
+
+    TODO: Beispiel
+
+    TODO: Beispiel
+\end{defi}
+
+\begin{defi}[Homogener Punktoperator]{Invertierung}
+    Bei der \emph{Invertierung} werden alle Pixel negiert und zum maximalen Wert $c_{\max}$ des Wertebereichs addiert:
+    \[
+        T_{\text{Invert}}(f) = -f + c_{\max} = c_{\max} - f
+    \]
+
+    TODO: Beispiel
+
+    TODO: Beispiel
+\end{defi}
+
+\begin{defi}[Homogener Punktoperator]{Thresholding}
+    \emph{Schwellwertverfahren} (\emph{Thresholding}) teilen die Pixelwerte abhängig von einem Schwellwert $c$ in zwei Klassen ein
+    \[
+        T_{\text{Threshold}}(f) =
+        \begin{cases}
+            v_a & f > c    \\
+            v_b & f \leq c
+        \end{cases}
+    \]
+
+    TODO: Beispiel
+
+    TODO: Beispiel
+\end{defi}
+
+\begin{defi}[Homogener Punktoperator]{Transferfunktion}
+    TODO
+
+    TODO: Beispiel
+
+    TODO: Beispiel
+\end{defi}
+
+\begin{defi}[Homogener Punktoperator]{Windowing}
+    TODO
+
+    TODO: Beispiel
+
+    TODO: Beispiel
+\end{defi}
+
+\begin{defi}[Homogener Punktoperator]{Histogrammausgleich}
+    Das Ziel des \emph{Histogrammausgleichs} ist, eine Punktoperation zu finden und anzuwenden, so dass die Histogramme der veränderten Bilder eine Gleichverteilung approximieren.
+
+    Nur approximieren daher, dass globale Punktoperatoren Histogrammeinträge nur verschieben und mit anderen Einträgen verschmelzen, aber niemals trennen können.
+    Dadurch können z. B. individuelle Peaks im Histogramm nicht beseitigt werden.
+
+    Ein Histogrammausgleich kann die Farbzusammensetzung durcheinander bringen.
+    Bilder wirken dadurch unnatürlich.
+
+    Ein Histogrammausgleich eignet sich am besten für Grauwertbilder, oder in einem anderen Farbraum (dort nur auf dem Luminanzkanal).
+
+    TODO: Beispiel
+
+    TODO: Beispiel
+\end{defi}
+
+\begin{example}[Homogener Punktoperator!Histogrammausgleich]{Gleichverteilung}
+    Bei einem \emph{gleichverteilten} Histogramm ist das kumulative Histogramm ungefähr linear.
+
+    Das Problem des Histogrammausgleichs lässt sich also so umformulieren, dass stattdessen ein Punktoperator gefunden werden soll, der das kumulative Histogramm ungefähr linear werden lässt.
+
+    Die Einträge können im kumulativen Histogramm wie folgt nach rechts oder links verschoben werden:
+    \[
+        T_{\text{Equalize}}(f) = \left\lfloor H(f) \cdot \frac{K - 1}{\width \cdot \height} \right\rfloor
+    \]
+
+    TODO: Beispiel
+
+    TODO: Beispiel
+\end{example}
+
+\begin{defi}[Inhomogener Punktoperator]{Gammakorrektur}
+    TODO
+
+    TODO: Beispiel
+
+    TODO: Beispiel
+\end{defi}

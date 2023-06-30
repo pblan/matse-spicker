@@ -1,0 +1,254 @@
+\section{Kanten und Konturen}
+
+\begin{defi}{Kante}
+    \emph{Kanten} (lokale Intensitätsänderungen) spielen eine wichtige Rolle bei der Wahrnehmung und Interpretation.
+    Der Schärfeeindruck eines Bildes korreliert mit Kantenstruktur.
+
+    Kanten sind überall dort wo sich im Bild die lokale Intensität stark verändert:
+    \[
+        f'(x) = \frac{\partial f(x)}{\partial x} \gg 0
+    \]
+
+    In 2D sind die partiellen Ableitungen eines Bildes $I$ in $x$- bzw. $y$-Richtung gegeben durch:
+    \[
+        I_x = \frac{\partial}{\partial x} I(x, y), \quad I_y = \frac{\partial}{\partial y} I(x, y)
+    \]
+    Der Gradient an der Stelle $(x, y)$ ist der Vektor
+    \[
+        \nabla I(x, y) = \begin{bmatrix}
+            I_x \\
+            I_y
+        \end{bmatrix}
+    \]
+
+    TODO: Grafik
+\end{defi}
+
+\begin{example}[Kante]{Sprungkante}
+    % TODO: https://www.researchgate.net/figure/Type-of-Edges-a-Step-Edge-b-Ramp-Edge-c-Line-Edge-d-Roof-Edge_fig1_228349759 
+    Eine \emph{Sprungkante} (\emph{Step Edge}) tritt auf, wenn die Pixelwerte abrupt ansteigen oder abfallen.
+
+    TODO: Grafik
+\end{example}
+
+\begin{example}[Kante]{Rampenkante}
+    % TODO: https://www.researchgate.net/figure/Type-of-Edges-a-Step-Edge-b-Ramp-Edge-c-Line-Edge-d-Roof-Edge_fig1_228349759 
+    Eine \emph{Rampenkante} (\emph{Ramp Edge}) tritt auf, wenn die Pixelwerte langsam ansteigen oder abfallen.
+
+    TODO: Grafik
+\end{example}
+
+\begin{example}[Kante]{Linienkante}
+    % TODO: https://www.researchgate.net/figure/Type-of-Edges-a-Step-Edge-b-Ramp-Edge-c-Line-Edge-d-Roof-Edge_fig1_228349759 
+    Eine \emph{Linienkante} (\emph{Line Edge}) tritt auf, wenn die Pixelwerte abrupt ansteigen und dann abfallen.
+
+    TODO: Grafik
+\end{example}
+
+\begin{example}[Kante]{Dachkante}
+    % TODO: https://www.researchgate.net/figure/Type-of-Edges-a-Step-Edge-b-Ramp-Edge-c-Line-Edge-d-Roof-Edge_fig1_228349759 
+    Eine \emph{Dachkante} (\emph{Roof Edge}) tritt auf, wenn die Pixelwerte langsam ansteigen und dann abfallen.
+
+    TODO: Grafik
+\end{example}
+
+\begin{defi}{Kantennormale}
+    Die \emph{Kantennormale} ist der Einheitsvektor $\frac{\nabla I}{| \nabla I |}$, der in Richtung der größten Intensitätsänderung zeigt.
+\end{defi}
+
+\begin{defi}{Kantenrichtung}
+    Die \emph{Kantenrichtung} $\theta(x, y)$ (\emph{Gradient Direction}) ist der Einheitsvektor entlang der Kante:
+    \[
+        \tan (\theta(x, y)) = \frac{I_y(x, y)}{I_x(x, y)} \quad \implies \quad \theta(x, y) = \arctan \left( \frac{I_y(x, y)}{I_x(x, y)} \right)
+    \]
+
+    Sie ist orthogonal zur Kantennormalen.
+\end{defi}
+
+\begin{defi}{Kantenposition}
+    Die \emph{Kantenposition} ist die Position $(x, y)$ im konkreten Bild $I$ der Kante.
+\end{defi}
+
+\begin{defi}{Kantenstärke}
+    Die \emph{Kantenstärke} $| \nabla I |$ (\emph{Gradient Magnitude}) ist der lokale Bildkontrast entlang der Kantennormalen:
+    \[
+        | \nabla I | = \sqrt{I_x^2 + I_y^2} \quad \text{(alternativ Betrag oder Maximum)}
+    \]
+
+    Sie ist invariant gegenüber Rotation und die Basis für viele Kantendetektoren.
+\end{defi}
+
+\begin{defi}{Kantendetektor}
+    % TODO: https://de.wikipedia.org/wiki/Kantendetektion 
+    Ein \emph{Kantendetektor} berechnet in der Regel den Farbwertgradienten an jedem einzelnen Pixel eines Bildes durch Untersuchung eines den Punkt umgebenden Bereiches.
+
+    Dieser Vorgang erfolgt durch diskrete Faltung des Bildes mit einer Faltungsmatrix, dem Kantenoperator.
+    Dieser definiert dabei die Größe des zu untersuchenden Umfeldes und mit welcher Gewichtung dessen einzelne Pixel in die Berechnung eingehen.
+
+    Der Kantenoperator ermittelt für das zentrale Pixel aus der Umgebung quasi einen mittleren Wert für den Gradienten.
+    Führt man diese Operation für alle Pixel im Bild durch, so kann man aus der resultierenden Matrix der Gradienten ein neues Bild zusammensetzen, das Kantenbild genannt wird.
+    Auf ihm heben sich die Kanten zwischen homogenen Bereichen ab, da an diesen Stellen ein vergleichsweise großer Gradient der Farbwerte vorliegt.
+
+    Wendet man den Kantenoperator auf das Ergebnisbild an, so kann man quasi die zweite Ableitung bilden, d. h., es werden die Änderungen des Helligkeits-Gradienten sichtbar.
+    Die Kanten treten in der zweiten Ableitung meist am deutlichsten hervor.
+
+    Feine Kanten können hierbei jedoch untergehen und bleiben unentdeckt.
+
+    Der größte Unterschied verschiedener Kantendetektoren besteht im Allgemeinen im verwendeten Kantenoperator.
+
+    Für eine korrekte \emph{Kantendetektion} sind in der Regel vier Schritte notwendig:
+    \begin{enumerate}
+        \item \emph{Glätten}: Unterdrücke so viel Rauschen wie möglich, ohne die echten Kanten zu zerstören.
+        \item \emph{Verbesserung}: Wende einen Filter an, um die Qualität der Bildränder zu verbessern.
+        \item \emph{Erkennung}: Bestimme, welche Pixel als Rauschen verworfen werden sollen und welche beibehalten werden sollte. Normalerweise liefert die Schwellenwertbildung das Kriterium, das für die Erkennung verwendet wird.
+        \item \emph{Lokalisierung}: Bestimme die genaue Position einer Kante. Für einige Anwendungen kann es erforderlich sein, die Position einer Kante genauer als den Abstand zwischen den Pixeln zu bestimmen. Kantenverdünnung und Verknüpfung sind in der Regel in diesem Schritt erforderlich.
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}[Kantendetektor]{Prewitt-Operator}
+    % TODO: https://de.wikipedia.org/wiki/Prewitt-Operator
+    Der \emph{Prewitt-Operator} berechnet zwei Gradientenbilder $G_x$ und $G_y$ in horizontaler und vertikaler Richtung eines Grauwertbildes $I$:
+    \[
+        G_x = \begin{bmatrix}
+            1 & 0 & -1 \\
+            1 & 0 & -1 \\
+            1 & 0 & -1
+        \end{bmatrix}
+        \ast I
+        , \quad
+        G_y = \begin{bmatrix}
+            1  & 1  & 1  \\
+            0  & 0  & 0  \\
+            -1 & -1 & -1
+        \end{bmatrix}
+        \ast I
+    \]
+
+    Die Kantenstärke $G$ und die Kantenrichtung $\theta$ werden wie folgt berechnet:
+    \[
+        G = \sqrt{G_x^2 + G_y^2}, \quad \theta = \arctan \left( \frac{G_y}{G_x} \right)
+    \]
+
+    Durch Ausnutzung der Separierbarkeit kann die Rechenzeit reduziert werden.
+
+    TODO: Grafik / Beispiel
+\end{defi}
+
+\begin{defi}[Kantendetektor]{Sobel-Operator}
+    % https://de.wikipedia.org/wiki/Sobel-Operator
+    Der \emph{Sobel-Operator} berechnet zwei Gradientenbilder $G_x$ und $G_y$, die für ein Bild $I$ jeweils die erste Ableitung der Bildpunkt-Helligkeitswerte bestimmen, wobei gleichzeitig orthogonal zur Ableitungsrichtung geglättet wird:
+    \[
+        G_x =
+        \underbrace{
+            \begin{bmatrix}
+                1 \\
+                2 \\
+                1
+            \end{bmatrix}
+            \ast
+            \begin{bmatrix}
+                +1 & 0 & -1
+            \end{bmatrix}
+        }_{S_x}
+        \ast I =
+        \underbrace{
+            \begin{bmatrix}
+                1 & 0 & -1 \\
+                2 & 0 & -2 \\
+                1 & 0 & -1
+            \end{bmatrix}
+        }_{S_x}
+        \ast I
+    \]
+    \[
+        G_y =
+        \underbrace{
+            \begin{bmatrix}
+                +1 \\
+                0  \\
+                -1
+            \end{bmatrix}
+            \ast
+            \begin{bmatrix}
+                1 & 2 & 1
+            \end{bmatrix}
+        }_{S_y}
+        \ast I =
+        \underbrace{
+            \begin{bmatrix}
+                1  & 2  & 1  \\
+                0  & 0  & 0  \\
+                -1 & -2 & -1
+            \end{bmatrix}
+        }_{S_y}
+        \ast I
+    \]
+    Dabei wird die $x$-Koordinate als nach rechts und die $y$-Koordinate als nach unten wachsend angesehen.
+
+    Die Kantenstärke $G$ und die Kantenrichtung $\theta$ werden wie folgt berechnet:
+    \[
+        G = \sqrt{G_x^2 + G_y^2}, \quad \theta = \arctan \left( \frac{G_y}{G_x} \right)
+    \]
+
+
+    Durch Ausnutzung der Separierbarkeit kann die Rechenzeit deutlich reduziert werden.
+
+    TODO: Grafik / Beispiel
+\end{defi}
+
+\begin{defi}[Kantendetektor]{Marr-Hildreth-Operator}
+    % TODO: https://de.wikipedia.org/wiki/Marr-Hildreth-Operator
+    Der \emph{Marr-Hildreth-Operator} oder \emph{Laplacian of Gaussian} (\emph{LoG}) ist eine spezielle Form eines diskreten Laplace-Filters.
+
+    Der Filterkernel wird durch die Anwendung des Laplace-Operators auf eine Gauß-Funktion erstellt.
+
+    Da seine Form der eines mexikanischen Sombreros ähnelt, ist er auch als Mexican Hat oder Sombrerofilter bekannt.
+
+    Ausgangspunkt für die Erzeugung des Filterkernels ist die Gauß-Funktion in 2D:
+    \[
+        f(x,y) = \frac {1}{2\pi \sigma^{2}} e^{-\frac {x^{2}+y^{2}}{2\sigma ^{2}}}
+    \]
+
+    Wendet man den Laplace-Operator auf die Gauß-Funktion an, erhält man die kontinuierliche Repräsentation des LoG:
+    \[
+        g(x,y) = \frac {\partial ^{2}f(x,y)}{\partial x^{2}} + \frac {\partial^{2}f(x,y)}{\partial y^{2}}
+    \]
+    \[
+        g(x,y) = -\frac {1}{\pi \sigma ^{4}} e^{-\frac {x^{2}+y^{2}}{2\sigma ^{2}}} \left(1-{\frac {x^{2}+y^{2}}{2\sigma ^{2}}}\right)
+    \]
+
+    Um diese Funktion in der Bildverarbeitung zu nutzen, wird der kontinuierliche LoG diskret approximiert für Kernel ungerader Kantenlänge $k \in 2 \mathbb{N} + 1$.
+
+    Der LoG findet im Grunde genommen keine Kanten, sondern Gebiete mit rapiden Änderungen -- reagiert deswegen also auch stark auf Rauschen!
+
+    Aufgrund der zweiten Ableitung erhält man auf einer Seite der eigentlichen Kante einen negativen und auf der anderen Seite einen positiven Wert.
+    Die Kante liegt am Nulldurchgang zwischen diesen Werten.
+
+    An Stelle einer einzigen Faltungsoperation mit einem LoG-Faltungskern kann man auch zuerst den Laplacefilter auf das Eingangsbild anwenden und das Resultat anschließend mit der Gauß-Funktion falten (also weichzeichnen), oder umgekehrt. In diesem Falle muss dafür Sorge getragen werden, dass das Zwischenergebnis korrekt abgespeichert wird (32 bit floating point), damit es nicht zu unerwünschten Overflow oder Rundungsproblemen kommt.
+
+    Man kann eine Approximation des LoG-Filters durch eine Differenz von 2 Gaußkernen mit verschiedenen Varianzen erhalten.
+    Diese Methode wird \emph{Difference of Gaussian} genannt.
+
+    TODO: Grafik / Beispiel
+\end{defi}
+
+\begin{defi}[Kantendetektor]{Canny-Algorithmus}
+    % TODO: https://de.wikipedia.org/wiki/Canny-Algorithmus 
+    Der \emph{Canny-Algorithmus} (auch: \emph{Canny Edge Detector}) ist ein weit verbreiteter, robuster Algorithmus zur Kantendetektion. Er gliedert sich in verschiedene Faltungsoperationen und liefert ein Bild, welches idealerweise nur noch die Kanten des Ausgangsbildes enthält.
+
+    Beim Canny-Algorithmus werden nur zwei Schwellenwerte für alle Bilder verwendet.
+    Um eine bessere Kantenabbildung zu erhalten, wird der Kantendetektor auf jeden Block eines Bildes angewendet.
+
+    Der Algorithmus besteht hauptsächlich aus fünf Schritten:
+    \begin{enumerate}
+        \item Der horizontale $G_{x}$ und der vertikale $G_{y}$ \emph{Gradient} jedes Pixels werden berechnet.
+        \item Unter Verwendung von $G_{x}$ und $G_{y}$ werden die \emph{Größe} und die \emph{Richtung} jedes Pixels berechnet.
+        \item Alle Nichtmaxima werden als Null gezählt, d. h. die Nichtmaxima werden unterdrückt. Daher wird dieser Schritt als \emph{nicht-maximale Unterdrückung} (\emph{Non-Maximum Suppression}) bezeichnet.
+        \item Die hohen und niedrigen Schwellenwerte werden unter Verwendung des Histogramms der Gradientengröße des Bildes gemessen.
+        \item Um die richtige Kantenabbildung zu erhalten, wird ein \emph{Hysterese-Schwellenwert} verwendet, der die schwachen und starken Kanten verbindet.
+              Die schwachen Kanten werden genau dann berücksichtigt, wenn sie mit einer der starken Kanten verbunden sind oder aus der Kantenabbildung entfernt werden.
+              Die starke Kante ist diejenige, deren Pixel größer als die hohe Schwelle ist, und die schwache Kante ist eine, deren Pixelwert zwischen der hohen und der niedrigen Schwelle liegt.
+    \end{enumerate}
+
+    TODO: Grafik / Beispiel
+\end{defi}
