@@ -1,1 +1,37 @@
 \section{Fourier}
+
+\begin{defi}{Diskrete Fourier-Transformation}
+    % TODO: https://de.wikipedia.org/wiki/Diskrete_Fourier-Transformation#Diskrete_Fourier-Transformation_(DFT)
+    Die \emph{Diskrete Fourier-Transformation} (\emph{DFT}) ist eine Transformation aus dem Bereich der Fourier-Analysis.
+    Sie bildet ein zeitdiskretes endliches Signal, das periodisch fortgesetzt wird, auf ein diskretes, periodisches Frequenzspektrum ab, das auch als Bildbereich bezeichnet wird.
+
+    Die DFT besitzt in der digitalen Signalverarbeitung zur Signalanalyse große Bedeutung.
+    Hier werden optimierte Varianten in Form der schnellen Fourier-Transformation (engl. \emph{Fast Fourier Transform}, \emph{FFT}) und ihrer Inversen angewandt.
+
+    Die DFT wird in der Signalverarbeitung für viele Aufgaben verwendet, so z. B.
+    \begin{itemize}
+        \item zur Bestimmung der in einem abgetasteten Signal hauptsächlich vorkommenden Frequenzen,
+        \item zur Bestimmung der Amplituden und der zugehörigen Phasenlage zu diesen Frequenzen,
+        \item zur Implementierung digitaler Filter mit großen Filterlängen.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}[Diskrete Fourier-Transformation]{Mathematische Definition}
+    % TODO: https://de.wikipedia.org/wiki/Diskrete_Fourier-Transformation#Diskrete_Fourier-Transformation_(DFT)
+    Die \emph{Diskrete Fourier-Transformation} verarbeitet eine Folge von Zahlen $a = (a_0, \ldots, a_{N-1})$ die zum Beispiel als zeitdiskrete Messwerte entstanden sind. Dabei wird angenommen, dass diese Messwerte einer Periode eines periodischen Signals entsprechen.
+
+    Das Ergebnis der Transformation ist eine Zerlegung der Folge in harmonische (sinusförmige) Anteile, sowie einen \emph{Gleichanteil} $\hat{a}_0$, der dem Mittelwert der Eingangsfolge entspricht.
+    Das Ergebnis nennt man \emph{diskrete Fourier-Transformierte} $\hat{a} = ( \hat{a}_0, \ldots, \hat{a}^{N-1} ) \in \mathbb{C}^N$ von $a$.
+    Die Koeffizienten von $\hat{a}$ sind die Amplituden der Zerlegungsanteile.
+    Man nennt $\hat{a}_k$ auch \emph{Fourierkoeffizienten} oder \emph{Fourierkomponenten}.
+
+    Üblicherweise wird bei der Bestimmung der Frequenzanteile bzw. Phasenlage die kompakte mathematische Schreibweise der Polarform verwendet (Eulersche Formel):
+    \[
+        e^{i\phi} = \cos(\phi) + i \sin(\phi)
+    \]
+
+    Die Fourierkoeffizienten $\hat{a}_{k}$ werden damit aus der Eingangsfolge berechnet durch:
+    \[
+        \hat{a}_{k} = \sum _{j=0}^{N-1} e^{-2\pi i \cdot \frac {jk}{N}} \cdot a_{j}
+    \]
+\end{defi}
