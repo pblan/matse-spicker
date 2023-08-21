@@ -1,0 +1,182 @@
+\section{Morphologische Filter}
+
+\begin{defi}{Morphologische Bildverarbeitung}
+    % TODO: https://de.wikipedia.org/wiki/Mathematische_Morphologie 
+    Die \emph{morphologische Bildverarbeitung} ist ein Teilgebiet der computergestützten Bildverarbeitung und kann als Technik zur Analyse von Strukturen in Bildern verstanden werden.
+
+    Morphologie ist die Lehre der Gestalt oder der Form.
+    Diese nichtlineare Bildverarbeitungsmethode dient dazu, die Struktur von Bildern zu analysieren und zu beeinflussen.
+    Sie ist ein Konzept, das auf der Mengenlehre, der Topologie und der Verbandstheorie basiert.
+
+    Es sind sowohl Binär- als auch Grauwertbilder zulässig, da auch Binärbilder bereits die Form und Gestalt eines Objektes wiedergeben können.
+
+    Ein Ziel der morphologischen Bildverarbeitung kann einerseits ein neues Bild sein, das Relevantes hervorhebt.
+    Ein weiteres Ziel kann eine Liste sein, die mit aus dem Bild bestimmten Messgrößen gefüllt wird.
+\end{defi}
+
+\begin{defi}{Morphologischer Filter}
+    \emph{Morphologische Filter} greifen in die Struktur und Form von Bildern ein.
+
+    Im Kontext der morphologischen Filter werden Binärbilder als Menge von Koordinaten (\emph{Punktmengen}) interpretiert:
+    \[
+        Q_I = \{ p \mid I(p) = 1 \}
+    \]
+
+    Das \emph{strukturierende Element} ist eine Menge, die nur die Werte $0$ und $1$ enthält:
+    \[
+        S(x, y) \in \{ 0; 1 \}
+    \]
+
+\end{defi}
+
+\begin{defi}[Morphologischer Filter]{Dilatation}
+    % TODO: https://de.wikipedia.org/wiki/Dilatation_(Bildverarbeitung) 
+    \emph{Dilatation} (von lat.: dilatare = ausdehnen, erweitern) ist eine Basisoperation der morphologischen Bildverarbeitung.
+    Die entgegengesetzte Operation ist die Erosion.
+
+    In ihrer einfachsten Variante ersetzt sie jeden Bildpunkt durch das hellste Pixel innerhalb einer gewissen Umgebung, was dazu führt, dass helle Bereiche des Bilds vergrößert werden und dunkle verkleinert.
+    In der digitalen Bildverarbeitung wird die Dilatation im Allgemeinen mittels eines strukturierenden Elements angewandt:
+    \[
+        I \oplus S = \{ (p + q) \mid \forall p \in I, \forall q \in S \}
+    \]
+    Interpretation: Wenn man den Ursprung von $S$ auf einer Position $p$ in $I$ platziert, dann werden überall dort (neue) Positionen erzeugt, wo ein Punkt in $S$, aber nicht in $I$, enthalten ist.
+
+    Die Dilatation:
+    \begin{itemize}
+        \item ist kommutativ: $I \oplus S = S \oplus I$
+        \item ist assoziativ: $(I_1 \oplus I_2) \oplus I_3 = I_1 \oplus (I_2 \oplus I_3)$
+        \item hat ein neutrales Element: $I \oplus \delta = \delta \oplus I = I$
+    \end{itemize}
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[Morphologischer Filter]{Erosion}
+    % TODO: https://de.wikipedia.org/wiki/Erosion_(Bildverarbeitung)
+    \emph{Erosion} (von lat.: erodere = abnagen) ist eine Basisoperation der morphologischen Bildverarbeitung.
+    Die entgegengesetzte Operation ist die Dilatation.
+
+    \[
+        I \ominus S = \{ p \in \mathbb{Z}^2 \mid (p + q) \in I, \forall q \in S \}
+    \]
+    Interpretation: Eine Position $p$ ist im Ergebnis enthalten, wenn das strukturierende Element $S$ vollständig in $I$ enthalten ist, wenn man den Ursprung von $S$ an der Position $p$ platziert.
+
+    Die Erosion ist nicht kommutativ.
+
+    TODO: Grafik
+\end{defi}
+
+\begin{bonus}{Eigenschaften von Dilatation und Erosion}
+    Die Dilatation des Vordergrunds ist identisch mit der Erosion des Hintergrunds und umgekehrt:
+    \[
+        I \ominus S = \overline{(\overline{I} \oplus S^*)}
+    \]
+    \[
+        I \oplus S = \overline{(\overline{I} \ominus S^*)}
+    \]
+\end{bonus}
+
+\begin{defi}[Morphologischer Filter]{Opening}
+    % TODO: https://de.wikipedia.org/wiki/Opening_(Bildverarbeitung)
+    \emph{Opening} ist eine Basisoperation der morphologischen Bildverarbeitung.
+
+    Das Öffnen dient u. a. der Unterdrückung lokaler Störungen durch helle Bildpunkte oder dem Ausfiltern kleiner Strukturen.
+
+    Opening ist eine Erosion gefolgt von einer Dilatation mit demselben strukturierenden Element:
+    \[
+        I \circ S = (I \ominus S) \oplus S
+    \]
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[Morphologischer Filter]{Closing}
+    % TODO: https://de.wikipedia.org/wiki/Closing_(Bildverarbeitung)
+    \emph{Closing} ist eine Basisoperation der morphologischen Bildverarbeitung.
+
+    Anwendung findet der Operator beim Filtern von Bildern;
+    durch das Schließen lassen sich lokal begrenzte dunkle Störungen in einem Bild unterdrücken oder kleine dunkle Strukturen gezielt herausfiltern.
+
+    Closing ist eine Dilatation gefolgt von einer Erosion mit demselben strukturierenden Element:
+    \[
+        I \bullet S = (I \oplus S) \ominus S
+    \]
+
+    TODO: Grafik
+\end{defi}
+
+\begin{bonus}{Eigenschaften von Opening und Closing}
+    Opening und Closing sind idempotent.
+
+    Das Opening des Vordergrunds ist identisch mit dem Closing des Hintergrunds und umgekehrt:
+    \[
+        I \circ S = \overline{(\overline{I} \bullet S)}
+    \]
+    \[
+        I \oplus S = \overline{(\overline{I} \circ S)}
+    \]
+\end{bonus}
+
+\begin{defi}{Grauwert-Morphologie}
+    \emph{Grauwert-Morphologie} ist eine Generalisierung der binären Morphologie.
+
+    Morphologische Filter für Grauwertbilder funktionieren auch mit binären Bildern.
+
+    Bei Farbbildern werden die Filter auf jedem Farbkanal separat angewendet.
+
+    Das \emph{strukturierende Element} ist eine reellwertige Funktion:
+    \[
+        S(x, y) \in \mathbb{R}
+    \]
+
+    $0$-Elemente tragen zum Ergebnis bei.
+    Es muss daher explizit zwischen $0$ und \enquote{leer} unterschieden werden.
+\end{defi}
+
+\begin{defi}[Morphologischer Filter]{Grauwert-Dilatation}
+    % TODO: https://de.wikipedia.org/wiki/Dilatation_(Bildverarbeitung) 
+    Das Ergebnis einer \emph{Grauwert-Dilatation} ist definiert als das Maximum der Werte des strukturierenden Elements addiert zu den Werten des aktuellen Bildausschnitts:
+    \[
+        I \oplus S(x, y) = \max_{(i, j) \in S} \{ I(x + i, y + k) + S(i, j) \}
+    \]
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[Morphologischer Filter]{Grauwert-Erosion}
+    % TODO: https://de.wikipedia.org/wiki/Erosion_(Bildverarbeitung)
+    Das Ergebnis einer \emph{Grauwert-Erosion} ist definiert als das Minimum der Werte des strukturierenden Elements subtrahiert den Werten des aktuellen Bildausschnitts:
+    \[
+        I \ominus S(x, y) = \min_{(i, j) \in S} \{ I(x + i, y + k) - S(i, j) \}
+    \]
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[Morphologischer Filter]{Top-Hat}
+    Das Ziel einer \emph{Top-Hat-Transformation} ist das Erkennen oder Entfernen von Strukturen einer bestimmten Größe.
+
+    Eine \emph{White Top-Hat-Transformation} gibt ein Bild zurück mit den Elementen, die:
+    \begin{itemize}
+        \item \enquote{kleiner} als das strukturierende Element sind und
+        \item heller als die Umgebung sind.
+    \end{itemize}
+
+    Die White Top-Hat-Transformation ist definiert als:
+    \[
+        I - (I \circ S)
+    \]
+
+    Eine \emph{Black Top-Hat-Transformation} gibt ein Bild zurück mit den Elementen, die:
+    \begin{itemize}
+        \item \enquote{kleiner} als das strukturierende Element sind und
+        \item dunkler als die Umgebung sind.
+    \end{itemize}
+
+    Die Black Top-Hat-Transformation ist definiert als:
+    \[
+        (I \bullet S) - I
+    \]
+
+    TODO: Grafik
+\end{defi}

@@ -1,0 +1,391 @@
+\section{Segmentierung}
+
+\begin{defi}{Segmentierung}
+    % TODO: https://de.wikipedia.org/wiki/Segmentierung_(Bildverarbeitung)
+    Die Erzeugung von inhaltlich zusammenhängenden Regionen durch Zusammenfassung benachbarter Pixel oder Voxel entsprechend einem bestimmten Homogenitätskriterium bezeichnet man als \emph{Segmentierung}.
+
+    Segmentierung ist im Prozess des maschinellen Sehens üblicherweise der erste Schritt der Bildanalyse und kommt nach der Bildvorverarbeitung.
+    Der Ablauf ist also:
+    \begin{itemize}
+        \item Szene
+        \item Bildaufnahme
+        \item Bildvorverarbeitung
+        \item \emph{Segmentierung}
+        \item Merkmalsextraktion
+        \item Klassifizierung
+        \item Interpretation
+    \end{itemize}
+
+    Segmentierung zerlegt ein Bild $R$ in $n$ Subregionen $R_1, \ldots, R_n$, so dass
+    \[
+        R = \bigcup_i R_i, \quad \forall i \neq j: R_i \cap R_j = \emptyset
+    \]
+
+    Segmentierungen können wie folgt klasisfiziert werden, dabei sind die Grenzen aber oft fließend:
+    \begin{itemize}
+        \item Pixelorientierte Verfahren
+              \begin{itemize}
+                  \item Schwellwertverfahren
+              \end{itemize}
+        \item Regionen- bzw. kantenorientierte Verfahren
+              \begin{itemize}
+                  \item Region Growing
+                  \item Split and Merge
+                  \item Kantendetektion und Konturverfolgung
+                  \item Wasserscheidetransformation
+              \end{itemize}
+        \item Lokales Formwissen
+              \begin{itemize}
+                  \item Snakes
+                  \item Active Shape Models
+              \end{itemize}
+        \item Globales Formwissen
+              \begin{itemize}
+                  \item Hough-Transformation
+                  \item Statistical Shape Models
+                  \item Atlas
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\subsection{Interaktive Segmentierung}
+
+\begin{defi}{Interaktive Segmentierung}
+    Der algorithmisch einfachste Weg der Segmentierung ist, den bzw. die Anwender*in den Vordergrund einzeichnen zu lassen.
+
+    Voraussetzung ist natürlich, dass die notwendigen Kenntnisse der Anwendungsdomäne vorhanden sind.
+
+    Interaktive Segmentierungen sind ermüdend, wenn:
+    \begin{itemize}
+        \item es lange dauert,
+        \item Eingabegeräte ungeeignet sind,
+        \item Auswirkungen der Interaktion nicht intuitiv sind.
+    \end{itemize}
+
+    Interaktionen werden aus den vorgenannten Gründen oftmals durch den Computer unterstützt, z.B.
+    \begin{itemize}
+        \item Kanten werden hervorgehoben,
+        \item Definition von nur wenigen Punkten am Rand des Objekts, die dann automatisch verbunden werden,
+        \item Eingaben werden automatisch korrigiert.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}[Interaktive Segmentierung]{Live Wire}
+    \emph{Live Wire} ist ein sehr beliebtes Verfahren zur interakiven Segmentierung von Objekten.
+
+    Dabei setzt die bzw. der Anwender*in Punkte, die automatisch durch einen \enquote{biegsamen Draht} verbunden werden, der sich an vorhandenen Kanten des Objekts orientiert.
+
+    Das Bild wird dazu intern in einen Graphen umgewandelt.
+    Den Knoten werden nicht-negative Kosten zugewiesen, sodass Kanten im Bild bevorzugt werden.
+    Der Pfad vom Start- zur Zielposition lässt sich dann trivial durch Dijkstras Algorithmus bestimmen.
+
+    Vorteile:
+    \begin{itemize}
+        \item Interaktionen einfach
+        \item Ergebnisse sofort sichtbar
+        \item in vielen Softwarepaketen integriert
+    \end{itemize}
+
+    Nachteile:
+    \begin{itemize}
+        \item berechnete Pfade entsprechen nicht immer den Erwartungen
+        \item Rauschen nötigt Anwender*in sehr nahe beieinanderliegende Punkte zu setzen
+        \item Auswahl der Kostenfunktion nicht trivial
+    \end{itemize}
+\end{defi}
+
+\subsection{Pixelorientierte Segmentierung}
+
+\begin{defi}[Pixelorientierte Segmentierung]{Globales Schwellwertverfahren}
+    % TODO: https://de.wikipedia.org/wiki/Schwellenwertverfahren
+    Beim \emph{globalen Schwellenwertverfahren} wird ein Schwellenwert global für das gesamte Bild gewählt.
+    Durch die Festlegung mehrerer Schwellenwerte lässt sich das globale Verfahren so variieren, dass die Segmentierung mehr als zwei Segmente liefert.
+    Für $n$ Segmente werden dabei $(n-1)$ Schwellenwerte $t_i$ benötigt:
+    \[
+        T_{\text{global}}(f) =
+        \begin{cases}
+            0 & f < t    \\
+            1 & f \geq t
+        \end{cases}
+        \qquad T =
+        \begin{cases}
+            a & f < t_1          \\
+            b & t_1 \leq f < t_2 \\
+            c & f \geq t_2
+        \end{cases}
+    \]
+
+    Das Verfahren ist am einfachsten zu berechnen, aber auch sehr anfällig für Helligkeitsveränderungen im Bild.
+\end{defi}
+
+\begin{defi}[Pixelorientierte Segmentierung]{Lokales Schwellwertverfahren}
+    % TODO: https://de.wikipedia.org/wiki/Schwellenwertverfahren
+    Beim \emph{lokalen Schwellenwertverfahren} wird das Ausgangsbild in Regionen eingeteilt und der Schwellenwert für jede Region getrennt festgelegt.
+
+    Das bedeutet, dass in jeder Bildregion $R_i$ ein passender Schwellenwert $t_i$ gewählt werden kann, ohne dass dies die Qualität der Segmentierung in anderen Regionen beeinflusst.
+
+    Die Berechnungsvorschrift für jedes Pixel $(x,y)$ lautet:
+    \[
+        T_{\text{lokal}}(x, y) =
+        \begin{cases}
+            0 & f(x, y) < t_i    \\
+            1 & f(x, y) \geq t_i
+        \end{cases}
+        \quad \forall (x, y) \in R_i
+    \]
+    Gegenüber dem globalen Schwellenwertverfahren steigt die Komplexität nur unwesentlich, das lokale Verfahren lässt sich daher ebenfalls mit geringem Rechenaufwand berechnen.
+
+    Die Anfälligkeit gegenüber Helligkeitsveränderungen sinkt, allerdings kann es an den Grenzen der Regionen zu Versatz kommen. Abhängig von der Anzahl der Regionen kann der Aufwand schon zu hoch sein, durch einen Menschen für jede Region den passenden Schwellenwert zu wählen.
+\end{defi}
+
+\begin{defi}[Pixelorientierte Segmentierung]{Dynamisches Schwellwertverfahren}
+    % TODO: https://de.wikipedia.org/wiki/Schwellenwertverfahren
+    Als Weiterentwicklung des lokalen Verfahrens lässt sich das \emph{dynamische Schwellenwertverfahren} ansehen, das für jedes Pixel eine Nachbarschaft $N$ betrachtet und auf Basis dieser Nachbarschaft einen passenden Schwellenwert $t(N)$ berechnet.
+    Hierbei ist ein automatisches Verfahren zur Wahl des Schwellenwertes zwingend notwendig.
+
+    Die entsprechende Berechnungsvorschrift für jedes Pixel $(x,y)$ lautet:
+    \[
+        T_{\text{dynamisch}}(x, y) =
+        \begin{cases}
+            0 & f(x, y) < t(N(x, y))    \\
+            1 & f(x, y) \geq t(N(x, y))
+        \end{cases}
+    \]
+    Die dynamische Variante ist recht stabil gegenüber lokalen Helligkeitsänderungen.
+    Der Rechenaufwand steigt hier aber erheblich, da für jeden Bildpunkt ein neuer Schwellenwert berechnet wird.
+\end{defi}
+
+\begin{defi}[Pixelorientierte Segmentierung]{Verfahren von Otsu}
+    % TODO: https://de.wikipedia.org/wiki/Schwellenwertverfahren#Verfahren_von_Otsu 
+    Das \emph{Verfahren von Otsu} verwendet statistische Hilfsmittel, um das Problem eines möglichst guten Schwellenwertes zu lösen. Insbesondere wird von der Varianz Gebrauch gemacht, die ein Maß für die Streuung von Werten ist -- in diesem Fall geht es um die Streuung der Grauwerte.
+
+    Das Verfahren von Otsu bestimmt einen Schwellenwert, bei dem die Streuung innerhalb der dadurch bestimmten Klassen möglichst klein, zwischen den Klassen gleichzeitig aber möglichst groß ist.
+    Dazu wird der Quotient zwischen den beiden Varianzen gebildet und ein Schwellenwert gesucht, bei dem dieser möglichst groß (maximal) wird.
+
+    Es sei $p(g)$ die Auftrittswahrscheinlichkeit des Grauwertes $0 < g < G$ ($G$ ist der maximale Grauwert).
+    Dann ergibt sich die Wahrscheinlichkeit des Auftretens von Pixeln der beiden Klassen $K_0$ und $K_1$ mit:
+    \[
+        K_0: P_{0}(t) = \sum_{g = 0}^{t} p(g) \qquad K_1: P_{1}(t) = \sum_{g = t+1}^{G} p(g) = 1 - P_{0}(t)
+    \]
+
+    Die Varianzen innerhalb der beiden Klassen ergibt sich mit den arithmetischen Mitteln $\mu_0$ und $\mu_1$ als:
+    \[
+        \sigma _{0}^{2}(t) = \sum_{g=0}^{t} (g - \mu_0)^{2} p(g) \qquad \sigma_{1}^{2}(t) = \sum_{g=t+1}^{G} (g - \mu_1)^{2} p(g)
+    \]
+
+    Das Ziel ist nun, die Varianz der Grauwerte in den einzelnen Klassen möglichst gering zu halten, während die Varianz zwischen den Klassen möglichst groß werden soll. Daraus ergibt sich folgender Quotient:
+    \[
+        Q(t) = \frac{\overbrace{P_0(t) \cdot (\mu_0 - \mu)^2 + P_1(t) \cdot (\mu_1 - \mu)^2}^{\text{Varianz zwischen den Klassen}}}{\underbrace{P_0(t) \cdot \sigma _{0}^{2}(t) + P_1(t) \cdot \sigma _{1}^{2}(t)}_{\text{Varianz innerhalb der Klassen}}}
+    \]
+
+    Der Schwellenwert $t$ wird nun so gewählt, dass der Quotient $Q(t)$ maximal wird.
+    $Q(t)$ ist also das gesuchte Maß.
+    Wenn durch die Maximierung des Quotienten ein Schwellenwert bestimmt wird, so teilt dieser die Punktmengen entsprechend der Varianz in optimale Klassen.
+\end{defi}
+
+\subsection{Regionen- bzw. kantenorientierte Segmentierung}
+
+\begin{defi}{N-Pfad}
+    Ein \emph{N-Pfad} ist eine Folge von $N$-benachbarter Pixel, wobei $N$ die gewählte Nachbarschaft ist, z. B. 4 oder 8.
+\end{defi}
+
+\begin{defi}{Zusammenhangskomponente}
+    Eine Pixelmenge $R_i$ heißt $N$-zusammenhängend, wenn zu jedem Pixelpaar in $R_i$ ein $N$-Pfad existiert, der nur Pixel aus $R_i$ enthält.
+
+    Diese Menge nennt man auch \emph{Zusammenhangskomponente} (engl. \emph{Connected Component}).
+\end{defi}
+
+\begin{defi}[Segmentierung]{Region Labeling}
+    Angenommen, in einem Binärbild sollen die Anzahl und Eigenschaften der Objekte analysiert werden;
+    solange jedes einzelne Pixel isoliert betrachtet wird, ist dies nicht möglich!
+
+    Daher wird man zunächst versuchen, alle Zusammenhangskomponenten ausfindig zu machen und allen Pixel einer Zusammenhangskomponente eine eigene Identifikationsnummer (Label) geben.
+    Diesen Prozess nennt man \emph{Regionenmarkierung} (engl. \emph{Region Labeling}).
+
+    Das Ausgangsbild bei der Regionenmarkierung ist ein Binärbild mit den Werten $0$ und $1$.
+    Alle weiteren Werte werden für die Markierungen (Labels) genutzt:
+    \[
+        I(x, y) =
+        \begin{cases}
+            0            & \text{Background} \\
+            1            & \text{Foreground} \\
+            2, 3, \ldots & \text{Label}
+        \end{cases}
+    \]
+\end{defi}
+
+\begin{defi}[Regionen- bzw. kantenorientierte Segmentierung]{Floodfill}
+    % TODO: https://de.wikipedia.org/wiki/Floodfill
+    \emph{Floodfill} bzw. \emph{Flutfüllung} ist ein einfacher Algorithmus, um Flächen zusammenhängender Pixel einer Farbe in einem digitalen Bild zu erfassen und mit einer neuen Farbe zu füllen.
+    Durch Wahl der Nachbarschaft muss definiert werden, wann zwei Pixel als miteinander verbunden gelten.
+
+    Ausgehend von einem Pixel innerhalb der Fläche werden jeweils dessen Nachbarpixel darauf getestet, ob diese Nachbarpixel auch die alte Farbe enthalten.
+    Jedes gefundene Pixel mit der alten Farbe wird dabei sofort durch die neue Farbe ersetzt.
+\end{defi}
+
+\begin{defi}{Regionenbasierte Segmentierung}
+    \emph{Regionenbasierte Verfahren} finden zusammenhängende Regionen basierend auf Pixelähnlichkeiten innerhalb der Regionen.
+
+    \emph{Bottom-up Methoden} starten mit Saatpunkt (engl. Seed Point), die, basierend auf einem Homogenitätskriterium, Nachbarn einschließen.
+
+    \emph{Top-down Methoden} unterteilen das Bild immer weiter in Blöcke, die zusammengefasst werden, wenn sie ähnlich sind.
+\end{defi}
+
+\begin{defi}{Homogenitätskriterium}
+    TODO
+\end{defi}
+
+\begin{defi}[Regionen- bzw. kantenorientierte Segmentierung]{Region Growing}
+    % TODO: https://de.wikipedia.org/wiki/Region_Growing
+    Bei \emph{Region Growing} werden homogene Bildelemente zu Regionen verschmolzen.
+
+    Zuerst wird das Bild in initiale Zellen ($1 \times 1$, $2 \times 2$ oder $4 \times 4$ Pixel) unterteilt.
+    Beginnend mit der Wahl einer initialen Zelle als Anfangsregion wird diese dann mit den Nachbarzellen anhand eines Kriteriums (z. B. die Differenz des Grauwertes zu dem der Nachbarzelle) verglichen.
+    Trifft das Kriterium zu, wird die Nachbarzelle zu der Region hinzugefügt.
+    Dies wird rekursiv wiederholt, das heißt, die Nachbarzellen der neu hinzugefügten Zellen werden ebenfalls untersucht.
+    Wenn keine Nachbarn mehr hinzugenommen werden können, ist eine Region gefunden.
+
+    Den Prozess kann man für andere Zellen, die nicht der Region angehören, wiederholen, bis alle Pixel Regionen zugeordnet wurden.
+    Dies kann jedoch abhängig von dem gewählten Kriterium zu sich überschneidenden Regionen führen.
+
+    Das Verfahren ist anfällig für \enquote{Leakage}, das heißt, dass eigentlich getrennte Regionen durch kleine \enquote{Pixelbrücken} als eine Region erfasst werden.
+\end{defi}
+
+\begin{defi}[Regionen- bzw. kantenorientierte Segmentierung]{Wavefront Propagation}
+    TODO
+\end{defi}
+
+\begin{defi}[Regionen- bzw. kantenorientierte Segmentierung]{Split and Merge}
+    % TODO: https://en.wikipedia.org/wiki/Split_and_merge_segmentation 
+    Bei der \emph{Split and Merge}-Segmentierung wird ein Eingabebild basierend auf einem Homogenitätskriterium sukzessive in Quadranten aufgeteilt (engl. \emph{Split}) und ähnliche Regionen widerum verschmolzen (engl. \emph{Merge}), um eine Segmentierung zu erreichen.
+
+    Der Algorithmus ist wie folgt:
+    \begin{enumerate}
+        \item Definiton eines Homogenitätskriterium
+        \item Aufteilen des Bildes in gleichgroße Regionen
+        \item Homogenität jeder Region bestimmen
+              \begin{itemize}
+                  \item wenn homogen: verschmelzen mit Nachbarn
+              \end{itemize}
+        \item Solange nicht alle Regionen homogen: Wiederhole ab Schritt 2
+    \end{enumerate}
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[Regionen- bzw. kantenorientierte Segmentierung]{Watershed Transform}
+    % TODO: https://de.wikipedia.org/wiki/Wasserscheidentransformation
+    Die \emph{Wasserscheidentransformation} (\emph[WST]; engl. \emph{Watershed Transformation}) wird auf Grauwertbilder angewendet.
+    Der Grauwert wird hierbei als Höheninformation interpretiert.
+
+    Bei der sukzessiven Flutung des Grauwertgebirges werden Wasserscheiden zwischen aneinandergrenzenden Staubecken errichtet.
+    In der Regel resultiert daraus eine Übersegmentierung des Bildes, insbesondere bei verrauschtem Bildmaterial, zum Beispiel bei medizinischen CT-Daten.
+
+    Das Bild muss entweder vorbearbeitet werden oder die Regionen müssen anschließend in einem Merge-Schritt anhand eines Ähnlichkeitskriteriums zusammengefasst werden.
+    Alternativ kann je nach Anwendung eine Variante der WST benutzt werden.
+
+    Das benötigte Grauwertbild erhält man beispielsweise, indem man den Gradienten des Ursprungsbilds berechnet; die Wasserscheiden sollen sich hier später entlang starker Kanten errichten. Bei Binärdaten kann man das Inverse der euklidischen Distanztransformation berechnen.
+    Die WST soll dann beispielsweise zusammenhängende Objekte trennen.
+
+    Bei der vorgefluteten WST werden nur Staubecken geflutet, die eine bestimmte Größe überschreiten.
+
+    Bei der \emph{hierarchischen WST} wird das Ergebnis in eine Graphendarstellung umgewandelt (das heißt, die Nachbarschaftsbeziehungen der segmentierten Regionen werden festgestellt) und darauf werden rekursiv weitere WST durchgeführt.
+    Problem: Die Wasserscheiden werden dabei immer breiter.
+
+    Bei der \emph{markerbasierten WST} erfolgt die Flutung nur von bestimmten Markerpositionen aus, die der Benutzer zuvor interaktiv gesetzt hat oder die mittels morphologischer Operatoren zuvor gewonnen wurden.
+
+    TODO: Grafik
+\end{defi}
+
+\subsection{Lokales Formwissen}
+
+\begin{defi}[Lokales Formwissen]{Active Contours}
+    % TODO: https://de.wikipedia.org/wiki/Aktive_Kontur
+    \emph{Snakes}, auch \emph{Aktive Konturen} (engl. \emph{Active Contours}) genannt, sind ein Konzept, das in der digitalen Bildverarbeitung zur Bestimmung einer Objektkontur angewandt wird.
+    In der Praxis werden Snake-Algorithmen vor allem in der medizinischen Bildverarbeitung verwendet, so zum Beispiel in der Diagnostik bei Ultraschallaufnahmen.
+    Sie werden zur computergestützten Objektverfolgung eingesetzt und sind invariant bezüglich Skalierung und Rotation.
+
+    Das Konzept beruht auf der Beschreibung der Objektkontur durch eine parametrische Kurve.
+    Deren Form wird nach einer oft manuellen Initialisierung abhängig von sogenannten internen und externen Energien korrigiert.
+
+    Die \emph{externen Energien} berechnen sich hierbei aus dem Bildinhalt im Bezug zur Position der Kontur.
+    Oft wird hierbei eine Form des Gradienten benutzt (Gradient Vector Flow).
+
+    Die \emph{internen Energien} berechnen sich einzig aus der Form der Kontur -- z. B. Länge oder Krümmung.
+
+    Durch einen Minimierungsalgorithmus wird die Form der Kontur berechnet, bei der die Summe aller Energien ein Minimum erreicht.
+
+    Anstatt die Minimierung tatsächlich durchzuführen kann die Form der Snake auch sehr oft verändert und dann diejenige Form als Ergebnis betrachtet werden, bei der die Summe der Energien minimal ist.
+\end{defi}
+
+\begin{defi}[Lokales Formwissen!Active Contours]{Greedy-Algorithmus}
+    \begin{enumerate}
+        \item Definiere initiale Kontur-Knoten und Parameter
+        \item Betrachte Kontur-Knoten
+        \item Initialisiere Minimumnergie und Koordinaten
+        \item Ermittle Nachbar-Koordinaten mit geringster Energie
+        \item Verschiebe Kontur-Knoten
+              \begin{enumerate}
+                  \item keine Veränderung: terminiere
+                  \item sonst: gehe zu Schritt 2
+              \end{enumerate}
+    \end{enumerate}
+
+    Der Greedy-Algorithmus findet nicht unbedingt eine optimale Lösung, insbesondere da Oszillationen möglich sind.
+    Auch ist der Algorithmus anfällig gegenüber Rauschen.
+
+    Das Ergebnis ist stark von der Initialisierung abhängig.
+    Auch können Knoten zusammenfallen (Cluster bilden).
+
+    TODO
+\end{defi}
+
+\subsection{Globales Formwissen}
+
+\begin{defi}{Statistisches Formmodell}
+    \emph{Statistische Formmodelle} repräsentieren die Formen und Variationen eines Objekts, die aus Trainingsdaten gelernt wurden.
+
+    Das Generieren des statistischen Formmodells lässt sich am besten anhand der folgenden Teilschritte beschreiben:
+    \begin{enumerate}
+        \item Sammeln von Trainingsdaten
+        \item Repräsentation der Daten als Vektoren
+        \item Ausrichten der Trainingsdaten
+        \item Hauptkomponentenanalyse
+    \end{enumerate}
+
+    Als Trainingsdaten werden Referenzsegmentierungen bezeichnet, die zum Lernen der herangezogen werden.
+    Diese Segmentierungen können entweder manuell, interaktiv oder automatisch erzeugt werden.
+
+    Aus den Segmentierungen werden Polygonmodelle (\enquote{Drahtgittermodelle}) erzeugt -- etwa mit dem Marching-Cubes-Algorithmus.
+
+    Die aus den Trainingsdaten erzeugten Polygonmodelle müssen alle aus der gleichen Anzahl an $n$ Landmarken bestehen.
+    Die Landmarken der Modelle müssen darüber hinaus korrespondierenden;
+    d. h. Landmarke $L_1$ des Polygonmodells $P_1$ korrespondiert mit der Landmarke $L_1$ von $P_2$ usw.
+
+    Korrespondierende Punkte können entweder manuell oder automatisch gefunden werden.
+    Es ist ein schwieriges Problem und nicht trivial.
+\end{defi}
+
+\begin{defi}{Principle Component Analysis}
+
+\end{defi}
+
+\begin{defi}[Lokales Formwissen]{Modellanpassung}
+
+\end{defi}
+
+\begin{defi}[Globales Formwissen]{Hough-Transformation}
+
+\end{defi}
+
+\begin{defi}[Globales Formwissen]{Graph Cut}
+
+\end{defi}
+
+\begin{defi}{Motion Segmentation}
+
+\end{defi}
+
+\begin{defi}[Motion Segmentation]{Differenzbild}
+
+\end{defi}

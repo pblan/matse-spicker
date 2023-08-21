@@ -1,0 +1,131 @@
+\section{Filter}
+
+\begin{defi}{Filter}
+    % TODO: https://de.wikipedia.org/wiki/Bildverarbeitung#Operationen_der_Bildverarbeitung 
+    \emph{Nachbarschaftsoperationen} (\emph{Filter}) verwenden sowohl einen Punkt als auch eine bestimmte Menge seiner Nachbarn als Eingabe, errechnen aus ihnen ein Ergebnis und schreiben dieses an die Koordinate des Referenzpunktes in das Zielbild.
+
+    Eine sehr verbreitete Art von Nachbarschaftsoperationen sind die Faltungsfilter (\emph{Convolutional Filter}).
+    Hierbei werden die Helligkeit- oder Farbwerte gemäß einem Filterkern miteinander verrechnet um das Ergebnis zu bilden.
+
+    Bei Filtern wird ein Pixel für die Berechnung von mehr als einem neuen Pixel benötigt -- im Kontrast zu Punktfiltern.
+    Daher benötigt es einer Kopie.
+
+    Filterkerne haben üblicherweise eine ungerade Anzahl an $(2k + 1)$ Spalten und $(2l + 1)$ Reihen ($k, l \in \mathbb{N} \setminus \{0\}$).
+    Für ein Bild der Größe $m \times n$ kann ein Filter für die Bildkoordinaten $(x, y)$ berechnet werden, wenn
+    \begin{itemize}
+        \item $k \leq x \leq m - k - 1$ und
+        \item $l \leq y \leq n - l - 1$
+    \end{itemize}
+
+    TODO: Linear vs. nicht-linear
+\end{defi}
+
+\begin{defi}[Filter]{Glättung}
+    Bei einem \emph{Glättungsfilter} werden lokale Intensitäten \enquote{geglättet}.
+
+    TODO
+\end{defi}
+
+\begin{defi}[Filter]{Ableitung}
+    Bei \emph{Differenzfiltern} (\emph{Ableitung}) sind einige Koeffizienten negativ.
+
+    Das Ergebnis kann interpretiert werden als Summe von allen Pixeln mit korrespondierenden positiven Koeffizienten minus Summe von allen Pixeln mir korrespondierenden negativen Koeffizienten -- analog zur Berechnung von Ableitungen.
+
+    Da Bilder keine kontinuierlichen Funktionen sind, werden Ableitung mit Finiten Differenzen berechnet.
+
+    TODO
+\end{defi}
+
+\begin{example}[Filter!Ableitung]{Laplace-Operator}
+    Der einfachste isotropische 2. Ableitungsoperator ist der \emph{Laplace-Operator}:
+    \[
+        \nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2}
+    \]
+
+    Nach Diskretisierung mit finiten Differenzen erhält man:
+    \begin{alignat*}{2}
+        \frac{\partial^2 f}{\partial x^2} & = f(x + 1, y) + f(x - 1, y) - 2 f(x, y)                           \\
+        \frac{\partial^2 f}{\partial y^2} & = f(x, y + 1) + f(x, y - 1) - 2 f(x, y)                           \\
+        \nabla^2 f                        & = f(x + 1, y) + f(x - 1, y) f(x, y + 1) + f(x, y - 1) - 4 f(x, y)
+    \end{alignat*}
+
+    TODO
+\end{example}
+
+\begin{defi}[Filter]{Glättung}
+    Bei einem \emph{Glättungsfilter} werden lokale Intensitäten \enquote{geglättet}.
+
+    TODO
+\end{defi}
+
+\begin{defi}[Filter]{Unscharfmaskierung}
+    % TODO: https://de.wikipedia.org/wiki/Unscharfmaskierung 
+    \emph{Unscharfmaskierung} (\enquote{Selektive Schärfe}) bezeichnet eine Filtermethode, bei der der Schärfeeindruck eines Fotos mit Hilfe einer unscharfen Kopie dieses Fotos erhöht wird.
+
+    TODO
+\end{defi}
+
+\begin{defi}{Separierbarkeit}
+    \emph{Separierbarkeit} bezeichnet die Möglichkeit einen 2D Filterkern in zwei 1D Filterkerne zu trennen.
+
+    Ein 2D Filterkern ist separierbar, wenn er als dyadisches Produkt ausgedrückt werden kann:
+
+    TODO
+\end{defi}
+
+\begin{defi}{Randbehandlung}
+    Ohne spezielle \emph{Randbehandlung} würde jeder Filter die Größe des Bildes reduzieren.
+
+    Es existieren verschiedene Methoden:
+    \begin{itemize}
+        \item Pixel am Rand, die nicht verarbeitet wurden, auf einen konstanten Wert setzen (z. B. schwarz).
+              \begin{itemize}
+                  \item einfache Methode
+                  \item Bildgröße wird reduziert
+              \end{itemize}
+        \item Pixel am Rand, die nicht verarbeitet wurden, auf den Originalwert des Bildes setzen.
+              \begin{itemize}
+                  \item einfache Methode
+                  \item sichtbarer Unterschied
+              \end{itemize}
+        \item Bild um zusätzliche Pixel erweitern, dann normal filtern und anschließend beschneiden.
+              \subitem Erweitern mit:
+              \begin{itemize}
+                  \item konstantem Wert
+                        \begin{itemize}
+                            \item sichtbare Artefakte
+                        \end{itemize}
+                  \item kopierten Randpixeln
+                        \begin{itemize}
+                            \item geringe Artefakte
+                            \item oft genutzt
+                        \end{itemize}
+                  \item gespiegeltem Bild
+                        \begin{itemize}
+                            \item nur bei großen Kernen Vorteile
+                        \end{itemize}
+                  \item periodischer Fortsetzung des Bildes
+                        \begin{itemize}
+                            \item sichtbare Artefakte
+                            \item theoretische Vorteile bzgl. Spektralanalyse
+                        \end{itemize}
+              \end{itemize}
+    \end{itemize}
+
+    TODO
+\end{defi}
+
+\begin{defi}[Nicht-linearer Filter]{Minimum- und Maximum-Filter}
+    \emph{Minimum-} und \emph{Maximum-Filter} ersetzen den aktuellen Pixel mit dem Minimum bzw. Maximum in der Filterregion.
+
+    TODO: Salt and Pepper Noise
+\end{defi}
+
+\begin{defi}[Nicht-linearer Filter]{Median-Filter}
+    Ein \emph{Median-Filter} ersetzt den aktuellen Pixel mit dem Median der Filterregion.
+
+    Median-Filter eignen sich gut, um Salt- and Pepper-Rauschen zu entfernen, sind aber weniger gut bei Gaußschem Rauschen.
+    Außerdem glätten sie das Bild im Vergleich zu linearen Filtern viel weniger und erhalten Kanten.
+
+    TODO: Salt and Pepper Noise
+\end{defi}

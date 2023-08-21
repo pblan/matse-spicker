@@ -1,0 +1,119 @@
+\section{Fourier}
+
+\begin{defi}{Diskrete Fourier-Transformation}
+    % TODO: https://de.wikipedia.org/wiki/Diskrete_Fourier-Transformation#Diskrete_Fourier-Transformation_(DFT)
+    Die \emph{Diskrete Fourier-Transformation} (\emph{DFT}) ist eine Transformation aus dem Bereich der Fourier-Analysis.
+    Sie bildet ein zeitdiskretes endliches Signal, das periodisch fortgesetzt wird, auf ein diskretes, periodisches Frequenzspektrum ab, das auch als Bildbereich bezeichnet wird.
+
+    Die DFT besitzt in der digitalen Signalverarbeitung zur Signalanalyse große Bedeutung.
+    Hier werden optimierte Varianten in Form der schnellen Fourier-Transformation (engl. \emph{Fast Fourier Transform}, \emph{FFT}) und ihrer Inversen angewandt.
+
+    Die DFT wird in der Signalverarbeitung für viele Aufgaben verwendet, so z. B.
+    \begin{itemize}
+        \item zur Bestimmung der in einem abgetasteten Signal hauptsächlich vorkommenden Frequenzen,
+        \item zur Bestimmung der Amplituden und der zugehörigen Phasenlage zu diesen Frequenzen,
+        \item zur Implementierung digitaler Filter mit großen Filterlängen.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}[Diskrete Fourier-Transformation]{Mathematische Definition}
+    % TODO: https://de.wikipedia.org/wiki/Diskrete_Fourier-Transformation#Diskrete_Fourier-Transformation_(DFT)
+    Die \emph{Diskrete Fourier-Transformation} verarbeitet eine Folge von Zahlen $a = (a_0, \ldots, a_{N-1})$ die zum Beispiel als zeitdiskrete Messwerte entstanden sind. Dabei wird angenommen, dass diese Messwerte einer Periode eines periodischen Signals entsprechen.
+
+    Das Ergebnis der Transformation ist eine Zerlegung der Folge in harmonische (sinusförmige) Anteile, sowie einen \emph{Gleichanteil} $\hat{a}_0$, der dem Mittelwert der Eingangsfolge entspricht.
+    Das Ergebnis nennt man \emph{diskrete Fourier-Transformierte} $\hat{a} = ( \hat{a}_0, \ldots, \hat{a}_{N-1} ) \in \mathbb{C}^N$ von $a$.
+    Die Koeffizienten von $\hat{a}$ sind die Amplituden der Zerlegungsanteile.
+    Man nennt $\hat{a}_k$ auch \emph{Fourierkoeffizienten} oder \emph{Fourierkomponenten}.
+
+    Üblicherweise wird bei der Bestimmung der Frequenzanteile bzw. Phasenlage die kompakte mathematische Schreibweise der Polarform verwendet (Eulersche Formel):
+    \[
+        e^{i\phi} = \cos(\phi) + i \sin(\phi)
+    \]
+
+    Die Fourierkoeffizienten $\hat{a}_{k}$ werden damit aus der Eingangsfolge berechnet durch:
+    \[
+        \hat{a}_{k} = \sum _{j=0}^{N-1} e^{-2\pi i \cdot \frac {jk}{N}} \cdot a_{j}
+    \]
+
+    Die Gleichung kann auch als Matrix-Vektor-Produkt geschrieben werden:
+    \[
+        \hat{a} = W \cdot a \quad W_{k, j} = e^{-2\pi i \cdot \frac {jk}{N}}
+    \]
+    Die symmetrische Transformationsmatrix $W$ mit Dimension $N \times N$ wird Fourier-Matrix genannt.
+\end{defi}
+
+\begin{bonus}{Nyquist-Frequenz}
+    % TODO: https://de.wikipedia.org/wiki/Nyquist-Frequenz 
+    Die \emph{Nyquist-Frequenz} ist ein Begriff aus der Signaltheorie.
+
+    Sie ist definiert als die halbe Abtastfrequenz eines zeitdiskreten Systems:
+    \[
+        f_{\text{nyquist}} = \frac {1}{2} \cdot f_{\text{abtast}} > f_{\text{signal}}
+    \]
+
+    Falls dieses Kriterium nicht eingehalten wird, entstehen nichtlineare Verzerrungen, die auch als Alias-Effekt bezeichnet werden. Diese lassen sich nicht wieder herausfiltern.
+    Die untere Grenze für eine Alias-freie Abtastung wird auch als Nyquist-Rate bezeichnet.
+\end{bonus}
+
+\begin{defi}{Inverse Diskrete Fourier-Transformation}
+    % TODO: https://de.wikipedia.org/wiki/Diskrete_Fourier-Transformation#Diskrete_Fourier-Transformation_(DFT)
+    Mit der \emph{inversen DFT}, kurz \emph{iDFT} kann aus den Frequenzanteilen das Signal im Zeitbereich rekonstruiert werden.
+
+    Durch Kopplung von DFT und iDFT kann ein Signal im Frequenzbereich manipuliert werden, wie es beim Equalizer angewandt wird.
+
+    Die Diskrete Fourier-Transformation ist von der verwandten Fouriertransformation für zeitdiskrete Signale zu unterscheiden, die aus zeitdiskreten Signalen ein kontinuierliches Frequenzspektrum bildet.
+\end{defi}
+
+\begin{defi}[Inverse Diskrete Fourier-Transformation]{Mathematische Definition}
+    % TODO: https://de.wikipedia.org/wiki/Diskrete_Fourier-Transformation#Diskrete_Fourier-Transformation_(DFT)
+    Die Summe der sinusförmigen Zerlegungsanteile ergibt wiederum die ursprüngliche Eingangsfolge $a$.
+
+    Dafür wird das Transformationsergebnis $\hat{a}$ als Koeffizienten eines Polynoms verwendet, wobei $\hat{a}_k$ die Amplituden von den zugehörigen harmonischen Schwingungen $z_k$ darstellen:
+    \[
+        A(z_{k}) = \frac{1}{N} \left({\hat{a}}_{0}z_{k}^{0}+{\hat {a}}_{1}z_{k}^{1}+\ldots +{\hat {a}}_{N-1}z_{k}^{N-1}\right)
+    \]
+
+    Die Argumente $z_0, z_1, \ldots, z_{N-1}$ sind $N$ gleich verteilte Punkte auf dem Einheitskreis der komplexen Zahlenebene, d. h. die $N$-ten Einheitswurzeln
+    \[
+        z_{k} = e^{{\frac{2\pi i }{N}}k} = \cos \left({\frac{2\pi}{N}}k\right)+i \sin \left({\frac{2\pi}{N}}k\right)
+    \]
+
+    Die Koeffizienten der ursprünglichen Folge $a$ lassen sich mit der iDFT aus den Fourierkoeffizienten $\hat{a}_{j}$ bestimmen:
+    \[
+        a_k = \frac{1}{N} \sum _{j=0}^{N-1} e^{2\pi i \cdot \frac {jk}{N}} \cdot \hat{a}_{j}
+    \]
+
+    In der Schreibweise als Matrix-Vektor-Produkt:
+    \[
+        a = W^{-1} \cdot  \hat{a} \quad W^{-1}_{k, j} = \frac{1}{N} e^{2\pi i \cdot \frac {jk}{N}}
+    \]
+    wobei hier $\hat {a}$ mit der inversen Matrix von $W$ multipliziert wird.
+\end{defi}
+
+\begin{defi}{Mehrdimensionale Diskrete Fourier-Transformation}
+    % TODO: https://de.wikipedia.org/wiki/Diskrete_Fourier-Transformation
+    Die Diskrete Fourier-Transformation kann leicht auf \emph{mehrdimensionale Signale} erweitert werden.
+    Sie wird dann je einmal auf alle Koordinatenrichtungen angewendet.
+
+    Im wichtigen Spezialfall von zwei Dimensionen (Bildverarbeitung) gilt etwa:
+    \[
+        \hat{a}_{k,l} = \sum_{m=0}^{M-1} \sum_{n=0}^{N-1} a_{m,n} \cdot e^{-2\pi i \cdot \frac {mk}{M}} e^{-2\pi i \cdot \frac {nl}{N}}, \quad \text{für} \; k = 0, \ldots, M-1 \; \text{und} \;  l = 0, \ldots, N-1
+    \]
+    Die Rücktransformation lautet entsprechend:
+    \[
+        \hat{a}_{k,l} = \frac{1}{MN} \sum_{k=0}^{M-1} \sum_{l=0}^{N-1} \hat{a}_{k,l} \cdot e^{2\pi i \cdot \frac {mk}{M}} e^{2\pi i \cdot \frac {nl}{N}}, \quad \text{für} \; m = 0, \ldots, M-1 \; \text{und} \;  n = 0, \ldots, N-1
+    \]
+\end{defi}
+
+\begin{bonus}{Fast Fourier-Transformation}
+    % TODO: https://de.wikipedia.org/wiki/Schnelle_Fourier-Transformation
+    Die \emph{schnelle Fourier-Transformation} (englisch \emph{Fast Fourier Transform}, daher meist \emph{FFT} abgekürzt) ist ein Algorithmus zur effizienten Berechnung der diskreten Fourier-Transformation (DFT).
+    Mit ihr kann ein zeitdiskretes Signal in seine Frequenzanteile zerlegt und dadurch analysiert werden.
+
+    Analog gibt es für die diskrete inverse Fourier-Transformation die inverse schnelle Fourier-Transformation (IFFT).
+
+    Es kommen bei der IFFT die gleichen Algorithmen, aber mit konjugierten Koeffizienten zur Anwendung.
+\end{bonus}
+
+TODO: Beispiele
+

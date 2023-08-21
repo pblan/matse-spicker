@@ -1,0 +1,226 @@
+\section{Bildtransformationen}
+
+\begin{defi}{Affine Transformation}
+    % TODO: https://de.wikipedia.org/wiki/Affine_Abbildung
+    In der Geometrie und in der Linearen Algebra ist eine \emph{affine Abbildung} (auch \emph{affine Transformation} genannt, insbesondere bei einer bijektiven affinen Abbildung) eine Abbildung zwischen zwei affinen Räumen, bei der \emph{Kollinearität}, \emph{Parallelität} und \emph{Teilverhältnisse} bewahrt bleiben oder gegenstandslos werden.
+
+    Präziser formuliert:
+    \begin{enumerate}
+        \item Die Bilder von Punkten, die auf einer Geraden liegen (d. h. kollinear sind), liegen wieder auf einer Geraden (\emph{Invarianz der Kollinearität}). Dabei können auch alle -- aber dann alle und nicht nur einige -- Punkte einer Geraden auf einen Punkt abgebildet werden.
+        \item Die Bilder zweier paralleler Geraden sind parallel, wenn keine der beiden Geraden auf einen Punkt abgebildet wird.
+        \item Drei verschiedene Punkte, die auf einer Geraden liegen (kollineare Punkte), werden so abgebildet, dass das Teilverhältnis ihrer Bildpunkte mit dem der Urbildpunkte übereinstimmt -- es sei denn, alle drei werden auf denselben Bildpunkt abgebildet.
+    \end{enumerate}
+
+    Eine bijektive affine Abbildung eines affinen Raumes auf sich selbst wird \emph{Affinität} genannt.
+\end{defi}
+
+\begin{bonus}[Affine Transformation]{Taxonomie}
+
+\end{bonus}
+
+\begin{defi}{Homogene Koordinaten}
+    Zweidimensionale lineare Transformationen lassen sich einheitlich durch eine $3 \times 3$-Matrix darstellen.
+
+    Die Transformation eines Punktes $(x, y)$ zu einem neuen Punkt $(x', y')$ durch eine beliebige Folge von Translationen, Rotationen und Skalierungen wird beschrieben durch:
+    \[
+        \begin{pmatrix}
+            a & b & c \\
+            d & e & f \\
+            0 & 0 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\ y \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            x' \\ y' \\ 1
+        \end{pmatrix}
+    \]
+
+    Dabei beschreibt die Teilmatrix aus den Komponenten $a$, $b$, $d$ und $e$ Rotation und Skalierung und die Teilmatrix bestehend aus $c$ und $f$ eine Translation.
+
+    Zwei oder mehrere affine Transformationen, die hintereinander ausgeführt werden sollen, lassen sich Verketten (\emph{Konkatenation}) und durch die Anwendung einer Transformationsmatrix ausführen.
+
+    Homogene Koordinaten sind invariant gegenüber Skalierung.
+\end{defi}
+
+\begin{defi}[Affine Transformation]{Translation}
+    % TODO: https://www.gm.th-koeln.de/~konen/WPF-BV/BV08.pdf 
+    Die Position $p'$ eines Pixels $p$ nach einer Verschiebung (\emph{Translation}) um $t_x$ in positive $x$-Richtung und $t_y$ in positive $y$-Richtung wird wie folgt berechnet:
+    \[
+        p' = p + t =
+        \begin{pmatrix}
+            x + t_x \\
+            y + t_y
+        \end{pmatrix}
+    \]
+
+    Die Transformationsgleichung für die Translation sieht wie folgt aus:
+    \[
+        \begin{pmatrix}
+            1 & 0 & t_x \\
+            0 & 1 & t_y \\
+            0 & 0 & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\ y \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            x' \\ y' \\ 1
+        \end{pmatrix}
+    \]
+
+    Die Translation ist eine affine Abbildung.
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[Affine Transformation]{Rotation}
+    % TODO: https://www.gm.th-koeln.de/~konen/WPF-BV/BV08.pdf 
+    Die Position $p'$ eines Pixels $p$ nach einer Drehung (\emph{Rotation}) um den Ursprung $(0, 0)$ mit dem Winkel $\alpha$ wird wie folgt berechnet:
+    \[
+        p' =
+        \begin{pmatrix}
+            \cos \alpha & -\sin \alpha \\
+            \sin \alpha & \cos \alpha
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\
+            y
+        \end{pmatrix}
+    \]
+
+    Die Transformationsgleichung für die Rotation sieht wie folgt aus:
+    \[
+        \begin{pmatrix}
+            \cos \alpha  & \sin \alpha & 0 \\
+            -\sin \alpha & \cos \alpha & 0 \\
+            0            & 0           & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\ y \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            x' \\ y' \\ 1
+        \end{pmatrix}
+    \]
+
+    Die Rotation ist eine affine Abbildung.
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[Affine Transformation]{Skalierung}
+    % TODO: https://www.gm.th-koeln.de/~konen/WPF-BV/BV08.pdf 
+    Die Position $p'$ eines Pixels $p$ nach einer \emph{Skalierung} relativ zum Ursprung $(0, 0)$, mit dem horizontalen Skalierungsfaktor $s_x$ und dem vertikalen Skalierungsfaktor $s_y$ wird wie folgt berechnet:
+    \[
+        p' = p \circ s =
+        \begin{pmatrix}
+            x \cdot s_x \\
+            y \cdot s_y
+        \end{pmatrix}
+    \]
+
+    Die Transformationsgleichung für die Skalierung sieht wie folgt aus:
+    \[
+        \begin{pmatrix}
+            s_x & 0   & 0 \\
+            0   & s_y & 0 \\
+            0   & 0   & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\ y \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            x' \\ y' \\ 1
+        \end{pmatrix}
+    \]
+
+    Die Skalierung ist eine affine Abbildung.
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[Affine Transformation]{Scherung}
+    % TODO: https://www.gm.th-koeln.de/~konen/WPF-BV/BV08.pdf 
+    Die Position $p'$ eines Pixels $p$ nach einer \emph{Scherung} (Transvektion) TODO
+    \[
+        p' =
+        \begin{pmatrix}
+            1   & c_x \\
+            c_y & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\
+            y
+        \end{pmatrix}
+    \]
+
+    Die Transformationsgleichung für die Scherung sieht wie folgt aus:
+    \[
+        \begin{pmatrix}
+            1   & c_x & 0 \\
+            c_y & 1   & 0 \\
+            0   & 0   & 1
+        \end{pmatrix}
+        \begin{pmatrix}
+            x \\ y \\ 1
+        \end{pmatrix}
+        =
+        \begin{pmatrix}
+            x' \\ y' \\ 1
+        \end{pmatrix}
+    \]
+
+    Die Scherung ist eine affine Abbildung.
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[TODO]{Forward Mapping}
+    TODO
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[TODO]{Backward Mapping}
+    TODO
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}[TODO]{Interpolation}
+    TODO
+
+    TODO: Grafik
+\end{defi}
+
+\begin{defi}{Projektive Transformation}
+    \emph{Projektive Abbildungen} sind Abbildungen, welche Geraden in Geraden überführen.
+
+    \begin{itemize}
+        \item Lösung als Lineares Gleichungssystem
+              \begin{itemize}
+                  \item 4 Punktepaare
+                  \item Ein Element (unten rechts) wird auf einen festen Wert gesetzt (meist auf 1)
+                  \item Lösung des Gleichungssystems nutzt Pseudoinverse
+              \end{itemize}
+        \item Lösung mit Singulärwertzerlegung (SVD)
+              \begin{itemize}
+                  \item Optimierungsproblem mit N Punktepaare
+                  \item Algebraische Distanz wird minimiert
+                  \item SVD wird zur Lösung verwendet
+              \end{itemize}
+        \item Nicht-lineare Lösung
+              \begin{itemize}
+                  \item Optimierungsproblem mit N Punktepaaren
+                  \item Euklidische Distanzen zw. Punktepaaren werden minimiert
+                  \item Lösung wird iterativ gesucht
+              \end{itemize}
+    \end{itemize}
+
+    TODO: Grafik, Formulierung
+\end{defi}
