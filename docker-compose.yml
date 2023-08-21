@@ -6,8 +6,9 @@ services:
     image: ghcr.io/pblan/latex:latest
     volumes:
       # required
-      - ./tex:/root/tex/
+      - ./texmf:/root/texmf/
       # change lines below if necessary
       - ../matse-spicker:/mnt/matse-spicker/
     tty: true
     restart: always
+    command: bash -c "texhash && bash"

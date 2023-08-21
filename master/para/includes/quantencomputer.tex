@@ -1,0 +1,116 @@
+\section{Quantencomputer}
+
+\begin{defi}[Quantencomputer]{Qubit}
+    \begin{itemize}
+        \item Digitaler Computer: Bit, Zustände: 0 oder 1
+        \item Quantencomputer: Quantum Bit = Qubit,
+              $\text{Zustände: } \alpha|0\rangle + \beta|1\rangle,$
+              wobei $|0\rangle$ und $|1\rangle$ Quantenzustände und
+              $\alpha, \beta$ Komplexe Zahlen mit $|\alpha|^2 + |\beta|^2 = 1$ sind.
+    \end{itemize}
+\end{defi}
+
+\begin{defi}[Quantencomputer]{Operationen}
+    TODO: Sinnvolle Definition
+\end{defi}
+
+\begin{defi}[Quantencomputer]{Nutzung}
+    TODO: Sinnvolle Definition
+\end{defi}
+
+\begin{defi}[Quantencomputer]{Typische Programme}
+    \begin{itemize}
+        \item Shor: Faktorisierung in Primzahlen
+              \begin{itemize}
+                  \item \underline{Wichtig für:} Verschlüsselung / Kryptographie und andere sicherheitsrelevante Bereiche
+                  \item \underline{Problem:} Für $n=p\cdot q$ finde Primfaktor $p$
+                        (digitaler Computer: praktisch unmöglich ab 1024-bit)
+                  \item \underline{Speedup durch Quantencomputer:} exponentiell
+                  \item \underline{Warum:} Quantenparallelismus $|00\ldots00\rangle+$ $|00\ldots01\rangle+$ $|00\ldots10\rangle+$ $\ldots+$ $|11\ldots11\rangle$
+              \end{itemize}
+        \item Grover: Suche in Datenbanken
+              \begin{itemize}
+                  \item Problem: In $m$ Elementen $x_1, \ldots, x_m$ finde $x$ (digitaler Computer: $O(m)$)
+                  \item Speedup durch Quantencomputer: quadratisch $O(\sqrt{m})$
+              \end{itemize}
+        \item Prinzipiell alle digitalen Algorithmen, aber nicht unbedingt schneller! $\to$ Beispiel: 2-bit Addition
+    \end{itemize}
+\end{defi}
+
+\begin{defi}[Quantencomputer]{D-WAVE QUANTENANNEALER}
+    Löst spezielles Optimierungsproblem \enquote{QUBO} schnell und effizient:
+    \begin{align*}
+        \min\limits_{q_i = 0,1}\left(\sum\limits_i a_i q_i + \sum\limits_{i<j} b_{ij} q_i q_j\right)
+    \end{align*}
+\end{defi}
+
+\begin{bonus}[Quantencomputer]{Zusammenfassung}
+    \begin{itemize}
+        \item Quantencomputer = Idee aus Quantentheorie
+        \item Kleinste Recheneinheit: 1 \hyperlink{defi:Qubit}{Qubit}
+        \item Messung von \hyperlink{defi:Qubit}{Qubit} liefert Bit 0 oder 1
+        \item Program = Schaltung aus Quantengattern
+        \item Besondere Form: D-Wave Quantenannealer
+        \item Werden digitale Computer durch Quantencomputer ersetzt? Nein!
+        \item Nutzermodell: Programme schicken spezielle Teilprobleme an Quantencomputer
+        \item Relevant für z. B. Faktorisierung, Suche in Datenbanken, Optimierung, \ldots
+    \end{itemize}
+\end{bonus}
+
+\begin{jsc}{JUNIQ - Jülicher Nutzer-Infrastruktur für Quantencomputing}
+    Das Ziel ist die Bereitstellung von \ldots
+    \begin{itemize}[\ldots]
+        \item Quantencomputer-Simulatoren (JUQCS, Atos QLM-30) über Cloud-Zugriff
+        \item Zugängen zu verfügbaren Systemen für Anwender aus Wissenschaft und Industrie
+              \begin{itemize}
+                  \item Für diese sind Systeme mit verschiedenen technologischen Reifegraden (QTRL) verfügbar
+                  \item Benutzer können erstmals das bevorzugte System auf einer QTRL-Rampe wählen:
+                        \begin{itemize}
+                            \item Zugriff auf aufkommende experimentelle Systeme
+                            \item Zugriff auf Multi-Qubit-Systeme für Quantencomputing ohne Fehlerkorrektur (IBM, Google, Rigetti)
+                            \item Hosting und Betrieb eines Systems für Quantenannealing (D-Wave Systems)
+                        \end{itemize}
+              \end{itemize}
+        \item hochkarätiger Anwenderunterstützung in allen Aspekten der HPC- und Quantencomputer-Nutzung
+              \begin{itemize}
+                  \item Einrichtung eines unterstützenden Simulationslabors \enquote{Quantencomputing}
+                  \item Forschungsteams für Quantenalgorithmen, Protokolle, Workflows und Software-Werkzeuge
+              \end{itemize}
+    \end{itemize}
+\end{jsc}
+
+\subsection{Aufgaben}
+
+\begin{aufgabe}[Quantencomputer]{Qubits}
+    Kreuzen Sie die richtigen Aussagen an.\\
+    Qubits \ldots
+    \begin{itemize}[label={\Square}]
+        \item können drei Zustände annehmen.
+        \item werden durch eine Messung in einen ihrer möglichen Zustände gezwungen.
+        \item sind physhikalisch schwer zu erzeugen und ggf. instabil.
+    \end{itemize}
+    \tcblower
+    Qubits \ldots
+    \begin{itemize}[label={\Square}]
+        \item können drei Zustände annehmen.
+        \item [\XBox] werden durch eine Messung in einen ihrer möglichen Zustände gezwungen.
+        \item [\XBox] sind physhikalisch schwer zu erzeugen und ggf. instabil.
+    \end{itemize}
+\end{aufgabe}
+
+\begin{aufgabe}{Quantencomputer}
+    Kreuzen Sie die richtigen Aussagen an.\\
+    Quantencomputer \ldots
+    \begin{itemize}[label={\Square}]
+        \item können bestimmte Computeralgorithmen um ein Vielfaches schneller ausführen als herkömmliche Rechner.
+        \item können herkömmliche Rechner komplett ersetzen.
+        \item stellen eine Bedrohung für derzeitige Verschlüsselungsalgorithmen dar.
+    \end{itemize}
+    \tcblower
+    Quantencomputer \ldots
+    \begin{itemize}[label={\Square}]
+        \item [\XBox] können bestimmte Computeralgorithmen um ein Vielfaches schneller ausführen als herkömmliche Rechner.
+        \item können herkömmliche Rechner komplett ersetzen.
+        \item [\XBox] stellen eine Bedrohung für derzeitige Verschlüsselungsalgorithmen dar.
+    \end{itemize}
+\end{aufgabe}

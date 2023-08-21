@@ -1,4 +1,7 @@
 \documentclass[german]{spicker}
+\usepackage{textcomp}
+\usepackage{forest}
+\usepackage{wasysym}
 
 %\addbibresource{para.bib}
 
@@ -8,25 +11,133 @@
 \programme{Angewandte Mathematik und Informatik, M. Sc.}
 \lecturer{Dr. Marcus Richter, Jochen Kreutz}
 
-\author{Sven Bergmann, Patrick Gustav Blaneck}
+\author{Patrick Gustav Blaneck, Sven Bergmann}
 
 \makeindex[intoc]
 \makeindex[intoc, name=Beispiele,title=Beispiele]
+\makeindex[intoc, name=Aufgaben,title=Aufgaben]
+
+
+% Setup for SI units
+\sisetup{
+  per-mode=fraction,
+  fraction-function=\tfrac
+}
+\DeclareSIUnit{\flops}{FLOPS}
+\DeclareSIUnit{\cores}{cores}
+\DeclareSIUnit{\cycle}{cycle}
+\DeclareSIUnit{\cycles}{cycles}
+
+% Forschungszentrum Jülich color
+\definecolor{fzj}{rgb}{0, 0.24, 0.42}
+
+
+\newenvironment{jsc}[2][\empty]{%
+\ifx\empty#1
+\index[Beispiele]{#2}%
+\else
+\index[Beispiele]{#1!#2}%
+\fi
+\label{jsc:#2}%
+\begin{tcolorbox}[%
+        colbacktitle=fzj!75!black,
+        colback=fzj!5!white,%
+        colframe=fzj!75!black,%
+        base={#2},%
+        label={%
+                \ifx\empty#1
+                {jsc:#2}%
+                \else
+                {jsc:#1:#2}
+                \fi
+            },
+        % before title={%
+        %         {\usekomafont{spickerboxtype}{Definition:}\hspace*{5mm}}
+        %     },
+        title={%
+                \vphantom{Hy}%
+                \usekomafont{spickerboxtitle}{{#2}}%
+                \ifx\empty#1
+                {}
+                \else
+                {
+                    \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+                }
+                \fi
+            },
+        after title={%
+                {\hfill\usekomafont{spickerboxtype}{Jülich Supercomputing Centre}}
+            },
+        % after title={
+        %         {\usekomafont{spickerboxsubtitle}{
+        %                     \ifx\empty#1
+        %                     {\hfill}
+        %                     \else
+        %                     {\hfill #1}
+        %                     \fi
+        %                 }}
+        %     },
+    ]%
+    }%
+    {%
+
+\end{tcolorbox}}
+
+
+\newenvironment{aufgabe}[2][\empty]{
+\ifx\empty#1
+\index[Aufgaben]{#2}
+\else
+\index[Aufgaben]{#1!#2}
+\fi
+\label{Aufgabe:#2}
+\begin{tcolorbox}[
+  skin=bicolor,
+  colbacktitle=fhmint!75!black,
+  colback=fhmint!5!white,
+  colbacklower=fhmint!50!black,
+  colframe=fhmint!75!black,
+  base={#2},
+  label={
+          \ifx\empty#1
+          {Aufgabe:#2}
+          \else
+          {Aufgabe:#1:#2}
+          \fi
+      },
+  title={
+          \vphantom{Hy}
+          \usekomafont{spickerboxtitle}{{#2}}
+          \ifx\empty#1
+          {}
+          \else
+          {
+              \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+          }
+          \fi
+      },
+  after title={
+          {\hfill\usekomafont{spickerboxtype}{Aufgabe}}
+      },
+    ]
+    }
+    {
+\end{tcolorbox}}
 
 \begin{document}
 \maketitle
 \tableofcontents
+\disclaimer
 
-\include{includes/01_rechnerarchitektur.tex}
-\include{includes/02_komplexitaet.tex}
-\include{includes/03_parallelverarbeitung.tex}
-\include{includes/04_einzelprozessorsysteme.tex}
-\include{includes/05_pipelining.tex}
-\include{includes/06_mehrprozessorsysteme.tex}
-% \include{includes/07_cache.tex}
-% \include{includes/08_mehrprozessorsysteme.tex}
-% \include{includes/09_multithreading.tex}
-% \include{includes/10_vektorrechner.tex}
+\include{includes/rechnerarchitektur}
+\include{includes/komplexitaet}
+\include{includes/parallelverarbeitung}
+\include{includes/einzelprozessorsysteme}
+\include{includes/pipelining}
+\include{includes/mehrprozessorsysteme}
+\include{includes/multithreading}
+\include{includes/vektorrechner}
+\include{includes/quantencomputer}
 
 \printindex
 \printindex[Beispiele]

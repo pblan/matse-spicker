@@ -22,7 +22,7 @@ jobs:
       - name: Compiling LaTeX
         uses: xu-cheng/latex-action@v2
         env:
-         TEXINPUTS: ".:$PWD/tex/latex/spicker//:"
+         TEXINPUTS: ".:$PWD/texmf/tex/latex/local//:"
         with:
           pre_compile: "echo $PWD;" 
           latexmk_use_xelatex: true

@@ -1,0 +1,103 @@
+\section{Multithreading}
+
+\begin{defi}{Thread}
+    Ein Thread ist \ldots
+    \begin{itemize}[\ldots]
+        \item ein Stück Code zusammen mit einem Zustand,
+              gespeichert in:
+              \begin{itemize}
+                  \item Register File
+                  \item Stack
+                  \item Program pointer
+              \end{itemize}
+        \item eine \enquote{leichtgewichtige} Einheit für den Ablauf von Befehlen (light-weight)
+        \item in vielen Betriebssystemen die kleinste Einheit,
+              die verwaltet (schedule) werden kann.
+        \item die Basis für ein Programmiermodell bei parallelen Rechnern (SMP-Rechner: OpenMP).
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Multithreading}
+    \emph{Multithreading} beschreibt viele \enquote{gleichzeitig} verwaltbare und ablaufbare Threads bei \ldots
+    \begin{itemize}[\ldots]
+        \item gleichzeitig bearbeiteten Programmen (multi-programming)
+        \item einem parallelen Programm
+        \item verschiedenen, in der Regel unabhängigen, Teilen eines sequentiellen Programms,
+              z. B. verschiedene Iterationen einer Schleife
+    \end{itemize}
+\end{defi}
+
+\begin{defi}{Task vs Thread}
+    \emph{Process = Task} $\neq$ \emph{Thread}
+    \begin{itemize}
+        \item Ein Task enthält mindestens einen Thread
+        \item Multiple Threads können \enquote{gleichzeitig} in einem Prozessor bearbeitet werden
+        \item Tasks besitzen unabhängige Adressräume (address spaces),
+              wohingegen Threads einen Adressraum eines Tasks gemeinsam nutzen
+              \begin{itemize}
+                  \item \underline{Vorteil:} Die gemeinsame Nutzung des Adressraums führt zu einem schnelleren \enquote{context switch}
+                        (Umschalten des Prozessors von einem Thread zum anderen)
+                  \item \underline{Nachteil:} Multithreading erfordert Synchronisation für den Zugriff auf globale Daten
+              \end{itemize}
+    \end{itemize}
+\end{defi}
+
+\begin{example}{Threads Anwendung und Einsatz}
+    Anwendungen für Threads:
+    \begin{itemize}
+        \item Web-Server: ein Thread für eine Anfrage
+        \item Router: ein Thread für ein Paket
+        \item Vordergrund / Hintergrund: ein Thread für ein GUI,
+              ein anderer zur Berechnung der Aufgabe
+    \end{itemize}
+    Library:
+    \begin{itemize}
+        \item Pthreads (nach einem POSIX-Standard)
+        \item Routinen für
+              \begin{itemize}
+                  \item Thread-Erzeugung, Beendigung
+                  \item Wechselseitiger Ausschluss und Semaphoren zur Synchronisation
+              \end{itemize}
+    \end{itemize}
+\end{example}
+
+\begin{defi}[Threads]{Simultaneous Multithreading (SMT)}
+    Bei Einprozessor-Systemen: \\
+    \begin{tabularx}{\textwidth}{@{}lX@{}}
+        Fakt:    & Superskalare und VLIW Prozessoren holen (fetch) und führen (execute) mehrere Befehle pro Clock Cycle aus \\
+        Problem: & Ein einzelner Thread besitzt nicht genug \enquote{instruction-level parallelism}                         \\
+        Lösung:  & Ausführen der Befehle von vielen parallelen Threads in einem Clock Cycle                                 \\
+        Vorteil: & Die Leistung (performance) der einzelnen Threads wird nicht von anderen Threads beeinträchtigt           \\
+    \end{tabularx}
+    \\
+    $\to$ bei Intel wird SMT \enquote{Hyper-threading} genannt.
+\end{defi}
+
+\subsection{Aufgaben}
+
+\begin{aufgabe}{Multithreading}
+    Was ist ein Thread?
+    \tcblower
+    Ein Thread \ldots
+    \begin{itemize}[$\ldots$]
+        \item ist ein Stück Code zusammen mit einem Zustand, gespeichert in:
+              \begin{itemize}
+                  \item Register File
+                  \item Stack
+                  \item Program pointer
+              \end{itemize}
+        \item ist eine \enquote{leichtgewichtige} Einheit für den Ablauf von Befehlen (light-weight)
+        \item ist in vielen Betriebssystemen die kleinste Einheit, die verwaltet (schedule) werden kann
+        \item bildet die Basis für ein Programmiermodell bei parallelen Rechnern (SMP-Rechner: OpenMP)
+    \end{itemize}
+\end{aufgabe}
+
+\begin{aufgabe}{Multithreading}
+    Wodurch unterscheidet sich ein Task (Prozess) von einem Thread?
+    \tcblower
+    \begin{itemize}
+        \item Ein Prozess enthält mindestens einen Thread
+        \item Multiple Threads können \enquote{gleichzeitig} in einem Prozessor bearbeitet werden
+        \item Prozesse besitzen unabhängige Adressräume (address spaces), wohingegen Threads einen Adressraum eines Prozesses gemeinsam nutzen
+    \end{itemize}
+\end{aufgabe}

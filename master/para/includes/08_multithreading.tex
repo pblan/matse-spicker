@@ -1,0 +1,38 @@
+\section{Multithreading}
+
+\begin{defi}{Thread}
+    % TODO: https://de.wikipedia.org/wiki/Thread_(Informatik) (Quelle)
+    Ein \emph{Thread} bezeichnet einen Ausführungsstrang oder eine Ausführungsreihenfolge in der Abarbeitung eines Programms.
+
+    Ein Thread ist Teil eines Prozesses.
+    Threads innerhalb des gleichen Prozesses können verschiedenen Prozessoren zugeordnet sein.
+
+    Jeder Thread besitzt einen eigenen sogenannten \emph{Threadkontext}:
+    \begin{itemize}
+        \item unabhängiger Registersatz inkl. Befehlszeiger (Instruction Pointer),
+        \item einen eigenen Stack, jedoch meist im gemeinsamen Prozess-Adressraum.
+    \end{itemize}
+
+    Andere Betriebsmittel werden von allen Threads gemeinsam verwendet.
+    Durch die gemeinsame Nutzung von Betriebsmitteln kann es auch zu Konflikten kommen.
+    Diese müssen durch den Einsatz von Synchronisationsmechanismen aufgelöst werden.
+\end{defi}
+
+\begin{defi}{Multithreading}
+    % TODO: https://de.wikipedia.org/wiki/Multithreading (Quelle)
+    \emph{Multithreading} bezeichnet das gleichzeitige (oder quasi-gleichzeitige) Abarbeiten mehrerer Threads (Ausführungsstränge) innerhalb eines einzelnen Prozesses oder eines Tasks (ein Anwendungsprogramm).
+
+    Im Gegensatz zum Multitasking, bei dem mehrere unabhängige Programme voneinander abgeschottet quasi-gleichzeitig ausgeführt werden, sind die Threads eines Anwendungsprogramms nicht voneinander abgeschottet und können somit durch sogenannte Race Conditions Fehler verursachen, die durch Synchronisation vermieden werden müssen.
+
+    Ein Vorteil von Multithreading ist, dass die gemeinsame Nutzung des Adressraums zu einem schnelleren \emph{Context Switch} (Umschalten des Prozessors von einem Thread auf den anderen) führt.
+
+    Allerdings erfordert Multithreading eine Synchronisation für den Zugriff auf globale bzw. geteilte Daten.
+\end{defi}
+
+\begin{bonus}{Simultaneous Multithreading}
+    % TODO: https://de.wikipedia.org/wiki/Simultaneous_Multithreading (Quelle)
+    Der Begriff \emph{Simultaneous Multithreading} (\emph{SMT}) bezeichnet die Fähigkeit eines Mikroprozessors, mittels getrennter Pipelines und/oder zusätzlicher Registersätze mehrere Threads gleichzeitig auszuführen.
+    Hiermit stellt SMT eine Form des hardwareseitigen Multithreadings dar.
+
+    Die derzeit wohl bekannteste Form des SMT ist Intels Hyper-Threading-Technik (HTT) für Pentium 4, Xeon, Atom und Core i und neuer, aber auch Prozessoren anderer Hersteller verfügen über SMT, z. B. Cell, Power ab POWER5 und POWER6 von IBM und die Prozessorserien von AMD ab der Zen-Architektur, Ryzen und EPYC.
+\end{bonus}
