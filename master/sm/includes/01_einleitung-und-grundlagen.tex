@@ -1,0 +1,374 @@
+\section{Einleitung und Grundlagen}
+
+\subsection{Einführungs des linearen Modells}
+
+% https://de.wikipedia.org/wiki/Klassisches_lineares_Modell_der_Normalregression
+\begin{defi}{Lineares Modell}
+    Das (allgemeine) \emph{lineare Modell} (mit festen Effekten) ist charakterisiert durch die Gleichungen
+    \[
+        \mathbf{y} = \mathbf{X} {\boldsymbol{\beta}} + {\boldsymbol{\varepsilon}} \qquad \sum_{{\boldsymbol{\varepsilon}}} = (\Cov(\varepsilon_i, \varepsilon_j))_{\substack{i = 1, \ldots, n\\j = 1, \ldots, k}} = \sigma^2 \mathbf{I}_n \quad {\boldsymbol{\beta}} \in \R^k
+    \]
+
+    mit den Anforderungen:
+    \begin{enumerate}
+        \item Die Störgrößen ${\boldsymbol{\varepsilon}}$ weisen einen Erwartungswert von Null auf:
+              \[
+                  \E [{\boldsymbol{\varepsilon}}] = \mathbf{0},
+              \]
+              was bedeutet, dass wir davon ausgehen können, dass unser Modell im Mittel korrekt ist.
+        \item Die Störgrößen sind unkorreliert: $\Cov(\varepsilon_i, \varepsilon_j) = \E(\varepsilon_i\varepsilon_j) = 0$ und weisen eine homogene Varianz auf.
+              Beides zusammen ergibt:
+              \[
+                  \Cov({\boldsymbol{\varepsilon}}) = \sigma^2 \mathbf{I}_k
+              \]
+        \item Die Datenmatrix $\mathbf{X}$ ist nicht-stochastisch und hat vollen Spaltenrang:
+              \[
+                  \rang(\mathbf{X}) = n
+              \]
+    \end{enumerate}
+
+    \tcbline
+
+    \begin{tabularx}{\linewidth}{lX}
+        $\mathbf{y} = (y_1, \ldots, y_n)^T$                                     & Zufallsvektor der beobachteten Größen (\emph{abhängige Variable}, \emph{Regressand})  \\
+        ${\boldsymbol{\beta}} = (\beta_1, \ldots, \beta_k)^T$                   & Vektor der \emph{unbekannten konstanten Parameter}  (\emph{systematische Komponente}) \\
+        $\mathbf{X} = (x_{ij})_{\substack{i = 1, \ldots, n                                                                                                              \\j = 1, \ldots, k}}$ & Matrix der konstanten Werte der Einflussfaktoren (\emph{kontrollierte} oder \emph{unabhängige Variablen}, \emph{Designmatrix}, \emph{Regressor}) \\
+        ${\boldsymbol{\varepsilon}} = (\varepsilon_1, \ldots, \varepsilon_n)^T$ & Zufallsvektor der Fehler (\emph{Störgrößen}, \emph{stochastische Komponente})         \\
+        $\sigma^2 > 0$                                                          & Varianz der Fehlergrößen                                                              \\
+        $\mathbf{I}_n$                                                          & $(n \times n)$-Einheitsmatrix                                                         \\
+    \end{tabularx}
+\end{defi}
+
+\begin{bonus}[Lineares Modell]{Eindeutigkeit}
+    Die Bedingungen für das allgemeine lineare Modell lassen sich zusammenfassen durch
+    \[
+        {\boldsymbol{\varepsilon}} \sim (\mathbf{0}, \sigma^2 \mathbf{I}_n).
+    \]
+
+    Statt die Varianzen und Kovarianzen der Störgrößen einzeln zu betrachten, werden diese in folgender Varianz-Kovarianzmatrix zusammengefasst:
+    \[
+        \Cov({\boldsymbol{\varepsilon}})
+        = \E \left( ({\boldsymbol{\varepsilon}} - \underbrace{\E({\boldsymbol{\varepsilon}})}_{= \mathbf{0}} ({\boldsymbol{\varepsilon}} - \underbrace{\E({\boldsymbol{\varepsilon}})}_{= \mathbf{0}})^T) \right)
+        = \E({\boldsymbol{\varepsilon}}{\boldsymbol{\varepsilon}}^T)
+    \]
+    \[
+        = \begin{pmatrix}
+            \Var(\varepsilon_1)                & \Cov(\varepsilon_1, \varepsilon_2) & \cdots & \Cov(\varepsilon_1, \varepsilon_k) \\
+            \Cov(\varepsilon_2, \varepsilon_1) & \Var(\varepsilon_2)                & \cdots & \Cov(\varepsilon_2, \varepsilon_k) \\
+            \vdots                             & \vdots                             & \ddots & \vdots                             \\
+            \Cov(\varepsilon_k, \varepsilon_1) & \Cov(\varepsilon_k, \varepsilon_2) & \cdots & \Var(\varepsilon_k)
+        \end{pmatrix}
+        = \sigma^2 \begin{pmatrix}
+            1      & 0      & \cdots & 0      \\
+            0      & 1      & \cdots & 0      \\
+            \vdots & \vdots & \ddots & \vdots \\
+            0      & 0      & \cdots & 1
+        \end{pmatrix}
+        = \sigma^2 \mathbf{I}_k
+    \]
+
+    Somit gilt für $\mathbf{y}$
+    \[
+        \E (\mathbf{y}) = \mathbf{X}{\boldsymbol{\beta}} = \sum_{j=1}^{k} \mathbf{x}_j\beta_j \quad \text{mit} \quad \Cov(\mathbf{y}) = \sigma^2 \mathbf{I}_k
+    \]
+
+    Die Menge der aufgrund des Modells möglichen Erwartungswerte des Beobachtungsvektors $\mathbf{y}$ bildet den Spaltenraum von $\mathbf{X}$.
+
+    Der Parametervektor ${\boldsymbol{\beta}}$ wird durch den Erwartungswert $\E (\mathbf{y})$ genau dann eindeutig festgelegt, wenn die Spaltenvektoren $\mathbf{x}_1, \ldots, \mathbf{x}_k$ von $\mathbf{X}$ linear unabhängig sind, d. h. wenn die Matrix von $\mathbf{X}$ vollen Spaltenrang $\rang(\mathbf{X}) = k$ hat.
+\end{bonus}
+
+\begin{defi}[Faktor]{Qualitativer und quantitativer Faktor}
+    Man sagt, eine nicht konstante kontrollierte Größe gehört zu einem \emph{qualitativen Faktor}, wenn die zugehörige Spalte nur aus Nullen und Einsen besteht, und spricht andernfalls von einem \emph{quantitativen Faktor}.
+\end{defi}
+
+\begin{defi}[Lineares Modell]{Parameterfreie Darstellung}
+    Es sei $\mathcal{U}$ der Spaltenraum der Designmatrix $\mathbf{X}$:
+    \[
+        \mathcal{U} = \{ {\boldsymbol{\mu} \mid \boldsymbol{\mu} = \mathbf{X} \boldsymbol{\beta}, \boldsymbol{\beta} \in \R^k} \}
+    \]
+
+    Das \emph{lineare Modell} kann dann wie folgt \emph{parameterfrei} formuliert werden:
+    \[
+        \mathbf{y} = \boldsymbol{\mu} + \boldsymbol{\varepsilon}
+    \]
+
+    mit den Anforderungen:
+    \begin{enumerate}
+        \item Die Störgrößen ${\boldsymbol{\varepsilon}}$ weisen einen Erwartungswert von Null auf:
+              \[
+                  \E [{\boldsymbol{\varepsilon}}] = \mathbf{0},
+              \]
+              was bedeutet, dass wir davon ausgehen können, dass unser Modell im Mittel korrekt ist.
+        \item Die Störgrößen sind unkorreliert: $\Cov(\varepsilon_i, \varepsilon_j) = \E(\varepsilon_i\varepsilon_j) = 0$ und weisen eine homogene Varianz auf.
+              Beides zusammen ergibt:
+              \[
+                  \Cov({\boldsymbol{\varepsilon}}) = \sigma^2 \mathbf{I}_k
+              \]
+    \end{enumerate}
+
+    \tcbline
+
+    \begin{tabularx}{\linewidth}{lX}
+        $\mathbf{y} = (y_1, \ldots, y_n)^T$                                     & Zufallsvektor der beobachteten Größen (abhängige Variable, Regressand) \\
+        ${\boldsymbol{\mu}} = (\mu_1, \ldots, \mu_k)^T$                         & Vektor der \emph{unbekannten Erwartungswerte der beobachteten Größen}  \\
+        ${\boldsymbol{\varepsilon}} = (\varepsilon_1, \ldots, \varepsilon_n)^T$ & Zufallsvektor der Fehler (Störgrößen, stochastische Komponente)        \\
+        $\sigma^2 > 0$                                                          & Varianz der Fehlergrößen                                               \\
+        $\mathbf{I}_n$                                                          & $(n \times n)$-Einheitsmatrix                                          \\
+    \end{tabularx}
+\end{defi}
+
+\begin{bonus}[Lineares Modell!Parameterfreie Darstellung]{Reparametrisierung}
+    Stimmen die Spaltenräume der $(n \times k)$-Matrix $\mathbf{X}$ und der $(n \times k_*)$-Matrix $\mathbf{X_*}$ überein, dann beschreiben die linearen Modelle
+    \[
+        \mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
+    \]
+    sowie
+    \[
+        \mathbf{y} = \mathbf{X_*} \boldsymbol{\beta_*} + \boldsymbol{\varepsilon}
+    \]
+    dasselbe parameterfreie lineare Modell.
+
+    Sie stellen unterschiedliche Parametrisierungen des selben linearen Modells dar.
+    Die Änderung der Parametrisierung wird als \emph{Reparametrisierung} bezeichnet.
+\end{bonus}
+
+\begin{defi}[Lineares Modell]{Regressionsanalyse}
+    Man spricht beim linearen Modell von \emph{Regressionsanalyse}, falls alle nicht konstanten kontrollierten Größen zu quantitativen Faktoren gehören.
+\end{defi}
+
+\begin{defi}[Regressionsanalyse]{Lineare Regression}
+    Die \emph{lineare Regression} ist ein Spezialfall der Regressionsanalyse, also ein statistisches Verfahren, mit dem versucht wird, eine beobachtete abhängige Variable durch eine oder mehrere unabhängige Variablen zu erklären.
+    Bei der linearen Regression wird dabei ein lineares Modell angenommen.
+    Es werden also nur solche Zusammenhänge herangezogen, bei denen die abhängige Variable eine Linearkombination der Regressionskoeffizienten (aber nicht notwendigerweise der unabhängigen Variablen) ist.
+\end{defi}
+
+% https://de.wikipedia.org/wiki/Lineare_Einfachregression
+\begin{defi}[Lineare Regression]{Einfache lineare Regression}
+    Die \emph{einfache lineare Regression} stellt den Zusammenhang zwischen der Einfluss- und der Zielgröße mithilfe von zwei festen, unbekannten, reellen Parametern $\beta_{0}$ und $\beta_{1}$ auf lineare Weise her, d. h. die Modellfunktion $f(\cdot)$ wird wie folgt spezifiziert:
+    \[
+        f(x; \beta_0, \beta_1) = \beta_0 + \beta_1 x,
+    \]
+    in Matrixschreibweise:
+    \[
+        \mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
+    \]
+    mit
+    \[
+        \mathbf{y} = \begin{pmatrix}
+            y_1 \\ y_2 \\ \vdots \\ y_n
+        \end{pmatrix},
+        \quad \mathbf{X} = \begin{pmatrix}
+            1 & x_1 \\ 1 & x_2 \\ \vdots & \vdots \\ 1 & x_n
+        \end{pmatrix},
+        \quad \boldsymbol{\beta} = \begin{pmatrix}
+            \beta_0 \\ \beta_1
+        \end{pmatrix},
+        \quad \boldsymbol{\varepsilon} = \begin{pmatrix}
+            \varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n
+        \end{pmatrix}.
+    \]
+
+    Des Weiteren liegen $n$ Paare $(x_{1}, y_{1}),\ldots ,(x_{n},y_{n})$ von Messwerten vor.
+
+    \tcbline
+
+    \begin{tabularx}{\linewidth}{lX}
+        $f(x; \beta_0, \beta_1)$ & \emph{Regressionsgerade}      \\
+        $\beta_0$                & \emph{Regressionskonstante}   \\
+        $\beta_1$                & \emph{Regressionskoeffizient}
+    \end{tabularx}
+\end{defi}
+
+\begin{defi}[Lineare Regression]{Multiple lineare Regression}
+    Die \emph{multiple lineare Regression} stellt den Zusammenhang zwischen mehrerer Einfluss- und der Zielgröße mithilfe von festen, unbekannten, reellen Parametern $\beta_{i}$ auf lineare Weise her, d. h. die Modellfunktion $f(\cdot)$ wird wie folgt spezifiziert:
+    \[
+        f(x_1, \ldots, x_k; \beta_0, \ldots, \beta_k) = \beta_0 + \beta_1 x_1 + \ldots + \beta_k x_k,
+    \]
+    in Matrixschreibweise:
+    \[
+        \mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
+    \]
+    mit
+    \[
+        \mathbf{y} = \begin{pmatrix}
+            y_1 \\ y_2 \\ \vdots \\ y_n
+        \end{pmatrix},
+        \quad \mathbf{X} = \begin{pmatrix}
+            1      & x_{1,1} & \cdots & x_{1,k} \\
+            1      & x_{2,1} & \cdots & x_{2,k} \\
+            \vdots & \vdots  & \ddots & \vdots  \\
+            1      & x_{n,1} & \cdots & x_{n,k}
+        \end{pmatrix},
+        \quad \boldsymbol{\beta} = \begin{pmatrix}
+            \beta_0 \\ \beta_1 \\ \vdots \\ \beta_k
+        \end{pmatrix},
+        \quad \boldsymbol{\varepsilon} = \begin{pmatrix}
+            \varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n
+        \end{pmatrix}.
+    \]
+
+    Des Weiteren liegen $n$ Beobachtungen $(y_1, \ldots, y_n)$ der Funktionswerte für die  $(x_{1}, \ldots, x_{k})$-Werte $(x_{1,1}, \ldots, x_{1,k}), \ldots, (x_{n,1}, \ldots, x_{n,k})$ vor.
+
+    \tcbline
+
+    \begin{tabularx}{\linewidth}{lX}
+        $f(x_1, \ldots, x_k; \beta_0, \ldots, \beta_k)$ & \emph{multiple lineare Regressionsfunktion} \\
+        $\beta_0$                                       & \emph{Regressionskonstante}                 \\
+        $\beta_1, \ldots, \beta_k$                      & \emph{(partielle) Regressionskoeffizient}
+    \end{tabularx}
+\end{defi}
+
+% https://de.wikipedia.org/wiki/Multiple_lineare_Regression#Polynomiale_Regression
+\begin{defi}[Multiple lineare Regression]{Polynomiale Regression}
+    Die \emph{polynomiale Regression} ist ein Spezialfall der multiplen linearen Regression.
+    Das multiple lineare Regressionsmodell wird auch zur Lösung von speziellen (im Hinblick auf die erklärenden Variablen) nichtlinearen Regressionsproblemen herangezogen.
+
+    Bei der polynomialen Regression wird der Erwartungswert der abhängigen Variablen von den erklärenden Variablen mithilfe eines Polynoms vom Grade $p > 1$ beschrieben, also durch die Modellfunktion
+    \[
+        f(x; \beta_0, \beta_1, \ldots, \beta_k) = \beta_0 + \beta_1 x + \beta_2 x^2 + \ldots + \beta_k x^k,
+    \]
+    in Matrixschreibweise:
+    \[
+        \mathbf{y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}
+    \]
+    mit
+    \[
+        \mathbf{y} = \begin{pmatrix}
+            y_1 \\ y_2 \\ \vdots \\ y_n
+        \end{pmatrix},
+        \quad \mathbf{X} = \begin{pmatrix}
+            1      & x_{1}  & x_{1}^2 & \cdots & x_{1}^k \\
+            1      & x_{2}  & x_{2}^2 & \cdots & x_{2}^k \\
+            \vdots & \vdots & \vdots  & \ddots & \vdots  \\
+            1      & x_{n}  & x_{n}^2 & \cdots & x_{n}^k
+        \end{pmatrix},
+        \quad \boldsymbol{\beta} = \begin{pmatrix}
+            \beta_0 \\ \beta_1 \\ \vdots \\ \beta_k
+        \end{pmatrix},
+        \quad \boldsymbol{\varepsilon} = \begin{pmatrix}
+            \varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n
+        \end{pmatrix}.
+    \]
+
+
+    Des Weiteren liegen $n$ Paare $(x_{1}, y_{1}),\ldots ,(x_{n},y_{n})$ von Messwerten vor.
+
+\end{defi}
+
+\begin{defi}[Lineares Modell]{Varianzanalyse}
+    Man spricht beim linearen Modell von \emph{Varianzanalyse} (engl. analysis of variance (ANOVA)), falls alle nicht-konstanten kontrollierten Größen zu qualitativen Faktoren gehören.
+\end{defi}
+
+\begin{defi}[Varianzanalyse]{Einfache Varianzanalyse}
+    Bei einer \emph{einfachen Varianzanalyse} (engl. one-way analysis of variance (one-way ANOVA)) untersucht man den Einfluss einer unabhängigen Variable (Faktor) mit $k$ verschiedenen Versuchseinheiten (Gruppen) $i = 1, \ldots, k$ auf die Ausprägungen einer Zufallsvariablen.
+    Dazu werden die $k$ experimentelle Bedingungen für die $n_i > 0$ Gruppen miteinander verglichen, und zwar vergleicht man die Varianz zwischen den Gruppen mit der Varianz innerhalb der Gruppen.
+    Weil sich die totale Varianz aus den zwei genannten Komponenten zusammensetzt, spricht man von Varianzanalyse.
+
+    Dabei wird vorausgesetzt, dass sich die unterschiedlichen Bedingungen nur auf die Erwartungswerte, nicht aber auf die Variabilität der Messungen auswirken.
+
+    Bezeichnet $y_{ij}$ mit $j = 1, \ldots, n_i$ und $i = 1, \ldots, k$ den $j$-ten Messwert unter der $i$-ten Bedingung und $\mu_i$ den Erwartungswert bei Vorliegen der $i$-ten Bedingung, dann kann das zugrundeliegende Modell wie folgt formuliert werden:
+    \[
+        y_{ij} = \mu_i + \varepsilon_{ij},
+    \]
+
+    in Matrixschreibweise:
+    \[
+        \mathbf{Y} = \mathbf{X} \boldsymbol{\gamma} + \mathbf{E}
+    \]
+    mit
+    \[
+        \mathbf{Y} = \begin{bmatrix}
+            \mathbf{y}_1 \\ \mathbf{y}_2 \\ \vdots \\ \mathbf{y}_n
+        \end{bmatrix},
+        \quad \mathbf{X} = \begin{bmatrix}
+            \mathbf{1}_{n_1} & \mathbf{0}_{n_1} & \cdots & \mathbf{0}_{n_1} \\
+            \mathbf{0}_{n_2} & \mathbf{1}_{n_2} & \cdots & \mathbf{0}_{n_2} \\
+            \vdots           & \vdots           & \ddots & \vdots           \\
+            \mathbf{0}_{n_k} & \mathbf{0}_{n_k} & \cdots & \mathbf{1}_{n_k}
+        \end{bmatrix},
+        \quad \boldsymbol{\gamma} = \begin{pmatrix}
+            \mu_1 \\ \mu_2 \\ \vdots \\ \mu_k
+        \end{pmatrix},
+        \quad \mathbf{E} = \begin{bmatrix}
+            \boldsymbol{\varepsilon}_1 \\ \boldsymbol{\varepsilon}_2 \\ \vdots \\ \boldsymbol{\varepsilon}_n
+        \end{bmatrix}.
+    \]
+
+
+    Die Designmatrix $\mathbf{X}$ hat vollen Spaltenrang.
+
+    Die einfache Varianzanalyse ist die Verallgemeinerung des $t$-Tests im Falle mehr als zwei Gruppen.
+    Für $k = 2$ ist sie äquivalent mit dem $t$-Test.
+
+    \tcbline
+
+    \begin{tabularx}{\linewidth}{lX}
+        $y_{ij}$ & $j$-ter Messwert unter der $i$-ten Bedingung       \\
+        $\mu_i$  & Erwartungswert bei Vorliegen der $i$-ten Bedingung
+    \end{tabularx}
+\end{defi}
+
+\begin{defi}[Einfache Varianzanalyse]{Alternative Darstellung}
+    Häufig wird eine alternative Parametrisierung verwendet, bei der die Erwartungswerte in eine gemeinsame Komponente $\mu$ und Abweichungen $\alpha_i$ zerlegt werden, d. h. $\mu_i = \mu + \alpha_i$ für $i = 1, \ldots, k$.
+
+    Die Modellgleichung lautet dann
+    \[
+        y_{ij} = \mu + \alpha_i + \varepsilon_{ij},
+    \]
+
+    in Matrixschreibweise:
+    \[
+        \mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \mathbf{E}
+    \]
+    mit
+    \[
+        \mathbf{Y} = \begin{bmatrix}
+            \mathbf{y}_1 \\ \mathbf{y}_2 \\ \vdots \\ \mathbf{y}_n
+        \end{bmatrix},
+        \quad \mathbf{X} = \begin{bmatrix}
+            \mathbf{1}_{n_1} & \mathbf{1}_{n_1} & \mathbf{0}_{n_1} & \cdots & \mathbf{0}_{n_1} \\
+            \mathbf{1}_{n_2} & \mathbf{0}_{n_2} & \mathbf{1}_{n_2} & \cdots & \mathbf{0}_{n_2} \\
+            \vdots           & \vdots           & \vdots           & \ddots & \vdots           \\
+            \mathbf{1}_{n_k} & \mathbf{0}_{n_k} & \mathbf{0}_{n_k} & \cdots & \mathbf{1}_{n_k}
+        \end{bmatrix},
+        \quad \boldsymbol{\beta} = \begin{pmatrix}
+            \mu \\ \alpha_1 \\ \alpha_2 \\ \vdots \\ \alpha_k
+        \end{pmatrix},
+        \quad \mathbf{E} = \begin{bmatrix}
+            \boldsymbol{\varepsilon}_1 \\ \boldsymbol{\varepsilon}_2 \\ \vdots \\ \boldsymbol{\varepsilon}_n
+        \end{bmatrix}.
+    \]
+
+    Die Designmatrix $\mathbf{X}$ hat nicht vollen Spaltenrang.
+
+    Die Zerlegung der Erwartungswerte in dieser Form ist nicht eindeutig, so dass zusätzliche Nebenbedingungen an die Parameter $\mu$ und $\alpha_1, \ldots, \alpha_k$ gestellt werden müssen:
+    \[
+        \sum_{i=1}^{k} \alpha_i = 0 \quad \implies \quad \underbrace{\mu = \frac{1}{k} \sum_{i=1}^{k} \mu_i}_{\text{über $k$ Bedingungen gemittelter Erwartungswert}}
+    \]
+    oder
+    \[
+        \sum_{i=1}^{k} n_i \alpha_i = 0 \quad \implies \quad \underbrace{\mu = \frac{1}{n} \sum_{i=1}^{k} n_i \mu_i = \frac{1}{n} \sum_{i=1}^{k} \sum_{j=1}^{n_i} \E (y_{ij})}_{\text{über alle $n = \sum_{i=1}^{k} n_i$ Beobachtungen gemittelter Erwartungswert}}
+    \]
+
+    Die Nebenbedingungen, durch die die Parameter eindeutig festgelegt werden, bezeichnet man als \emph{Reparametrisierungsbedingungen}.
+
+    \tcbline
+
+    \begin{tabularx}{\linewidth}{lX}
+        $y_{ij}$ & $j$-ter Messwert unter der $i$-ten Bedingung       \\
+        $\mu_i$  & Erwartungswert bei Vorliegen der $i$-ten Bedingung
+    \end{tabularx}
+\end{defi}
+
+
+
+\begin{defi}[Lineares Modell]{Kovarianzanalyse}
+    Man spricht beim linearen Modell von \emph{Kovarianzanalyse}, falls mindestens eine kontrollierte Größe zu einem quantitativen Faktor und mindestens eine zu einem qualitativen Faktor gehört.
+\end{defi}
+
+
+\subsection{Lineare Algebra}
+% TODO
+
+\subsection{Lineare Wahrscheinlichkeitsrechnung}
+% TODO

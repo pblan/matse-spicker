@@ -13,13 +13,20 @@
 \makeindex[intoc]
 \makeindex[intoc, name=Beispiele,title=Beispiele]
 
+% \DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\E}{E}
+
 \begin{document}
 \maketitle
 \tableofcontents
+\disclaimer
 
-% \include{includes/einleitung.tex}
-
-\blinddocument
+\include{includes/01_einleitung-und-grundlagen}
+% \include{includes/02_das-lineare-modell}
+% \include{includes/03_das-klassische-lineare-modell}
+% \include{includes/04_konfidenzbereiche}
+% \include{includes/05_hypothesentests}
+% \include{includes/06_varianzanalyse}
 
 \printindex
 \printindex[Beispiele]
