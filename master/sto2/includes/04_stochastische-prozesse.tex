@@ -1,0 +1,579 @@
+\section{Stochastische Prozesse}
+
+\begin{defi}[Stochastischer Prozess]{Randverteilung}
+    TODO
+\end{defi}
+
+\begin{info}[Stochastischer Prozess]{Randverteilung}
+    \begin{itemize}
+        \item Was ist die ein- bzw. mehrdimensionale Randverteilung?
+    \end{itemize}
+\end{info}
+
+\begin{defi}[Stochastischer Prozess]{Pfad}
+    % https://de.wikipedia.org/wiki/Pfad_(Stochastik)
+    Gegeben sei ein stochastischer Prozess $X=(X_{t})_{t\in I}$ auf dem Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ mit Indexmenge $I\subset \mathbb{R}$, der Werte in $E$ annimmt.
+
+    Dann heißt für $\omega \in \Omega$ die Abbildung
+    \[
+        t: I \to E, \quad t\mapsto X_{t}(\omega)
+    \]
+    ein \emph{Pfad} von $X$.
+\end{defi}
+
+\subsection{Klassen von Prozessen}
+
+\subsubsection{Martingale}
+
+\begin{defi}[Martingal]{Submartingal}
+    % https://de.wikipedia.org/wiki/Martingal#Supermartingale_und_Submartingale
+    Ein integrierbarer und an $\mathbb{F}$ adaptierter diskreter stochastischer Prozess heißt \emph{Submartingal}, wenn
+    \[
+        \operatorname{E} [X_{n+1} \mid{\mathcal{F}}_{n}] \geq X_{n} \quad P\text{-fast sicher für alle } n\in \mathbb{N}.
+    \]
+
+    Im stetigen Falle definiert man analog ein Submartingal über
+    \[
+        \operatorname{E} [X_{t} \mid{\mathcal{F}}_{s}] \geq X_{s} \quad P\text{-fast sicher für alle } s\leq t.
+    \]
+\end{defi}
+
+\begin{defi}[Martingal]{Supermartingal}
+    % https://de.wikipedia.org/wiki/Martingal#Supermartingale_und_Submartingale
+    Ein integrierbarer und an $\mathbb{F}$ adaptierter diskreter stochastischer Prozess heißt \emph{Supermartingal}, wenn
+    \[
+        \operatorname{E} [X_{n+1} \mid{\mathcal{F}}_{n}] \leq X_{n} \quad P\text{-fast sicher für alle } n\in \mathbb{N}.
+    \]
+
+    Im stetigen Falle definiert man analog ein Supermartingal über
+    \[
+        \operatorname{E} [X_{t} \mid{\mathcal{F}}_{s}] \leq X_{s} \quad P\text{-fast sicher für alle } s\leq t.
+    \]
+\end{defi}
+
+\subsubsection{Markov-Prozesse}
+
+Joa das haben wir schon.
+
+\subsubsection{Punktprozesse und Poisson-Prozesse}
+
+\begin{defi}[Stochastischer Prozess]{Punktprozess}
+    % https://de.wikipedia.org/wiki/Punktprozess
+    Ein stochastischer Prozess $N=(N(t))_{t\geq 0}$ heißt \emph{Zählprozess}, wenn es eine Folge positiver Zufallsgrößen $(Y_{n})_{n\in \mathbb{N}}$, die sogenannten Zwischenankunftszeiten, derart gibt, dass mit $S_{n}:=Y_{1}+\dotsb +Y_{n}$ gilt:
+    \[
+        N(t) =
+        \begin{cases}
+            0                                             & \text{falls } t < Y_{1}, \\
+            \max \{ n \in \mathbb{N} \mid S_{n} \leq t \} & \text{sonst}
+        \end{cases}
+    \]
+    Die Folge der $S_{n}$ bildet dann einen \emph{Punktprozess} auf $\mathbb{R}^{+}$.
+    Dieser positioniert zufällige Punkte auf der positiven Zahlengerade, deren Abstände gemäß den Zwischenankunftszeiten verteilt sind.
+    Der Zählprozess läuft dann mit konstanter Geschwindigkeit die positiven Zahlen ab und zählt, wie viele Punkte er bis zum Zeitpunkt $t$ bereits angetroffen hat.
+
+    \textit{Aufgrund dieser engen Verbindung werden Zählprozess und Punktprozess teils auch synonym verwendet.}
+\end{defi}
+
+\begin{defi}{Poisson-Prozess}
+    % https://de.wikipedia.org/wiki/Poisson-Prozess
+    % https://www.math.tugraz.at/mathc/wsp2016/folien/2017-01-19-Poisson%20Prozess.pdf
+    Ein \emph{Poisson-Punktprozess} (oder kurz \emph{Poisson-Prozess}) ist stochastischer Prozess, konkret ein Erneuerungsprozess, dessen Zuwächse Poisson-verteilt sind.
+
+    Die mit einem Poisson-Prozess beschriebenen seltenen Ereignisse besitzen aber typischerweise ein großes Risiko (als Produkt aus Kosten und Wahrscheinlichkeit).
+    Daher werden damit oft im Versicherungswesen zum Beispiel Störfälle an komplexen Industrieanlagen, Flutkatastrophen, Flugzeugabstürze usw. modelliert.
+
+    Die Verteilung der Zuwächse hat einen Parameter $\lambda$, dieser wird als \emph{Intensität des Prozesses} bezeichnet, da pro Zeitspanne genau $\lambda$ Sprünge erwartet werden (Erwartungswert der Poisson-Verteilung ist ebenfalls $\lambda$).
+    Die Höhe jedes Sprunges ist 1, die Zeiten zwischen den Sprüngen sind exponentialverteilt.
+    Der Poisson-Prozess ist also ein diskreter Prozess in stetiger (d. h. kontinuierlicher) Zeit.
+
+    Ein Zählprozess bzw. Punktprozess $N=(N(t))_{t\geq 0}$ heißt \emph{(homogener) Poisson-Prozess mit Intensität $\lambda > 0$}, wenn gilt:
+    \begin{itemize}
+        \item $(N_{t})_{t\geq 0}$ besitzt unabhängige Zuwächse.
+        \item Für alle $t>0$ sind die Zuwächse $N(t)$ Poisson-verteilt mit Parameter $\lambda t$:
+              \[
+                  P(N(t)=k) = \frac{(\lambda t)^{k}}{k!} e^{-\lambda t} \quad \text{für } 1 \leq k \in \mathbb{N}.
+              \]
+        \item Für alle $s<t$ sind die Zuwächse $N(t) - N(s)$ Poisson-verteilt mit Parameter $\lambda (t-s)$:
+              \[
+                  P(N(t) - N(s) = k) = \frac{(\lambda (t-s))^{k}}{k!} e^{-\lambda (t-s)} \quad \text{für } 1 \leq k \in \mathbb{N}.
+              \]
+    \end{itemize}
+
+    Der \emph{kompensierte Poisson-Prozess}
+    \[
+        M(t) = N(t) - \lambda t
+    \]
+    ist ein Martingal, insbesondere gilt
+    \[
+        \operatorname{E}[N(t)] = \lambda t \quad \implies \quad \operatorname{E}[M(t)] = 0 \quad \text{für alle } t\geq 0.
+    \]
+\end{defi}
+
+\begin{info}{Poisson-Prozess}
+    Kann schon sein, dass er hier danach fragt.
+\end{info}
+
+\subsection{Stoppzeiten}
+
+\begin{bonus}[Stochastischer Prozess]{Càdlàg-Prozess}
+    % https://de.wikipedia.org/wiki/C%C3%A0dl%C3%A0g-Funktion#Anwendungen_in_der_Stochastik
+    Ein stochastischer Prozess $X=(X_{t})_{t\geq 0}$ wird \emph{càdlàg} genannt, wenn fast sicher jeder Pfad $t\rightarrow X_{t}$ an jeder Stelle $t$ rechtsseitig stetig ist und dort die linksseitigen Grenzwerte existieren.
+    Ein Beispiel dafür sind Poisson-Prozesse.
+\end{bonus}
+
+\begin{defi}[Stoppzeit]{Ersteintrittszeit}
+    % https://de.wikipedia.org/wiki/Stoppzeit#Beispiele
+    Ist $(X_{t})_{t\geq 0}$ ein reellwertiger, adaptierter Càdlàg-Prozess, also ein stochastischer Prozess, dessen Pfade alle rechtsseitig stetig sind und Grenzwerte von links besitzen, und ist $A\subseteq \mathbb{R}$ eine abgeschlossene Menge, so ist die \emph{Treffzeit} bzw. \emph{Ersteintrittszeit} von $X$ in $A$, definiert als
+    \[
+        \tau_{A}(\omega ):=\inf\{t\geq 0 \mid X_{t}(\omega )\in A\}
+    \]
+    eine Stoppzeit.
+
+    $\tau_{A}$ gibt also den infimalen Zeitpunkt an, an dem $X$ zum ersten Mal die Menge $A$ betritt.
+    Dabei ist es essentiell, dass $A$ abgeschlossen ist:
+    Zum Zeitpunkt $t$ könnte $X$ bereits auf dem Rand von $A$, aber noch nicht in $A$ sein und die Menge direkt im Anschluss betreten.
+    Dann wäre zwar $\tau_{A}=t$ (man beachte das Infimum), jedoch ist in $t$ noch nicht bekannt, ob $A$ gleich betreten wird oder nicht.
+\end{defi}
+
+\begin{defi}[Stoppzeit]{$\sigma$-Algebra der $\tau$-Vergangenheit}
+    % https://de.wikipedia.org/wiki/%CE%A3-Algebra_der_%CF%84-Vergangenheit
+    Die $\sigma$-Algebra der $\tau$-Vergangenheit entsteht durch Kombination einer Filtrierung mit einer Stoppzeit und findet meist Anwendung bei Aussagen über gestoppte Prozesse, also stochastische Prozesse, die an einem zufälligen Zeitpunkt angehalten werden.
+
+    Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ sowie eine Filtrierung $\mathbb{F} = ({\mathcal{F}}_{t})_{t\in T}$ bezüglich der Ober-$\sigma$-Algebra $\mathcal{A}$ und eine Stoppzeit $\tau$ bezüglich $\mathbb{F}$.
+
+    Dann heißt
+    \[
+        \mathcal{F}_{\tau} = \{A\in{\mathcal{A}} \mid A\cap \{\tau \leq t\}\in{\mathcal{F}}_{t}{\text{ für alle }}t\in T\}
+    \]
+
+    die \emph{$\sigma$-Algebra der $\tau$-Vergangenheit}.
+
+    Sind $\sigma ,\tau$ Stoppzeiten und ist $\sigma \leq \tau$, so ist $\mathcal{F}_{\sigma }\subset{\mathcal{F}}_{\tau }$.
+\end{defi}
+
+\begin{info}[Stoppzeit]{$\sigma$-Algebra der $\tau$-Vergangenheit}
+    Rechenregeln
+\end{info}
+
+\begin{defi}[Stochastischer Prozess]{Gestoppter Prozess}
+    % https://de.wikipedia.org/wiki/Gestoppter_Prozess
+    Ein \emph{gestoppter Prozess} ist ein spezieller stochastischer Prozess, der zu einem gewissen zufälligen Zeitpunkt angehalten wird.
+    Formal geschieht dies durch eine Stoppzeit.
+
+    Gegeben sei ein stochastischer Prozess $X=(X_{t})_{t\in T}$ mit höchstens abzählbarer Indexmenge $T$ und eine Stoppzeit $\tau$ mit Werten in $T$.
+    Dann heißt der Prozess
+    \[
+        X^{\tau} := (X_{t \land \tau })_{t\in T} = (X_{\min(t,\tau )})_{t\in T}
+    \]
+    der \emph{gestoppte Prozess} bezüglich $\tau$.
+
+    Dabei ist
+    \[
+        X_{\min(t,\tau)}: \omega \mapsto X_{\min(t,\tau (\omega ))}(\omega ) =
+        \begin{cases}
+            X_{t}(\omega )              & {\text{wenn }}\tau (\omega )>t,     \\
+            X_{\tau (\omega )}(\omega ) & {\text{wenn }}\tau (\omega )\leq t.
+        \end{cases}
+    \]
+    Rein formell wird der Prozess also nicht angehalten, sondern er verändert seinen Wert nach dem Zeitpunkt $\tau$ nicht mehr.
+\end{defi}
+
+\subsection{Optional Sampling Theorem}
+
+\begin{theo}{Optional Sampling Theorem}
+    % https://de.wikipedia.org/wiki/Optional_Sampling_Theorem
+    Das \emph{Optional Sampling Theorem} ist eine wahrscheinlichkeitstheoretische Aussage.
+    Eine populäre Version dieses Theorems besagt, dass es bei einem fairen, sich wiederholenden Spiel keine Abbruchstrategie gibt, mit der man seinen Gesamtgewinn verbessern kann.
+
+    Betrachtet man eine diskrete Abfolge von Zeitpunkten, so kann man dies durch $T=\mathbb{N}$ modellieren.
+
+    Sind $({\mathcal{F}}_{n})_{n\in \mathbb{N} }$ eine Filtrierung von $\mathcal{A}$ und $(X_{n})_{n\in \mathbb{N}}$ ein adaptiertes Martingal auf $(\Omega ,{\mathcal{A}},P)$ und ist $\tau :\Omega \rightarrow \mathbb{N} \cup \{\infty \}$ eine Stoppzeit mit $P(\tau <\infty )=1$, $ \operatorname{E}(|X_{\tau }|)<\infty$ und $\int_{\{\tau >n\}}|X_{n}|{\mathrm{d}}P\,{\stackrel{n\to \infty }{\longrightarrow }}\,0$, so gilt
+    \[
+        \operatorname{E}(X_{\tau })\,=\,E(X_{0}).
+    \]
+
+    Die an $\tau$ gestellten, technischen Voraussetzungen sind insbesondere für den realistischen Fall beschränkter Stoppzeiten erfüllt (man kann nicht ewig warten!).
+\end{theo}
+
+\begin{theo}{Doobsche Maximalungleichung}
+    % https://ru.wikipedia.org/wiki/%D0%9D%D0%B5%D1%80%D0%B0%D0%B2%D0%B5%D0%BD%D1%81%D1%82%D0%B2%D0%BE_%D0%94%D1%83%D0%B1%D0%B0_%D0%B4%D0%BB%D1%8F_%D0%BC%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%B3%D0%B0%D0%BB%D0%BE%D0%B2
+    Die \emph{Doobsche Maximalungleichung} ist ein wichtiges Hilfsmittel in der Wahrscheinlichkeitstheorie und beschreibt die Wahrscheinlichkeit, dass ein Martingal einen bestimmten Schwellenwert überschreitet.
+
+    Sei $(X_{n})_{n\in \mathbb{N}}$ ein càdlàg Martingal, also ein Martingal, dessen Pfade alle rechtsseitig stetig sind und Grenzwerte von links besitzen, und $X_{n} \geq 0$ $P$-fast sicher für alle $n\in \mathbb{N}$.
+    Dann gilt für alle $\lambda > 0$:
+    \[
+        P\left(\sup_{0\leq t\leq n}X_{t}\geq \lambda \right)\leq{\frac{\operatorname{E}(X_{n})}{\lambda }}.
+    \]
+\end{theo}
+
+\subsection{Brownsche Bewegung (Wiener-Prozess)}
+
+\begin{bonus}{Brownsche Bewegung}
+    % https://de.wikipedia.org/wiki/Brownsche_Bewegung
+    Die \emph{brownsche Bewegung} ist die vom Botaniker Robert Brown im Jahr 1827 unter dem Mikroskop entdeckte unregelmäßige und ruckartige Wärmebewegung kleiner Teilchen in Flüssigkeiten und Gasen.
+    Der ebenfalls gebräuchliche Name brownsche Molekularbewegung rührt daher, dass das Wort Molekül damals noch generell zur Bezeichnung eines kleinen Körpers gebraucht wurde.
+    Moleküle im heutigen Sinn sind aber noch um ein Vielfaches kleiner als die im Mikroskop sichtbaren Teilchen und bleiben hier vollständig unsichtbar.
+    Es sind aber die Moleküle der umgebenden Materie, die die brownsche Bewegung hervorbringen, indem sie ständig und aus allen Richtungen in großer Zahl gegen die mikroskopisch kleinen Teilchen stoßen und dabei rein zufällig mal die eine Richtung, mal die andere Richtung stärker zum Tragen kommt.
+\end{bonus}
+
+\begin{defi}{Wiener-Prozess}
+    % https://de.wikipedia.org/wiki/Wienerprozess
+    Ein \emph{Wiener-Prozess} ist ein zeitstetiger stochastischer Prozess, der normalverteilte, unabhängige Zuwächse hat:
+
+    Ein stochastischer Prozess $(W_{t})_{t \geq 0}$ auf dem Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ heißt \emph{(Standard-)Wiener-Prozess}, wenn folgende vier Bedingungen gelten:
+    \begin{enumerate}
+        \item $W_{0}=0$ $P$-fast sicher.
+        \item Für gegebene Zeitpunkte $0\leq t_{0}<t_{1}<t_{2}<\dotsb <t_{m}$ sind die Zuwächse $W_{t_{1}}-W_{t_{0}},W_{t_{2}}-W_{t_{1}},\dotsc ,W_{t_{m}}-W_{t_{m-1}}$ stochastisch unabhängig.
+              Der Wiener-Prozess hat also unabhängige Zuwächse.
+        \item Für alle $0\leq s<t$ gilt $W_{t}-W_{s} \sim{\mathcal{N}}\left(0,t-s\right)$.
+              Die Zuwächse sind also stationär und normalverteilt mit dem Erwartungswert $0$ und der Varianz $t-s$.
+        \item Die einzelnen Pfade sind $P$-fast sicher stetig.
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}[Wiener-Prozess]{Eigenschaften des Wiener-Prozesses}
+    % https://de.wikipedia.org/wiki/Wienerprozess#Eigenschaften
+    Aus der Definition folgt sofort $W_{t}\sim{\mathcal{N}}(0,t)$.
+
+    Für $0 \leq s < t$ gelten entsprechend direkt:
+    \[
+        \operatorname{Cov} (W_{s},W_{t}) = \operatorname{E} [W_{s}W_{t}] = \operatorname{E} [W_{s}(W_{t}-W_{s})] + \operatorname{E}[W_{s}^{2}] = \operatorname{E} [W_{s}] \cdot \operatorname{E}[W_{t}-W_{s}] + \operatorname{Var}[W_{s}] = s,
+    \]
+    und
+    \[
+        \operatorname{Korr} (W_{s},W_{t}) = \frac{\operatorname{Cov} (W_{s},W_{t})}{\sigma_{W_{s}}\sigma_{W_{t}}} = \frac{s}{\sqrt{st}} = \sqrt{\frac{s}{t}}.
+    \]
+
+    Für allgemeine $s,t\geq 0$ gilt damit:
+    \[
+        \operatorname{Cov} (W_{s},W_{t}) = \min \{s,t\},
+    \]
+    und
+    \[
+        \operatorname{Korr} (W_{s},W_{t}) = \min \left(\sqrt{\frac{s}{t}}, \sqrt{\frac{t}{s}}\right).
+    \]
+
+    Ist $(W_{t})_{t \geq 0}$ ein Wiener-Prozess und $\mathcal{F}_{t} = \sigma (W_{s} \mid s\leq t)$ die von den Werten des Wiener-Prozesses erzeugte Filtrierung, dann sind folgende Prozesse Martingale:
+    \begin{itemize}
+        \item $(W_{t})_{t \geq 0}$,
+        \item $(W_{t}^{2}-t)_{t \geq 0}$,
+        \item $(\exp(\lambda W_{t}-\lambda ^{2}t/2))_{t \geq 0}$ mit $\lambda \in \mathbb{R}$ gegeben.
+    \end{itemize}
+\end{defi}
+
+\begin{info}{Wiener-Prozess bzw. Brownsche Bewegung}
+    \begin{itemize}
+        \item Was ist das?
+        \item Was für Eigenschaften?
+        \item Welche Eigenschaften haben die Pfade?
+        \item Kennzahlen?
+        \item Skizzieren?
+    \end{itemize}
+\end{info}
+
+\subsection{Quadratische Variationen}
+
+\begin{defi}{Partition eines Intervalls}
+    % https://de.wikipedia.org/wiki/Partition_eines_Intervalls
+    Eine \emph{Partition} eines Intervalls ist in der Mathematik eine endliche, streng aufsteigende Folge, die das Intervall in Teilintervalle aufteilt, so dass deren Vereinigung wieder das ursprüngliche Intervall ergibt.
+    Der Begriff ist fundamental für die Definition der Variation.
+
+    Die \emph{Partition} $\tau$ eines reellen kompakten Intervalls $[a, b]$, wobei $a,b\in \mathbb{R} \cup \{\pm \infty \}$, ist eine endliche Folge $\tau=(t_{0},t_{1},\dots ,t_{n})$, so dass
+    \[
+        a = t_0 < t_1 < \dots < t_{n-1} < t_n = b.
+    \]
+
+    Wir definieren die \emph{Norm} $|\tau|$ der Partition $\tau$ als
+    \[
+        |\tau| = \sup_{i=1,\dots,n} |t_i - t_{i-1}|.
+    \]
+\end{defi}
+
+\begin{defi}{Variation}
+    % https://de.wikipedia.org/wiki/Variation_(Mathematik)
+    Vor allem der Variationsrechnung und der Theorie der stochastischen Prozesse, ist die \emph{Variation} (auch \emph{totale Variation} genannt) einer Funktion ein Maß für das lokale Schwingungsverhalten der Funktion.
+
+    Bei den stochastischen Prozessen ist die Variation von besonderer Bedeutung, da sie die Klasse der zeitstetigen Prozesse in zwei fundamental verschiedene Unterklassen unterteilt:
+    jene mit endlicher und solche mit unendlicher Variation.
+\end{defi}
+
+\begin{defi}[Variation]{Erste Variation}
+    % https://de.wikipedia.org/wiki/Variation_(Mathematik)#Definition
+    Sei $f: [a,b]\to \mathbb{R}$ eine Funktion auf dem reellen Intervall $[a,b]$.
+
+    Die \emph{Variation} $V_a^b(f)$ von $f$ ist definiert durch
+    \[
+        V_a^b(f) = \sup \left\{ \sum_{i=1}^{n} |f(t_{i})-f(t_{i-1})| \mid \tau = (t_{0},\dots ,t_{n}) \text{ Partition von } [a,b] \right\}
+    \]
+    also durch die kleinste obere Schranke (Supremum), die alle Summen majorisiert, die sich durch eine beliebig feine Partition $a \leq t_{0} < t_{1} < \dotsb < t_{n} \leq b$ des Intervalls $[a,b]$ ergeben.
+    Falls sich keine reelle Zahl finden lässt, die alle Summen majorisiert, so wird das Supremum auf plus unendlich gesetzt.
+
+    Falls $V_a^b(f) < \infty$ ist, so heißt $f$ \emph{von endlicher erster Variation}.
+\end{defi}
+
+\begin{defi}[Variation]{Quadratische Variation}
+    % https://de.wikipedia.org/wiki/Variation_(Mathematik)#Quadratische_Variation
+    Eine weitere interessante Eigenschaft des Wiener-Prozesses hängt ebenfalls mit dessen Variation zusammen:
+    Ersetzt man in der Definition der ersten Variation
+    \[
+        |f(t_{i})-f(t_{i-1})|
+    \]
+    die Betragsstriche durch Quadrate
+    \[
+        ( f(t_{i})-f(t_{i-1}) )^{2}
+    \]
+    so gelangt man zum Begriff der \emph{quadratischen Variation} $[X]_{t}$ eines stochastischen Prozesses $X$ auf dem Intervall $[0,t]$ (für $t\geq 0$):
+    \[
+        [X]_{t} = \lim_{|\tau |\to 0} \sum_{i=1}^{n} (X_{t_{i}}-X_{t_{i-1}})^{2}.
+    \]
+
+    Falls $X$ stetig und von endlicher erster Variation ist, so gilt
+    \[
+        [X]_{t} = 0.
+    \]
+
+    Ein wichtiges Resultat, das sich beispielsweise in der Itō-Formel niederschlägt, ist das folgende:
+    Ist $W$ ein (Standard-)Wiener-Prozess, so gilt für dessen quadratische Variation fast sicher
+    \[
+        [W]_{t} = t.
+    \]
+\end{defi}
+
+\begin{defi}[Wiener-Prozess]{Eigenschaften des Pfade des Wiener-Prozesses}
+    % https://de.wikipedia.org/wiki/Wienerprozess#Eigenschaften_der_Pfade
+    Ist $(W_{t})_{t \geq 0}$ ein \emph{Wiener-Prozess}, dann gilt für dessen \emph{Pfade}:
+    \begin{itemize}
+        \item Die Pfade eines Wienerprozesses sind fast sicher an keiner Stelle differenzierbar.
+        \item Die Pfade sind von endlicher Varianz.
+        \item Die Pfade haben in jedem Intervall $[s,t]\subset \mathbb{R}_{+}$ fast sicher unendliche Variation.
+        \item Für die quadratische Variation gilt fast sicher $[W]_{t}=\langle W,W\rangle_{t}=t$.
+    \end{itemize}
+\end{defi}
+
+\begin{info}{Variation}
+    \begin{itemize}
+        \item Was ist die Variation?
+        \item Was ist die quadratische Variation?
+        \item Was muss man annehmen für quadratische Variation?
+        \item Was ist die quadratische Variation des Wiener-Prozesses?
+    \end{itemize}
+\end{info}
+
+\subsection{Der pfadweise Itō-Calculus}
+
+\begin{defi}[Martingal]{Semimartingal}
+    TODO
+\end{defi}
+
+\begin{bonus}{Stochastische Integration}
+    % https://de.wikipedia.org/wiki/Stochastische_Integration
+    Die Theorie der \emph{stochastischen Integration} befasst sich mit Integralen und Differentialgleichungen in der Stochastik.
+    Sie verallgemeinert die Integralbegriffe von Henri Léon Lebesgue und Thomas Jean Stieltjes auf eine breitere Menge von Integratoren.
+
+    Es sind stochastische Prozesse mit unendlicher Variation, insbesondere der Wiener-Prozess, als Integratoren zugelassen.
+
+    Die Theorie der stochastischen Integration stellt dabei die Grundlage der stochastischen Analysis dar, deren Anwendungen sich zumeist mit der Untersuchung stochastischer Differentialgleichungen beschäftigen.
+\end{bonus}
+
+\begin{defi}[Itō-Integral]{Itō-Integral bzgl. der Brownschen Bewegung}
+    % https://en.wikipedia.org/wiki/It%C3%B4_calculus#Integration_with_respect_to_Brownian_motion
+    Das \emph{Itō-Integral} kann analog zum Riemann-Stieltjes-Integral als Grenzwert in Wahrscheinlichkeit von Riemann-Summen definiert werden.
+    Ein solches Integral existiert nicht zwangsweise für jeden Pfad.
+
+    Sei $W:= (W_{t})_{t\geq 0}$ ein Wiener-Prozess und $X := (X_{t})_{t\geq 0}$ ein càdlàg-Prozess.
+    Ist $\tau = (t_{0},\dots ,t_{n})$ eine Partition von $[0,t]$, dann ist das \emph{Itō-Integral von $X$ bezüglich $W$ bis zum Zeitpunkt $t$} definiert als Zufallsvariable
+    \[
+        \int_{0}^{t} X \, \mathrm{d}W := \lim_{n\to \infty } \sum_{i=1}^{n} X_{t_{i-1}}(W_{t_{i}}-W_{t_{i-1}}).
+    \]
+    Das Itō-Integral konvergiert in Wahrscheinlichkeit.
+
+    Dieses Resultat ist ein Spezialfall der allgemeineren Definition des Itō-Integrals für stochastische Prozesse.
+\end{defi}
+
+\subsection{Itō-Formel}
+
+\begin{bonus}{Itō-Integral}
+    % https://en.wikipedia.org/wiki/It%C3%B4_calculus#Integration_with_respect_to_Brownian_motion
+    Das \emph{Itō-Integral} ist eine stochastische Verallgemeinerung des Riemann-Stieltjes-Integrals in der Analysis.
+
+    Die Integranden und die Integratoren sind nun stochastische Prozesse:
+    \[
+        Y_{t}=\int_{0}^{t}H_{s}\,dX_{s},
+    \]
+    wobei $H$ ein lokal quadratintegrierbarer Prozess ist, der an die durch $X$ erzeugte Filtration adaptiert ist, wobei $X$ ein Wiener-Prozess (Brownsche Bewegung) oder allgemeiner eine Semimartingal ist.
+    Das Ergebnis der Integration ist dann ein weiterer stochastischer Prozess.
+
+    Konkret ist das Integral von $0$ bis zu einem bestimmten $t$ eine Zufallsvariable, die als Grenzwert einer bestimmten Folge von Zufallsvariablen definiert ist.
+    Die Pfade der Brownschen Bewegung erfüllen nicht die Voraussetzungen, um die Standardtechniken der Analysis anwenden zu können.
+
+    Da der Integrand ein stochastischer Prozess ist, läuft das Itō-Integral auf ein Integral hinaus, das bezüglich einer Funktion gebildet wird, die an keinem Punkt differenzierbar ist und über jedes Zeitintervall eine unendliche Variation (und stetige quadratische Variation) aufweist.
+
+    Die Hauptidee ist, dass das Integral definiert werden kann, solange der Integrand $H$ adaptiert ist, was grob gesagt bedeutet, dass sein Wert zum Zeitpunkt $t$ nur von bis zu diesem Zeitpunkt verfügbaren Informationen abhängen kann.
+
+    Grob gesagt wählt man eine Folge von Unterteilungen des Intervalls von $0$ bis $t$ und konstruiert Riemann-Summen.
+    Jedes Mal, wenn wir eine Riemann-Summe berechnen, verwenden wir eine bestimmte Realisierung des Integrators.
+    Es ist entscheidend, welcher Punkt in jedem der kleinen Intervalle verwendet wird, um den Wert der Funktion zu berechnen.
+    Der Grenzwert wird dann in Wahrscheinlichkeit genommen, wenn das Maschenwerk der Unterteilung gegen Null geht.
+\end{bonus}
+
+\begin{defi}{Itō-Formel}
+    % https://de.wikipedia.org/wiki/It%C5%8D-Formel
+    Sei $(W_{t})_{t\geq 0}$ ein (Standard-)Wiener-Prozess und $f\colon \mathbb{R} \to \mathbb{R}$ eine zweimal stetig differenzierbare Funktion.
+    Dann gilt die \emph{Itō-Formel} für den durch $Y_{t}=f(W_{t})$ definierten Prozess:
+    \[
+        f(W_{t})=f(W_{0})+\int_{0}^{t}f'(W_{s})\,{\mathrm{d}}W_{s}+{\frac{1}{2}}\int_{0}^{t}f''(W_{s})\,{\mathrm{d}}[W]_s\,.
+    \]
+    Dabei ist das erste Integral als Itō-Integral und das zweite Integral als ein gewöhnliches Riemann-Integral (über die stetigen Pfade des Integranden) zu verstehen, also mit der Partition $\tau = (t_{0},\dots ,t_{n})$ von $[0,t]$:
+    \[
+        \int_{0}^{t}f'(W_{s})\,{\mathrm{d}}W_{s} = \lim_{n\to \infty }\sum_{i=1}^{n}f'(W_{t_{i-1}})(W_{t_{i}}-W_{t_{i-1}}).
+    \]
+
+    Für den durch $Y_{t}=f(W_{t})$ für $t\geq 0$ definierten Prozess lautet diese Darstellung in Differentialschreibweise
+    \[
+        \mathrm{d}Y_{t}=f'(W_{t})\,{\mathrm{d}}W_{t}+{\frac{1}{2}}f''(W_{t})\,{\mathrm{d}}t\,.
+    \]
+\end{defi}
+
+\begin{info}{Itō-Formel}
+    \begin{itemize}
+        \item Was ist die Itō-Formel?
+        \item Was ist das Itō-Integral?
+        \item Was sind die Voraussetzungen?
+    \end{itemize}
+\end{info}
+
+\subsubsection{Eigenschaften des Itō-Integrals}
+
+\begin{defi}[Itō-Integral]{Eigenschaften des Itō-Integrals}
+    Sei $f\colon \mathbb{R} \to \mathbb{R}$ eine stetig differenzierbare Funktion ($f \in C^{1}$) und $(X_{t})_{t\geq 0}$ ein Semimartingal.
+
+    Die Funktion $f(X_{t})$ hat die quadratische Variation
+    \[
+        [f(X)]_{t} = \int_{0}^{t} f'(X_{s})^{2}\,{\mathrm{d}}[X]_{s}.
+    \]
+
+    Das Itō-Integral
+    \[
+        I_{t} = \int_{0}^{t} f(X_{s})\,{\mathrm{d}}X_{s}
+    \]
+    ist wohldefiniert mit der quadratischen Variation
+    \[
+        [I]_{t} = \int_{0}^{t} f(X_{s})^{2}\,{\mathrm{d}}[X]_{s}.
+    \]
+\end{defi}
+
+\begin{info}{Eigenschaften des Itō-Integrals}
+    \begin{itemize}
+        \item Was sind die Eigenschaften des Itō-Integrals?
+        \item Was ist die quadratische Variation?
+    \end{itemize}
+\end{info}
+
+\subsection{Kovariation und die mehrdimensionale Itō-Formel}
+
+\subsubsection{Kovariation}
+
+\begin{defi}[Quadratische Variation]{Kovariation}
+    % https://de.wikipedia.org/wiki/Variation_(Mathematik)#Quadratische_Variation
+    Seien $X_t$ und $Y_t$ mit $t \in \mathbb{R}_{+}$ zwei reelle stochastische Prozesse auf dem Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$.
+
+    Die \emph{quadratische Kovariation} $[X,Y]_{t}$ der beiden Prozesse $X$ und $Y$ ist definiert als
+    \[
+        [X,Y]_{t} = \lim_{|\tau |\to 0} \sum_{i=1}^{n} (X_{t_{i}}-X_{t_{i-1}})(Y_{t_{i}}-Y_{t_{i-1}}).
+    \]
+
+    Es gilt weiterhin die \emph{Polarisationsformel}:
+    \[
+        [X,Y]_{t} = \frac{1}{2} ([X+Y]_{t} - [X]_{t} - [Y]_{t}).
+    \]
+
+    Ist $Y$ von endlicher Variation, so gilt
+    \[
+        [X,Y]_{t} = \frac{1}{2} ([X+Y]_{t} - [X]_{t} - [Y]_{t}) = \frac{1}{2} ([X]_{t} - [X]_{t} - 0) = 0.
+    \]
+\end{defi}
+
+\begin{info}[Quadratische Variation]{Kovariation}
+    \begin{itemize}
+        \item Wie ist die quadratische Kovariation definiert?
+        \item Was ist die Polarisationsformel?
+    \end{itemize}
+\end{info}
+
+\subsubsection{Die mehrdimensionale Itō-Formel}
+
+\begin{defi}[Itō-Formel]{Mehrdimensionale Itō-Formel}
+    % https://de.wikipedia.org/wiki/It%C5%8D-Formel#Mehrdimensionale_Version
+    Seien $n$ Itō-Prozesse $X = (X^{(1)},\dotsc ,X^{(n)})$ mit stetiger Kovariation $[X^{(i)},X^{(j)}]_{t}$ gegeben.
+
+    Ist $f: \mathbb{R}^{n} \to \mathbb{R}$ eine zweimal stetig differenzierbare Funktion ($f \in C^{2}$), dann gilt für den durch $Y_{t}=f(X_{t})$ definierten Prozess die \emph{mehrdimensionale Itō-Formel}:
+    \[
+        f(X_{t})=f(X_{0})+\sum_{i=1}^{n}\int_{0}^{t}\frac{\partial f}{\partial x_{i}}(X_{s})\,{\mathrm{d}}X_{s}^{(i)}+\frac{1}{2}\sum_{i,j=1}^{n}\int_{0}^{t}\frac{\partial^{2}f}{\partial x_{i}\partial x_{j}}(X_{s})\,{\mathrm{d}}[X^{(i)},X^{(j)}]_{s}.
+    \]
+\end{defi}
+
+\begin{info}[Itō-Formel]{Mehrdimensionale Itō-Formel}
+    Die will er wissen.
+\end{info}
+
+\begin{defi}{Produktregel für Itō-Prozesse}
+    % https://en.wikipedia.org/wiki/It%C3%B4%27s_lemma#Product_rule_for_It%C3%B4_processes
+    Seien $X_{t}$ und $Y_{t}$ zwei stetige stochastiche Prozesse mit stetiger quadratischen Variationen $[X]_{t}$ und $[Y]_{t}$ und stetiger Kovariation $[X,Y]_{t}$.
+
+    Dann gilt für das Produkt $Z_{t} = X_{t}Y_{t}$ der beiden Prozesse die \emph{Produktregel für Itō-Prozesse}:
+    \[
+        Z_{t} = X_{0}Y_{0} + \int_{0}^{t} Y_{s}\,{\mathrm{d}}X_{s} + \int_{0}^{t} X_{s}\,{\mathrm{d}}Y_{s} + [X,Y]_{t}.
+    \]
+\end{defi}
+
+\begin{info}{Produktregel für Itō-Prozesse}
+    Die will er wissen.
+\end{info}
+
+\begin{defi}[Itō-Formel]{Itō-Formel für zeitabhängige Prozesse}
+    Sei $X_{t}$ ein stochastiche Prozess mit stetiger quadratischen Variationen $[X]_{t}$ und eine Funktion $f(t,x)$, die von der Zeit $t$ und dem Prozess $X_{t}$ abhängt und stetig partiell differenzierbar in $t$ und zweimal stetig differenzierbar in $X$ ist.
+
+    Dann gilt für den durch $f(t,X_{t})$ definierten Prozess die \emph{Itō-Formel für zeitabhängige Prozesse}:
+    \[
+        f(t,X_{t}) = f(0,X_{0}) + \int_{0}^{t} \frac{\partial f}{\partial t}(s,X_{s})\,{\mathrm{d}}s + \int_{0}^{t} \frac{\partial f}{\partial x}(s,X_{s})\,{\mathrm{d}}X_{s} + \frac{1}{2} \int_{0}^{t} \frac{\partial^{2} f}{\partial x^{2}}(s,X_{s})\,{\mathrm{d}}[X]_{s}.
+    \]
+\end{defi}
+
+\begin{info}[Itō-Formel]{Itō-Formel für zeitabhängige Prozesse}
+    Will er auf jeden Fall.
+\end{info}
+
+\begin{defi}[Brownsche Bewegung]{Geometrische Brownsche Bewegung}
+    % https://de.wikipedia.org/wiki/Geometrische_brownsche_Bewegung
+    Sei $W_{t}$ eine Standard-brownsche-Bewegung, d. h. ein Wiener-Prozess.
+
+    So ist
+    \[
+        S_t = a \exp\left(\left(\mu - \frac{\sigma^2}{2}\right)t + \sigma W_t\right)
+    \]
+    eine \emph{geometrische brownsche Bewegung} mit den Parametern $a > 0$, $\mu \in \mathbb{R}$ und $\sigma > 0$.
+
+    Die geometrische brownsche Bewegung ist die Lösung der stochastischen Differentialgleichung
+    \[
+        \mathrm {d} S_{t}=\mu S_{t}\,\mathrm {d} t+\sigma S_{t}\,\mathrm {d} W_{t},\quad t\geq 0,\quad S_{0}=a
+    \]
+    Der Parameter $\mu$ heißt dabei \emph{Drift} und beschreibt die deterministische Tendenz des Prozesses.
+    Ist $\mu >0$, so wächst der Wert von $S$ in Erwartung, ist er negativ, fällt $S$ tendenziell.
+    Für $\mu =0$ ist $S$ ein Martingal.
+
+    Der Parameter $\sigma$ beschreibt die \emph{Volatilität} und steuert den Einfluss des Zufalls auf den Prozess $S$.
+    Ist $\sigma =0$, so verschwindet der Diffusionsterm in der obigen Differentialgleichung, übrig bleibt die gewöhnliche Differentialgleichung
+    \[
+        \mathrm {d} S(t)=\mu \,S(t)\,\mathrm {d} t,\;S(0)=a
+    \]
+    die die Exponentialfunktion $S(t)=ae^{\mu t}$ als Lösung besitzt.
+    Deshalb kann man die geometrische brownsche Bewegung als stochastisches Pendant zur Exponentialfunktion auffassen.
+\end{defi}
+
+\begin{info}[Brownsche Bewegung]{Geometrische Brownsche Bewegung}
+    \begin{itemize}
+        \item Was ist die geometrische brownsche Bewegung?
+        \item Was sind die Parameter?
+        \item Was ist die stochastische Differentialgleichung? Wie kommt man drauf?
+    \end{itemize}
+\end{info}

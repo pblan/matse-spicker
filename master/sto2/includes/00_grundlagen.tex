@@ -1,0 +1,66 @@
+\section*{Grundlagen}
+\addcontentsline{toc}{section}{\protect\numberline{}Grundlagen}
+
+% \begin{bonus}{$\sigma$-Algebra}
+
+% \end{bonus}
+
+\begin{bonus}{Verteilungsfunktion}
+
+\end{bonus}
+
+\begin{bonus}{Verteilungskonvergenz}
+    % https://de.wikipedia.org/wiki/Konvergenz_in_Verteilung
+
+\end{bonus}
+
+\begin{bonus}{Funktionalmatrix}
+
+\end{bonus}
+
+\begin{bonus}{Lemma von Slutsky}
+    Der \emph{Satz von Slutsky} spielt in der Anwendung eine wichtige Rolle, da die Parameter einer Verteilung in der Praxis selten bekannt sind und daher geschätzt werden müssen. Der Satz von Slutsky ermöglicht es, die unbekannten Verteilungsparameter durch geschätzte Größen zu ersetzen, die in Wahrscheinlichkeit gegen den wahren Parameter konvergieren.
+
+    Falls die Folge von Zufallsvariablen $X_n$ für $n \to \infty$ gegen die Zufallsvariable $X$ in Verteilung konvergiert und die Folgen von Zufallsvariablen $A_n$ und $B_n$ für $n \to \infty$ gegen die Konstanten $a$ bzw. $b$ in Wahrscheinlichkeit konvergieren, so gilt
+    \[
+        A_n X_n + B_n \xrightarrow{V} aX + b
+    \]
+
+    Der Satz von Slutsky folgt in dieser Form aus drei Beobachtungen:
+    \begin{itemize}
+        \item Konvergenz in Wahrscheinlichkeit impliziert Konvergenz in Verteilung.
+        \item Wenn $X_n \xrightarrow{V} X$ und $A_n \xrightarrow{P} a$ bzw. $B_n \xrightarrow{P} b$, so konvergiert der Zufallsvektor $(X_n, A_n, B_n)$ in Verteilung gegen $(X, a, b)$.
+        \item Mit der Anwendung des Satzes von der stetigen Abbildung auf die stetige Funktion $f(x, y) = ax + b$ folgt die Behauptung.
+    \end{itemize}
+\end{bonus}
+
+\begin{bonus}{Satz der stetigen Abbildung}
+    Der \emph{Satz von der stetigen Abbildung} besagt, dass stetige Funktionen auch dann gegen das Bild des Grenzwertes einer Folge konvergieren, wenn es sich um eine Folge von Zufallsvariablen handelt.
+
+    Seien $\mathcal{X}$ und $\mathcal{Y}$ metrische Räume, $(X_n)_{n \in \mathbb{N}}$ eine Folge von Zufallsvariablen mit Werten in $\mathcal{X}$ und $f: \mathcal{X} \to \mathcal{Y}$ eine Abbildung, die $F_X$-fast sicher stetig ist, wobei $F_X$ die Verteilungsfunktion von $X$ ist.
+
+    Falls $X_n \xrightarrow{F} X$ für $n \to \infty$ und $f$ stetig in $X$ ist, so gilt
+    \[
+        X_n \xrightarrow{V} X \implies f(X_n) \xrightarrow{V} f(X)
+    \]
+    \[
+        X_n \xrightarrow{p} X \implies f(X_n) \xrightarrow{p} f(X)
+    \]
+    \[
+        X_n \xrightarrow{\text{f.s.}} X \implies f(X_n) \xrightarrow{\text{f.s.}} f(X)
+    \]
+\end{bonus}
+
+\begin{bonus}{Fourier-Transformation}
+
+\end{bonus}
+
+\begin{bonus}{Zentraler Grenzwertsatz nach Lindeberg-Lévy}
+    Der \emph{zentrale Grenzwertsatz nach Lindeberg-Lévy} ist ein fundamentaler Satz der Wahrscheinlichkeitstheorie, der besagt, dass die Summe von unabhängigen und identisch verteilten Zufallsvariablen für $n \to \infty$ gegen eine Normalverteilung konvergiert.
+
+    Seien $X_1, X_2, \ldots, X_n$ unabhängige und identisch verteilte Zufallsvariablen mit Erwartungswert $\mu$ und Varianz $\sigma^2$. Dann konvergiert die standardisierte Summe
+    \[
+        Z_n := \frac{S_n - n\mu}{\sigma \sqrt{n}}
+    \]
+    für $n \to \infty$ gegen die Standardnormalverteilung $\mathcal{N}(0, 1)$, wobei $S_n := \sum_{i=1}^{n} X_i$.
+\end{bonus}

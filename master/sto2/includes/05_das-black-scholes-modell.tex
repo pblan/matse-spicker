@@ -1,0 +1,463 @@
+\section{Das Black-Scholes-Modell}
+
+\subsection{Asset-Preisdynamik}
+
+\begin{example}[Geometrische Brownsche Bewegung]{Geometrische Brownsche Bewegung im Black-Scholes-Modell}
+    % https://de.wikipedia.org/wiki/Geometrische_brownsche_Bewegung#Anwendung
+    Im \emph{Black-Scholes-Modell}, dem einfachsten und am weitesten verbreiteten (zeitstetigen) finanzmathematischen Modell zur Bewertung von Optionen, wird die geometrische brownsche Bewegung als Näherung für den Preisprozess eines Basiswertes (zum Beispiel einer Aktie) herangezogen.
+    Dazu führte die vereinfachende Annahme, dass die prozentuale Rendite über disjunkte Zeitintervalle unabhängig und normalverteilt ist.
+
+    $\mu$ spielt hier die Rolle des risikofreien Zinssatzes, $\sigma$ repräsentiert das Schwankungsrisiko an der Börse.
+    Die oben erwähnte Martingaleigenschaft spielt hier eine zentrale Rolle.
+\end{example}
+
+\begin{bonus}[Black-Scholes-Formel]{Notation und Annahmen}
+    % https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model#Notation
+    Die Notation, die in der Analyse des Black-Scholes-Modells verwendet wird, ist wie folgt definiert:
+
+    Allgemein und marktbezogen:
+    \begin{itemize}
+        \item $t$: Zeit in Jahren; $t = 0$ ist der Zeitpunkt, an dem die Option ausgeübt wird (\enquote{jetzt}).
+        \item $r$: risikofreier und kontinuierlicher Jahreszins.
+    \end{itemize}
+
+    Basiswert (engl. \enquote{underlying asset}):
+    \begin{itemize}
+        \item $S_t^0$: Preis des Basiswertes (zum Beispiel eines Sparbuchs) zum Zeitpunkt $t \in [0, \infty]$.
+        \item $\mu$: erwartete Rendite des Basiswertes.
+        \item $\sigma$: Standardabweichung der Rendite des Basiswertes; $\sigma = \sqrt{[S_t]_t}$.
+    \end{itemize}
+
+    Option:
+    \begin{itemize}
+        \item $V_t(S_t^1)$: Preis der Option $S_t^1$ zum Zeitpunkt $t$.
+        \item \begin{itemize}
+                  \item $C_t(S_t^1)$: Preis einer (europäischen) Call-Option $S_t^1$ zum Zeitpunkt $t$.
+                  \item $P_t(S_t^1)$: Preis einer (europäischen) Put-Option $S_t^1$ zum Zeitpunkt $t$.
+              \end{itemize}
+        \item $T$: Laufzeit der Option $S_t^1$.
+        \item $\tau = T - t$: Restlaufzeit der Option (engl. \enquote{maturity}).
+        \item $K$: Ausübungspreis der Option $S_t^1$.
+    \end{itemize}
+
+    Das ursprüngliche Modell trifft einige idealisierende Annahmen:
+    \begin{enumerate}
+        \item Der Preis des Basiswertes, also der Aktienpreis, folgt einer geometrischen brownschen Bewegung mit konstantem Drift und Volatilität.
+        \item Der Leerverkauf von Finanzinstrumenten ist uneingeschränkt möglich.
+        \item Es gibt keine Transaktionskosten oder Steuern. Alle Finanzinstrumente sind in beliebig kleinen Einheiten handelbar.
+        \item Von Abschluss bis Fälligkeit des Derivats gibt es keine Dividendenzahlung auf die zugrunde liegende Aktie.
+        \item Es gibt keine risikolose Möglichkeit zur Arbitrage (Arbitragefreiheit).
+        \item Finanzinstrumente werden kontinuierlich gehandelt.
+        \item Es existiert ein risikofreier Zinssatz, der zeitlich konstant und für alle Laufzeiten gleich ist.
+    \end{enumerate}
+\end{bonus}
+
+\begin{info}{Black-Scholes-Modell}
+    \begin{itemize}
+        \item Was für einen Finanzmarkt betrachtet man? (zwei Finanzprodukte: Asset (getrieben von brownscher Bewegung) und risikoloses Sparbuch)
+    \end{itemize}
+\end{info}
+
+\subsection{Pricing and Hedging von Terminal Value Claims}
+
+\begin{bonus}{Terminal Value Claim}
+    Ein \emph{Terminal Value Claim} ist ein Finanzderivat, dessen Auszahlung von einem Wert abhängt, der zum Zeitpunkt $T$ festgelegt ist.
+    Beispiele für solche Derivate sind europäische Optionen, die nur zum Zeitpunkt $T$ ausgeübt werden können.
+\end{bonus}
+
+\begin{bonus}{Arbitrage}
+    Ein \emph{Arbitrage} ist eine risikolose Gewinnmöglichkeit, die durch Ausnutzen von Preisunterschieden entsteht.
+    Arbitrage führt zu einem Widerspruch in den Preisen von Finanzinstrumenten und kann durch Hedging eliminiert werden.
+\end{bonus}
+
+\begin{bonus}{Hedging}
+    \emph{Hedging} ist eine Strategie, die dazu dient, das Risiko eines Finanzinstruments zu reduzieren.
+    Dazu wird ein Portfolio aus Basiswert und Derivat zusammengestellt, das den Wert des Derivats neutralisiert.
+\end{bonus}
+
+\begin{defi}{Markov-Hedging}
+    % https://www.math.uni-frankfurt.de/~ismi/kuehn/continuous_time.pdf
+    Eine \emph{Markov-Hedging-Strategie} ist eine Hedging-Strategie, die nur vom aktuellen Preis des Basiswertes abhängt.
+    Sie wird verwendet, um den Wert eines Derivats zu neutralisieren.
+
+    Eine Markov-Hedging-Strategie ist gegeben durch ein Paar von glatten Funktionen $(\Phi_t(S), \Psi_t(S))$, wobei $\Phi_t(S_t^1)$ die Anzahl der Einheiten des Optionen (z. B. Aktien) und $\Psi_t(S_t^1)$ die Anteil der Einheiten des Basiswertes (z. B. Sparbuch) im Portfolio ist.
+
+    Der Wert des Portfolios aus Basiswert und Derivat ist dann gegeben durch
+    \[
+        V_t(S_t^1) = S_t^1 \cdot \Phi_t(S_t^1) + S_t^0 \cdot \Psi_t(S_t^1).
+    \]
+
+    Die Strategie ist \emph{selbstfinanzierend}, wenn für einen \emph{Startwert} $V_0$ für alle $t$ aus einer Partition $\tau$ mit $|\tau| \to 0$ gilt:
+    \[
+        V_t^n(S_t^1) = V_0 + \sum_{i = 1}^{n} \Phi_{t_i}(S_{t_i}^1) \cdot (S_{t_i}^1 - S_{t_{i - 1}}^1) + \sum_{i = 1}^{n} \Psi_{t_i}(S_{t_i}^1) \cdot (S_{t_i}^0 - S_{t_{i - 1}}^0).
+    \]
+    Aufgrund der Definition des Itō-Integrals konvergiert dieser Ausdruck gegen
+    \[
+        V_t(S_t^1) = V_0 + \underbrace{\int_{0}^{T} \Phi_t(S_t^1) \, \mathrm{d}S_t^1 + \int_{0}^{T}  \Psi_t(S_t^1) \, \mathrm{d}S_t^0}_{=: \, G_t \, \text{(\emph{Gewinnprozess} bzw. \emph{Gewinn})}}.
+    \]
+
+    Eine Handelsstrategie heißt also selbstfinanzierend, wenn die Schwankungen des zugehörigen Vermögensprozesses ausschließlich aus den Preisveränderungen der im Portfolio enthaltenen Finanzinstrumente resultieren.
+    Es gibt also keine Ein- oder Auszahlungen in das Portfolio.
+
+    Eine selbstfinanzierende Strategie ist eine \emph{Replikationsstrategie} eines Terminal Value Claims mit Payoff $h(S_T^1)$, wenn der Gewinnprozess $G_t$ des Portfolios den Terminal Value Claim $V_T(S_T^1)$ repliziert:
+    \[
+        V_T(S_T^1) = h(S_T^1).
+    \]
+    $V_t(S_t^1)$ heißt \emph{fairer Preis} des Terminal Value Claims $h(S_T^1)$ zum Zeitpunkt $t$.
+\end{defi}
+
+\begin{info}{Handelsstrategie}
+    \begin{itemize}
+        \item Was ist eine Handelsstrategie? (irgendwie nichts weiter als Itō-Integrale)
+        \item Was ist eine selbstfinanzierende Handelsstrategie?
+        \item Irgendwas mit stückweise stetigen Funktionen?
+        \item Wie kann ich den Gewinn beschreiben?
+        \item Was ist eine Replikationsstrategie eines Terminal Value Claims?
+    \end{itemize}
+\end{info}
+
+\subsection{Die Pricing-Gleichung von Terminal-Value-Claims}
+
+\begin{defi}[Black-Scholes-Formel]{Black-Scholes-Differentialgleichung}
+    % https://de.wikipedia.org/wiki/Black-Scholes-Modell#Black-Scholes-Modell_und_Black-Scholes-Differentialgleichung
+    Da das Portfolio risikolos ist und laut Annahmen keine Arbitragemöglichkeiten bestehen, muss das Portfolio über kurze Zeiträume genau die risikolose Rendite $r$ erwirtschaften, also
+    \[
+        \mathrm{d} V_t(S_t) = r \cdot V_t(S_t) \mathrm{d} t
+    \]
+
+    Durch Einsetzen in die letzte Gleichung erhält man die \emph{Black-Scholes-Differentialgleichung}
+    \[
+        \frac{\partial V}{\partial t}+r \cdot S \cdot \frac{\partial V}{\partial S} + {\frac{\sigma^{2}}{2}} \cdot S^{2} \cdot \frac{\partial ^{2}V}{\partial S^{2}} = r \cdot V.
+    \]
+
+    Diese Gleichung ist unter den gegebenen Annahmen für alle Derivate gültig, die sich auf Grundlage des Preisprozesses für $S$ definieren lassen.
+    Die Art des Derivats, für das die Gleichung gelöst werden soll, bestimmt die Randbedingungen für die Differentialgleichung.
+\end{defi}
+
+\begin{info}[Black-Scholes-Formel]{Black-Scholes-Differentialgleichung}
+    \begin{itemize}
+        \item Was kommt vor? (Ableitungen, Handelsstrategie, ...)
+        \item Was heißt es, wenn $V$ die Black-Scholes-Differentialgleichung erfüllt?
+        \item Selbstfinanzierend?
+        \item Terminal Value Claim-Bedingung?
+        \item Was braucht man zum Beweis? (Itō-Formel für zeitabhängige Funktionen)
+        \item Wann gilt der Bums? (Modell verwenden und definieren, quadratische Variation, Differentialgleichung, ...)
+        \item Was braucht man für die Differentialgleichung? (Lösung Wärmeleitgleichung, ...)
+    \end{itemize}
+\end{info}
+
+\subsection{Die Black-Scholes-Formel}
+
+\begin{bonus}[Black-Scholes-Formel]{Black-Scholes-Problemstellung}
+    Europäische Call-Optionen erbringen am Ende der Laufzeit (bei $t=T$) den Kapitalfluss
+    \[
+        C_T(S-t) = \max\{S_T - K, 0\}.
+    \]
+
+    Definiere:
+    \begin{itemize}
+        \item $\tau(t) = \sigma^2 (T-t)$ (Volatilitätsskala; Endwert $\tau(T) = 0$).
+        \item $Z_t(S_t) = \ln(S_t) + (r - \frac{\sigma^2}{2}) (T-t)$ (Zinsskala).
+        \item $u(t, z): [0, \frac{T}{\sigma^2}] \times \mathbb{R} \to \mathbb{R}$ als Lösung der partiellen Differentialgleichung
+              \[
+                  \frac{\partial u}{\partial t} + \frac{1}{2} \frac{\partial^2 u}{\partial z^2} = 0 \quad \iff \frac{\partial u}{\partial t} = \frac{1}{2} \frac{\partial^2 u}{\partial z^2}
+              \] mit Anfangsbedingung $u(0, z) = \max\{e^z - K, 0\}$.
+    \end{itemize}
+
+    Dann ist der Preis einer europäischen Call-Option zum Zeitpunkt $t$ gegeben durch
+    \[
+        \begin{aligned}
+            C_t(S_t) & = e^{-r(T-t)} \cdot u(\tau(t), Z_t(S_t))                                                        \\
+                     & = e^{-r(T-t)} \cdot u \left( \sigma^2 (T-t), \ln(S_t) + (r - \frac{\sigma^2}{2}) (T-t) \right).
+        \end{aligned}
+    \]
+\end{bonus}
+
+\begin{defi}{Black-Scholes-Formel}
+    Das Lösen der Black-Scholes-Differentialgleichung führt zur \emph{Black-Scholes-Formel} für den Preis einer europäischen Call-Option:
+    \[
+        C_t(S_t) = S_t \cdot \Phi(d_1) - K \cdot e^{-r(T-t)} \cdot \Phi(d_2),
+    \]
+    wobei
+    \[
+        \begin{aligned}
+            d_1 & := \frac{\ln(\frac{S_t}{K}) + (r + \frac{\sigma^2}{2})(T-t)}{\sigma \sqrt{T-t}},                            \\
+            d_2 & := \frac{\ln(\frac{S_t}{K}) + (r - \frac{\sigma^2}{2})(T-t)}{\sigma \sqrt{T-t}} = d_1 - \sigma \sqrt{T-t} ,
+        \end{aligned}
+    \]
+    und $\Phi$ die Verteilungsfunktion der Standardnormalverteilung ist.
+
+    Der Wert einer Option ist also durch folgende Parameter bestimmt:
+    \begin{itemize}
+        \item $S_t$: Aktienkurs zum Zeitpunkt $t$.
+        \item $K$: Ausübungspreis der Option.
+        \item $T-t$: Restlaufzeit der Option mit Gesamtlaufzeit $T$ zum Zeitpunkt $t$.
+        \item $r$: risikofreier Zinssatz.
+        \item $\sigma$: Volatilität des Basiswertes.
+    \end{itemize}
+
+    Gemäß der \emph{Put-Call-Parität}
+    \[
+        C_t(S_t) - P_t(S_t) = S_t - K \cdot e^{-r(T-t)}
+    \]
+    lässt sich der Preis einer europäischen Put-Option $P_t(S_t)$ berechnen durch
+    \[
+        P_t(S_t) = - S_t \cdot \Phi(-d_1) + K \cdot e^{-r(T-t)} \cdot \Phi(-d_2).
+    \]
+\end{defi}
+
+\begin{info}{Black-Scholes-Formel}
+    \begin{itemize}
+        \item Wovon hängt das alles ab?
+    \end{itemize}
+\end{info}
+
+\subsection{Die Griechen}
+
+\begin{defi}{Griechen}
+    % https://de.wikipedia.org/wiki/Black-Scholes-Modell#Die_Griechen_nach_Black-Scholes
+    Als \emph{Griechen} (engl. \enquote{Greeks}) werden die partiellen Ableitungen des Optionspreises nach den jeweiligen Modellparametern bezeichnet. Der Vorteil der expliziten Formel für die Optionspreise (etwa im Gegensatz zu einer numerischen Lösung) liegt darin, dass diese Ableitungen leicht berechnet werden können.
+\end{defi}
+
+\begin{bonus}[Griechen]{Delta}
+    % https://de.wikipedia.org/wiki/Black-Scholes-Modell#Delta
+    Das \emph{Delta} gibt an, um wie viel sich der Preis der Option ändert, wenn sich der Kurs des Basiswerts um eine Einheit ändert und alle übrigen Einflussfaktoren gleich bleiben. Beispielsweise hat eine \enquote{tief im Geld} liegende Kaufoption (Call) ein Delta von +1, eine \enquote{tief im Geld} liegende Verkaufsoption (Put) von -1.
+
+    Im Black-Scholes-Modell errechnet man das Delta als:
+    \[
+        \Delta _{c}={\frac {\partial C}{\partial S}}=\Phi (d_{1})\geq 0
+    \]
+    für den europäischen Call, bzw.
+    \[
+        \Delta _{p}={\frac {\partial P}{\partial S}}=-\Phi (-d_{1})=\Phi (d_{1})-1\leq 0
+    \]
+    für den Put.
+\end{bonus}
+
+\begin{bonus}[Griechen]{Gamma}
+    % https://de.wikipedia.org/wiki/Black-Scholes-Modell#Gamma
+    Das \emph{Gamma} ist die zweite Ableitung des Optionspreises nach dem Preis des Basiswertes.
+    Es ist für Call und Put im Black-Scholes-Modell gleich und zwar
+    \[
+        \Gamma ={\frac {\partial ^{2}C}{\partial S^{2}}}={\frac {\varphi (d_{1})}{S\sigma {\sqrt {T-t}}}}={\frac {\Phi '(d_{1})}{S\sigma {\sqrt {T-t}}}}\geq 0.
+    \]
+    Das Gamma ist also nicht negativ, das heißt, der Optionspreis ändert sich immer in die gleiche Richtung (steigen/fallen) wie die Volatilität.
+\end{bonus}
+
+\begin{bonus}[Griechen]{Vega}
+    % https://de.wikipedia.org/wiki/Black-Scholes-Modell#Vega_(Lambda,_Kappa)
+    Das \emph{Vega}, auch Lambda oder Kappa genannt, bezeichnet die Ableitung des Optionspreises nach der Volatilität und gibt somit an, wie stark eine Option auf Änderungen der (im Black-Scholes-Modell konstanten) Volatilität reagiert. Das Vega ist für einen europäischen Call und Put gleich, und zwar
+    \[
+        \Lambda ={\frac {\partial C}{\partial \sigma }}={\frac {\partial P}{\partial \sigma }}=S\varphi (d_{1}){\sqrt {T-t}}=S\Phi '(d_{1}){\sqrt {T-t}}\geq 0.
+    \]
+    Vega ist kein griechischer Buchstabe.
+    Sigma ist als Zeichen schon für die Standardabweichung vergeben. Die Volatilität wird als Schätzer für die künftige Standardabweichung verwendet.
+\end{bonus}
+
+\begin{bonus}[Griechen]{Theta}
+    % https://de.wikipedia.org/wiki/Black-Scholes-Modell#Theta
+    Das \emph{Theta} bezeichnet die Ableitung nach der vergangenen Zeit $t$, gibt also die Sensitivität der Option auf Änderungen der Zeit an.
+    Da sich ceteris paribus mit der Zeit der Wert einer Option an den Payoff zum Fälligkeitsdatum annähert, ist das Theta einer europäischen Call-Option nie positiv, die Option verliert mit der Zeit an Wert.
+    Es wird auch als Zeitwert der Option bezeichnet.
+
+    Im Black-Scholes Modell ist es
+    \[
+        \Theta _{c}={\frac {\partial C}{\partial t}}=-{\frac {S\varphi (d_{1})\sigma }{2{\sqrt {T-t}}}}-rKe^{-r(T-t)}\Phi (d_{2})
+    \]
+    bzw.
+    \[
+        \Theta _{p}={\frac {\partial P}{\partial t}}=-{\frac {S\varphi (d_{1})\sigma }{2{\sqrt {T-t}}}}+rKe^{-r(T-t)}\Phi (-d_{2}).
+    \]
+\end{bonus}
+
+\begin{bonus}[Griechen]{Rho}
+    % https://de.wikipedia.org/wiki/Black-Scholes-Modell#Rho
+    Mit \emph{Rho} wird die Sensitivität der Option bei kleinen Änderungen des Zinssatzes bezeichnet.
+    \[
+        \mathrm {P} _{c}={\frac {\partial C}{\partial r}}=(T-t)Ke^{-r(T-t)}\Phi (d_{2})\geq 0
+    \]
+    \[
+        \mathrm {P} _{p}={\frac {\partial P}{\partial r}}=-(T-t)Ke^{-r(T-t)}\Phi (-d_{2})\leq 0
+    \]
+\end{bonus}
+
+\subsection{Volatilitätsschätzung}
+
+\begin{defi}{Historische Volatilität}
+    % https://de.wikipedia.org/wiki/Volatilit%C3%A4t#Arten
+    Als \emph{historische Volatilität} bezeichnet man die Volatilität, die man aus Zeitreihen historischer Wertänderungen ausrechnet.
+    In Value-at-Risk-Modellen zur Messung von Marktpreisrisiken finden historische Volatilitäten als Schätzer für zukünftige Schwankungsbreiten Eingang.
+
+    Die \emph{logarithmische historische Volatilität} ist definiert als:
+    \[
+        Y_i = \ln\left(\frac{S_{t_i}}{S_{t_{i-1}}}\right) \quad \text{für } i = 1, \ldots, n.
+    \]
+\end{defi}
+
+\begin{defi}{Implizite Volatilität}
+    % https://de.wikipedia.org/wiki/Implizite_Volatilit%C3%A4t#Abgrenzung_zur_(historischen)_Volatilit%C3%A4t
+    Während die Volatilität (Momentanstandardabweichung) aus historischen Kursen des Basiswertes berechnet wird, bestimmt sich die \emph{implizite Volatilität} aus aktuellen Optionspreisen.
+    Sind der Preis einer Option sowie die preisbeeinflussenden Faktoren Laufzeit, Kurs des Basiswertes, Zinsen und Ausübungspreis bekannt, lässt sich die implizite Volatilität mittels eines Optionspreismodells aus diesen Größen herleiten.
+
+    Die Formel des Black-Scholes-Modells sowie der anderen gängigen Optionspreismodelle lässt sich nicht explizit nach der Volatilität umstellen.
+    Zur Berechnung müssen numerische Näherungsverfahren verwendet werden.
+
+    Eine konkrete Variante der Berechnung verfolgt folgende Idee:
+    Verwende beobachtete Preise von gehandelten Finanzprodukten (z. B. Optionen), um eine \enquote{Vorhersage des Marktes} für die Volatilität zu erhalten.
+
+    Sei eine Call-Option mit Strike $K$ und Laufzeit (Maturität) $T$ zum Zeitpunkt $t$ mit gegebenem Aktienpreis $\hat{S}_t$ gehandelt zum Preis $\hat{C}_t$.
+    Die \emph{implizierte Volatilität} $\hat{\sigma}$ ist diejenige Volatilität, die im Black-Scholes-Modell den beobachteten Preis $\hat{C}_t$ für die Call-Option ergibt:
+    \[
+        \hat{C}_t \stackrel{!}{=} C_t(\hat{S}_t, K, T, r, \hat{\sigma}).
+    \]
+    Da $C_t$ streng monoton wachsend und stetig in $\sigma$ ist (siehe Vega), existiert eine eindeutige Lösung für $\hat{\sigma}$.
+\end{defi}
+
+\begin{info}{Volatilitätsschätzung}
+    \begin{itemize}
+        \item Welche Methoden gibt es?
+        \item Log-Returns! (unabhängig, normalverteilt, ...) (könnte sein, dass man das ausrechnen muss)
+    \end{itemize}
+\end{info}
+
+\subsection{Bonds und Zinsen}
+
+\begin{defi}{Nullkuponanleihe}
+    % https://de.wikipedia.org/wiki/Nullkuponanleihe
+    Eine \emph{Nullkuponanleihe} (engl. \enquote{zero-coupon bond}) oder \emph{T-Bond} mit Maturität $T > 0$ ist eine Anleihe, die keine laufenden Zinsen zahlt, sondern nur zum Nennwert zurückgezahlt wird.
+
+    Der Preis einer Nullkuponanleihe zum Zeitpunkt $t \in [0, T]$ sei definiert als $P_t(T)$ mit $P_T(T) = 1$.
+    Die Familie von Preisen $(P_t(T))_{t \in [0, T]}$ heißt \emph{Zinsstruktur}.
+\end{defi}
+
+\begin{info}{Nullkuponanleihe}
+    \begin{itemize}
+        \item Was das?
+        \item Wie sieht das Sparbuch aus? (Verallgemeinrung Black-Scholes, $r_s$ als stochastischer Prozess, der Zinsen beschreibt, ...)
+    \end{itemize}
+\end{info}
+
+\begin{defi}[Nullkuponanleihe]{Forward-Preis}
+    Sei $P_t(T)$ der Preis einer Nullkuponanleihe zum Zeitpunkt $t$ mit Maturität $T$ und $T \mapsto P_t(T)$ stetig differenzierbar für alle $t \in [0, T]$.
+    Dann heißt
+    \[
+        F_t(S, T) = \frac{P_t(T)}{P_t(S)}, \quad S, T \in [0, \infty], S \leq T
+    \]
+    der \emph{Forward-Preis} der Nullkuponanleihe für den Zeitraum $[S, T]$ zum Zeitpunkt $t$.
+\end{defi}
+
+\begin{defi}[Nullkuponanleihe]{Forward-Rate}
+    Sei $P_t(T)$ der Preis einer Nullkuponanleihe zum Zeitpunkt $t$ mit Maturität $T$ und $T \mapsto P_t(T)$ stetig differenzierbar für alle $t \in [0, T]$.
+    Dann heißt
+    \[
+        R_t(S, T) = -\frac{1}{T-S} \ln(F_t(S, T)) = -\frac{1}{T-S} \ln\left(\frac{P_t(T)}{P_t(S)}\right), \quad S, T \in [0, \infty], S \leq T
+    \]
+    die \emph{Forward-Rate} der Nullkuponanleihe für den Zeitraum $[S, T]$ zum Zeitpunkt $t$.
+
+    Die \emph{instantane Forward-Rate} ist definiert als
+    \[
+        f_t(S) := \lim_{T \to S} R_t(S, T) = -\frac{\partial}{\partial T} \ln(P_t(T)).
+    \]
+\end{defi}
+
+\begin{defi}[Nullkuponanleihe]{Spot-Rate}
+    Sei $P_t(T)$ der Preis einer Nullkuponanleihe zum Zeitpunkt $t$ mit Maturität $T$ und $T \mapsto P_t(T)$ stetig differenzierbar für alle $t \in [0, T]$.
+    Dann heißt
+    \[
+        R_t(T) := R_t(t, T) = -\frac{\ln(P_t(T))}{T-t}, \quad T \in [0, \infty], T > t
+    \]
+    die \emph{Spot-Rate} der Nullkuponanleihe zum Zeitpunkt $t$.
+
+    Die \emph{instantane Spot-Rate} ist definiert als
+    \[
+        r_t := f_t(t) = -\frac{\partial}{\partial T} \ln(P_t(T)) \big|_{T=t}.
+    \]
+\end{defi}
+
+% \begin{example}[Nullkuponanleihe]{Sparbuch}
+%     % https://de.wikipedia.org/wiki/Nullkuponanleihe
+%     Ein \emph{Sparbuch} ist eine Nullkuponanleihe, bei der der Anleger einen bestimmten Betrag zu einem festen Zinssatz anlegt und am Ende der Laufzeit den Anlagebetrag plus Zinsen zurückbekommt.
+%     Der Zinssatz wird im Voraus festgelegt und bleibt während der gesamten Laufzeit konstant.
+
+%     Wir definieren das Sparbuch als
+%     \[
+%         B_t = e^{\int_{0}^{t} r_s \, \mathrm{d}s}
+%     \]
+%     mit dem Zinssatz $r_t$.
+
+%     Der Preis einer Nullkuponanleihe zum Zeitpunkt $t$ mit Maturität $T$ ist dann
+%     \[
+%         P_t(T) = \frac{1}{B_t}.
+%     \]
+
+%     Der Forward-Preis der Nullkuponanleihe für den Zeitraum $[S, T]$ zum Zeitpunkt $t$ ist
+%     \[
+%         F_t(S, T) = \frac{P_t(T)}{P_t(S)} = \frac{B_t}{B_S} = e^{\int_{S}^{t} r_s \, \mathrm{d}s}.
+%     \]
+% \end{example}
+
+\subsection{Short-Rate-Modelle}
+
+\subsubsection{Martingalmodelle und Zinsstrukturgleichung}
+
+\begin{defi}{Momentanzinsmodell}
+    Der \emph{Momentanzins} (engl. \enquote{short-rate model})$r_{t}$ ist der (annualisierte) Zinssatz, zu dem ein Marktteilnehmer Geld für einen infinitesimalen Zeitraum $[t,t+\mathrm{d} t]$ ausborgen kann.
+    Aus dem jetzigen Momentanzins folgt noch nicht der Verlauf der gesamten Zinsstrukturkurve.
+    Allerdings kann man mit Hilfe der für die Modelle üblicherweise vorausgesetzten Arbitragefreiheit zeigen, dass der Preis einer Nullkuponanleihe mit Maturität $T$ zur Zeit $t$ durch
+    \[
+        P_t(T)=\operatorname{E} \left[\left.\exp \left(-\int _{t}^{T}r_{s}\,\mathrm {d} s\right) \right|{\mathcal {F}}_{t}\right]
+    \]
+    gegeben ist.
+    Dabei ist $\mathcal {F}_{t}$ die natürliche Filtration des Prozesses.
+    Das heißt, dass ein Modell für die zukünftige Entwicklung des Momentanzinses die Preise von allen Anleihen bestimmt.
+\end{defi}
+
+\begin{defi}[Momentanzinsmodell]{Zinsstrukturgleichung}
+    Wir nehmen an, dass unter dem Martingalmaß $Q$ die Short-Rate $r_t$ eine Dynamik hat, gemäß
+    \[
+        \mathrm{d} r_t = \mu_t (r_t) \, \mathrm{d} t + \sigma_t (r_t) \, \mathrm{d} W_t
+    \]
+    mit $\mu_t$ und $\sigma_t$ als stochastische Prozesse und $W_t$ als Wiener-Prozess bzw. Brownsche Bewegung.
+
+    Unter dieser Annahme ist die Short-Rate ein Markov-Prozess und es gilt für den Preis einer Nullkuponanleihe
+    \[
+        P_t(T) = \operatorname{E} \left[ \left. \exp \left( - \int_{t}^{T} r_s \, \mathrm{d} s \right) \right| \mathcal{F}_t \right] := F^T(t, r_t)
+    \]
+
+    und die \emph{Zinsstrukturgleichung} lautet
+    \[
+        \frac{\partial F^T}{\partial T} + \mu_t \frac{\partial F^T}{\partial r} + \frac{1}{2} \sigma_t^2 \frac{\partial^2 F^T}{\partial r^2} = rt, \quad t \in [0, T]
+    \]
+    mit Anfangsbedingung $F^T(T, r) = 1$.
+\end{defi}
+
+\subsubsection{Beispiele für die Short-Rate-Dynamik}
+
+\begin{example}[Momentanzinsmodell]{Vasicek-Modell}
+    TODO
+\end{example}
+
+\begin{example}[Momentanzinsmodell]{Cox-Ingersoll-Ross-Modell}
+    TODO
+\end{example}
+
+\begin{example}[Momentanzinsmodell]{Hull-White-Modell}
+    TODO
+\end{example}
+
+\begin{example}[Momentanzinsmodell]{Erweitertes CIR-Modell}
+    TODO
+\end{example}
+
+\subsubsection{Kalibrierung}
+
+Nö.
+
+\begin{info}{Short-Rate-Dynamik}
+    \begin{itemize}
+        \item Kalibrierung vielleicht
+        \item Beispiele für Short-Rate-Modelle
+        \item Voraussetzung (muss Zinsstrukturgleichung erfüllen, ...)
+        \item Wovon hängts ab?
+    \end{itemize}
+\end{info}

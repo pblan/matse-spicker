@@ -1,0 +1,174 @@
+\section{Erweiterungen des zentralen Grenzwertsatzes}
+
+\begin{defi}{Fehlerfortpflanzungsgesetz}
+    Seien $Z_n$, $n \in \mathbb{N}$, $d$-dimensionale Zufallsvektoren, $\mu \in \mathbb{R}^d$ und $\Sigma \in \mathbb{R}^{d \times d}$ symmetrisch und positiv semidefinit.
+    Es gelte weiterhin $\sqrt{n}(Z_n - \mu) \xrightarrow{V} \mathcal{N}(0, \Sigma)$ für $n \to \infty$.
+
+    Ist $f: \mathbb{R}^d \to \mathbb{R}^k$ eine differenzierbare Funktion, so gilt
+    \[
+        \sqrt{n}(f(Z_n) - f(\mu)) \xrightarrow{V} \mathcal{N}_k(0, J_f(\mu) \Sigma J_f(\mu)^T),
+    \]
+    mit $J_f(\mu)$ als Jacobi-Matrix von $f$ an der Stelle $\mu$.
+\end{defi}
+
+\begin{info}{Fehlerfortpflanzungsgesetz}
+    Beweisidee:
+    \begin{itemize}
+        \item Taylor-Entwicklung von $f$ um $\mu$:
+              \[
+                  f(Z_n) = f(\mu) + J_f(\mu)(Z_n - \mu) + R_n,
+              \]
+              wobei $R_n$ den Rest darstellt.
+        \item Lemma von Slutsky
+        \item Satz der stetigen Abbildung
+        \item Transformation Jacobi-Matrix
+    \end{itemize}
+\end{info}
+
+\begin{defi}{Schema von Zufallsvariablen}
+    % https://de.wikipedia.org/wiki/Schema_von_Zufallsvariablen
+    Ein \emph{Schema von Zufallsvariablen}, auch Dreiecksschema genannt, bezeichnet in der Wahrscheinlichkeitstheorie eine Verallgemeinerung einer Folge von Zufallsvariablen, bei der die Zufallsvariablen über einen zweiten Index in kleinere Gruppen zusammengefasst werden.
+    Dies hat den Vorteil, dass man gewisse Eigenschaften (Normiertheit, Zentriertheit, Unabhängigkeit) nur für diese Untergruppen fordern muss und nicht für die gesamte Folge und dabei trotzdem noch gewisse Aussagen treffen kann.
+
+    Für jedes $n \in \mathbb{N}$ sei ein $k_n \in \mathbb{N}$ und Zufallsvariablen $X_{n,1}, \ldots, X_{n,k_n}$ gegeben.
+    Dann heißt
+    \[
+        \left( X_{n,l} \right) = \left( X_{n,1}, \ldots, X_{n,k_n} \right)_{n \in \mathbb{N}, l \in \{1, \ldots, k_n\}}
+    \]
+    ein Schema von Zufallsvariablen.
+    Die Zufallsvariablen werden also immer in Gruppen der Größe $k_n$ zusammengefasst.
+
+    Ein Schema von Zufallsvariablen heißt \emph{unabhängig}, wenn die Zufallsvariablen innerhalb der Gruppen unabhängig sind und die Gruppen untereinander unabhängig sind.
+
+    Ein Schema von Zufallsvariablen heißt \emph{zentriert}, wenn die Erwartungswerte der Zufallsvariablen innerhalb der Gruppen 0 sind.
+
+    Ein Schema von Zufallsvariablen heißt \emph{normiert}, wenn die Varianzen der Zufallsvariablen innerhalb der Gruppen gleich 1 sind.
+
+    Ein Schema von Zufallsvariablen heißt \emph{asymptotisch vernachlässigbar}, wenn
+    \[
+        \lim_{n \to \infty} \max_{1 \leq l \leq k_n} P(|X_{n,l}| > \varepsilon) = 0 \quad \text{für alle} \quad \varepsilon > 0.
+    \]
+\end{defi}
+
+\begin{defi}{Lindeberg-Bedingung}
+    % https://de.wikipedia.org/wiki/Lindeberg-Bedingung
+    Bei dem gewöhnlichen Grenzwertsatz wird immer gefordert, dass die betrachtete Folge von Zufallsvariablen $(X_{n})_{n\in \mathbb {N}}$ stochastisch unabhängige Zufallsvariablen und die Varianzen endlich sind.
+    Bei schwächeren Formulierungen wird außerdem gefordert, dass die Zufallsvariablen identisch verteilt sind.
+
+    Erfüllt eine Folge von stochastisch unabhängigen Zufallsvariablen die \emph{Lindeberg-Bedingung}, so gilt für sie der Zentrale Grenzwertsatz, auch wenn die Zufallsvariablen nicht zwingenderweise identisch verteilt sind.
+    Allgemeiner lässt sich die Lindeberg-Bedingung auch für Schemata von Zufallsvariablen formulieren, hier ist dann sogar ein gewisses Maß an Abhängigkeit zwischen den Zufallsvariablen zulässig.
+    Diese Formulierung spielt eine wichtige Rolle im zentralen Grenzwertsatz von Lindeberg-Feller, einer Verallgemeinerung des gewöhnlichen zentralen Grenzwertsatzes.
+\end{defi}
+
+
+\begin{info}{Zentraler Grenzwertsatz von Lindeberg-Feller}
+    \begin{itemize}
+        \item Was ist die entscheidende Aussage von Lindeberg-Feller? \\
+              Der zentrale Grenzwertsatz von Lindeberg-Feller ist eine Verallgemeinerung des zentralen Grenzwertsatzes von Lindeberg-Lévy.
+              Er besagt, dass unter gewissen Voraussetzungen die normierten Mittelwerte von Zufallsvariablen in Verteilung gegen die Standardnormalverteilung konvergieren.
+              Der zentrale Grenzwertsatz von Lindeberg-Feller schwächt diese Voraussetzungen ab, indem er auf Schemata von Zufallsvariablen zurückgreift, bei denen sogar ein gewisses Maß an stochastischer Abhängigkeit zwischen den Zufallsvariablen erlaubt ist.
+        \item Wie sieht die Lindeberg-Bedingung aus? (Wichtig!)
+        \item Was sind die Voraussetzungen für die Lindeberg-Bedingung? (Wichtig!)
+        \item Was ist die Feller-Bedingung?
+        \item Was ist die Ljapunow-Bedingung?
+    \end{itemize}
+\end{info}
+
+\begin{defi}[Lindeberg-Bedingung]{Formulierung für Folgen von Zufallsvariablen}
+    % https://de.wikipedia.org/wiki/Lindeberg-Bedingung#Formulierung_f%C3%BCr_Folgen_von_Zufallsvariablen
+    Seien $X_{1},X_{2},\ldots ,X_{n}$ unabhängige, quadratisch integrierbare Zufallsvariablen mit $\sigma _{i}^{2}=\operatorname {Var} (X_{i})>0$ für alle $i \in \mathbb{N}$ und seien
+    \[
+        s_i := \sqrt{\sum _{i=1}^{n}\sigma _{i}^{2}} \quad \text{und} \quad \mu_{i} := \operatorname{E} [X_{i}].
+    \]
+
+    Gilt dann die \emph{Lindeberg-Bedingung} für alle $\varepsilon > 0$:
+    \[
+        \lim_{n \to \infty} \frac{1}{s_n^2} \sum_{i=1}^{n} \int_{\{|x-\mu_i| > \varepsilon s_n\}} (x-\mu_i)^2 \, P_{X_i}(\operatorname{d} x) = \lim_{n \to \infty} \sum_{i=1}^{n} \operatorname{E} \left[ \left( \frac{X_i - \mu_i}{s_n} \right)^2 \cdot 1_{\{|X_i - \mu_i| > \varepsilon s_n\}} \right] = 0,
+    \]
+    wobei $1_{A}$ die Indikatorfunktion der Menge $A$ ist, so genügt die Folge der Zufallsvariablen der Lindeberg-Bedingung und der zentrale Grenzwertsatz gilt.
+\end{defi}
+
+\begin{defi}[Lindeberg-Bedingung]{Formulierung für Schemata von Zufallsvariablen}
+    % https://de.wikipedia.org/wiki/Lindeberg-Bedingung#Formulierung_f%C3%BCr_Schemata_von_Zufallsvariablen
+    Gegeben sei ein zentriertes Schema von Zufallsvariablen $(X_{n,l})_{n \in \mathbb{N}, l \in \{1, \ldots, k_n\}}$, bei dem jede Zufallsvariable $X_{n,l}$ quadratintegrierbar ist, und seien
+    \[
+        S_n := \sum_{l=1}^{k_n} X_{n,l}
+    \]
+    die Summen über die zweiten Indizes.
+
+    Gilt dann die \emph{Lindeberg-Bedingung} für alle $\varepsilon > 0$:
+    \[
+        \lim_{n \to \infty} \frac{1}{\operatorname{Var}(S_n)} \sum_{l=1}^{k_n} \operatorname{E} \left[ \left( X_{n,l} \right)^2 \cdot 1_{\{|X_{n,l}| > \varepsilon \sqrt{\operatorname{Var}(S_n)}\}} \right] = 0,
+    \]
+    wobei $1_{A}$ die Indikatorfunktion der Menge $A$ ist, so genügt das Schema der Lindeberg-Bedingung und der zentrale Grenzwertsatz gilt.
+\end{defi}
+
+\begin{defi}{Zentraler Grenzwertsatz von Lindeberg-Feller}
+    % https://de.wikipedia.org/wiki/Zentraler_Grenzwertsatz_von_Lindeberg-Feller
+    Der \emph{zentrale Grenzwertsatz von Lindeberg-Feller} ist eine Verallgemeinerung des zentralen Grenzwertsatzes von Lindeberg-Lévy.
+
+    Dieser besagt, dass unter gewissen Voraussetzungen die normierten Mittelwerte von Zufallsvariablen in Verteilung gegen die Standardnormalverteilung konvergieren.
+    Der zentrale Grenzwertsatz von Lindeberg-Feller schwächt diese Voraussetzungen ab, indem er auf Schemata von Zufallsvariablen zurückgreift, bei denen sogar ein gewisses Maß an stochastischer Abhängigkeit zwischen den Zufallsvariablen erlaubt ist.
+
+    Nun stellt sich die Frage, ob man die Voraussetzungen für den Satz weiter abschwächen kann und ein gewisses Maß an Abhängigkeit möglich ist.
+    Diese Frage lässt sich positiv beantworten.
+
+    Dazu definiert man ein sogenanntes Schema von Zufallsvariablen.
+    Nun kann man zeigen, dass (unter gewissen weiteren Voraussetzungen) es für die Konvergenz ausreichend ist, die Unabhängigkeit der Zufallsvariablen nur innerhalb der Kleingruppen zu fordern.
+    Die Beziehungen der Zufallsvariablen zwischen unterschiedlichen Kleingruppen spielen keine Rolle.
+
+    Gegeben sei ein normiertes, zentriertes und unabhängiges Schema von Zufallsvariablen $(X_{n,l})$.
+    Sei
+    \[
+        S_n := \sum_{l=1}^{k_n} X_{n,l}
+    \]
+    die Summe über die zweiten Indizes.
+
+    Dann gilt die Lindeberg-Bedingung (für Schemata von Zufallsvariablen) genau dann, wenn $(X_{n,l})$ ein asymptotisch vernachlässigbares Schema ist und die Verteilung von $S_n$ in Verteilung gegen die Standardnormalverteilung $\mathcal{N}(0, 1)$ konvergiert.
+\end{defi}
+
+\begin{defi}{Feller-Bedingung}
+    TODO
+\end{defi}
+
+\begin{defi}{Ljapunow-Bedingung}
+    % https://de.wikipedia.org/wiki/Ljapunow-Bedingung
+    Die \emph{Ljapunow-Bedingung}  ist neben der allgemeineren Lindeberg-Bedingung eine der beiden klassischen hinreichenden Voraussetzungen für die Konvergenz in Verteilung der Folge gegen die Standardnormalverteilung und gehört somit in den Themenbereich der zentralen Grenzwertsätze.
+
+    Die Ljapunow-Bedingung impliziert immer die Lindeberg-Bedingung, der Umkehrschluss gilt aber im Allgemeinen nicht.
+\end{defi}
+
+\begin{defi}[Ljapunow-Bedingung]{Formulierung für Folgen von Zufallsvariablen}
+    % https://de.wikipedia.org/wiki/Ljapunow-Bedingung#Formulierung_f%C3%BCr_Folgen_von_Zufallsvariablen
+    Seien $(X_i)_{i \in \mathbb{N}}$ eine Folge von unabhängigen Zufallsvariablen mit
+    \[
+        a_i := \operatorname{E} [X_i] \quad \text{und} \quad 0 < \operatorname{Var} (X_i) < \infty \quad \text{für alle} \quad i \in \mathbb{N}.
+    \]
+    Dabei können die Zufallsvariablen auch unterschiedliche Verteilungen besitzen.
+    Sei weiterhin
+    \[
+        S_n = \sum_{i=1}^{n} \operatorname{Var} (X_i)
+    \]
+    die Summe der Varianzen.
+
+    Die Folge von Zufallsvariablen genügt der \emph{Ljapunow-Bedingung} genau dann, wenn ein $\delta > 0$ existiert, sodass
+    \[
+        \lim_{n \to \infty} \frac{1}{S_n^{1 + \frac{\delta}{2}}} \sum_{i=1}^{n} \operatorname{E} \left[ |X_i - a_i|^{2 + \delta} \right] = 0.
+    \]
+    Damit gilt direkt der zentrale Grenzwertsatz.
+\end{defi}
+
+\begin{defi}[Ljapunow-Bedingung]{Formulierung für Schemata von Zufallsvariablen}
+    % https://de.wikipedia.org/wiki/Ljapunow-Bedingung#Formulierung_f%C3%BCr_Schemata_von_Zufallsvariablen
+    Gegeben sei ein unabhängiges zentriertes Schema von Zufallsvariablen $(X_{n,l})$, bei dem jede Zufallsvariable $X_{n,l}$ quadratintegrierbar ist, und seien
+    \[
+        S_n := \sum_{l=1}^{k_n} X_{n,l}
+    \]
+    die Summen über die zweiten Indizes.
+
+    Das Schema genügt der \emph{Ljapunow-Bedingung} genau dann, wenn ein $\delta > 0$ existiert, sodass
+    \[
+        \lim_{n \to \infty} \frac{1}{\operatorname{Var}(S_n)^{1 + \frac{\delta}{2}}} \sum_{l=1}^{k_n} \operatorname{E} \left[ |X_{n,l}|^{2 + \delta} \right] = 0.
+    \]
+    Damit gilt direkt der zentrale Grenzwertsatz.
+\end{defi}

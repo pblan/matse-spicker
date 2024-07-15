@@ -1,0 +1,85 @@
+\section{Momentenerzeugende Funktionen, die Momentenmethode}
+
+\begin{defi}{Momentenerzeugende Funktion}
+    % https://de.wikipedia.org/wiki/Momenterzeugende_Funktion
+    Die \emph{momenterzeugende Funktion} ist eine Funktion, die in der Wahrscheinlichkeitstheorie einer Zufallsvariablen zugeordnet wird. In vielen Fällen ist diese Funktion in einer Umgebung des Nullpunktes in den reellen bzw. komplexen Zahlen definiert und kann dann mittels Ableitung zur Berechnung der Momente der Zufallsvariablen verwendet werden, woraus sich ihr Name erklärt.
+
+    Die momenterzeugende Funktion einer Zufallsvariablen $X$ ist definiert durch
+    \[
+        M_X(t) := \operatorname{E} \left[ e^{tX} \right],
+    \]
+    wobei $t \in \mathbb{R}$, sofern der Erwartungswert auf der rechten Seite existiert.
+    Dieser Ausdruck ist mindestens für $t = 0$ definiert.
+
+    In vielen Fällen, siehe unten, ist diese Funktion in einer Umgebung von $0$ definiert, und kann dann wie folgt in eine Potenzreihe entwickelt werden:
+    \[
+        M_X(t) = \operatorname{E} \left[ \sum_{n=0}^{\infty} \frac{(tX)^n}{n!} \right] = \sum_{n=0}^{\infty} \frac{t^n}{n!} \operatorname{E} [X^n] = \sum_{n=0}^{\infty} \frac{t^n}{n!} m_X^n.
+    \]
+    Dabei gilt $0^0 := 1$ und die $m_X^n = \operatorname{E} [X^n]$ sind die Momente der Zufallsvariablen $X$.
+
+    Die momenterzeugende Funktion hängt nur von der Verteilung von $X$ ab.
+    Wenn die momenterzeugende Funktion einer Verteilung in einer Umgebung von $0$ existiert, so sagt man, etwas unpräzise aber allgemein gebräuchlich, die Verteilung habe eine momenterzeugende Funktion.
+    Existiert $M_{X}(t)$ nur für $t = 0$ , so sagt man entsprechend, dass die Verteilung keine momenterzeugende Funktion habe.
+\end{defi}
+
+\begin{info}{Momenterzeugende Funktion}
+    \begin{itemize}
+        \item Wie sieht die momenterzeugende Funktion aus?
+        \item Warum heißt sie so?
+        \item Wie werden Momente erzeugt?
+        \item Wann existiert die momenterzeugende Funktion? (vertikale Streifen, holomorph, ...)
+        \item Beispiele für Verteilungen, die durch ihre Momente festgelegt sind:
+              \begin{itemize}
+                  \item beschränkte Zufallsvariablen
+                  \item Normalverteilung
+                  \item Poisson-Verteilung
+                  \item ...
+              \end{itemize}
+        \item Irgendwas Fourier-Transformierte?
+        \item Verteilungskonvergenz $\implies$ Konvergenz der Momente (Wichtig)
+        \item Satz von der majorisierten Konvergenz?
+    \end{itemize}
+\end{info}
+
+\begin{defi}[Momentenerzeugende Funktion]{Eindeutigkeitseigenschaft}
+    % https://de.wikipedia.org/wiki/Momenterzeugende_Funktion#Eindeutigkeitseigenschaft
+    Ist die momenterzeugende Funktion einer Zufallsvariablen $X$ in einer Umgebung von $0$ endlich, so bestimmt sie die Verteilung von $X$ \emph{eindeutig}.
+
+    Seien $X$ und $Y$ zwei Zufallsvariablen mit momenterzeugenden Funktionen $M_X(t)$ und $M_Y(t)$ derart, dass es ein $\varepsilon > 0$ gibt mit $M_X(s), M_Y(s) < \infty$ für alle $s \in (-\varepsilon, \varepsilon)$.
+    Dann gilt $P_X = P_Y$ genau dann, wenn $M_X(s) = M_Y(s)$ für alle $s \in (-\varepsilon, \varepsilon)$ gilt.
+\end{defi}
+
+\begin{info}[Momentenerzeugende Funktion]{Eindeutigkeitseigenschaft}
+    \begin{itemize}
+        \item Was bedeutet die Eindeutigkeitseigenschaft?
+        \item Wann gilt die Eindeutigkeitseigenschaft?
+    \end{itemize}
+\end{info}
+
+\begin{theo}{Konvergenz der Momente}
+    TODO
+\end{theo}
+
+\begin{example}[Momentenerzeugende Funktion]{Bernoulli-Verteilung}
+    TODO
+\end{example}
+
+\begin{example}[Momentenerzeugende Funktion]{Binomialverteilung}
+    TODO
+\end{example}
+
+\begin{example}[Momentenerzeugende Funktion]{Exponentialverteilung}
+    TODO
+\end{example}
+
+\begin{example}[Momentenerzeugende Funktion]{Gleichverteilung}
+    TODO
+\end{example}
+
+\begin{example}[Momentenerzeugende Funktion]{Normalverteilung}
+    TODO
+\end{example}
+
+\begin{example}[Momentenerzeugende Funktion]{Poisson-Verteilung}
+    TODO
+\end{example}

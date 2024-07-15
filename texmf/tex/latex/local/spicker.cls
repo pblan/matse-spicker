@@ -15,8 +15,109 @@
 % Compact scrartcl format
 \LoadClass[parskip=half-, DIV=15]{scrartcl}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Enable own macros
-\RequirePackage{operators}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Delimiter
+\RequirePackage{mathtools}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\scalarprod{\langle}{\rangle}
+\DeclarePairedDelimiter\interval{[}{]}
+
+\newcommand*\conj[1]{\,\overline{\!{#1}}} % kinda fits here
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Operators   
+\DeclareMathOperator{\Eig}{Eig}
+\DeclareMathOperator{\Exists}{\exists}
+\DeclareMathOperator{\Forall}{\forall}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Mean}{E}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator{\Bild}{Bild}
+\DeclareMathOperator{\defect}{defect}
+\DeclareMathOperator{\rang}{rang}
+\DeclareMathOperator{\spur}{spur}
+\DeclareMathOperator{\diagonal}{diag}
+\DeclareMathOperator{\Sol}{Sol}
+\DeclareMathOperator{\row}{row}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\diff}{d}
+\DeclareMathOperator{\Poi}{Poi}
+\DeclareMathOperator{\VarK}{VarK}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\IG}{IG}
+\DeclareMathOperator{\CosSim}{CosSim}
+\DeclareMathOperator{\PVE}{PVE}
+\DeclareMathOperator{\PDME}{PDME}
+\DeclareMathOperator{\purity}{purity}
+\DeclareMathOperator{\koh}{koh}
+\DeclareMathOperator{\sep}{sep}
+\DeclareMathOperator{\ps}{ps}
+\DeclareMathOperator{\ACC}{ACC}
+\DeclareMathOperator{\TP}{TP}
+\DeclareMathOperator{\TN}{TF}
+\DeclareMathOperator{\FP}{FP}
+\DeclareMathOperator{\FN}{FF}
+\DeclareMathOperator{\PPV}{PPV}
+\DeclareMathOperator{\TPR}{TPR}
+\DeclareMathOperator{\FPR}{FPR}
+\DeclareMathOperator{\recall}{recall}
+\DeclareMathOperator{\precision}{precision}
+
+% db
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\cnt}{count}
+\DeclareMathOperator{\ident}{ident}
+\DeclareMathOperator{\schema}{schema}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\FD}{FD}
+\DeclareMathOperator{\AttrHuelle}{\textnormal{AttrHülle}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Symbols
+\RequirePackage{physics,amsmath} % physics for \vb and \abs
+\usepackage{amsthm}
+\RequirePackage{amsfonts}
+\RequirePackage{amssymb}
+\usepackage{stmaryrd}
+\usepackage[binary-units]{siunitx} % binary-units to use \bit and \byte
+\usepackage{pifont}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\newcommand{\Nplus}{\mathbb{N}^+}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Rnonneg}{\mathbb{R}^+_0}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\bigo}{\mathcal{O}}
+\newcommand{\Pot}{\mathcal{P}}
+
+\newcommand{\Modal}[1]{\conj{#1}_M}
+\newcommand{\Rnum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+\newcommand{\Fabs}{F_{\text{abs}}}
+\newcommand{\Frel}{F_{\text{rel}}}
+
+\def\ojoin{\setbox0=\hbox{$\bowtie$}%
+    \rule[-.02ex]{.25em}{.4pt}\llap{\rule[\ht0]{.25em}{.4pt}}}
+
+\newcommand{\lojoin}{\mathbin{\ojoin\mkern-5.8mu\bowtie}}
+\newcommand{\rojoin}{\mathbin{\bowtie\mkern-5.8mu\ojoin}}
+\newcommand{\fojoin}{\mathbin{\ojoin\mkern-5.8mu\bowtie\mkern-5.8mu\ojoin}}
+
+\newcommand{\dotto}{\stackrel{\boldsymbol{\cdot}}{\to}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Enable post-90s text processing
@@ -244,8 +345,9 @@
 \usepackage[most, skins]{tcolorbox}
 \usepackage{nameref}
 
-\usepackage[]{imakeidx}
+\usepackage[texindy]{imakeidx}
 \usepackage[
+    unicode,
     colorlinks,
     citecolor = .,
     linkcolor = matse,
@@ -266,6 +368,30 @@
 \newcommand{\SpickerAlgorithm}{\IfLanguageName{ngerman}{Algorithmus}{Algorithm}}
 \newcommand{\SpickerCode}{\IfLanguageName{ngerman}{Code}{Code}}
 
+% backlinks
+\newcommand{\backlinkhref}[3][white]{\hyperref[#2]{\textcolor{#1}{#3}}}
+\makeatletter
+% try each label prefix: "defi", "theo", "bonus", "example"
+\newcommand{\backlink}[1]{%
+    \IfRefUndefinedExpandable{defi:#1}{%
+        \IfRefUndefinedExpandable{theo:#1}{%
+            \IfRefUndefinedExpandable{bonus:#1}{%
+                \IfRefUndefinedExpandable{example:#1}{%
+                    #1 % no backlink
+                }{%
+                    {\backlinkhref{example:#1}{#1}}%
+                }%
+            }{%
+                {\backlinkhref{bonus:#1}{#1}}%
+            }%
+        }{%
+            {\backlinkhref{theo:#1}{#1}}%
+        }%
+    }{%
+        {\backlinkhref{defi:#1}{#1}}%
+    }%
+}
+
 % https://xyquadrat.ch/2022/04/04/latex-boxes/
 \tcbset {
     base/.style={
@@ -284,15 +410,9 @@
 
 \newkomafont{spickerboxtype}{\normalfont\small\itshape}
 \newkomafont{spickerboxtitle}{\normalfont\normalsize\bfseries}
-\newkomafont{spickerboxsubtitle}{\normalfont\footnotesize\itshape}
+\newkomafont{spickerboxsubtitle}{\normalfont\changefontsizes[8pt]{8pt}\itshape}
 
 \newenvironment{defi}[2][\empty]{%
-    \ifx\empty#1
-        \index{#2}%
-    \else
-        \index{#1!#2}%
-    \fi
-    \label{defi:#2}%
     \begin{tcolorbox}[%
             colbacktitle=fhmint!75!black,
             colback=fhmint!5!white,%
@@ -300,14 +420,22 @@
             base={#2},%
             label={%
                     \ifx\empty#1
-                    {defi:#2}%
+                    {defi:\protect\detokenize{\detokenize{#2}}}%
                     \else
-                    {defi:#1:#2}
+                    {defi:\protect\detokenize{\detokenize{#1}}:\protect\detokenize{\detokenize{#2}}}%
                     \fi
                 },
-            % before title={%
-            %         {\usekomafont{spickerboxtype}{Definition:}\hspace*{5mm}}
-            %     },
+            before title={%
+                    {
+                        
+                            \ifx\empty#1
+                                \index{#2}%
+                            \else
+                                \index{#1!#2}%
+                            \fi
+                            \label{defi:\protect\detokenize{\detokenize{#2}}}%
+                        }
+                },
             title={%
                     \vphantom{Hy}%
                     \usekomafont{spickerboxtitle}{{#2}}%
@@ -315,7 +443,7 @@
                     {}
                     \else
                     {
-                        \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+                        \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{\backlink{#1}}
                     }
                     \fi
                 },
@@ -337,29 +465,36 @@
         
     \end{tcolorbox}}
 
-
-\newenvironment{bonus}[2][\empty]{%
+\newenvironment{theo}[2][\empty]{%
     \ifx\empty#1
         \index{#2}%
     \else
         \index{#1!#2}%
+        % \index{#2}%
     \fi
-    \label{bonus:#2}%
     \begin{tcolorbox}[%
-            colbacktitle=fhred!75!black,
-            colback=fhred!5!white,%
-            colframe=fhred!75!black,%
+            colbacktitle=fhpurple!75!black,
+            colback=fhpurple!5!white,%
+            colframe=fhpurple!75!black,%
             base={#2},%
             label={%
                     \ifx\empty#1
-                    {bonus:#2}%
+                    {theo:#2}%
                     \else
-                    {bonus:#1:#2}
+                    {theo:#1:#2}
                     \fi
                 },
-            % before title={%
-            %         {\usekomafont{spickerboxtype}{Definition:}\hspace*{5mm}}
-            %     },
+            before title={%
+                    {
+                        
+                            \ifx\empty#1
+                                \index{#2}%
+                            \else
+                                \index{#1!#2}%
+                            \fi
+                            \label{theo:\protect\detokenize{\detokenize{#2}}}%
+                        }
+                },
             title={%
                     \vphantom{Hy}%
                     \usekomafont{spickerboxtitle}{{#2}}%
@@ -367,7 +502,66 @@
                     {}
                     \else
                     {
-                        \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+                        \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{\backlink{#1}}
+                    }
+                    \fi
+                },
+            after title={%
+                    {\hfill\usekomafont{spickerboxtype}{Satz}}
+                },
+            % after title={
+            %         {\usekomafont{spickerboxsubtitle}{
+            %                     \ifx\empty#1
+            %                     {\hfill}
+            %                     \else
+            %                     {\hfill #1}
+            %                     \fi
+            %                 }}
+            %     },
+        ]%
+        }%
+        {%
+        
+    \end{tcolorbox}}
+
+\newenvironment{bonus}[2][\empty]{%
+    \ifx\empty#1
+        \index{#2}%
+    \else
+        \index{#1!#2}%
+        % \index{#2}%
+    \fi
+    \begin{tcolorbox}[%
+            colbacktitle=fhred!75!black,
+            colback=fhred!5!white,%
+            colframe=fhred!75!black,%
+            base={#2},%
+            label={%
+                    \ifx\empty#1
+                    {bonus:\protect\detokenize{\detokenize{#2}}}%
+                    \else
+                    {bonus:\protect\detokenize{\detokenize{#1}}:\protect\detokenize{\detokenize{#2}}}%
+                    \fi
+                },
+            before title={%
+                    {
+                        
+                            \ifx\empty#1
+                                \index{#2}%
+                            \else
+                                \index{#1!#2}%
+                            \fi
+                            \label{bonus:\protect\detokenize{\detokenize{#2}}}%
+                        }
+                },
+            title={%
+                    \vphantom{Hy}%
+                    \usekomafont{spickerboxtitle}{{#2}}%
+                    \ifx\empty#1
+                    {}
+                    \else
+                    {
+                        \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{\backlink{#1}}
                     }
                     \fi
                 },
@@ -396,7 +590,6 @@
     \else
         \index[Beispiele]{#1!#2}%
     \fi
-    \label{example:#2}%
     \begin{tcolorbox}[%
             colbacktitle=fhblue!75!black,
             colback=fhblue!5!white,%
@@ -404,14 +597,22 @@
             base={#2},%
             label={%
                     \ifx\empty#1
-                    {example:#2}%
+                    {example:\protect\detokenize{\detokenize{#2}}}%
                     \else
-                    {example:#1:#2}
+                    {example:\protect\detokenize{\detokenize{#1}}:\protect\detokenize{\detokenize{#2}}}%
                     \fi
                 },
-            % before title={%
-            %         {\usekomafont{spickerboxtype}{Definition:}\hspace*{5mm}}
-            %     },
+            before title={%
+                    {
+                        
+                            \ifx\empty#1
+                                \index{#2}%
+                            \else
+                                \index{#1!#2}%
+                            \fi
+                            \label{example:\protect\detokenize{\detokenize{#2}}}%
+                        }
+                },
             title={%
                     \vphantom{Hy}%
                     \usekomafont{spickerboxtitle}{{#2}}%
@@ -419,7 +620,7 @@
                     {}
                     \else
                     {
-                        \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{#1}
+                        \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{\backlink{#1}}
                     }
                     \fi
                 },
@@ -448,10 +649,29 @@
         }{%
     \end{tcolorbox}}
 
-\newenvironment{info}[1]{%
-    \setlist{nosep,leftmargin=*}%
-    \begin{tcolorbox}[colback=fhyellow!5!white, colframe=fhyellow!75!black, title={\usekomafont{spickerboxtype}{Information:} #1}]
-        }{%
+\newenvironment{info}[2][\empty]{%
+    \begin{tcolorbox}[%
+            colbacktitle=gray!75!black,
+            colback=gray!5!white,%
+            colframe=gray!75!black,%
+            base={#2},%
+            title={%
+                    \vphantom{Hy}%
+                    \usekomafont{spickerboxtitle}{{#2}}%
+                    \ifx\empty#1
+                    {}
+                    \else
+                    {
+                        \hspace{2.5mm}\usekomafont{spickerboxsubtitle}{\backlink{#1}}
+                    }
+                    \fi
+                },
+            after title={%
+                    {\hfill\usekomafont{spickerboxtype}{Information}}
+                },
+        ]%
+        }%
+        {%
     \end{tcolorbox}}
 
 \newenvironment{code}[1]{%

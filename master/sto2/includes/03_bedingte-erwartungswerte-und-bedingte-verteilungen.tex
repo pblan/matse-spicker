@@ -1,0 +1,896 @@
+\section{Bedingte Erwartungswerte und bedingte Verteilungen}
+
+\subsection{Elementare bedingte Verteilungen und bedingte Erwartungswerte}
+
+\begin{defi}{Bedingte Verteilung}
+    % https://de.wikipedia.org/wiki/Bedingte_Verteilung
+    Die \emph{bedingte Verteilung} von Zufallsvariablen ist eine Möglichkeit, eine multivariate Verteilung mithilfe der Randverteilungen so abzuändern, dass die neu entstandene Verteilung schon vorhandenes Wissen über die Werte von einer oder mehreren Zufallsvariablen berücksichtigt.
+\end{defi}
+
+\begin{defi}[Bedingte Verteilung]{Diskreter Fall}
+    % https://de.wikipedia.org/wiki/Bedingte_Verteilung#Diskreter_Fall
+    Gegeben sei eine zweidimensionale Zufallsvariable $Z = (X, Y)$ auf $\mathbb{Z}^2$ mit gemeinsamer Wahscheinlichkeitsfunktion $f(x, y)$ sowie die Randverteilung bezüglich $Z$ und entsprechender Randwahrscheinlichkeitsfunktion $f_Y(y)$.
+    Dann heißt für $P(Y = y) > 0$ die Zufallsvariable mit Wahrscheinlichkeitsfunktion
+    \[
+        f(x \mid y) = \frac{P(X = x, Y = y)}{P(Y = y)} = \frac{f(x, y)}{f_Y(y)}
+    \]
+    die \emph{bedingte Verteilung von $X$ unter der Bedingung $Y = y$}.
+
+    Die Wahrscheinlichkeitsfunktion $f(x \mid y)$ wird auch bedingte Wahrscheinlichkeitsfunktion genannt und das zugehörige Wahrscheinlichkeitsmaß meist mit $P_{X \mid Y=y}$ bezeichnet.
+\end{defi}
+
+\begin{bonus}[Bedingte Verteilung]{Stetiger Fall}
+    % https://de.wikipedia.org/wiki/Bedingte_Verteilung#Stetiger_Fall
+    Gegeben sei eine Zufallsvariable $Z = (X, Y)$ auf $\mathbb{R}^2$.
+    Dann ist die Verteilungsfunktion
+    \[
+        F(x, y) = \lim_{h \downarrow 0} P(X \leq x \mid y \leq Y \leq y + h)
+    \]
+    die \emph{bedingte Verteilungsfunktion von $X$ unter der Bedingung $Y = y$}.
+
+    Existiert eine gemeinsame Dichte $f(x, y)$ von $X$ und $Y$ und existiert die Randdichte $f_Y(y) > 0$ bzgl. $Y$, so hat die bedingte Verteilung die \emph{bedingte Dichte}
+    \[
+        f(x \mid y) = \frac{f(x, y)}{f_Y(y)}.
+    \]
+\end{bonus}
+
+\begin{info}{Bedingter Erwartungswert}
+    Zum trivialen Begriff will er nichts fragen
+\end{info}
+
+\subsection{Bedingte Erwartungswerte}
+
+% https://de.wikipedia.org/wiki/Bedingter_Erwartungswert#Einleitung
+Wenn ein Ereignis $B$ mit $P(B) > 0$ gegeben ist, gibt die bedingte Wahrscheinlichkeit
+\[
+    P(A \mid B) = \frac{P(A \cap B)}{P(B)}
+\]
+die Wahrscheinlichkeit an, dass das Ereignis $A$ eintritt, unter der Bedingung, dass das Ereignis $B$ eingetreten ist.
+Entsprechend gibt der bedingte Erwartungswert
+\[
+    \operatorname{E} [X \mid B] = \frac{\operatorname{E} [X \cdot 1_B]}{P(B)}
+\]
+den Erwartungswert der Zufallsvariablen $X$ an, unter der Bedingung, dass das Ereignis $B$ eingetreten ist.
+
+Aus der Gleichung folgt, dass die Radon-Nikodým-Dichte des bedingten Wahrscheinlichkeitsmaßes $P(\cdot \mid B)$ bezüglich des Wahrscheinlichkeitsmaßes $P$ gegeben ist durch
+\[
+    \frac{\operatorname{d} P(\cdot \mid B)}{\operatorname{d} P} = \frac{1_B}{P(B)}.
+\]
+
+Dieser elementare Begriff von bedingten Wahrscheinlichkeiten und Erwartungswerten ist jedoch oft nicht ausreichend. Gesucht sind häufig vielmehr bedingte Wahrscheinlichkeiten und bedingte Erwartungswerte in der Form
+\begin{enumerate}[label=(\alph*)]
+    \item $P(A \mid X = x)$, wenn man weiß, dass eine Zufallsvariable $X$ einen Wert $x$ hat,
+    \item $P(A \mid X)$, wenn man den zuvor gefundenen Wert als Zufallsvariable (in Abhängigkeit von $x$) betrachtet,
+    \item $P(\mathcal{A} \mid \mathcal{B})$, wenn man für jedes Ereignis in einer $\sigma$-Algebra $\mathcal{B}$ die Information hat, ob es eingetreten ist oder nicht.
+\end{enumerate}
+
+Die Ausdrücke in (b) und (c) sind im Gegensatz zu (a) selbst Zufallsvariablen, da sie noch von der Zufallsvariable $X$ bzw. der Realisierung der Ereignisse in $\mathcal{B}$ abhängen.
+
+Die angegebenen Varianten von bedingten Wahrscheinlichkeiten und Erwartungswerten sind alle miteinander verwandt. Tatsächlich genügt es, nur eine Variante zu definieren, denn alle lassen sich voneinander ableiten:
+\begin{itemize}
+    \item Bedingte Wahrscheinlichkeiten und bedingte Erwartungswerte beinhalten das gleiche: Bedingte Erwartungswerte lassen sich, genau wie gewöhnliche Erwartungswerte, als Summen oder Integrale aus bedingten Wahrscheinlichkeiten berechnen.
+          Umgekehrt ist die bedingte Wahrscheinlichkeit eines Ereignisses einfach der bedingte Erwartungswert der Indikatorfunktion des Ereignisses:
+          $P(A \mid B) = \operatorname{E} [1_A \mid B]$.
+    \item Die Varianten in (a) und (b) sind äquivalent.
+          Die Zufallsvariable $P(A \mid X)$ weist für das Ergebnis $\omega$ den Wert $P(A \mid X)(\omega) = P(A \mid X = X(\omega))$ auf.
+          Umgekehrt kann man, wenn $P(A \mid X)$ gegeben ist, immer einen von $x$ abhängigen Ausdruck $P(A \mid X = x)$ finden, so dass diese Beziehung erfüllt ist.
+          Entsprechendes gilt für bedingte Erwartungswerte.
+    \item Die Varianten in (b) und (c) sind ebenfalls äquivalent, weil man $\mathcal{B}$ als die Menge aller Ereignisse der Form $\{X \in E\}$ wählen kann (die von $X$ erzeugte $\sigma$-Algebra $\sigma(X)$), und umgekehrt $X$ als die Familie $\{1_B\}_{B \in \mathcal{B}}$ von Indikatorfunktionen.
+\end{itemize}
+
+\begin{defi}{Bedingter Erwartungswert}
+    % https://de.wikipedia.org/wiki/Bedingter_Erwartungswert
+    Der \emph{bedingte Erwartungswert} beschreibt den Erwartungswert einer Zufallsvariablen unter der Voraussetzung, dass noch zusätzliche Informationen über den Ausgang des zugrunde liegenden Zufallsexperiments verfügbar sind.
+    Dabei kann die Bedingung beispielsweise darin bestehen, dass bekannt ist, ob ein gewisses Ereignis eingetreten ist oder welche Werte eine weitere Zufallsvariable angenommen hat; abstrakt kann die Zusatzinformation als Unterraum des zugrunde liegenden Ereignisraums aufgefasst werden.
+
+    Die Bildung des bedingten Erwartungswertes ist gewissermaßen eine Glättung einer Zufallsvariablen auf einer Teil-$\sigma$-Algebra.
+    $\sigma$-Algebren modellieren verfügbare Information, und eine geglättete Version der Zufallsvariable, die schon auf einer Teil-$\sigma$-Algebra messbar ist, enthält weniger Information über den Ausgang eines Zufallsexperimentes.
+
+    Mit der Bildung der bedingten Erwartung geht eine Reduktion der Beobachtungstiefe einher, die bedingte Erwartung reduziert die Information über eine Zufallsvariable auf eine in Hinsicht der Messbarkeit einfachere Zufallsvariable, ähnlich wie als Extremfall der Erwartungswert einer Zufallsvariablen die Information auf eine einzelne Zahl reduziert.
+\end{defi}
+
+\begin{info}{Bedingter Erwartungswert}
+    \begin{itemize}
+        \item Das hier ist wichtig.
+        \item Testgleichung
+        \item f. s. eindeutig bestimmt
+        \item Existenz
+        \item Beweisidee:
+              \begin{itemize}
+                  \item Satz von Radon-Nikodym
+                  \item Maßtheoretische Induktion
+              \end{itemize}
+        \item Rechenregeln wichtig
+    \end{itemize}
+\end{info}
+
+\begin{defi}[Bedingter Erwartungswert]{Formale Definition}
+    % https://de.wikipedia.org/wiki/Bedingter_Erwartungswert#Formale_Definition
+    Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega, \mathcal{A}, P)$ und eine Teil-$\sigma$-Algebra $\mathcal{B} \subseteq \mathcal{A}$.
+
+    $X$ sei eine Zufallsvariable, deren Erwartungswert existiert.
+
+    Der \emph{bedingte Erwartungswert von $X$}, gegeben $\mathcal{B}$, ist eine Zufallsvariable $Z$ mit folgenden Eigenschaften:
+    \begin{itemize}
+        \item $Z$ ist $\mathcal{B}$-messbar,
+        \item für jedes $B \in \mathcal{B}$ gilt $\operatorname{E} [X \cdot 1_B] = \operatorname{E} [Z \cdot 1_B]$.
+    \end{itemize}
+    Die Menge aller Ergebnisse (d. h. aller Elemente $\Omega$), hinsichtlich derer sich zwei bedingte Erwartungswerte von $X$ gegeben $\mathcal{B}$ (\enquote{Versionen des bedingten Erwartungswerts}) unterscheiden, ist eine $P$-Nullmenge, die in $\mathcal{B}$ enthalten ist.
+    Dadurch lässt sich die Schreibweise $\operatorname{E} [X \mid \mathcal{B}]$ für einen bedingten Erwartungswert $Z$ von $X$ gegeben $\mathcal{B}$ rechtfertigen.
+\end{defi}
+
+\begin{defi}[Bedingter Erwartungswert]{Rechenregeln}
+    % https://de.wikipedia.org/wiki/Bedingter_Erwartungswert#Rechenregeln
+    Alle folgenden Aussagen gelten nur fast sicher ($P$-fast überall), soweit sie bedingte Erwartungswerte enthalten.
+    Anstelle von $\mathcal{B}$ kann man auch eine Zufallsvariable schreiben.
+
+    \begin{itemize}
+        \item \textbf{Herausziehen unabhängiger Faktoren:}
+              \begin{itemize}
+                  \item Ist $X$ unabhängig von $\mathcal{B}$, so gilt
+                        \[
+                            \operatorname{E} (X\mid{\mathcal{B}})=\operatorname{E}(X).
+                        \]
+                  \item Ist $X$ unabhängig von $\mathcal{B}$ und von $Y$, so gilt
+                        \[
+                            \operatorname{E} (XY\mid{\mathcal{B}})=\operatorname{E}(X)\operatorname{E}(Y\mid B).
+                        \]
+                  \item Sind $X$, $Y$ unabhängig, $\mathcal{A}$, $\mathcal{B}$ unabhängig, $X$ von $\mathcal{B}$ und $Y$ von $\mathcal{A}$ unabhängig, so gilt
+                        \[
+                            \operatorname{E} (\operatorname{E} (XY\mid{\mathcal{A}})\mid{\mathcal{B}}) = \operatorname{E} (X) \cdot \operatorname{E}(Y) = \operatorname{E} (\operatorname{E} (XY\mid{\mathcal{B}})\mid{\mathcal{A}}).
+                        \]
+              \end{itemize}
+        \item \textbf{Herausziehen bekannter Faktoren:}
+              Ist $X$ $\mathcal{B}$-messbar, so gilt
+              \[
+                  \operatorname{E} (X \mid{\mathcal{B}}) = X \quad \text{und} \quad \operatorname{E} (XY \mid{\mathcal{B}}) = X \operatorname{E} (Y \mid{\mathcal{B}}).
+              \]
+        \item \textbf{Totaler Erwartungswert:}
+              \[
+                  \operatorname{E} (\operatorname{E} (X\mid{\mathcal{B}})) = \operatorname{E} (X)
+              \]
+        \item \textbf{Turmeigenschaft:}
+              Für Teil-$\sigma$-Algebren $\mathcal{B}_{1}\subset{\mathcal{B}}_{2}\subset{\mathcal{A}}$ gilt
+              \[
+                  \operatorname{E} (\operatorname{E} (X\mid{\mathcal{B}}_{2})\mid{\mathcal{B}}_{1})=\operatorname{E} (X\mid{\mathcal{B}}_{1})(=\operatorname{E} (\operatorname{E} (X\mid{\mathcal{B}}_{1})\mid{\mathcal{B}}_{2})).
+              \]
+        \item \textbf{Linearität:} Für Zufallsvariablen $X$ und $Y$ mit existierendem Erwartungswert und Konstanten $a, b$ gilt
+              \[
+                  \operatorname{E} [aX + bY \mid \mathcal{B}] = a \operatorname{E} [X \mid \mathcal{B}] + b \operatorname{E} [Y \mid \mathcal{B}].
+              \]
+        \item \textbf{Monotonie:} Aus $X_{1}\leq X_{2}$ folgt
+              \[
+                  \operatorname{E} (X_{1}\mid{\mathcal{B}})\leq \operatorname{E} (X_{2}\mid{\mathcal{B}}).
+              \]
+    \end{itemize}
+\end{defi}
+
+\begin{theo}[Bedingter Erwartungswert]{Satz der monotonen Konvergenz}
+    Aus $X_n \uparrow X$ und $\operatorname{E} [X_1 \mid \mathcal{B}] > - \infty$ folgt $\operatorname{E} [X_n \mid \mathcal{B}] \uparrow \operatorname{E} [X \mid \mathcal{B}]$.
+\end{theo}
+
+\begin{theo}[Bedingter Erwartungswert]{Satz der majorisierten Konvergenz}
+    Aus $X_n \to X$ und $\mid X-n\mid \leq Y$ mit $\operatorname{E} [Y \mid \mathcal{B}] < \infty$ folgt $\operatorname{E} [X_n \mid \mathcal{B}] \to \operatorname{E} [X \mid \mathcal{B}]$.
+\end{theo}
+
+\begin{theo}[Bedingter Erwartungswert]{Lemma von Fatou}
+    Aus $\operatorname{E} [\inf_n X_n \mid \mathcal{B}] > - \infty$ folgt $\operatorname{E} [\lim\inf_{n\to\infty} X_n \mid \mathcal{B}] \leq \lim\inf_{n\to\infty} \operatorname{E} [X_n \mid \mathcal{B}]$.
+\end{theo}
+
+\begin{defi}{Bedingte Wahrscheinlichkeit}
+    % https://de.wikipedia.org/wiki/Bedingter_Erwartungswert#Formale_Definition
+    Die \emph{bedingte Wahrscheinlichkeit eines Ereignisses $A\in{\mathcal{A}}$, gegeben $\mathcal{B}$,} ist definiert als die Zufallsvariable
+    \[
+        P(A\mid{\mathcal{B}}) = \operatorname{E} (\mathrm{1}_{A}\mid{\mathcal{B}}),
+    \]
+    d. h. als der bedingte Erwartungswert der Indikatorfunktion von $A$.
+\end{defi}
+
+\subsection{Orthogonale Projektion}
+
+\begin{theo}{Bedingter Erwartungswert als beste Approximation}
+    Das Herausziehen bekannter Faktoren und die Stapeleigenschaft des bedingten Erwartungswertes implizieren für $\mathcal{B}$-messbares $Y$
+    \[
+        \operatorname{E} [Y(X - \operatorname{E} [X \mid \mathcal{B}])] = 0,
+    \]
+    d. h. der bedingte Erwartungswert $\operatorname{E} [X \mid \mathcal{B}]$ ist im Sinne des Skalarprodukts von $L^2(P)$ die orthogonale Projektion von $X$ auf den Untervektorraum der $\mathcal{B}$-messbaren Funktionen, d. h. $\operatorname{E} [X \mid \mathcal{B}]$ ist die beste Approximation von $X$ durch eine $\mathcal{B}$-messbare Funktion von $X$.
+\end{theo}
+
+\begin{info}{Bedingter Erwartungswert als beste Approximation}
+    \begin{itemize}
+        \item Was bedeutet das?
+        \item Warum ist das so?
+        \item Was ist die orthogonale Projektion?
+        \item Was ist der Untervektorraum der $\mathcal{B}$-messbaren Funktionen?
+        \item Warum ist der bedingte Erwartungswert die beste Approximation?
+    \end{itemize}
+
+\end{info}
+
+\begin{defi}{Bedingte Varianz}
+    Es seien $X$ und $Y$ zwei relle Zufallsvariablen auf einem Wahrscheinlichkeitsraum $(\Omega, \Sigma, P)$.
+    Dann heißt
+    \[
+        \operatorname{Var}(X \mid Y) := \operatorname{E}[(X - \operatorname{E}[X \mid Y])^2 \mid Y]
+    \]
+    die \emph{bedingte Varianz von $X$ gegeben $Y$}.
+
+    Analog zum bedingten Erwartungswert betrachtet man auch die bedingten Varianzen
+    \begin{itemize}
+        \item $\operatorname{Var}(X \mid A)$ gegeben ein Ereignis $A \in \Sigma$,
+        \item $\operatorname{Var}(X \mid Y = y)$ gegeben, dass $Y$ den Wert $y$ annimmt,
+    \end{itemize}
+    sowie allgemein
+    \begin{itemize}
+        \item $\operatorname{Var}(X \mid \Sigma')$ gegeben eine Teil-$\sigma$-Algebra $\Sigma' \subseteq \Sigma$.
+    \end{itemize}
+
+    Dazu werden in der Definition die beiden Erwartungswerte jeweils auf $A$, $Y = y$ bzw. $\Sigma'$ bedingt.
+\end{defi}
+
+\begin{bonus}[Bedingte Varianz]{Diskreter Fall}
+    Es seien $X$ und $Y$ zwei diskrete Zufallsvariablen auf einem Wahrscheinlichkeitsraum $(\Omega, \Sigma, P)$.
+    Dann ist die \emph{bedingte Varianz von $X$ gegeben $Y$} definiert als
+    \[
+        \operatorname{Var}(X \mid Y = y) = \sum_x (x - \operatorname{E}[X \mid Y = y])^2 \cdot P_{X \mid y}(x \mid y).
+    \]
+\end{bonus}
+
+\begin{bonus}[Bedingte Varianz]{Stetiger Fall}
+    Es seien $X$ und $Y$ zwei reelle Zufallsvariablen auf einem Wahrscheinlichkeitsraum $(\Omega, \Sigma, P)$.
+    Dann ist die \emph{bedingte Varianz von $X$ gegeben $Y$} definiert als
+    \[
+        \operatorname{Var}(X \mid Y = y) = \int_{-\infty}^{\infty} (x - \operatorname{E}[X \mid Y = y])^2 \cdot f_{X \mid Y}(x \mid y) \, \operatorname{d}x.
+    \]
+    Hierbei ist $f_{X \mid Y}(x \mid y)$ die bedingte Dichte von $X$ unter der Bedingung $Y = y$.
+\end{bonus}
+
+\begin{defi}{Varianzzerlegung}
+    Eine wichtige Aussage im Zusammenhang mit der bedingten Varianz ist die \emph{Varianzzerlegung} (auch \emph{Satz von der totalen Varianz} genannt), nach der die (unbedingte) Varianz einer Zufallsvariablen die Summe aus dem Erwartungswert ihrer bedingten Varianz und der Varianz ihres bedingten Erwartungswerts ist:
+    \[
+        \operatorname{Var}(X) = \operatorname{E}[\operatorname{Var}(X \mid Y)] + \operatorname{Var}(\operatorname{E}[X \mid Y]).
+    \]
+\end{defi}
+
+\begin{bonus}[Varianzzerlegung]{Beweis}
+    Der bedingte Erwartungswert $U := \operatorname{E}[X \mid Y]$ ist eine Zufallsvariable mit Erwartungswert $\operatorname{E}[U] = \operatorname{E}[X]$ und Varianz
+    \[
+        \operatorname{Var}(U) = \operatorname{E}[U^2] - \operatorname{E}[U]^2
+    \]
+    Die bedingte Varianz hat den Erwartungswert
+    \[
+        \operatorname{E}[\operatorname{Var}(X \mid Y)] = \operatorname{E}[\operatorname{E}[X^2 \mid Y]] - \operatorname{E}[U^2] = \operatorname{E}[X^2] - \operatorname{E}[U^2].
+    \]
+    Addition der letzten beiden Gleichungen ergibt
+    \[
+        \operatorname{E}[\operatorname{Var}(X \mid Y)] +\operatorname{Var}(X \mid Y) = \operatorname{E}[X^2] - \operatorname{E}[X]^2 = \operatorname{Var}(X).
+    \]
+\end{bonus}
+
+\subsection{Faktorisierung des bedingten Erwartungswertes}
+
+\begin{defi}[Bedingter Erwartungswert]{Faktorisierung des bedingten Erwartungswertes}
+    % https://de.wikipedia.org/wiki/Bedingter_Erwartungswert#Formale_Definition
+    Seien $X, X_1, \ldots, X_n: (\Omega, \mathcal{A}) \to (\mathbb{R}, \mathcal{B})$ reelle Zufallsvariablen.
+
+    Der bedingte Erwartungswert $\operatorname{E} [X \mid X_1, \ldots, X_n]$, der als eine Zufallsvariable (also eine Funktion von $\omega$) definiert ist, lässt sich auch als eine Funktion von den Zufallsvariablen $X_1, \ldots, X_n$ darstellen.
+
+    Es gibt eine messbare Funktion $f$, die \emph{Faktorisierung des bedingten Erwartungswertes}, so dass
+    \[
+        \operatorname{E} [X \mid X_1, \ldots, X_n] = f(X_1(\omega), \ldots, X_n(\omega)) \quad \text{für alle} \quad \omega \in \Omega.
+    \]
+
+    Damit kann man formal auf einzelne Werte bedingte Erwartungswerte definieren:
+    \[
+        \operatorname{E} [X \mid X_1 = x_1, \ldots, X_n = x_n] = f(x_1, \ldots, x_n).
+    \]
+
+    Bei der Verwendung solcher Ausdrücke ist wegen der fehlenden Eindeutigkeit im allgemeinen Fall besondere Vorsicht geboten.
+\end{defi}
+
+\begin{info}[Bedingter Erwartungswert]{Faktorisierung des bedingten Erwartungswertes}
+    \begin{itemize}
+        \item Findet er sehr wichtig!
+        \item Beweis mit algebraischer Induktion
+        \item Beispiel: $X, Y \sim \mathcal{N}(0, 1)$, $Z = X + Y$
+    \end{itemize}
+\end{info}
+
+\begin{defi}{Stochastischer Prozess}
+    % https://de.wikipedia.org/wiki/Stochastischer_Prozess
+    Ein \emph{stochastischer Prozess} (auch Zufallsprozess) ist ein mathematisches Objekt zur Modellierung von zufälligen, oft zeitlich geordneten, Vorgängen.
+
+    Sei $(\Omega, \mathcal{F}, P)$ ein Wahrscheinlichkeitsraum, $(Z, \mathcal{Z})$ ein mit einer $\sigma$-Algebra versehener Raum (zumeist die reellen Zahlen mit der Borelschen $\sigma$-Algebra) und $T$ eine Indexmenge, zumeist $T \in \{\mathbb{N}_0, \mathbb{R}_+\}$, die in Anwendungen häufig die Menge der betrachteten Zeitpunkte darstellt.
+
+    Ein \emph{stochastischer Prozess} $X$ ist dann eine Familie von Zufallsvariablen $X_t: \Omega \to Z$ für $t \in T$, also eine Abbildung
+    \[
+        X: \Omega \times T \to Z, \quad (\omega, t) \mapsto X_t(\omega),
+    \]
+    sodass $X_t: \omega \mapsto X_t(\omega)$ für jedes $t \in T$ eine $\mathcal{F}$-$\mathcal{Z}$-messbare Funktion ist.
+
+    Die Familie der Zufallsvariablen, die einen stochastischen Prozess bilden, wird auch in der Form $(X_t)_{t \in T}$ notiert.
+    Die Menge $Z$ heißt auch Zustandsraum, er enthält die möglichen Werte, die der Prozess annehmen kann.
+\end{defi}
+
+\begin{info}{Stochastischer Prozess}
+    \begin{itemize}
+        \item Was ist ein stochastischer Prozess?
+        \item Was ist ein Martingal?
+        \item Was ist eine Filtration?
+        \item Was ist ein adaptierter stochastischer Prozess?
+    \end{itemize}
+\end{info}
+
+\begin{defi}{Filtration}
+    % https://de.wikipedia.org/wiki/Filtrierung_(Wahrscheinlichkeitstheorie)
+    Seien $(\Omega ,{\mathcal{A}},P)$ ein Wahrscheinlichkeitsraum, $T \subseteq \mathbb{R}$ eine Indexmenge und $({\mathcal{F}}_{t})_{t\in T}$ eine aufsteigend geordnete Familie von Unter-$\sigma$-Algebren von $\mathcal{A}$, das heißt
+    \begin{itemize}
+        \item ${\mathcal{F}}_{t} \subseteq \mathcal{A}$ ist eine $\sigma$-Algebra für alle $t \in T$,
+        \item ${\mathcal{F}}_{s} \subseteq{\mathcal{F}}_{t}$ für alle $s, t \in T$ mit $s \leq t$.
+    \end{itemize}
+
+    Dann heißt die Familie von $\sigma$-Algebren
+    \[
+        \mathbb{F} = ({\mathcal{F}}_{t})_{t\in T}
+    \]
+    eine \emph{Filtration} in $\mathcal{A}$ oder auf dem Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$.
+\end{defi}
+
+\begin{defi}[Filtration]{Natürliche Filtration}
+    Ist $(X_{t})_{t\in T}$ ein stochastischer Prozess, so wird das durch
+    \[
+        \mathcal{F}_{t}:=\sigma ({X_{s}({\mathcal{A}});s\leq t})
+    \]
+    (d. h. der einhüllenden, minimalen $\sigma$-Algebra auf der Menge aller Bilder der Zufallsvariablen $X_{s}$ der Elemente der $\sigma$-Algebra $\mathcal{A}$ für alle bisher vergangenen Zeitpunkte $s$, wobei $\sigma$ den $\sigma$-Algebren-Operator bezeichnet) erzeugte System $({\mathcal{F}}_{t})_{t\in T}$ als natürliche Filtrierung des Prozesses bezeichnet.
+
+    Es ist also zu jedem Zeitpunkt $t$ die vollständige Information über den vergangenen Verlauf des Prozesses bis einschließlich zum Zeitpunkt $t$ vorhanden.
+\end{defi}
+
+\begin{defi}[Stochastischer Prozess]{Adaptierter stochastischer Prozess}
+    % https://de.wikipedia.org/wiki/Adaptierter_stochastischer_Prozess
+    Sei $(\Omega, \mathcal{F}, P)$ ein Wahrscheinlichkeitsraum, $(Z, \mathcal{Z})$ ein mit einer $\sigma$-Algebra versehener Raum und $T$ eine Indexmenge.
+    Sei $\mathbb{F} = ({\mathcal{F}}_{t})_{t\in T}$ eine Filtrierung von $\mathcal{A}$.
+
+    Dann heißt ein stochastischer Prozess \emph{$\mathbb{F}$-adaptiert} oder \emph{adaptiert an $\mathbb{F}$}, wenn für jedes $t \in T$ gilt:
+    \[
+        X_t \text{ ist }{\mathcal{F}}_{t}\text{-messbar}.
+    \]
+    Die Indexmenge $T$ kann dabei eine beliebige totalgeordnete Menge sein.
+
+    $\sigma$-Algebren modellieren verfügbare Information.
+    Die Mengen der $\sigma$-Algebra $\mathcal{F}_{t}$ geben zu jedem Zeitpunkt $t$ an, wie viele Informationen zur Zeit bekannt sind.
+    Für jedes Ereignis $A\subseteq \Omega$ bedeutet $A\in{\mathcal{F}}_{t}$ übersetzt, dass zum Zeitpunkt $t$ die Frage \enquote{ist $\omega \in A$?} eindeutig mit \enquote{ja} oder \enquote{nein} beantwortet werden kann.
+    Dass die Filtrierung stets aufsteigend geordnet ist, bedeutet demnach, dass eine einmal erlangte Information nicht mehr verloren geht.
+
+    Ist ein stochastischer Prozess $(X_{t})_{t\in T}$ an eine Filtrierung $({\mathcal{F}}_{t})_{t\in T}$ adaptiert, bedeutet dies also, dass der Verlauf der Funktion $s\mapsto X_{s}(\omega )$ im Intervall $[0,t]$ zum Zeitpunkt $t$ (für beliebiges, aber unbekanntes $\omega \in \Omega$ und in Hinsicht auf die durch Ereignisse $A\in{\mathcal{F}}_{s},s\in [0,t]$ formulierbaren Fragen) bekannt ist.
+\end{defi}
+
+\begin{defi}[Stochastischer Prozess]{Martingal}
+    % https://de.wikipedia.org/wiki/Martingal
+    Als \emph{Martingal} bezeichnet man einen stochastischen Prozess, der über den bedingten Erwartungswert definiert wird und sich dadurch auszeichnet, dass er im Mittel fair ist.
+    Vereinfacht kann man sagen, ein Martingal beschreibt ein Nullsummenspiel.
+\end{defi}
+
+\begin{defi}[Martingal]{Diskreter Fall}
+    % https://de.wikipedia.org/wiki/Martingal#Diskreter_Fall
+    Gegeben seien ein Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ sowie eine Filtrierung $\mathbb{F} =({\mathcal{F}}_{n})_{n\in \mathbb{N}}$.
+    Gegeben sei ein stochastischer Prozess $X=(X_{n})_{n\in \mathbb{N}}$ auf $(\Omega ,{\mathcal{A}})$, für den gilt:
+    \begin{itemize}
+        \item Der Prozess ist ein integrierbarer Prozess, das heißt, es ist $\operatorname{E} (\mid X_{n}\mid)<\infty$ für alle $n\in \mathbb{N}$.
+        \item Der Prozess ist adaptiert $\mathbb{F}$, das heißt, $X_{n}$ ist $\mathcal{F}_{n}$-messbar für alle $n\in \mathbb{N}$.
+    \end{itemize}
+
+    Dann heißt $X$ ein Martingal (bezüglich $\mathbb{F}$), wenn
+    \[
+        \operatorname{E} (X_{n+1}\mid \mathcal{F}_{n})=X_{n} \quad P\text{-f.s.} \quad \text{für alle} \quad n\in \mathbb{N}.
+    \]
+\end{defi}
+
+\begin{defi}[Martingal]{Zeitstetiger Fall}
+    % https://de.wikipedia.org/wiki/Martingal#Zeitstetiger_Fall
+    Sind ein Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ sowie eine beliebige, geordnete Indexmenge $T$ (meist $T\subset \mathbb{R}$) und eine Filtrierung $\mathbb{F} =({\mathcal{F}}_{t})_{t\in T}$ gegeben, so heißt ein integrierbarer, an $\mathbb{F}$-adaptierter Prozess $X=(X_{t})_{t\in T}$ ein Martingal (bezüglich $\mathbb{F}$), wenn für alle $s,t\in T$ gilt
+    \[
+        \operatorname{E} (X_{t}\mid \mathcal{F}_{s})=X_{s} \quad P\text{-f.s.} \quad \text{für alle} \quad s\leq t.
+    \]
+\end{defi}
+
+\subsection{Bedingte Verteilungen}
+
+\begin{defi}{Übergangskern}
+    % https://de.wikipedia.org/wiki/%C3%9Cbergangskern
+    Als \emph{Übergangskern} bezeichnet man spezielle Abbildungen zwischen Messräumen, die im ersten Argument messbar sind und im zweiten Argument ein Maß liefern.
+
+    Gegeben seien zwei Messräume $(\Omega_0, \mathcal{A}_0)$ und $(\Omega_1, \mathcal{A}_1)$.
+    Eine Abbildung $K: \Omega_0 \times \mathcal{A}_1 \to [0, \infty]$ heißt ein \emph{Übergangskern} von $(\Omega_0, \mathcal{A}_0)$ nach $(\Omega_1, \mathcal{A}_1)$, wenn gilt:
+    \begin{itemize}
+        \item Für jedes $x \in \Omega_0$ ist $K(x, \cdot)$ ein Maß auf $(\Omega_1, \mathcal{A}_1)$.
+        \item Für jedes $A_1 \in \mathcal{A}_1$ ist $K(\cdot, A_1)$ eine $\mathcal{A}_0$-messbare Funktion.
+    \end{itemize}
+
+    Ist das Maß für alle $x \in \Omega_0$ ein $\sigma$-endliches Maß, so spricht man von einem \emph{$\sigma$-endlichen Übergangskern}; ist es stets endlich, so spricht man von einem \emph{endlichen Übergangskern}.
+
+    Ist das Maß für alle $x\in \Omega_{0}$ ein Wahrscheinlichkeitsmaß, so nennt man $K$ einen \emph{stochastischen Kern} oder \emph{Markow-Kern}.
+
+    Ist das Maß für alle $x\in \Omega_{0}$ ein Sub-Wahrscheinlichkeitsmaß, so heißt $K$ ein \emph{substochastischer Kern} oder \emph{sub-Markow'scher Kern}.
+\end{defi}
+
+\begin{info}{Übergangskern}
+    \begin{itemize}
+        \item Was ist ein Übergangskern?
+        \item Was ist eine bedingte Verteilung? (Fokus auf Übergangskern)
+    \end{itemize}
+\end{info}
+
+\begin{defi}[Bedingte Verteilung]{Reguläre bedingte Verteilung}
+    % https://de.wikipedia.org/wiki/Regul%C3%A4re_bedingte_Verteilung
+    Gegeben seien ein Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ und ein Messraum $(E,{\mathcal{E}})$ sowie eine Unter-$\sigma$-Algebra $\mathcal{F}$ von $\mathcal{A}$.
+    Sei $Y$ eine Zufallsvariable von $(\Omega ,{\mathcal{A}})$ nach $(E,{\mathcal{E}})$.
+
+    Ein Markow-Kern $\kappa_{Y,{\mathcal{F}}}$ von $(\Omega ,{\mathcal{A}})$ nach $(E,{\mathcal{E}})$ heißt eine \emph{reguläre Version der bedingten Verteilung der Zufallsvariable $Y$ gegeben $\mathcal{F}$}, wenn
+    \[
+        \kappa_{Y,{\mathcal{F}}}(\omega ,B)=P(Y^{-1}(B)\mid{\mathcal{F}})(\omega )
+    \]
+    für alle $B \in{\mathcal{E}}$ und für $P$-fast alle $\omega$ gilt.
+
+    Dabei ist $P(A\mid{\mathcal{F}})(\omega ):=\operatorname{E} (\mathbf{1}_{A}\mid{\mathcal{F}})(\omega )$ die bedingte Wahrscheinlichkeit, wie sie über den bedingten Erwartungswert definiert wird.
+
+    Explizit bedeuten die Bedingungen in der Definition an die Funktion $\kappa_{Y,{\mathcal{F}}}: \Omega \times{\mathcal{E}}\to [0,1]$ also:
+    \begin{enumerate}
+        \item Für alle $\omega \in \Omega$ ist $\kappa_{Y,{\mathcal{F}}}(\omega ,\,\cdot \,)$ ein Wahrscheinlichkeitsmaß auf $(E,{\mathcal{E}})$,
+        \item für alle $B\in{\mathcal{E}}$ ist $\kappa_{Y,{\mathcal{F}}}(\,\cdot \,,B)$ eine $\mathcal{F}$-messbare Funktion und
+        \item für alle $B\in{\mathcal{E}}$ und alle $F\in{\mathcal{F}}$ gilt $\int_{F}\kappa_{Y,{\mathcal{F}}}(\,\cdot \,,B)\,dP=P(Y^{-1}(B)\cap F)$.
+    \end{enumerate}
+\end{defi}
+
+\begin{defi}[Bedingter Erwartungswert]{Bedingter Erwartungswert einer regulären bedingten Verteilung}
+    % https://de.wikipedia.org/wiki/Regul%C3%A4re_bedingte_Verteilung#Berechnung_bedingter_Erwartungswerte
+    Ist $\kappa_{Y,{\mathcal{F}}}$ eine \emph{reguläre Version der bedingten Verteilung} einer integrierbaren reellwertigen Zufallsvariable $Y$ gegeben $\mathcal{F}$, dann gilt für den \emph{bedingten Erwartungswert von $Y$ gegeben $\mathcal{F}$}
+    \[
+        \operatorname{E} [Y\mid{\mathcal{F}}](\omega )=\int_{\mathbb{R}} y\,\kappa_{Y,{\mathcal{F}}}(\omega ,dy)
+    \]
+    für $P$-fast alle $\omega \in \Omega$.
+\end{defi}
+
+\begin{info}[Bedingter Erwartungswert]{Bedingter Erwartungswert einer regulären bedingten Verteilung}
+    \begin{itemize}
+        \item Wie funktioniert das?
+        \item Beweis mit algebraischer Induktion
+        \item irgendwas Satz von der monotonen Konvergenz
+    \end{itemize}
+\end{info}
+
+\subsection{Bedingte Dichteformel}
+
+\begin{bonus}{Absolute Stetigkeit von Maßen}
+    % https://de.wikipedia.org/wiki/Absolut_stetige_Funktion#Absolute_Stetigkeit_von_Ma%C3%9Fen
+    Von besonderer Bedeutung für die Maßtheorie sind die reellwertigen absolut stetigen Funktionen.
+
+    Es bezeichne $\lambda$ das Lebesgue-Maß.
+
+    Für monoton steigende reellwertige Funktionen $f: I=[a,b]\to \mathbb{R}$ sind folgende Eigenschaften äquivalent:
+    \begin{itemize}
+        \item Die Funktion $f$ ist absolut stetig auf $I$.
+        \item Die Funktion $f$ bildet $\lambda$-Nullmengen wieder auf Nullmengen ab, d. h. für alle messbare Mengen $A \subseteq I$ gilt $\lambda (A)=0\implies \lambda (f(A))=0$.
+        \item Die Funktion $f$ ist $\lambda$-fast überall differenzierbar, die Ableitungsfunktion $f'\in L^{1}(\lambda )$ ist integrierbar und für alle $x \in I$ gilt $f(x)-f(a)=\int_{a}^{x}f'(t)\ \mathrm{d} \lambda (t)$.
+    \end{itemize}
+    Daraus folgt ein enger Zusammenhang zwischen den absolut stetigen Funktionen und den absolut stetigen Maßen, dieser wird durch die Verteilungsfunktionen vermittelt.
+
+    Ein Maß $\mu$ ist genau dann \emph{absolut stetig} bzgl. $\lambda$, wenn jede Einschränkung der Verteilungsfunktion von $\mu$ auf ein endliches Intervall $I \subset \mathbb{R}$ eine absolut stetige Funktion auf $I$ ist.
+
+    Zwei Maße nennt man \emph{äquivalent}, wenn beide absolut stetig bezüglich einander sind:
+    \[
+        \mu \sim \lambda \iff \mu \ll \lambda \land \lambda \ll \mu.
+    \]
+\end{bonus}
+
+\begin{defi}{Bedingte Dichteformel}
+    Seien $\mu$ und $\nu$ $\sigma$-endliche Maße auf den Messräumen $(\Omega_1, \mathcal{A}_1)$ und $(\Omega_2, \mathcal{A}_2)$.
+
+    Weiterhin sei $P_{X,Y}$ das gemeinsame Maß von zwei Zufallsvariablen $X$ und $Y$ auf $(\Omega_1, \mathcal{A}_1)$ und $(\Omega_2, \mathcal{A}_2)$ absolut stetig bzgl. $\mu \otimes \nu$ ($P_{X,Y} \ll \mu \otimes \nu$) mit der gemeinsamen $\mu \otimes \nu$-Dichte $f_{X,Y}$.
+
+    Dann ist auch das Maß $P_Y$ absolut stetig bzgl. $\nu$ ($P_Y \ll \nu$) mit der $\nu$-Dichte
+    \[
+        f_Y(y) = \int_{\Omega_1} f_{X,Y}(x,y) \, \mu(\operatorname{d}x).
+    \]
+
+    Weiter ist für $P_Y$-fast alle $y \in \Omega_2$ das Maß $P_{X\mid Y=y}$ absolut stetig bzgl. $\mu$ ($P_{X\mid Y=y} \ll \mu$) und für die zugehörige $\mu$-Dichte $f_{X\mid Y=y}$ gilt die \emph{bedingte Dichteformel}
+    \[
+        f_{X\mid Y=y}(x) = \frac{f_{X,Y}(x,y)}{f_Y(y)}.
+    \]
+\end{defi}
+
+\begin{info}{Bedingte Dichteformel}
+    \begin{itemize}
+        \item Wie sieht die aus?
+        \item Was sind die Bedingungen?
+    \end{itemize}
+\end{info}
+
+\subsection{Risikoneutrale Bewertung}
+
+\begin{bonus}{Finanzmarktmodell}
+    % https://de.wikipedia.org/wiki/Martingalma%C3%9F#Finanzmarktmodell
+    Gegeben sei ein \emph{Finanzmarktmodell} bestehend aus $d$ Anlagegütern (z. B. Aktien oder Derivate) $(S^{1},\dotsc ,S^{d})$, einem Numéraire $S^{0}$ und Zeitpunkten $t \in{0,\dotsc ,T}$ mit $T\in \mathbb{N}$.
+
+    Die Wertentwicklung eines Anlagegutes $S^{i}$ wird mittels eines stochastischen Prozesses modelliert.
+    Das heißt, zu jeder Zeit $t=0,\dotsc ,T$ entspricht $S_{t}^{i}$ dem Preis des $i$-ten Anlageguts und $S_{t}^{i}$ ist eine nichtnegative Zufallsvariable auf einem Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{F}},P)$.
+
+    Der Informationsgewinn im betrachteten Finanzmarkt kann durch eine Filtrierung modelliert werden. Eine Filtrierung ist eine aufsteigende Folge von $\sigma$-Algebren mit $\mathcal{F}_{0}\subset{\mathcal{F}}_{1}\subset \ldots \subset{\mathcal{F}}_{T}={\mathcal{F}}$.
+    Dabei beschreibt die Menge $\mathcal{F}_{t}$ die bis zur Zeit $t$ beobachtbaren Ereignisse.
+
+    Weiter soll gelten, dass die Preise $S_{t}^{i}$ für alle $t=0,\dotsc ,T$ $\mathcal{F}_{t}$-messbar sind.
+    Damit soll dem Umstand Rechnung getragen werden, dass die Preise $S_{t}^{i}$ zum Zeitpunkt $t$ bekannt sind.
+
+    Schließlich versteht man unter dem diskontierten Preisprozess
+    \[
+        X^{i} := \frac{S^{i}}{S^{0}}
+    \]
+    die zinsbereinigte Wertentwicklung von Anlagegütern.
+\end{bonus}
+
+\begin{defi}{Martingalmaß}
+    % https://de.wikipedia.org/wiki/Martingalma%C3%9F#Definition
+    Sei $(\Omega ,{\mathcal{F}},({\mathcal{F}}_{t})_{t\in{0,\dotsc ,T}},P)$ ein filtrierter Wahrscheinlichkeitsraum.
+
+    Ein stochastischer Prozess $(X_{t})_{t\in{0,\dotsc ,T}}$ heißt $P$-Martingal, falls folgende drei Eigenschaften gelten:
+    \begin{itemize}
+        \item $X$ ist adaptiert an $({\mathcal{F}}_{t})_{t\in{0,\dotsc ,T}}$, d. h. $X_{t}$ ist $\mathcal{F}_{t}$-messbar für alle $t \in{0,\dotsc ,T}$.
+        \item $X$ ist ein integrierbarer Prozess, d. h. $X_{t}\in{\mathcal{L}}^{1}(\Omega ,{\mathcal{F}}_{t},P)$ für alle $t\in{0,\dotsc ,T}$.
+        \item $\operatorname{E}_{P}(X_{t+1}\mid{\mathcal{F}}_{t})=X_{t}$ $P$-fast sicher für alle $t \in{0,\dotsc ,T-1}$
+    \end{itemize}
+
+    Nun heißt ein Wahrscheinlichkeitsmaß $P^{*}$ auf $(\Omega ,{\mathcal{F}})$ \emph{Martingalmaß} (oder \emph{risikoneutrales Maß}), falls die diskontierten Preisprozesse $X^{i}$ für alle $i=1,\dotsc ,d$ $P^{*}$-Martingale sind.
+\end{defi}
+
+\subsection{Markow-Kette}
+
+\begin{defi}{Markow-Kette}
+    % https://de.wikipedia.org/wiki/Markow-Kette
+    Eine \emph{Markow-Kette} ist ein stochastischer Prozess.
+    Ziel bei der Anwendung von Markow-Ketten ist es, Wahrscheinlichkeiten für das Eintreten zukünftiger Ereignisse anzugeben.
+
+    Eine Markow-Kette ist darüber definiert, dass durch Kenntnis einer nur begrenzten Vorgeschichte ebenso gute Prognosen über die zukünftige Entwicklung möglich sind wie bei Kenntnis der gesamten Vorgeschichte des Prozesses.
+
+    Man unterscheidet Markow-Ketten unterschiedlicher Ordnung.
+    Im Falle einer Markow-Kette erster Ordnung heißt das:
+    Der zukünftige Zustand des Prozesses ist nur durch den aktuellen Zustand bedingt und wird nicht durch vergangene Zustände beeinflusst.
+    Die mathematische Formulierung im Falle einer endlichen Zustandsmenge benötigt lediglich den Begriff der diskreten Verteilung sowie der bedingten Wahrscheinlichkeit, während im zeitstetigen Falle die Konzepte der Filtration sowie der bedingten Erwartung benötigt werden.
+
+    Die Begriffe Markow-Kette und \emph{Markow-Prozess} werden im Allgemeinen synonym verwendet.
+    Zum Teil sind aber zur Abgrenzung mit Markow-Ketten Prozesse in diskreter Zeit (diskreter Zustandsraum) gemeint und mit Markow-Prozessen Prozesse in stetiger Zeit (stetiger Zustandsraum).
+\end{defi}
+
+\begin{defi}[Markow-Kette]{Diskrete Markow-Kette}
+    Gegeben sei eine Familie von Zufallsvariablen $Y = (X_{t})_{t\in \mathbb{N}}$, wobei alle $X_{t}$ nur Werte aus dem höchstens abzählbaren Zustandsraum $S = \{s_{1},s_{2},s_{3},\dots \}$ annehmen.
+    Dann heißt $Y$ eine \emph{(diskrete) Markow-Kette} genau dann, wenn
+    \[
+        P(X_{t+1} = s_{j_{t+1}} \mid X_{t} = s_{j_{t}}, X_{t-1} = s_{j_{t-1}}, \dots , X_{0} = s_{j_{0}}) = P(X_{t+1} = s_{j_{t+1}} \mid X_{t}=s_{j_{t}})
+    \]
+    gilt.
+    Die Übergangswahrscheinlichkeiten hängen also nur von dem aktuellen Zustand ab und nicht von der gesamten Vergangenheit.
+    Dies bezeichnet man als \emph{Markow-Eigenschaft} oder auch als Gedächtnislosigkeit.
+
+    Sind die Übergangswahrscheinlichkeiten unabhängig vom Zeitpunkt $t$, so heißt die Markow-Kette \emph{homogen}.
+\end{defi}
+
+\begin{defi}[Markow-Kette]{Elementare Markoweigenschaft}
+    % https://de.wikipedia.org/wiki/Elementare_Markoweigenschaft
+    Gegeben sei eine Indexmenge $T \subset \mathbb{R}$ sowie ein stochastischer Prozess $X = (X_{t})_{t\in T}$ mit Werten in $(\Omega ,{\mathcal{A}})$ und mit erzeugter Filtrierung $\mathbb{F} =({\mathcal{F}}_{t})_{t\in T}$.
+
+    Der Prozess $X$ hat die \emph{elementare Markoweigenschaft}, wenn für jedes $A \in{\mathcal{A}}$ und alle $s,t\in T$ mit $s\leq t$ gilt, dass
+    \[
+        P(X_{t}\in A\mid{\mathcal{F}}_{s})=P(X_{t}\in A\mid\sigma (X_{s})).
+    \]
+
+    Die elementare Markoweigenschaft besagt, dass die beste Vorhersage für ein Ereignis sich nicht mit der Informationslage verändert.
+    Egal ob man den gesamten Verlauf bis $s$ oder nur den aktuellen Zustand in $s$ kennt, die Vorhersage für den weiteren Verlauf des Prozesses wird dadurch nicht verändert.
+    Dies ist die \enquote{Gedächtnislosigkeit}, die alle Markowprozesse kennzeichnet.
+
+    Die elementare Markoweigenschaft ist allgemeiner als die schwache Markoweigenschaft.
+    Diese fordert die Existenz eines Markowkerns, der die Übergangswahrscheinlichkeiten beschreibt.
+    Außerdem fordert sie im Gegensatz zur elementaren Markoweigenschaft, dass die Übergangswahrscheinlichkeiten zeitunabhängig sind, sie wird also nur von homogenen Markowprozessen erfüllt.
+\end{defi}
+
+\begin{defi}[Markow-Kette]{Schwache Markoweigenschaft}
+    % https://de.wikipedia.org/wiki/Schwache_Markoweigenschaft
+    Gegeben sei ein stochastischer Prozess $(X_{t})_{t\in T}$ mit Werten in $(E,{\mathcal{B}}(E))$ und Zeitmenge $T\subset [0,\infty )$, die außerdem abgeschlossen bezüglich Addition sei und die 0 enthält.
+
+    Sei $\mathbb{F} = ({\mathcal{F}}_{t})_{t\in T}$ die erzeugte Filtrierung des Prozesses.
+
+    Man definiert den Markowkern der Übergangswahrscheinlichkeiten zur Zeitdifferenz $t$ als Kern von $(E,{\mathcal{B}}(E))$ nach $(E,{\mathcal{B}}(E))$ durch
+    \[
+        \kappa_t(x, A) := P_x(X_t \in A)
+    \]
+    für $A \in{\mathcal{B}}(E)$.
+    Dabei ist $P_x(X_t \in A)$ die Wahrscheinlichkeit, zum Zeitpunkt $t$ in $A$ zu sein, wenn man in $X_0 = x \in E$ gestartet ist.
+
+    Der Prozess hat dann die schwache Markoweigenschaft, wenn für beliebiges $s, t \in T$ und alle $A \in{\mathcal{B}}(E)$ und alle $x \in E$ gilt, dass
+    \[
+        P_x(X_{s+t} \in A \mid{\mathcal{F}}_s) = \kappa_t(X_s, A) \quad P_x\text{-f.s.}
+    \]
+
+    Entsprechend der obigen Ausführung ist dann $\kappa_{t}(X_{s},A)$ die Wahrscheinlichkeit, bei Start in $X_{s}$ nach $t$ Zeiteinheiten in $A$ zu sein.
+    Die bedeutet Folgendes:
+    Fixiert man zu einem beliebigen Zeitpunkt $s$ einen Zustand $X_{s}$ und geht dann von diesem Zustand mit dem Wissen über die gesamte Vergangenheit des Prozesses nochmals $t$ Zeitschritte nach vorn, so ist die Wahrscheinlichkeit für das Eintreffen des Ereignisses $A$ dieselbe, wie wenn man direkt im fixierten Zustand $X_{s}$ gestartet hätte und um $t$ nach vorn gegangen wäre.
+    Die Vergangenheit des Prozesses hat also keinen Einfluss auf die Übergangswahrscheinlichkeiten.
+    So gesehen hat der Prozess ein \enquote{kurzes Gedächtnis}.
+    Außerdem hat auch der Zeitpunkt $s$ keinen Einfluss auf die Übergangswahrscheinlichkeiten, der Prozess ist also homogen.
+
+    Eine Verallgemeinerung der schwachen Markoweigenschaft ist die starke Markoweigenschaft. Sie fordert bei einem Markowprozess, dass die schwache Markoweigenschaft nicht nur für deterministische Zeitpunkte gilt, sondern dass sie auch für (zufällige) Stoppzeiten gilt.
+\end{defi}
+
+\begin{defi}{Stoppzeit}
+    % https://de.wikipedia.org/wiki/Stoppzeit
+    Gegeben sei eine geordnete Indexmenge $T \in \{\mathbb{N}_0, \mathbb{R}_+ \}$.
+
+    Ist eine Filtrierung $\mathbb{F} = ({\mathcal{F}}_{t})_{t\in T}$ in $\mathcal{A}$ gegeben, so heißt eine Zufallsvariable
+    \[
+        \tau : \Omega \to T \cup \{\infty \}
+    \]
+    eine \emph{Stoppzeit} bezüglich der Filtrierung $\mathbb{F}$, wenn
+    \[
+        \{\tau \leq t \} = \{\omega \in \Omega \mid \tau(\omega) \leq t \} \in \mathcal{F}_t \quad \text{für alle } t \in T.
+    \]
+
+    Zu Beachten ist, dass die Eigenschaft, eine Stoppzeit zu sein, keine Eigenschaft der Zufallsvariable alleine, sondern eine Eigenschaft der Zufallsvariable in Verbindung mit einer Filtrierung ist.
+    Daher muss bei Angabe oder Definition immer die Filtrierung mit angegeben werden.
+\end{defi}
+
+\begin{info}{Der Bums hier}
+    \begin{itemize}
+        \item Was ist eine Stoppzeit?
+        \item Was ist die $\sigma$-Algebra der $\tau$-Vergangenheit?
+    \end{itemize}
+\end{info}
+
+\begin{defi}[Markow-Kette]{Starke Markoweigenschaft}
+    % https://de.wikipedia.org/wiki/Starke_Markoweigenschaft
+    Gegeben sei ein Markowprozess $(X_{t})_{t\in T}$ mit Verteilungen $(P_{x})_{x\in E}$ und Indexmenge $T$.
+
+    Der Prozess hat nun die \emph{starke Markoweigenschaft}, wenn für jede beschränkte, $\mathcal{B}(E)^{\otimes T}$-$\mathcal{B}(\mathbb{R})$-messbare Funktion $f : E^{\times T}\to \mathbb{R}$ und für jede endliche Stoppzeit $\tau$ und alle $x\in E$ die Gleichung
+    \[
+        \operatorname{E}_{x}(f((X_{\tau +t})_{t\in T})|{\mathcal{F}}_{\tau})=\operatorname{E}_{X_{\tau}}(f(X))
+    \]
+    gilt.
+
+    Dabei ist $\mathcal{F}_{\tau}$ die $\sigma$-Algebra der $\tau$-Vergangenheit und man definiert
+    \[
+        \operatorname{E}_{X_{\tau}}(f(X)):=\int_{E^{\times T}}f(y)\kappa (X_{\tau},\mathrm{d} y).
+    \]
+
+    Bezeichnet man mit $\mathcal{L}_{x}$ die Verteilung des Prozesses beim Start in $x$, so ist für abzählbare Indexmengen $T=\mathbb{N}$ die starke Markoweigenschaft äquivalent zu
+    \[
+        \mathcal{L}_{x}((X_{\tau +t})_{t\in \mathbb{N}}|{\mathcal{F}}_{\tau})={\mathcal{L}}_{X_{\tau}}((X_{t})_{t\in \mathbb{N}})
+    \]
+    für alle endlichen Stoppzeiten $\tau$.
+    In diesem Fall lässt sich beweisen, dass die starke Markoweigenschaft bereits aus der schwachen Markoweigenschaft folgt.
+\end{defi}
+
+\subsection{Bayes-Ansatz}
+
+Was ein dummer Scheiß
+
+\subsection{Nichtparametrische Regression}
+
+\begin{defi}{Nichtparametrisches Regressionsmodell}
+    Für einen bivariaten Zufallsvektor $(X, Y) : (\Omega, \mathcal{A}) \to (\mathbb{R}^2, \mathcal{B}^2)$ betrachten wir das sogenannte \emph{nichtparametrische Regressionsmodell}
+    \[
+        Y = m(X) + \varepsilon,
+    \]
+    wobei $m : (\mathbb{R}, \mathcal{B}) \to (\mathbb{R}, \mathcal{B})$ eine sogenannte \emph{Regressionsfunktion} und $\varepsilon: (\Omega, \mathcal{A}) \to (\mathbb{R}, \mathcal{B})$ eine zufällige Störung.
+
+    Es gelte:
+    \begin{itemize}
+        \item $\operatorname{E}[|m(X)|] < \infty$ und $\operatorname{E}[|\varepsilon|] = 0$.
+        \item $X$ und $\varepsilon$ sind unabhängig.
+        \item $\operatorname{E}[\varepsilon] = 0$.
+        \item $(X, Y)$ besitzt eine $\lambda \otimes \lambda$-Dichte.
+    \end{itemize}
+
+    Darüber hinaus seien $m$ und die Verteilungen von $(X, Y)$ und $Z$ unbekannt.
+
+    Für $n \in \mathbb{N}$ seien unabhängige, bivariate Zufallsvektoren
+    \[
+        (X_1, Y_1), \ldots, (X_n, Y_n) : (\Omega, \mathcal{A}) \to (\mathbb{R}^2, \mathcal{B}^2)
+    \]
+    gegeben, die alle die gleiche Verteilung wie $(X, Y)$ besitzen.
+    Auf deren Basis soll die unbekannte Regressionsfunktion $m$ geschätzt werden.
+
+    Wegen
+    \[
+        \operatorname{E}[Y \mid X] = \operatorname{E}[m(X) + Z \mid X] = \operatorname{E}[m(X) \mid X] + \operatorname{E}[\varepsilon \mid X] = m(X) + \operatorname{E}[\varepsilon] = m(X)
+    \]
+    $P$-f.s. erhalten wir die Regressionsfunktion für $P_X$-fast alle $x \in \mathbb{R}$ durch
+    \[
+        m(x) = \operatorname{E}[Y \mid X = x] = \int_\mathbb{R} y \cdot f_{Y \mid X = x}(y) \, \lambda(\operatorname{d}y) = \int_\mathbb{R} \frac{y \cdot f_{X, Y}(x, y)}{f_X(x)} \, \lambda(\operatorname{d}y).
+    \]
+\end{defi}
+
+\begin{info}{Nichtparametrisches Regression}
+    \enquote{Da kann es sein, dass ich danach frage, vielleicht eher als nach anderen Anwendungen.}
+    \begin{itemize}
+        \item Was ist gegeben?
+        \item Was ist gesucht? (Ein Schätzer für die Regressionsfunktion $m$)
+    \end{itemize}
+\end{info}
+
+\begin{defi}{Kerndichteschätzer}
+    % https://de.wikipedia.org/wiki/Kernregression#Kerndichtesch%C3%A4tzer
+    Ein \emph{Kerndichteschätzer} $\hat{f}$ zur Bandweite $h>0$ ist eine Schätzung der unbekannten Dichtefunktion $f$ einer Variablen.
+
+    Ist $x_{1},\ldots ,x_{n}$ eine Stichprobe, $K$ ein Kern, so ist die Kerndichteschätzung definiert als:
+    \[
+        \hat{f}(x) = \frac{1}{n} \sum _{j=1}^{n}K_{h}(x-x_{j})={\frac{1}{nh}}\sum _{j=1}^{n}K\left({\frac{x-x_{j}}{h}}\right).
+    \]
+\end{defi}
+
+\begin{info}{Kerndichteschätzer}
+    \enquote{Den Begriff Kerndichteschätzer sollten Sie schon mal gehört haben.}
+\end{info}
+
+\begin{defi}{Kern}
+    % https://de.wikipedia.org/wiki/Kerndichtesch%C3%A4tzer#Kerne
+    Mit \emph{Kern} wird die stetige Lebesgue-Dichte $k$ eines fast beliebig zu wählenden Wahrscheinlichkeitsmaßes $K$ bezeichnet.
+    Kerne sind dabei stets um 0 symmetrisch.
+
+    Mögliche Kerne sind etwa:
+    \begin{itemize}
+        \item \textbf{Gauß-Kern:}
+              \[
+                  k(t) := \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{t^2}{2}\right)
+              \]
+        \item \textbf{Cauchy-Kern:}
+              \[
+                  k(t) := \frac{1}{\pi} \frac{1}{1+t^2}
+              \]
+        \item \textbf{Epanechnikov-Kern:}
+              \[
+                  k(t) := \frac{3}{4} (1-t^2) \cdot \mathbf{1}_{\{|t| \leq 1\}}
+              \]
+    \end{itemize}
+
+    Der Kerndichteschätzer stellt eine Überlagerung in Form der Summe entsprechend skalierter Kerne dar, die abhängig von der Stichprobenrealisierung positioniert werden.
+    Die Skalierung und ein Vorfaktor gewährleisten, dass die resultierende Summe wiederum die Dichte eines Wahrscheinlichkeitsmaßes darstellt.
+
+    Der Epanechnikov-Kern ist dabei derjenige Kern, der unter allen Kernen die mittlere quadratische Abweichung des zugehörigen Kerndichteschätzers minimiert.
+\end{defi}
+
+\begin{bonus}{Kernregression}
+    % https://de.wikipedia.org/wiki/Kernregression
+    Unter \emph{Kernregression} versteht man eine Reihe nichtparametrischer statistischer Methoden, bei denen die Abhängigkeit einer zufälligen Größe von Ausgangsdaten mittels Kerndichteschätzung geschätzt wird.
+
+    Die Art der Abhängigkeit, dargestellt durch die \emph{Regressionskurve}, wird im Gegensatz zur linearen Regression nicht als linear festgelegt.
+    Der Vorteil ist eine bessere Anpassung an die Daten im Falle nichtlinearer Zusammenhänge.
+\end{bonus}
+
+\begin{defi}[Kernregression]{Nadaraya-Watson-Schätzer}
+    % https://de.wikipedia.org/wiki/Kernregression#Nadaraya-Watson-Sch%C3%A4tzer 
+    Der \emph{Nadaraya-Watson-Schätzer} schätzt eine unbekannte Regressionsfunktion $m(x)$ aus den Beobachtungsdaten $(x_{1},y_{1}),\dots ,(x_{n},y_{n})$ als
+    \[
+        \hat{m}(x)={\frac{\sum _{i=1}^{n}y_{i}K_{h}(x-x_{i})}{\sum _{i=1}^{n}K_{h}(x-x_{i})}} \quad \text{mit} \quad K_{h}(u)=\frac{1}{h}\cdot K\left(\frac{u}{h}\right)
+    \]
+    und einem Kern $K$ und einer Bandweite $h>0$.
+
+    Die Funktion $K_{h}$ ist dabei eine Funktion, die Beobachtungen nahe $x$ ein großes Gewicht und Beobachtungen weit entfernt von $x$ ein kleines Gewicht zuordnet.
+
+    Die Bandweite legt fest, in welchem Bereich um $x$ die Beobachtungen ein großes Gewicht haben.
+
+    Während die Wahl des Kerns meist recht frei erfolgen kann, hat die Wahl der Bandweite einen großen Einfluss auf die Glattheit des Schätzers.
+\end{defi}
+
+\subsection{Approximation von bedingten Erwartungswerten und bedingten Verteilungen}
+
+\begin{bonus}{Copula}
+    % https://de.wikipedia.org/wiki/Copula_(Mathematik)
+    Eine \emph{Copula} ist eine multivariate Verteilungsfunktion $C : [0,1]^{n}\rightarrow [0,1]$, deren eindimensionale Randverteilungen gleichverteilt über dem Intervall $[0,1]$ sind.
+
+    Formal ausgedrückt bedeutet dies folgendes:
+    \begin{itemize}
+        \item $C$ ist multivariate Verteilungsfunktion, das heißt:
+              \begin{itemize}
+                  \item $\forall u \in [0,1]^{n} : \min\{u_1, \dotsc, u_n\} = 0 \implies C(u) \geq 0$
+                  \item $C$ ist $n$-steigend, das heißt für jedes Hyperrechteck $R = \prod_{i=1}^{n} [x_i, y_i] \subseteq [0,1]^{n}$ ist das $C$-Volumen nicht-negativ:
+                        \[
+                            V_C(R) := \sum_{z \in \prod_{i=1}^n \{x_i, y_i\}} (-1)^{\operatorname{card}(z)} C(z) \geq 0,
+                        \]
+                        wobei $\operatorname{card}(z) := |\{k \mid z_k = x_k \}|$ die Anzahl der $x_k$ in $z$ zählt.
+              \end{itemize}
+        \item Die eindimensionalen Randverteilungen von $C$ sind uniform auf dem Einheitsinvervall:
+              \[
+                  \forall j \in \{1, \dotsc, n \}, u = (u_1, \dotsc, u_n) \in \{1\}^{j-1} \times [0, 1] \times \{1\}^{n-j} : C(u) = u_j.
+              \]
+    \end{itemize}
+
+    Die Forderung an die Randverteilungen lässt sich wie folgt motivieren:
+    Für $n\in \mathbb {N}$ beliebig verteilte Zufallsvariablen $X_{1},X_{2},\dotsc ,X_{n}$ mit stetigen Verteilungen $F_{X_{i}},\;i\in \{1,2,\dotsc ,n\}$ ist die Zufallsvariable $F_{X_{i}}(X_{i})$ gleichverteilt über dem Intervall $[0,1]$.
+\end{bonus}
+
+\begin{theo}{Satz von Sklar}
+    \textit{(Im Folgenden sei $\overline {\mathbb {R}} :=\mathbb {R} \cup \{-\infty ,+\infty \}$ eine Erweiterung der reellen Zahlen.)}
+
+    Sei $F:{\overline {\mathbb {R}}}^{n}\rightarrow [0,1]$ eine $n$-dimensionale Verteilungsfunktion (multivariate Verteilungsfunktion) mit eindimensionalen Randverteilungen $F_{1},\ldots ,F_{n}:{\overline {\mathbb {R}}}\rightarrow [0,1]$.
+
+    Dann existiert eine $n$-dimensionale Copula $C$, sodass für alle $(x_{1},\ldots ,x_{n})\in {\overline {\mathbb {R}}}^{n}$ gilt:
+    \[
+        F(x_{1},x_{2},\ldots ,x_{n})=C\left(F_{1}\left(x_{1}\right),\ldots ,F_{n}\left(x_{n}\right)\right).
+    \]
+
+    Sind alle $F_{i}$ stetig, so ist die Copula eindeutig.
+\end{theo}
+
+\begin{defi}{Approximation von bedingten Verteilungen}
+    TODO
+\end{defi}
+
+\begin{info}{Approximation von bedingten Verteilungen}
+    \enquote{Wie können Sie bedingte Verteilungen approximieren?}
+    \begin{itemize}
+        \item Irgendwas Monte-Carlo und Gesetz der großen Zahlen
+    \end{itemize}
+\end{info}
+
+\begin{defi}{Approximation von bedingten Erwartungswerten}
+    TODO
+\end{defi}
+
+\begin{defi}{Value at Risk}
+    % https://de.wikipedia.org/wiki/Value_at_Risk
+    Der Begriff \emph{Value at Risk} (Abkürzung: VaR) bezeichnet ein Risikomaß für die Risikoposition eines Portfolios im Finanzwesen.
+
+    Es handelt sich um das Quantil der Verlustfunktion:
+    Der Value at Risk zu einem gegebenen Wahrscheinlichkeitsniveau gibt an, welche Verlusthöhe innerhalb eines gegebenen Zeitraums mit dieser Wahrscheinlichkeit nicht überschritten wird.
+
+    Der VaR zum Konfidenzniveau $\gamma$ ist das $\gamma$-Quantil der Verlustfunktion, welche die negative Wertveränderung einer Risikoposition über eine fixierte Zeitspanne, die in diesem Zusammenhang Haltedauer heißt, misst.
+    Der VaR ist also ein Maß für das Verlustrisiko.
+
+    Die Zufallsvariable $X$ beschreibe die Verlustfunktion des Portfolios über den betrachteten Zeitraum.
+    Ein Verlust ist in der Verlustfunktion positiv, ein Gewinn negativ.
+
+    Die zugehörige Verteilungsfunktion sei mit $F_{X}$ bezeichnet.
+    Der VaR zu einem gegebenen Konfidenzniveau $\gamma$ wird dann wie folgt anhand der verallgemeinerten inversen Verteilungsfunktion (Quantilfunktion) definiert:
+    \[
+        \operatorname{VaR}_{\gamma}[X] = F_{X}^{-1}(\gamma) = \inf \left\{ x\in \mathbb {R} \mid F_{X}(x)\geq \gamma \right\} = \inf \left\{ x\in \mathbb {R} \mid P(X\leq x)\geq \gamma \right\}.
+    \]
+\end{defi}
+
+\begin{example}[Value at Risk]{Value at Risk für normalverteilte Zufallsvariablen}
+    % https://de.wikipedia.org/wiki/Value_at_Risk#Beispiele
+    Ist $X$ eine normalverteilte Verlustvariable mit dem Erwartungswert $\mu$ und der Standardabweichung $\sigma$, also $X \sim \mathcal{N}(\mu, \sigma^2)$, so ist der \emph{Value at Risk zum Konfidenzniveau $\gamma$} gegeben durch
+    \[
+        \operatorname{VaR}_{\gamma}[X] = \mu + \sigma \cdot \Phi^{-1}(\gamma), \quad \gamma \in (0, 1),
+    \]
+    wobei $\Phi$ die Verteilungsfunktion der Standardnormalverteilung ist.
+
+    Dies folgt aus:
+    \[
+        P\left( X \leq \sigma \cdot \Phi^{-1}(\gamma) + \mu \right) = P \left( \frac{X - \mu}{\sigma} \leq \Phi^{-1}(\gamma) \right) = \gamma.
+    \]
+\end{example}
+
+\begin{example}[Value at Risk]{Value at Risk für normalverteilte Zufallsvariablen}
+    % https://de.wikipedia.org/wiki/Value_at_Risk#Beispiele
+    Ist $X$ eine normalverteilte Verlustvariable mit dem Erwartungswert $\mu$ und der Standardabweichung $\sigma$, also $X \sim \mathcal{N}(\mu, \sigma^2)$, so ist der \emph{Value at Risk zum Konfidenzniveau $\gamma$} gegeben durch
+    \[
+        \operatorname{VaR}_{\gamma}[X] = \mu + \sigma \cdot \Phi^{-1}(\gamma), \quad \gamma \in (0, 1),
+    \]
+    wobei $\Phi$ die Verteilungsfunktion der Standardnormalverteilung ist.
+
+    Dies folgt aus:
+    \[
+        P\left( X \leq \sigma \cdot \Phi^{-1}(\gamma) + \mu \right) = P \left( \frac{X - \mu}{\sigma} \leq \Phi^{-1}(\gamma) \right) = \gamma.
+    \]
+\end{example}
+
+\begin{example}[Value at Risk]{Value at Risk für eine Summe normalverteilter Zufallsvariablen}
+    % https://de.wikipedia.org/wiki/Value_at_Risk#Beispiele
+    Für die Verlustvariablen $X_{t}=\sum _{j=1}^{t}U_{j}$ mit stochastisch unabhängigen und identisch normalverteilten Zufallsvariablen $U_{j}\sim {\mathcal {N}}(0,\sigma ^{2})$ für $j=1,\dots ,t$ gilt $X_{t}\sim {\mathcal {N}}(0,t\sigma ^{2})$ und daher
+    \[
+        \operatorname{VaR}_{\gamma}[X_{t}] = \sqrt {t} \cdot \sigma \cdot \Phi^{-1}(\gamma).
+    \]
+
+    Der sich daraus ergebende Zusammenhang
+    \[
+        \operatorname{VaR}_{\gamma}[X_{t}] = \sqrt {t} \cdot \operatorname{VaR}_{\gamma}[X_{1}]
+    \]
+    wird als näherungsweise gültige Skalierungsformel auch in allgemeineren Zusammenhängen verwendet, um von einer Risikomaßzahl $\operatorname{VaR}_{\gamma}[X_{1}]$, die sich auf eine Periode bezieht, auf eine Risikomaßzahl $\operatorname{VaR}_{\gamma}[X_{t}]$ zu schließen, die sich auf $t$ Perioden bezieht.
+\end{example}
