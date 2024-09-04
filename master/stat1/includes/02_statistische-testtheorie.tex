@@ -1,0 +1,839 @@
+\section{Statistische Testtheorie}
+
+\subsection{Grundbegriffe}
+
+\begin{defi}{Testproblem}
+    % https://de.wikipedia.org/wiki/Statistischer_Test#Formale_Definition_eines_statistischen_Tests
+    Sei $X$ eine Zufallsvariable, die von einem statistischen Raum $(\Omega, \mathcal{A}, P_{\vartheta})$ in einen Messraum $(\mathcal{X}, \mathcal{F})$ abbildet.
+    Sei zusätzlich $\mathcal{P} = \{P_{\vartheta} : \vartheta \in \Theta\}$ die parametrisierte Verteilungsannahme, also eine Familie von Wahrscheinlichkeitsmaßen auf $(\mathcal{X}, \mathcal{F})$, wobei $\Theta \to \mathcal{P}; \vartheta \mapsto P_{\vartheta}$ eine Bijektion ist.
+    Hierbei sei $\Theta$ der Parameterraum, der in der Praxis meist eine Teilmenge des $\mathbb{R}^d$ mit $d \in \mathbb{N}$ ist.
+
+    Zwei disjunkte Teilmengen $\Theta_0$ und $\Theta_1$ von $\Theta$ definieren das \emph{Testproblem} des \emph{statistischen Tests}:
+    \begin{itemize}
+        \item $H_0: \vartheta \in \Theta_0$
+        \item $H_1: \vartheta \in \Theta_1$, (häufig auch: $H_1: \vartheta \in \Theta \setminus \Theta_0$)
+    \end{itemize}
+    wobei $H_0$ die \emph{Nullhypothese} oder \emph{Hypothese} und $H_1$ die \emph{Alternativhypothese} oder \emph{Alternative} ist.
+    Dabei bilden häufig, aber nicht notwendigerweise, $\Theta_0$ und $\Theta_1$ eine Partition von $\Theta$.
+\end{defi}
+
+\begin{defi}{Statistischer Test}
+    % https://de.wikipedia.org/wiki/Statistischer_Test#Entscheidungsregel,_Fehler_1._und_2._Art
+    Eine messbare Funktion $\varphi$, die die Entscheidung für die Nullhypothese $H_0$ oder die Alternativhypothese $H_1$ trifft, heißt \emph{(randomisierte) Testfunktion} und hat folgende inhaltiche Interpretation als Entscheidungsregel:
+    \[
+        \varphi: (\mathcal{X}, \mathcal{F}) \to ([0, 1], \mathcal{B}([0, 1])), \quad x \mapsto \begin{cases}
+            1         & \text{für } x \in K_1    \\
+            \gamma(x) & \text{für } x \in K_{01} \\
+            0         & \text{für } x \in K_0
+        \end{cases}.
+    \]
+    Es heißt $\varphi(X)$ \emph{statistischer Test}.
+
+    Dabei gilt:
+    \begin{itemize}
+        \item Die Nullhypothese $H_0$ wird abgelehnt, wenn $x \in K_1$ im \emph{strikten Ablehnungsbereich} liegt:
+              \[
+                  K_1 = \{x \in \mathcal{X} : \varphi(x) = 1\}.
+              \]
+        \item Die Nullhypothese $H_0$ wird angenommen, wenn $x \in K_0$ im \emph{strikten Annahmebereich} liegt:
+              \[
+                  K_0 = \{x \in \mathcal{X} : \varphi(x) = 0\}.
+              \]
+        \item Die Nullhypothese $H_0$ wird mit der Wahrscheinlichkeit $\gamma(x)$ abgelehnt, wenn $x \in K_{01}$ im \emph{Randomisierungsbereich} $K_{01}$ liegt:
+              \[
+                  K_{01} = \{x \in \mathcal{X} : 0 < \varphi(x) < 1\}.
+              \]
+    \end{itemize}
+
+    Führt eine Beobachtung $x \in \mathcal{X}$ zu einer Verwerfung der Nullhypothese, spricht man von einer \emph{signifikanten} Beobachtung, andernfalls von einer \emph{(mit der Hypothese) vereinbarbaren} Beobachtung.
+
+    Wenn eine Beobachtung im Randomisierungsbereich $K_{01}$ liegt, wird $H_0$ mit der Wahrscheinlichkeit $\gamma(x)$ abgelehnt und mit der Wahrscheinlichkeit $1 - \gamma(x)$ angenommen, wozu ein weiteres Zufallsexperiment erforderlich ist.
+    Ist dabei $u$ eine Beobachtung von $U \sim \text{Unif}(0, 1)$, wobei $X$ und $U$ unabhängig sind, so wird $H_0$ abgelehnt, wenn $u < \gamma(x)$ und angenommen, wenn $u \geq \gamma(x)$.
+
+    In Anwendungen werden häufig nur \emph{nicht-randomisierte Tests} betrachtet, also solche, bei denen $\gamma(x) = 0$ oder $\gamma(x) = 1$ für alle $x \in \mathcal{X}$ gilt.
+\end{defi}
+
+\begin{defi}{Gütefunktion}
+    % https://de.wikipedia.org/wiki/G%C3%BCtefunktion
+    Gegeben sei ein statistisches Modell $(\mathcal{X}, \mathcal{A}, (P_{\vartheta})_{\vartheta \in \Theta})$ sowie eine disjunkte Zerlegung der Indexmenge $\Theta$ in Nullhypothese $\Theta_0$ und Gegenhypothese (oder Alternative) $\Theta_1$.
+    Des Weiteren sei ein statistischer Test
+    \[
+        \varphi: (\mathcal{X}, \mathcal{A}) \to ([0, 1], \mathcal{B}([0, 1]))
+    \]
+    gegeben.
+    Dann heißt die Funktion
+    \[
+        G_{\varphi}: \Theta \to [0, 1]; \vartheta \mapsto G_{\varphi}(\vartheta) = \operatorname{E}_{\vartheta}[\varphi(X)]
+    \]
+    \emph{Gütefunktion} des Tests $\varphi$.
+    Hierbei bezeichnet $\operatorname{E}_{\vartheta}$ den Erwartungswert bezüglich des Wahrscheinlichkeitsmaßes $P_{\vartheta}$, d. h. der Wahrscheinlichkeitsverteilung der Zufallsvariablen $X$ mit Werten im Stichprobenraum $\mathcal{X}$.
+
+    Somit gibt die Gütefunktion an der Stelle $\vartheta$ an, mit welcher Wahrscheinlichkeit der Test die Nullhypothese ablehnt, wenn das Wahrscheinlichkeitsmaß $P_{\vartheta}$ vorliegt.
+\end{defi}
+
+\begin{defi}{Fehler 1. und 2. Art}
+    % https://de.wikipedia.org/wiki/Fehler_1._und_2._Art
+    Die \emph{Fehler 1. und 2. Art}, auch \emph{$\alpha$-Fehler} und \emph{$\beta$-Fehler} genannt, bezeichnen eine statistische Fehlentscheidung bei statistischen Tests:
+    \begin{itemize}
+        \item Ein \emph{Fehler 1. Art} liegt vor, wenn die Nullhypothese $H_0$ \textit{abgelehnt} wird, obwohl sie \textit{wahr} ist.
+        \item Ein \emph{Fehler 2. Art} liegt vor, wenn die Nullhypothese $H_0$ \textit{angenommen} wird, obwohl sie \textit{falsch} ist.
+    \end{itemize}
+
+    Es gilt also:
+    \begin{center}
+        \begin{tabular}{c|cc}
+                         & $H_0$ angenommen & $H_0$ abgelehnt \\
+            \hline
+            $H_0$ wahr   & korrekt          & Fehler 1. Art   \\
+            $H_0$ falsch & Fehler 2. Art    & korrekt         \\
+        \end{tabular}
+    \end{center}
+
+    Trifft die Hypothese $\vartheta \in \Theta_0$ zu, so ist der Fehler 1. Art die Wahrscheinlichkeit, dass die Nullhypothese fälschlicherweise abgelehnt wird:
+    \[
+        \alpha(\vartheta) = P_{\vartheta}(\varphi(X) = 1) = \operatorname{E}_{\vartheta}[\varphi(X)] = G_{\varphi}(\vartheta).
+    \]
+
+    Trifft die Hypothese $\vartheta \in \Theta_1$ zu, so ist der Fehler 2. Art die Wahrscheinlichkeit, dass die Nullhypothese fälschlicherweise angenommen wird:
+    \[
+        \beta(\vartheta) = P_{\vartheta}(\varphi(X) = 0) = 1 - \operatorname{E}_{\vartheta}[\varphi(X)] = 1 - G_{\varphi}(\vartheta).
+    \]
+
+    Im Allgemeinen kann kein Test gefunden werden, der beide Fehlerwahrscheinlichkeiten gleichzeitig minimiert.
+\end{defi}
+
+\begin{defi}{Gleichmäßig bester Test}
+    % https://de.wikipedia.org/wiki/Gleichm%C3%A4%C3%9Fig_bester_Test
+    Gegeben sei ein statistisches Modell $(\mathcal{X}, \mathcal{F}, (P_{\vartheta})_{\vartheta \in \Theta})$ sowie eine disjunkte Zerlegung der Indexmenge $\Theta$ in Nullhypothese $\Theta_0$ und Gegenhypothese (oder Alternative) $\Theta_1$.
+
+    Sei $\Phi_{\alpha}$ die Menge aller \emph{statistischen Tests zum Niveau $\alpha \in [0, 1]$}, also die Menge aller Statistiken $\varphi$, die maximal zur Wahrscheinlichkeit $\alpha$ den Fehler 1. Art erfüllen:
+    \[
+        \Phi_{\alpha} = \{\varphi: (\mathcal{X}, \mathcal{F}) \to ([0, 1], \mathcal{B}([0, 1])) \mid \forall \vartheta \in \Theta_0 : \alpha(\varphi) = \operatorname{E}_{\vartheta}[\varphi(X)] \leq \alpha \}.
+    \]
+
+    Ein statistischer Test $\varphi^*$ heißt \emph{gleichmäßig bester Test} zum Niveau $\alpha$, wenn die Fehlerwahrscheinlichkeit 2. Art für alle $\varphi \in \Phi_{\alpha}$ minimal ist:
+    \[
+        \forall \vartheta \in \Theta_{1} : \beta(\varphi^*) = 1 - G_{\vartheta}(\varphi^*) = \inf_{\varphi \in \Phi_{\alpha}} (1 - G_{\varphi}(\varphi)) = \inf_{\varphi \in \Phi_{\alpha}} \beta(\varphi).
+    \]
+
+    Für viele Testprobleme existiert kein gleichmäßig bester Test.
+\end{defi}
+
+\subsection{Lemma von Neyman-Pearson}
+
+\begin{defi}{Likelihood-Quotiententest}
+    % https://de.wikipedia.org/wiki/Neyman-Pearson-Lemma
+    Beobachtet werden Realisierungen eines reellen Zufallsvektors $X$ mit Dimension $d$ mit Werten in dem Messraum $(\mathbb{R}^d, \mathcal{B}^d)$.
+    Unbekannt ist die exakte Verteilung $P_X$ von $X$.
+
+    Getestet werden soll
+    \begin{itemize}
+        \item $H_0: \Theta_0 = \{ 0 \} \iff P_X = P_0$ (Nullhypothese) gegen
+        \item $H_1: \Theta_1 = \{ 1 \} \iff P_X = P_1$ (Alternativhypothese)
+    \end{itemize}
+    für zwei Wahrscheinlichkeitsmaße $P_0, P_1$ über dem gegebenen Messraum.
+    Die Maße $P_0$ und $P_1$ besitzen Dichten $f_0$ bzw. $f_1$ bzgl. des Lebesgue-Maßes, d. h., sie sind stetige Verteilungen auf $\mathbb{R}^d$.
+
+    Es sei
+    \[
+        \Phi_{\alpha} = \{\varphi: (\mathcal{X}, \mathcal{F}) \to ([0, 1], \mathcal{B}([0, 1])) \mid \alpha(\varphi) = \operatorname{E}_{0}[\varphi(X)] = \int_{\mathcal{X}} \varphi(x) f_0(x) \, \mu(dx) \leq \alpha \}.
+    \]
+    die Menge aller statistischen Tests zum Niveau $\alpha \in [0, 1]$.
+
+    Statt von einem gleichmäßig besten Test sprechen wir hier von einem \emph{besten Test}.
+    Ein bester Test $\varphi^* \in \Phi_{\alpha}$ erfüllt
+    \[
+        \beta(\varphi^*) = 1 - G_{1}(\varphi^*) = \inf_{\varphi \in \Phi_{\alpha}} (1 - G_{1}(\varphi)) = \inf_{\varphi \in \Phi_{\alpha}} \beta(\varphi).
+    \]
+
+    Man betrachtet nun für eine Realisierung von $X$ die \emph{Likelihood-Quotiententestfunktion}
+    \[
+        \varphi = \begin{cases}
+            1 & \text{falls } f_1(x) > k \cdot f_0(x) \\
+            0 & \text{sonst}
+        \end{cases},
+    \]
+    wobei eine Konstante $k > 0$ existiere, sodass $\{ x \in \mathbb{R}^d : f_1(x) = k \cdot f_0(x) \}$ eine Nullmenge bzgl. $\mu$ ist.
+\end{defi}
+
+\begin{theo}{Lemma von Neyman-Pearson}
+    Das \emph{Lemma von Neyman-Pearson} besagt, dass $k^* \in \mathbb{R}^+$ und $\gamma^* \in [0, 1]$ existieren, sodass für die Likelihood-Quotiententestfunktion
+    \[
+        \varphi^* = \underbrace{I \{ f_1(x) > k^* \cdot f_0(x) \}}_{\text{Ablehnungsbereich}} + \underbrace{\gamma^* \cdot I \{ f_1(x) = k^* \cdot f_0(x) \}}_{\text{Randomisierungsbereich}}
+    \]
+    gilt:
+    \[
+        \alpha(\varphi^*) = \operatorname{E}_{0}[\varphi^*(X)] = \int_{\mathcal{X}} \varphi^*(x) f_0(x) \, \mu(dx) = \alpha
+    \]
+    und
+    \[
+        \beta(\varphi^*) = 1 - G_{1}(\varphi^*) = \inf_{\varphi \in \Phi_{\alpha}} (1 - G_{1}(\varphi)) = \inf_{\varphi \in \Phi_{\alpha}} \beta(\varphi).
+    \]
+
+    Außerdem sind dann folgende Aussagen äquivalent:
+    \begin{itemize}
+        \item $\varphi$ ist ein Likelihood-Quotiententest mit $\alpha(\varphi) = \alpha$.
+        \item $\varphi$ ist ein bester Test zum Niveau $\alpha$.
+    \end{itemize}
+\end{theo}
+
+\begin{defi}{Ein- und zweiseitiges Testproblem}
+    % https://de.wikipedia.org/wiki/Statistischer_Test#Ein-_und_zweiseitige_Tests
+    Im Falle eines eindimensionalen Parameters $\vartheta$ mit Werten in einem Parameterraum $\Theta \subset \mathbb{R}$ spricht man in den beiden Fällen
+    \[
+        H_0 : \vartheta \leq \vartheta_0 \quad \text{gegen} \quad H_1 : \vartheta > \vartheta_0
+    \]
+    und
+    \[
+        H_0 : \vartheta \geq \vartheta_0 \quad \text{gegen} \quad H_1 : \vartheta < \vartheta_0
+    \]
+    von einem \emph{einseitigen Testproblem}.
+
+    Im Fall
+    \[
+        H_0 : \vartheta = \vartheta_0 \quad \text{gegen} \quad H_1 : \vartheta \neq \vartheta_0
+    \]
+    spricht man von einem \emph{zweiseitigen Testproblem}.
+
+    Die Testfunktionen $\varphi: (\mathcal{X}, \mathcal{F}) \to ([0, 1], \mathcal{B}([0, 1]))$ sind in einseitigen Tests in der Form
+    \[
+        \varphi = \underbrace{I \{ T(X) > c \}}_{\text{Ablehnungsbereich}} + \underbrace{\gamma \cdot I \{ T(X) = c \}}_{\text{Randomisierungsbereich}} \quad \text{bzw.} \quad \varphi = \underbrace{I \{ T(X) < c \}}_{\text{Ablehnungsbereich}} + \underbrace{\gamma \cdot I \{ T(X) = c \}}_{\text{Randomisierungsbereich}}
+    \]
+    bzw. für zweiseitige Tests in der Form
+    \[
+        \varphi = \underbrace{I \{ T(X) < c_1 \} + I \{ T(X) > c_2 \}}_{\text{Ablehnungsbereich}} + \underbrace{\gamma_1 \cdot I \{ T(X) = c_1 \} + \gamma_2 \cdot I \{ T(X) = c_2 \}}_{\text{Randomisierungsbereich}}
+    \]
+    gegeben, mit Teststatistik $T: (\mathcal{X}, \mathcal{F}) \to (\mathbb{R}, \mathcal{B})$ und \emph{Randomisierungskonstanten} $\gamma, \gamma_1, \gamma_2 \in [0, 1]$ und kritischen Werten $c, c_1, c_2 \in \mathbb{R}$.
+\end{defi}
+
+\begin{example}[Lemma von Neyman-Pearson]{Binomialverteilung}
+    Sei $X \sim \text{Bin}(n, p)$ eine Zufallsvariable, die eine binomialverteilte Stichprobe mit $n \in \mathbb{N}$ Versuchen (bekannt) und Erfolgswahrscheinlichkeit $p \in \{ p_0, p_1 \}$ (unbekannt) beschreibt, wobei $0 < p_0 < p_1 < 1$ gelte.
+
+    Betrachtet werden die Hypothesen:
+    \begin{itemize}
+        \item $H_0: p = p_0$ (Nullhypothese) gegen
+        \item $H_1: p = p_1$ (Alternativhypothese)
+    \end{itemize}
+
+    Definieren wir
+    \[
+        c := \min \{ x \in \{ 0, \ldots, n \} \mid P_{p_0}(X > x) \leq \alpha \},
+    \]
+    so ist $c$ das kleinste $(1 - \alpha)$-Quantil der Binomialverteilung mit Parametern $n$ und $p_0$, daher gilt:
+    \[
+        P_{p_0}(X > c) \leq \alpha \quad \text{und} \quad P_{p_1}(X \geq c) \geq \alpha.
+    \]
+
+    Ist $P_{p_0}(X > c) < \alpha$, so gilt:
+    \[
+        \alpha \leq P_{p_0}(X \geq c) = P_{p_0}(X > c) + P_{p_0}(X = c) \quad \implies \quad \gamma := \frac{\alpha - P_{p_0}(X > c)}{P_{p_0}(X = c)} \in (0, 1].
+    \]
+
+    Im Fall $P_{p_0}(X > c) = \alpha$ sei $\gamma = 0$, also soll die Nullhypothese $H_0$ abgelehnt werden.
+
+    Weiterhin gilt für den \emph{Likelihood-Quotienten}:
+    \[
+        \frac{P_{p_1}(X = x)}{P_{p_0}(X = x)} = \frac{\binom{n}{x} p_1^x (1 - p_1)^{n - x}}{\binom{n}{x} p_0^x (1 - p_0)^{n - x}} = \left( \frac{p_1(1 - p_0)}{p_0(1 - p_1)} \right)^x \left( \frac{1 - p_1}{1 - p_0} \right)^n, \quad x \in \{ 0, \ldots, n \}.
+    \]
+
+    Wegen $\frac{p_1(1 - p_0)}{p_0(1 - p_1)} > 1$ gilt mit
+    \[
+        k := \left( \frac{p_1(1 - p_0)}{p_0(1 - p_1)} \right)^c \left( \frac{1 - p_1}{1 - p_0} \right)^n > 0
+    \]
+    folgende Aussage:
+    \[
+        x \gtreqqless c \quad \iff \quad P_{p_1}(X = x) \gtreqqless k \cdot P_{p_0}(X = x), \quad x \in \{ 0, \ldots, n \}.
+    \]
+
+
+    Nach dem \emph{Lemma von Neyman-Pearson} ist dann die \emph{Likelihood-Quotiententestfunktion}
+    \[
+        \varphi: \{ 0, \ldots, n \} \to \{ 0, 1 \}, \quad k \mapsto \begin{cases}
+            1      & \text{falls } X > c \\
+            \gamma & \text{falls } X = c \\
+            0      & \text{sonst}
+        \end{cases},
+    \]
+    mit $\operatorname{E}_{p_0}[\varphi(X)] = \alpha$, ein \emph{bester Test} zum Niveau $\alpha$ für das Testproblem $H_0: p = p_0$ gegen $H_1: p = p_1$.
+\end{example}
+
+\begin{defi}{p-Wert}
+    % https://de.wikipedia.org/wiki/P-Wert#Mathematische_Formulierung
+    Bei einem statistischen Test wird eine Vermutung (Nullhypothese) $H_0$ überprüft, indem ein passendes Zufallsexperiment durchgeführt wird, das die Zufallsgrößen $X_1, \ldots, X_n$ liefert.
+    Diese Zufallsgrößen werden zu einer einzelnen Zahl (Prüfgröße) mithilfe einer Teststatistik $T$ zusammengefasst:
+    \[
+        T: (\mathcal{X}, \mathcal{F}) \to (\mathbb{R}, \mathcal{B}), \quad x \mapsto t(x).
+    \]
+    Für einen konkreten Versuchsausgang $X_1 = x_1, \ldots, X_n = x_n$ des Experiments erhält man einen Wert $t(x_1, \ldots, x_n)$ der Prüfgröße.
+
+    Der \emph{p-Wert} ist definiert als die Wahrscheinlichkeit (unter der Bedingung, dass die Nullhypothese $H_0$ wahr ist), dass die Prüfgröße $t$ einen Wert annimmt, der mindestens so \enquote{extrem} ist wie der tatsächlich beobachtete Wert $t$:
+    \[
+        p = \begin{cases}
+            P(T \geq t \mid H_0)                              & \text{für einen einseitigen Test (rechtsseitig)} \\
+            P(T \leq t \mid H_0)                              & \text{für einen einseitigen Test (linksseitig)}  \\
+            2 \cdot \min \{ P(T \leq t, T \geq t \mid H_0) \} & \text{für einen zweiseitigen Test}
+        \end{cases}
+    \]
+\end{defi}
+
+\begin{defi}[Statistischer Test]{Einseitiger Gauß-Test}
+    % https://de.wikipedia.org/wiki/Einseitiger_Einstichproben-Gau%C3%9F-Test
+    Der \emph{einseitige Gauß-Test} ist ein statistischer Test, der im Falle einer Normalverteilung mit unbekanntem Erwartungswert und bekannter Varianz testet, ob der Erwartungswert über oder unter einem vorgegegeben Schwellenwert liegt.
+
+    Gegeben sei eine Stichprobe $X = (X_1, \ldots, X_n)$ von jeweils unabhängigen normalverteilten $X_i \sim \mathcal{N}(\mu, \sigma^2)$ mit unbekanntem Erwartungswert $\mu \in \mathbb{R}$ und bekannter Varianz $\sigma^2 \in \mathbb{R}_{> 0}$.
+
+    Wir behandeln das einseitige Testproblem
+    \begin{itemize}
+        \item $H_0: \mu \leq \mu_0$ (Nullhypothese) gegen
+        \item $H_1: \mu > \mu_0$ (Alternativhypothese)
+    \end{itemize}
+
+    Die Dichte von $X$ für gegebenen Erwartungswert $\mu_0$ ist gegeben durch
+    \[
+        f_{\mu_0}(x) = \left( \frac{1}{\sqrt{2 \pi} \sigma} \right)^n \exp \left( -\frac{1}{2 \sigma^2} \sum_{i = 1}^{n} (x_i - \mu_0)^2 \right), \quad x = (x_1, \ldots, x_n) \in \mathbb{R}^n.
+    \]
+
+    Die \emph{Gauß-Teststatistik} ist gegeben durch
+    \[
+        T(X) = \frac{1}{\sqrt{n} \sigma} \sum_{i = 1}^{n} (X_i - \mu_0), \quad \text{mit } T \sim \mathcal{N} \left( \frac{\sqrt{n} (\mu - \mu_0)}{\sigma}, 1 \right).
+    \]
+
+    Der Ablehnungsbereich des \textit{einfachen Testproblems} $H_0: \mu = \mu_0$ gegen $H_1: \mu = \mu_1$ ist gegeben mit
+    \[
+        c := \Phi^{-1}(1 - \alpha) = \frac{\sqrt{n} (\mu - \mu_0)}{\sigma} \iff \{ x \in \mathbb{R}^n : T(x) > c \},
+    \]
+    wobei $\Phi$ die Verteilungsfunktion der Standardnormalverteilung $\mathcal{N}(0, 1)$ ist.
+
+    Der Likelihood-Quotiententest für das \textit{einfache Testproblem} ist also gegeben durch
+    \[
+        \varphi = \begin{cases}
+            1 & \text{falls } T(X) > c \\
+            0 & \text{sonst}
+        \end{cases}
+        = I \{ T(X) > c \},
+    \]
+    mit $\operatorname{E}_{\mu_0}[\varphi(X)] = \alpha$.
+    Nach dem Lemma von Neyman-Pearson ist $\varphi$ ein bester Test zum Niveau $\alpha$ für das Testproblem $H_0: \mu = \mu_0$ gegen $H_1: \mu = \mu_1$.
+
+    Da dies für jedes $\mu_1 > \mu_0$ gilt, ist der Test auch gleichmäßig bester Test zum Niveau $\alpha$ für das Testproblem $H_0: \mu = \mu_0$ gegen $H_1: \mu > \mu_0$.
+
+    Da die Gütefunktion
+    \[
+        G_{\varphi}(\mu) = \operatorname{E}_{\mu}[\varphi(X)] = P_{\mu}(T(X) > c) = 1 - \Phi \left( c - \frac{\sqrt{n} (\mu - \mu_0)}{\sigma} \right)
+    \]
+    streng monoton wachsend in $\mu$ ist, gilt
+    \[
+        \forall \mu \leq \mu_0 : G_{\varphi}(\mu) \leq \alpha \quad \text{bzw.} \quad \forall \mu > \mu_0 : G_{\varphi}(\mu) > \alpha.
+    \]
+    Damit ist der Test auch ein bester Test zum Niveau $\alpha$ für das ursprünglich formulierte Testproblem $H_0: \mu \leq \mu_0$ gegen $H_1: \mu > \mu_0$.
+\end{defi}
+
+\begin{defi}{$\chi^2$-Verteilung}
+    % https://de.wikipedia.org/wiki/Chi-Quadrat-Verteilung
+
+    SInd $Z_1, \ldots, Z_n \sim \mathcal{N}(0, 1)$ unabhängige, standardnormalverteilte Zufallsvariablen, so ist die Zufallsvariable $X$ mit
+    \[
+        X = \sum_{i = 1}^{n} Z_i^2 \quad \implies \quad X \sim \chi^2_n
+    \]
+    eine \emph{$\chi^2$-verteilte Zufallsvariable} mit $n$ Freiheitsgraden.
+    Die Dichte der $\chi^2$-Verteilung ist gegeben durch
+    \[
+        f_{\chi^2_n}(x) = \frac{1}{2^{\frac{n}{2}}} \cdot \frac{1}{\Gamma\left(\frac{n}{2}\right)} \cdot x^{\frac{n}{2} - 1} \cdot \exp \left( -\frac{x}{2} \right), \quad x \in [0, \infty),
+    \]
+    wobei $\Gamma$ die \emph{Gammafunktion} ist.
+    Die Werte von $\Gamma(\frac{n}{2})$ kann man rekursiv aus
+    \[
+        \Gamma \left( \frac{1}{2} \right) = \sqrt{\pi}, \quad \Gamma(1) = 1, \quad \text{und} \quad \Gamma\left(1 + \frac{n}{2}\right) = \left(1 + \frac{n}{2}\right) \cdot \Gamma\left(\frac{n}{2}\right)
+    \]
+    berechnen.
+    Die $\chi^2$-Verteilung ist eine spezielle Form der \emph{Gamma-Verteilung} $\mathcal{G}(p, b)$ mit $p = \frac{n}{2}$ und $b = 2$:
+    \[
+        \chi^2_n \sim \mathcal{G}\left(\frac{n}{2}, 2\right).
+    \]
+
+    % https://tex.stackexchange.com/a/252756
+    % \begin{tikzpicture}[
+    %         declare function={gamma(\z)=
+    %                 (2.506628274631*sqrt(1/\z) + 0.20888568*(1/\z)^(1.5) + 0.00870357*(1/\z)^(2.5) - (174.2106599*(1/\z)^(3.5))/25920 - (715.6423511*(1/\z)^(4.5))/1244160)*exp((-ln(1/\z)-1)*\z);},
+    %         declare function={gammapdf(\x,\k,\theta) = \x^(\k-1)*exp(-\x/\theta) / (\theta^\k*gamma(\k));}
+    %     ]
+
+    %     \begin{axis}[
+    %             axis lines=left,
+    %             enlargelimits=upper,
+    %             samples=100,
+    %             xlabel=$n$,
+    %             ylabel=$\chi^2_n$,
+    %             width=0.45\textwidth,
+    %         ]
+    %         \foreach \n in {1,...,8} {
+    %                 \addplot+ [smooth, domain=0:20, mark={}] {gammapdf(x, \n, 2)};
+    %                 \addlegendentryexpanded{$n = \n$}
+    %             }
+    %     \end{axis}
+    % \end{tikzpicture}%
+\end{defi}
+
+\begin{defi}{$\chi^2$-Anpassungstest}
+    % https://de.wikipedia.org/wiki/Chi-Quadrat-Test
+    Man betrachtet ein statistisches Merkmal $X$, dessen Wahrscheinlichkeiten in der Grundgesamtheit unbekannt sind.
+    Es wird bzgl. der Wahrscheinlichkeiten von $X$ vorläufig formuliert:
+    \begin{itemize}
+        \item $H_0:$ $X$ besitzt die Wahrscheinlichkeitsverteilung $P^X_0$ (Nullhypothese)
+    \end{itemize}
+
+    Es liegen $n$ unabhängige Beobachtungen $x_1, \ldots, x_n$ von $X$ vor, die in $m$ verschiedene Kategorien fallen.
+    Die Anzahl der Beobachtungen in der $i$-ten Kategorie ist die beobachtete absolute Häufigkeit $n_i$.
+
+    Man überlegt sich nun, wie viele Beobachtungen im Mittel in einer Kategorie liegen müssten, wenn $X$ tatsächlich die hypothetische Verteilung besäße.
+    Dazu berechnet man zunächst die Wahrscheinlichkeit
+    \[
+        p_{0i} = P_0(X = i).
+    \]
+    Die unter $H_0$ erwartete absolute Häufigkeit in der $i$-ten Kategorie ist dann
+    \[
+        n_{0i} = n \cdot p_{0i}.
+    \]
+
+    Wenn die in der vorliegenden Stichprobe beobachteten Häufigkeiten $n_i$ und die erwarteten Häufigkeiten $n_{0i}$ stark voneinander abweichen, spricht das für eine Ablehnung der Nullhypothese.
+    Die Teststatistik $T_n$ für den Test misst die Größe dieser Abweichungen:
+    \[
+        T_n = \sum_{i = 1}^{m} \frac{(n_i - n_{0i})^2}{n_{0i}} = \sum_{i = 1}^{m} \frac{(n_i - n \cdot p_{0i})^2}{n \cdot p_{0i}}
+    \]
+
+    Die Teststatistik $T_n$ ist asymptotisch $\chi^2$-verteilt mit $m - 1$ Freiheitsgraden, d. h.
+    \[
+        T_n \sim \chi^2_{m - 1} \quad \text{für } n \to \infty.
+    \]
+
+    Wenn die Nullhypothese wahr ist, sollte der Unterschied zwischen der beobachteten und der theoretisch erwarteten Häufigkeit klein sein, also wird $H_0$ abgelehnt, wenn $T_n$ groß ist.
+    Bei gegebenem Signifikanzniveau $\alpha$ wird die Nullhypothese abgelehnt, wenn
+    \[
+        T_n > \chi^2_{(m - 1; 1 - \alpha)} \iff P(T_n > \chi^2_{(m - 1; 1 - \alpha)}) \leq \alpha,
+    \]
+    also wenn der aus der Stichprobe erhaltene Wert der Teststatistik größer als das $(1 - \alpha)$-Quantil der $\chi^2$-Verteilung mit $m - 1$ Freiheitsgraden ist.
+\end{defi}
+
+\begin{example}[TODO-Anpassungstest]{Normalverteilung}
+    Sei $X = (X_1, \ldots, X_n)$ eine zusammegesetzte Zufallsvariable, wobei jedes $X_i \sim \mathcal{N}(\mu, \sigma^2)$ identisch unabhängig normalverteilt ist mit bekanntem Erwartungswert $\mu \in \mathbb{R}$ und unbekannter Varianz $\sigma^2 \in \mathbb{R}_{> 0}$.
+
+    Betrachtet werden die Hypothesen:
+    \begin{itemize}
+        \item $H_0: \sigma^2 \leq \sigma_0^2$ (Nullhypothese) gegen
+        \item $H_1: \sigma^2 > \sigma_0^2$ (Alternativhypothese)
+    \end{itemize}
+
+    Die Dichte von $X$ für gegebene Varianz $\sigma_0^2$ ist gegeben durch
+    \[
+        f_{\sigma_0^2}(x) = \left( \frac{1}{\sqrt{2 \pi} \sigma_0} \right)^n \exp \left( -\frac{1}{2 \sigma_0^2} \sum_{i = 1}^{n} (x_i - \mu)^2 \right), \quad x = (x_1, \ldots, x_n) \in \mathbb{R}^n.
+    \]
+
+    Weiterhin gilt für den \emph{Likelihood-Quotienten} für $\sigma_1^2 > \sigma_0^2$, $k > 0$ und geeignetem $c \in \mathbb{R}$:
+    \[
+        \frac{f_{\sigma_1^2}(x)}{f_{\sigma_2^2}(x)} = \left( \frac{\sigma_0}{\sigma_1} \right)^n \exp \left( -\left( \frac{1}{2 \sigma_1^2} - \frac{1}{2 \sigma_0^2} \right) \sum_{i = 1}^{n} (x_i - \mu)^2 \right) \gtreqqless k, \quad x \in \mathbb{R}^n,
+    \]
+    genau dann, wenn
+    \[
+        T(x) = \frac{1}{\sigma_0^2} \sum_{i = 1}^{n} (x_i - \mu)^2 = \underbrace{\sum_{i = 1}^{n} \left( \frac{x_i - \mu}{\sigma_0} \right)^2}_{\sim \chi^2_n \text{ für } \mu, \sigma_0^2} \gtreqqless c.
+    \]
+
+    Wählen wir zu einem Signifikanzniveau $\alpha$ den kritischen Wert $c = \chi^2_{(n; 1 - \alpha)}$, so ist der \emph{Likelihood-Quotiententest} für das \textit{einfache} Testproblem $H_0: \sigma^2 = \sigma_0^2$ gegen $H_1: \sigma^2 = \sigma_1^2$ gegeben durch
+    \[
+        \varphi = \begin{cases}
+            1 & \text{falls } T(X) > \chi^2_{(n; 1 - \alpha)} \\
+            0 & \text{sonst}
+        \end{cases}
+        = I \{ T(X) > \chi^2_{(n; 1 - \alpha)} \},
+    \]
+    bester Test zum Niveau $\alpha$.
+
+    Da dies für jedes $\sigma_1^2 > \sigma_0^2$ gilt, ist der Test auch gleichmäßig bester Test zum Niveau $\alpha$ für das Testproblem $H_0: \sigma^2 = \sigma_0^2$ gegen $H_1: \sigma^2 > \sigma_0^2$.
+
+    Da die Gütefunktion
+    \begin{align*}
+        G_{\varphi}(\sigma^2)  = & \operatorname{E}_{\sigma^2}[\varphi(X)] = P_{\sigma^2}(T(X) > \chi^2_{(n; 1 - \alpha)}) = P_{\sigma^2}\left(\vphantom{\frac{\sigma_0^2}{\sigma^2}}\right. \underbrace{\frac{\sigma_0^2}{\sigma^2} \cdot T(X)}_{\sim \chi^2_n \text{ für } \mu, \sigma^2} > \left.\frac{\sigma_0^2}{\sigma^2} \cdot \chi^2_{(n; 1 - \alpha)}\right) \\
+        =                        & \frac{1}{2^{\frac{n}{2}} \Gamma\left(\frac{n}{2}\right)} \int_{\frac{\sigma_0^2}{\sigma^2} \cdot \chi^2_{(n; 1 - \alpha)}}^{\infty} x^{\frac{n}{2} - 1} \exp \left( -\frac{x}{2} \right) \, \mathrm{d}x
+    \end{align*}
+    streng monoton wachsend in $\sigma^2$ ist, gilt
+    \[
+        \forall \sigma^2 \leq \sigma_0^2 : G_{\varphi}(\sigma^2) \leq \alpha \quad \text{bzw.} \quad \forall \sigma^2 > \sigma_0^2 : G_{\varphi}(\sigma^2) > \alpha.
+    \]
+    Damit ist der Test auch ein gleichmäßig bester Test zum Niveau $\alpha$ für das \textit{ursprünglich formulierte} Testproblem $H_0: \sigma^2 \leq \sigma_0^2$ gegen $H_1: \sigma^2 > \sigma_0^2$.
+\end{example}
+
+
+\subsection{Likelihood-Quotiententest für zusammengesetzte Hypothesen}
+
+\begin{defi}[Likelihood-Quotiententest]{Zusammengesetzte Hypothesen}
+    % https://de.wikipedia.org/wiki/Likelihood-Quotienten-Test#Definition
+    Formal betrachtet man das typische parametrische Testproblem:
+    Gegeben ist eine Grundmenge von Wahrscheinlichkeitsverteilungen $\{ P_{\vartheta} : \vartheta \in \Theta \}$, abhängig von einem unbekannten Parameter $\vartheta \in \Theta$, der aus einer bekannten Grundmenge $\Theta$ stammt.
+
+    Als Nullhypothese soll getestet werden, ob der Parameter zu einer echten Teilmenge $\Theta_0 \subset \Theta$ gehört:
+    \begin{itemize}
+        \item $H_0: \vartheta \in \Theta_0$ (Nullhypothese) gegen
+        \item $H_1: \vartheta \in \Theta_1 := \Theta \setminus \Theta_0$ (Alternativhypothese)
+    \end{itemize}
+
+    Die beobachteten Daten sind Realisierungen von unabhängigen Zufallsvariablen $X_1, \ldots, X_n$ mit gemeinsamer (unbekannter) Verteilung $P_{\vartheta}$.
+
+    Der Begriff des Likelihood-Quotiententests suggeriert bereits, dass die Entscheidung des Tests auf der Bildung eines Likelihood-Quotienten beruht.
+    Man geht dabei so vor, dass man ausgehend von den Daten $x = (x_1, \ldots, x_n)$ und zu den einzelnen Parametern gehörenden Dichtefunktionen $f_{\vartheta}(x)$ den \emph{Likelihood-Quotienten} bildet:
+    \[
+        \Lambda(x) := \frac{\sup_{\vartheta \in \Theta_0} f_{\vartheta}(x)}{\sup_{\vartheta \in \Theta} f_{\vartheta}(x)}, \quad f_{\vartheta}(x) > 0 \quad \forall \vartheta \in \Theta, x \in \mathcal{X}.
+    \]
+
+    Heuristisch gesprochen:
+    Man bestimmt anhand der Daten zunächst den Parameter aus der gegebenen Grundmenge, der die größte Wahrscheinlichkeit dafür liefert, dass die gefundenen Daten gemäß der Verteilung $P_{\vartheta}$ entstanden sind.
+    Der Wert der Dichtefunktion bezüglich dieses Parameters wird dann als repräsentativ für die gesamte Menge gesetzt.
+    Im Zähler betrachtet man als Grundmenge den Raum der Nullhypothese $\Theta_0$, im Nenner die gesamte Grundmenge $\Theta$.
+
+    Es lässt sich intuitiv schließen:
+    Je größer der Quotient ist, desto schwächer ist die Evidenz gegen die Nullhypothese $H_0$.
+    Ein Wert von $\Lambda(x)$ in der Nähe von Eins bedeutet, dass anhand der Daten kein großer Unterschied zwischen den beiden Parametermengen $\Theta$ und $\Theta_0$ festgestellt werden kann.
+    Die Nullhypothese sollte in solchen Fällen also nicht verworfen werden.
+
+    Demnach wird bei einem Likelihood-Quotiententest die Nullhypothese $H_0$ zum Niveau $\alpha$ abgelehnt, wenn
+    \[
+        \varphi: \mathcal{X} \to \{ 0, 1 \}, \quad x \mapsto \begin{cases}
+            1 & \text{falls } \Lambda(x) < c \\
+            0 & \text{sonst}
+        \end{cases}
+        = I \{ \Lambda(x) < c \},
+    \]
+    mit geeigneter Konstanten $c \in \mathbb{R}$, sodass
+    \[
+        \sup_{\vartheta \in \Theta_0} P_{\vartheta}(\Lambda(X) < c) \leq \alpha
+    \]
+    gilt.
+\end{defi}
+
+\subsection{Lineares Modell}
+
+\begin{defi}{Lineares Modell}
+    Sei $\mathcal{L} \subset \mathbb{R}^n$ ein $k$-dimensionaler linearer Teilraum vom $\mathbb{R}^n$.
+    Weiterhin sei $X \sim \mathcal{N}(a, \sigma^2 I_n)$ eine $n$-dimensionale Zufallsvariable mit unbekanntem Erwartungswertvektor $a \in \mathcal{L}$ und unbekannter Varianz $\sigma^2 \in \mathbb{R}_{> 0}$.
+
+    $X$ ist also ein $n$-dimensionaler Zufallsvektor, der die Beobachtungen einer Stichprobe darstellt, wobei jede Komponente $X_i$ unabhängig und normalverteilt ist mit Erwartungswert $E[X_i]$ und Varianz $\sigma^2$.
+
+    Diese Verteilungsannahme heißt \emph{lineares Modell}.
+
+    % Der Erwartungsvektor $a$ ist unbekannt und liegt im $k$-dimensionalen linearen Teilraum $\mathcal{L}$ des $\mathbb{R}^n$:
+    % \[
+    %     a = \begin{pmatrix} E[X_1] \\ \vdots \\ E[X_n] \end{pmatrix} \in \mathcal{L} \subset \mathbb{R}^n.
+    % \]
+
+    Es sei $\mathcal{L}_0 \subset \mathcal{L}$ ein $h$-dimensionaler linearer Teilraum von $\mathcal{L}$.
+    Wir erhalten die Hypothesen:
+    \begin{itemize}
+        \item $H_0: a \in \mathcal{L}_0$ (\emph{Nullhypothese}) gegen
+        \item $H_1: a \in \mathcal{L} \setminus \mathcal{L}_0$ (\emph{Alternativhypothese})
+    \end{itemize}
+\end{defi}
+
+\begin{defi}[Lineares Modell]{Likelihood-Quotiententestgröße}
+    Für den \emph{Likelihood-Quotiententest im linearen Modell} ist die Annahme nötig, dass Beobachtungen $x$ von $X$ nicht in $\mathcal{L}$ liegen.
+    Dies kann ohne Einschränkungen angenommen werden, da:
+    \[
+        \forall a \in \mathcal{L}, \forall \sigma^2 \in \mathbb{R}_{> 0} : P_{a, \sigma^2}(X \in \mathcal{L}) = 0.
+    \]
+
+    Die Dichte von $X$ für gegebenen Erwartungswert $a$ und Varianz $\sigma^2$ ist gegeben durch
+    \[
+        f_{a, \sigma^2}(x) = \left( \frac{1}{\sqrt{2 \pi \sigma^2}} \right)^n \exp \left( -\frac{1}{2 \sigma^2} \| x - a \|^2 \right), \quad x \in \mathbb{R}^n.
+    \]
+
+    Logarithmieren führt bei festem $\sigma^2$ zu einer linearen Funktion in $a$:
+    \[
+        \ln f_{a, \sigma^2}(x) = -\frac{n}{2} \ln(2 \pi) - \frac{n}{2} \ln(\sigma^2) - \frac{1}{2 \sigma^2} \| x - a \|^2.
+    \]
+
+    Soll nun die Maximalstelle der Likelihood-Funktion in $a$ bestimmt werden, so gilt:
+    \[
+        \max_{a \in \mathcal{L}} f_{a, \sigma^2}(x) = \max_{a \in \mathcal{L}} \ln f_{a, \sigma^2}(x) = \max_{a \in \mathcal{L}} -\frac{1}{2 \sigma^2} \| x - a \|^2 = \min_{a \in \mathcal{L}} \| x - a \|^2 = \| x - P_{\mathcal{L}}(x) \|^2,
+    \]
+    wobei $P_{\mathcal{L}}(x)$ der \emph{orthogonalen Projektion von $x$ auf $\mathcal{L}$} entspricht.
+
+    Als Funktion von $\sigma^2$ hat
+    \[
+        \sup_{a \in \mathcal{L}} \ln f_{a, \sigma^2}(x) = -\frac{n}{2} \ln(2 \pi) - \frac{n}{2} \ln(\sigma^2) - \frac{1}{2 \sigma^2} \| x - P_{\mathcal{L}}(x) \|^2
+    \]
+    ein globales Maximum bei
+    \[
+        \sigma_{\mathcal{L}}^2(x) = \frac{1}{n} \| x - P_{\mathcal{L}}(x) \|^2.
+    \]
+
+    Daher gilt insgesamt für die Projektion von $x$ auf $\mathcal{L}$:
+    \[
+        \sup_{a \in \mathcal{L}, \sigma^2 > 0} f_{a, \sigma^2}(x) = \left( \frac{1}{\sqrt{2 \pi \sigma_{\mathcal{L}}^2(x)}} \right)^n \exp \left( -\frac{n}{2} \right) \quad \text{mit} \quad \sigma_{\mathcal{L}}^2(x) = \frac{1}{n} \| x - P_{\mathcal{L}}(x) \|^2.
+    \]
+
+    Analog gilt für die Projektion von $x$ auf $\mathcal{L}_0$:
+    \[
+        \sup_{a \in \mathcal{L}_0, \sigma^2 > 0} f_{a, \sigma^2}(x) = \left( \frac{1}{\sqrt{2 \pi \sigma_{\mathcal{L}_0}^2(x)}} \right)^n \exp \left( -\frac{n}{2} \right) \quad \text{mit} \quad \sigma_{\mathcal{L}_0}^2(x) = \frac{1}{n} \| x - P_{\mathcal{L}_0}(x) \|^2.
+    \]
+
+    Dies führt nun auf die Likelihood-Quotiententestgröße:
+    \[
+        \Lambda(x) = \frac{\sup_{a \in \mathcal{L}_0, \sigma^2 > 0} f_{a, \sigma^2}(x)}{\sup_{a \in \mathcal{L}, \sigma^2 > 0} f_{a, \sigma^2}(x)} = \frac{\sigma_{\mathcal{L}_0}^n(x)}{\sigma_{\mathcal{L}}^n(x)} = \left( \frac{\| x - P_{\mathcal{L}}(x) \|^2}{\| x - P_{\mathcal{L}_0}(x) \|^2} \right)^{\frac{n}{2}}.
+    \]
+\end{defi}
+
+\begin{defi}[Lineares Modell]{Likelihood-Quotiententest}
+    Gegeben sei die Likelihood-Quotiententestgröße für das lineare Modell:
+    \[
+        \Lambda(x) = \frac{\sup_{a \in \mathcal{L}_0, \sigma^2 > 0} f_{a, \sigma^2}(x)}{\sup_{a \in \mathcal{L}, \sigma^2 > 0} f_{a, \sigma^2}(x)} = \frac{\sigma_{\mathcal{L}_0}^n(x)}{\sigma_{\mathcal{L}}^n(x)} = \left( \frac{\| x - P_{\mathcal{L}}(x) \|^2}{\| x - P_{\mathcal{L}_0}(x) \|^2} \right)^{\frac{n}{2}}.
+    \]
+
+    Sei $q_1, \ldots, q_n$ eine Orthonormalbasis von $\mathbb{R}^n$ mit
+    \[
+        \mathcal{L} = \operatorname{span} \{ q_1, \ldots, q_k \} \quad \text{und} \quad \mathcal{L}_0 = \operatorname{span} \{ q_1, \ldots, q_h \}.
+    \]
+
+    Dann gilt:
+    \[
+        X = \sum_{i = 1}^{n} \langle X, q_i \rangle q_i = \overbrace{\underbrace{\sum_{i = 1}^{h} \langle X, q_i \rangle q_i}_{P_{\mathcal{L}_0}(X)} + \sum_{i = h + 1}^{k} \langle X, q_i \rangle q_i}^{P_{\mathcal{L}}(X)} + \sum_{i = k + 1}^{n} \langle X, q_i \rangle q_i.
+    \]
+
+    Damit gilt für die Likelihood-Quotiententestgröße:
+    \[
+        \Lambda(x) = \left( \frac{\| x - P_{\mathcal{L}}(x) \|^2}{\| x - P_{\mathcal{L}_0}(x) \|^2} \right)^{\frac{n}{2}} = \left( \frac{\| x - P_{\mathcal{L}_0}(x) \|^2}{\| x - P_{\mathcal{L}}(x) \|^2} \right)^{-\frac{n}{2}} = \left( 1 + \frac{\| P_{\mathcal{L}}(x) - P_{\mathcal{L}_0}(x) \|^2}{\| x - P_{\mathcal{L}}(x) \|^2} \right)^{-\frac{n}{2}}.
+    \]
+
+    Eine äquivalente Testgröße ist
+    \[
+        T(x) = \frac{\frac{1}{k - h} \| P_{\mathcal{L}}(x) - P_{\mathcal{L}_0}(x) \|^2}{\frac{1}{n - k} \| x - P_{\mathcal{L}}(x) \|^2},
+    \]
+    wobei die Nullhypothese $H_0: a \in \mathcal{L}_0$ abgelehnt wird, wenn $T(x) > c$ für ein geeignetes $c \in \mathbb{R}$.
+
+    Seien die Orthogonalmatrix $C$ und der  Zufallsvektor $Y$ gegeben durch
+    \[
+        C := \begin{pmatrix} q_1^{\top} \\ \vdots \\ q_n^{\top} \end{pmatrix} \in \mathbb{R}^{n \times n} \quad \text{mit} \quad C^{\top} C = I_n,
+    \]
+    \[
+        Y := C X = \begin{pmatrix} \langle X, q_1 \rangle \\ \vdots \\ \langle X, q_n \rangle \end{pmatrix} \sim \mathcal{N}(b, \sigma^2 I_n), \quad b = C a.
+    \]
+
+    Die Nullhypothese $H_0: a \in \mathcal{L}_0$ gilt dann genau dann, wenn $b_{h + 1} = \ldots = b_k = 0$.
+
+    Damit gilt für die \emph{Testgröße $T(X)$}:
+    \[
+        T(X) = \frac{\frac{1}{k - h} \sum_{i = h + 1}^{k} \langle X, q_i \rangle^2}{\frac{1}{n - k} \sum_{i = k + 1}^{n} \langle X, q_i \rangle^2} = \frac{\frac{1}{k - h} \sum_{i = h + 1}^{k} Y_i^2}{\frac{1}{n - k} \sum_{i = k + 1}^{n} Y_i^2} \quad \left( \sim \frac{\chi^2_{k - h}}{\chi^2_{n - k}} \quad \text{für } n \to \infty \right).
+    \]
+
+    Damit ist $T(X)$ eine F-verteilte Zufallsvariable mit $k - h$ und $n - k$ Freiheitsgraden.
+\end{defi}
+
+\begin{defi}{Studentsche $t$-Verteilung}
+    % https://de.wikipedia.org/wiki/Studentsche_t-Verteilung
+    Seien
+    \begin{itemize}
+        \item $Z \sim \mathcal{N}(0, 1)$ eine standardnormalverteilte Zufallsvariable und
+        \item $V \sim \chi^2_n$ eine $\chi^2$-verteilte Zufallsvariable mit $n$ Freiheitsgraden.
+    \end{itemize}
+
+    Dann ist die Zufallsvariable
+    \[
+        T = \frac{Z}{\sqrt{\frac{V}{n}}} \sim t_n
+    \]
+    eine \emph{Studentsche $t$-verteilte Zufallsvariable} mit $n$ Freiheitsgraden.
+
+    Die Dichte der Studentschen $t$-Verteilung ist gegeben durch:
+    \[
+        f_n(x) = \frac{ \Gamma \left( \frac{n+1}{2} \right) }{\sqrt{n \pi} \Gamma \left( \frac{n}{2} \right) } \left( 1 + \frac{x^2}{n} \right)^{- \frac{n+1}{2}}, \quad x \in \mathbb{R}
+    \]
+\end{defi}
+
+\begin{defi}{F-Verteilung}
+    % https://de.wikipedia.org/wiki/F-Verteilung
+    Die \emph{F-Verteilung} oder \emph{Fisher-Verteilung}  ist eine stetige Wahrscheinlichkeitsverteilung.
+    Eine F-verteilte Zufallsvariable ergibt sich als Quotient zweier jeweils durch die zugehörige Anzahl der Freiheitsgrade geteilter Chi-Quadrat-verteilter Zufallsvariablen.
+
+    Eine stetige Zufallsvariable $X \sim F(m, n)$ genügt der \emph{F-Verteilung $F(m, n)$ mit $m$ Freiheitsgraden im Zähler und $n$ Freiheitsgraden im Nenner}, wenn gilt:
+    \[
+        X = \frac{\frac{1}{m} V}{\frac{1}{n} W} \quad \text{mit} \quad V \sim \chi^2_m \quad \text{und} \quad W \sim \chi^2_n.
+    \]
+
+    Die Dichte der F-Verteilung ist gegeben durch:
+    \[
+        f_{m, n}(x) = m^{\frac {m}{2}}n^{\frac {n}{2}}\cdot {\frac {\Gamma ({\frac {m+n}{2}})}{\Gamma ({\frac {m}{2}})\Gamma ({\frac {n}{2}})}}\cdot {\frac {x^{{\frac {m}{2}}-1}}{(mx+n)^{\frac {m+n}{2}}}}, \quad x>0
+    \]
+\end{defi}
+
+\begin{defi}[Lineares Modell]{F-Test}
+    Sei $\mathcal{L} \subset \mathbb{R}^n$ ein $k$-dimensionaler linearer Teilraum vom $\mathbb{R}^n$.
+    Weiterhin sei $X \sim \mathcal{N}(a, \sigma^2 I_n)$ eine $n$-dimensionale Zufallsvariable mit unbekanntem Erwartungswertvektor $a \in \mathcal{L}$ und unbekannter Varianz $\sigma^2 \in \mathbb{R}_{> 0}$.
+
+    Es sei $\mathcal{L}_0 \subset \mathcal{L}$ ein $h$-dimensionaler linearer Teilraum von $\mathcal{L}$.
+    Wir erhalten die Hypothesen:
+    \begin{itemize}
+        \item $H_0: a \in \mathcal{L}_0$ (\emph{Nullhypothese}) gegen
+        \item $H_1: a \in \mathcal{L} \setminus \mathcal{L}_0$ (\emph{Alternativhypothese})
+    \end{itemize}
+
+    Es habe eine Teststatistik $T(X)$ bei Gültigkeit der Nullhypothese $H_0: a \in \mathcal{L}_0$ die F-Verteilung $F(k - h, n - k)$:
+    \[
+        T(X) := \frac{\frac{1}{k - h} \sum_{i = h + 1}^{k} \langle X, q_i \rangle^2}{\frac{1}{n - k} \sum_{i = k + 1}^{n} \langle X, q_i \rangle^2} \quad \left( \sim \frac{\chi^2_{k - h}}{\chi^2_{n - k}} \quad \text{für } n \to \infty \right).
+    \]
+
+    Für ein Testniveau $\alpha \in (0, 1)$ wird die Nullhypothese $H_0$ abgelehnt, wenn
+    \[
+        T(X) > F_{(k - h, n - k; 1 - \alpha)} \iff P(T(X) > F_{(k - h, n - k; 1 - \alpha)}) \leq \alpha.
+    \]
+
+    Die Nullhypothese $H_0$ wird also zum Niveau $\alpha$ abgelehnt, wenn
+    \[
+        T(X) > F_{(k - h, n - k; 1 - \alpha)} \iff \frac{\frac{1}{k - h} \sum_{i = h + 1}^{k} \langle X, q_i \rangle^2}{\frac{1}{n - k} \sum_{i = k + 1}^{n} \langle X, q_i \rangle^2} > F_{(k - h, n - k; 1 - \alpha)}.
+    \]
+\end{defi}
+
+\begin{defi}[Lineares Modell]{$t$-Test}
+    Sei $\mathcal{L} \subset \mathbb{R}^n$ ein $k$-dimensionaler linearer Teilraum vom $\mathbb{R}^n$.
+    Weiterhin sei $X \sim \mathcal{N}(a, \sigma^2 I_n)$ eine $n$-dimensionale Zufallsvariable mit unbekanntem Erwartungswertvektor $a \in \mathcal{L}$ und unbekannter Varianz $\sigma^2 \in \mathbb{R}_{> 0}$.
+
+    Es sei $\mathcal{L}_0 \subset \mathcal{L}$ ein $(k-1)$-dimensionaler linearer Teilraum von $\mathcal{L}$.
+    Wir erhalten die Hypothesen:
+    \begin{itemize}
+        \item $H_0: a \in \mathcal{L}_0$ (\emph{Nullhypothese}) gegen
+        \item $H_1: a \in \mathcal{L} \setminus \mathcal{L}_0$ (\emph{Alternativhypothese})
+    \end{itemize}
+
+    Es gilt für eine Teststatistik $T(X)$ bei Gültigkeit der Nullhypothese $H_0: a \in \mathcal{L}_0$:
+    \[
+        T(X) := t(X)^2, \quad \text{mit} \quad t(X) = \frac{\langle X, q_k \rangle}{\sqrt{\frac{1}{n - k} \sum_{i = k + 1}^{n} \langle X, q_i \rangle^2}} \quad \left( \sim t_{n - k} \quad \text{für } n \to \infty \right).
+    \]
+
+    Die $t$-Verteilung ist symmetrisch um Null.
+    Mit $t_{(n - k; \alpha)}$ als das $\alpha$-Quantil der $t$-Verteilung mit $n - k$ Freiheitsgraden ist das $1 - \alpha$-Quantil von $|t(X)|$ gegeben durch $t_{(n - k; 1 - \frac{\alpha}{2})}$.
+
+    Für ein Testniveau $\alpha \in (0, 1)$ wird die Nullhypothese $H_0$ abgelehnt, wenn
+    \[
+        T(X) > t_{(n - k; 1 - \frac{\alpha}{2})} \iff P(T(X) > t_{(n - k; 1 - \frac{\alpha}{2})}) \leq \alpha.
+    \]
+
+    Die Nullhypothese $H_0$ wird also zum Niveau $\alpha$ abgelehnt, wenn
+    \[
+        T(X) > t_{(n - k; 1 - \frac{\alpha}{2})} \iff \frac{|\langle X, q_k \rangle|}{\sqrt{\frac{1}{n - k} \sum_{i = k + 1}^{n} \langle X, q_i \rangle^2}} > t_{(n - k; 1 - \frac{\alpha}{2})}.
+    \]
+\end{defi}
+
+\begin{defi}{Einstichproben-$t$-Test}
+    % https://de.wikipedia.org/wiki/Einstichproben-t-Test
+    Der \emph{Einstichproben-$t$-Test} ist ein Signifikanztest aus der mathematischen Statistik.
+    Er prüft (im einfachsten Fall) mit Hilfe des Mittelwertes $\overline{x}$ einer Stichprobe, ob der Mittelwert $\mu$ einer Grundgesamtheit verschieden von einem vorgegebenen Wert $\mu_0$ ist.
+
+    Für den Einstichproben-$t$-Test können drei verschiedene Hypothesenpaare (Nullhypothese $H_0$ gegen Alternativhypothese $H_1$) formuliert werden:
+    \begin{itemize}
+        \item $H_0: \mu = \mu_0$ gegen $H_1: \mu \neq \mu_0$ (zweiseitiger Test),
+        \item $H_0: \mu \leq \mu_0$ gegen $H_1: \mu > \mu_0$ (rechtsseitiger Test) und
+        \item $H_0: \mu \geq \mu_0$ gegen $H_1: \mu < \mu_0$ (linksseitiger Test).
+    \end{itemize}
+
+    Für alle drei Hypothesenpaare wird die gleiche Teststatistik benutzt, lediglich die Bereiche für die Ablehnung bzw. Annahme der Nullhypothese unterscheiden sich.
+
+    Sind $X_1, \ldots, X_n \sim \mathcal{N}(\mu, \sigma^2)$ unabhängige und identisch normalverteilte Zufallsvariablen mit unbekanntem Erwartungswert $\mu$ und unbekannter Varianz $\sigma^2$, und möchte man die Nullhypothese $H_0: \mu = \mu_0$ gegen die Alternativhypothese $H_1: \mu \neq \mu_0$ testen, dann liegt es nahe, den Mittelwert $\overline{X}$ der Stichprobe
+    \[
+        \overline{X} = \frac{1}{n} \sum_{i = 1}^{n} X_i \sim \mathcal{N}(\mu, \frac{\sigma^2}{n}), \quad X \sim \mathcal{N}(\mu, \sigma^2)
+    \]
+    als Teststatistik zu verwenden.
+    Sie ist namentlich ebenfalls normalverteilt mit Erwartungswert $\mu$, hat aber die Standardabweichung $\frac{\sigma}{\sqrt{n}}$.
+
+    Bei bekanntem $\sigma$ könnte (und sollte!) die Hypothese mit einem Gauß-Test getestet werden.
+    Dazu berechnet man
+    \[
+        Z = \frac{\overline{X} - \mu_0}{\frac{\sigma}{\sqrt{n}}}, \quad Z \sim \mathcal{N}(0, 1),
+    \]
+    welche unter der Nullhypothese standardnormalverteilt ist.
+
+    Normalerweise ist jedoch die Standardabweichung unbekannt und tritt (da man hier keine Inferenz über $\sigma$ betreibt) hier als sogenannter Störparameter auf.
+    In diesem Fall liegt es nahe, sie durch die empirische Standardabweichung $S$ zu schätzen:
+    \[
+        S = \sqrt{\frac{1}{n - 1} \sum_{i = 1}^{n} (X_i - \overline{X})^2}.
+    \]
+
+    Als Teststatistik wird dann die \emph{$t$-Statistik} verwendet:
+    \[
+        T = \sqrt{n} \cdot \frac{\overline{X} - \mu_0}{S} = \sqrt{n} \cdot \frac{\overline{X} - \mu_0}{\sqrt{\frac{1}{n - 1} \sum_{i = 1}^{n} (X_i - \overline{X})^2}}, \quad T \sim t_{n - 1}.
+    \]
+    Diese Statistik ist unter der Nullhypothese allerdings nicht mehr normalverteilt, sondern $t$-verteilt mit $n - 1$ Freiheitsgraden.
+
+    Ist der Wert der Teststatistik für eine konkrete Stichprobe so groß (oder so klein), dass dieser oder ein noch signifikanterer Wert unter der Nullhypothese hinreichend unwahrscheinlich ist, wird die Nullhypothese abgelehnt.
+\end{defi}
+
+\begin{defi}{Einfache Varianzanalyse}
+    % https://de.wikipedia.org/wiki/Varianzanalyse#Einfache_Varianzanalyse
+    Bei einer \emph{einfachen Varianzanalyse} (engl. one-way analysis of variance, kurz: one-way ANOVA) untersucht man den Einfluss einer unabhängigen Variable (Faktor) mit $k$ verschiedenen Stufen (Gruppen) auf die Ausprägungen einer Zufallsvariablen.
+
+    Die einfache Varianzanalyse ist die Verallgemeinerung des $t$-Tests im Falle mehr als zwei Gruppen.
+    Für $k = 2$ ist sie äquivalent mit dem $t$-Test.
+
+    Sei $X_{ij}$ die $j$-te Beobachtung in der $i$-ten Gruppe, $i = 1, \ldots, s$, $j = 1, \ldots, n_i$ mit $n = n_1 + \dotsb + n_s > s$:
+    \[
+        X_{ij} = \mu_i + \varepsilon_{ij}, \quad \varepsilon_{ij} \sim \mathcal{N}(0, \sigma^2),
+    \]
+    wobei die Varianz $\sigma^2 > 0$ und die Erwartungswerte $\mu_i$ unbekannt sind.
+
+    Es liegt ein lineares Modell vor mit den $s$ orthonormalen Vektoren $q_1, \ldots, q_s$:
+    \begin{align*}
+        q_1 & = \frac{1}{\sqrt{n}} ( \underbrace{1, \ldots, 1}_{n_1 \text{ mal}}, \underbrace{0, \ldots, 0}_{n_2 \text{ mal}}, \ldots, \underbrace{0, \ldots, 0}_{n_s \text{ mal}} )^{\top} \in \mathbb{R}^n, \\
+        q_2 & = \frac{1}{\sqrt{n}} ( \underbrace{0, \ldots, 0}_{n_1 \text{ mal}}, \underbrace{1, \ldots, 1}_{n_2 \text{ mal}}, \ldots, \underbrace{0, \ldots, 0}_{n_s \text{ mal}} )^{\top} \in \mathbb{R}^n, \\
+            & \ldots                                                                                                                                                                                          \\
+        q_s & = \frac{1}{\sqrt{n}} ( \underbrace{0, \ldots, 0}_{n_1 \text{ mal}}, \underbrace{0, \ldots, 0}_{n_2 \text{ mal}}, \ldots, \underbrace{1, \ldots, 1}_{n_s \text{ mal}} )^{\top} \in \mathbb{R}^n,
+    \end{align*}
+    sodass $\mathcal{L} = \operatorname{span} \{ q_1, \ldots, q_s \}$ und $\dim(\mathcal{L}) = s$.
+
+    Die orthogonale Projektion von $X$ auf $\mathcal{L}$ ist gegeben durch
+    \[
+        P_{\mathcal{L}}(X) = \sum_{i = 1}^{s} \sqrt{n_i} \cdot \langle \overline{X}_i, q_i \rangle \cdot q_i \quad \text{mit} \quad \overline{X}_i = \frac{1}{n_i} \sum_{j = 1}^{n_i} X_{ij}.
+    \]
+
+    Beim \emph{Testproblem der Varianzanalyse}
+    \begin{itemize}
+        \item $H_0: \mu_1 = \ldots = \mu_s$ gegen
+        \item $H_1: \mu_i \neq \mu_j$ für mindestens ein $i \neq j$
+    \end{itemize}
+    handelt es sich um eine lineare Hypothese mit dem von der Nullhypothese induzierten linearen eindimensionalen Unterraum
+    \[
+        \mathcal{L}_0 = \operatorname{span} \{ q \} \subset \mathcal{L}, \quad q = \frac{1}{\sqrt{n}} (1, \ldots, 1)^{\top} \in \mathbb{R}^n.
+    \]
+
+    Der zugehörige Test ist ein $F$-Test:
+    \[
+        F = \frac{\| P_{\mathcal{L}_0}(X) \|^2}{\| P_{\mathcal{L}}(X) \|^2} = \frac{\frac{1}{s-1} \sum_{i = 1}^{s} n_i \cdot (\overline{X}_i - \overline{X})^2}{\frac{1}{n - s} \sum_{i = 1}^{s} \sum_{j = 1}^{n_i} (X_{ij} - \overline{X}_i)^2} \sim F_{(s - 1, n - s)}.
+    \]
+
+    Die Nullhypothese $H_0$ wird zum Niveau $\alpha$ abgelehnt, wenn
+    \[
+        F > F_{(s - 1, n - s; 1 - \alpha)} \iff P(F > F_{(s - 1, n - s; 1 - \alpha)}) \leq \alpha.
+    \]
+\end{defi}
+
+\begin{defi}{Einfache lineare Regression}
+    % https://en.wikipedia.org/wiki/Student%27s_t-test#Slope_of_a_regression_line
+    Gegeben sei folgendes Modell:
+    \[
+        Y = \alpha + \beta X + \varepsilon, \quad \varepsilon \sim \mathcal{N}(0, \sigma^2).
+    \]
+
+    Dabei ist
+    \begin{itemize}
+        \item $y_i$ die abhängige Variable (bekannt),
+        \item $x_i$ die unabhängige Variable (bekannt),
+        \item $\alpha$ der Achsenabschnitt der Regressionsgeraden (unbekannt),
+        \item $\beta$ die Steigung der Regressionsgeraden (unbekannt) und
+        \item $\varepsilon \sim \mathcal{N}(0, \sigma^2)$ der (Mess-)Fehlerterm ($\sigma^2$ unbekannt).
+    \end{itemize}
+
+    Es soll nun überprüft werden, ob die Steigung $\beta$ der Regressionsgeraden einem vorgegebenen Wert $\beta_0$ entspricht:
+    \begin{itemize}
+        \item $H_0: \beta = \beta_0$ gegen
+        \item $H_1: \beta \neq \beta_0$.
+    \end{itemize}
+
+    Häufig wird $\beta_0 = 0$ gewählt, in diesem Fall entspricht die Nullhypothese der Aussage, dass $X$ und $Y$ unkorreliert sind.
+
+
+
+\end{defi}
+
+\subsection{Chi-Quadrat-Anpassungstest}

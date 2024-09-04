@@ -1,0 +1,694 @@
+\section{Statistische Punktschätzverfahren}
+
+\subsection{Die Informationsungleichung}
+
+\begin{defi}{Statistischer Raum}
+    % https://de.wikipedia.org/wiki/Statistisches_Modell
+    Ein \emph{statistisches Modell} bzw. ein \emph{statistischer Raum} $\mathcal{E}$ ist ein Tripel $\mathcal {E}=(\Omega,\mathcal{A},\mathcal{P})$ bestehend aus
+    \begin{itemize}
+        \item einer Grundmenge $\Omega$, die alle möglichen Ergebnisse eines Zufallsexperiments oder einer Stichprobenziehung enthält,
+        \item einer $\sigma$-Algebra $\mathcal {A}$ auf der Grundmenge $\Omega$ und
+        \item einer Menge $\mathcal {P}$ von Wahrscheinlichkeitsmaßen auf $(\Omega,\mathcal{A})$.
+    \end{itemize}
+
+    Lässt sich die Menge von Wahrscheinlichkeitsmaßen über eine Parametermenge, auch Parameterraum genannt, beschreiben, ist also
+    \[
+        \mathcal{P} = \{ P_{\vartheta} \mid \vartheta \in \Theta \}
+    \]
+    für eine Parametermenge $\Theta \subset \mathbb{R}^n$, so spricht man von einem \emph{parametrischen Modell}, andernfalls von einem \emph{nichtparametrischen Modell}.
+
+    Ist $\Theta \subset \mathbb{R}$, so spricht man von einem \emph{einparametrischem Modell}.
+
+    Ist nun der Messraum $(\mathbb{R}, \mathcal{B})$ und eine Zufallsvariable $X: (\Omega, \mathcal{A}) \to (\mathcal{X}, \mathcal{F})$ gegeben.
+    Dann ist $(\mathbb{R}, \mathcal{B}, \mathcal{P}^X)$ ein statistischer Raum, wobei $\mathcal{P}^X = \{ P_{\vartheta}^X \mid \vartheta \in \Theta \}$ die Menge der möglichen Verteilungen von $X$ ist.
+
+    Anschaulich fasst ein statistisches Modell alle Ausgangsinformationen zusammen:
+    Welche Werte können die Daten annehmen, welchen Mengen von Werten soll eine Wahrscheinlichkeit zugeordnet werden und welche Wahrscheinlichkeitsmaße sind möglich bzw. sollen in Betracht gezogen werden?
+\end{defi}
+
+\begin{defi}{Schätzfunktion}
+    % https://de.wikipedia.org/wiki/Sch%C3%A4tzfunktion
+    % https://de.wikipedia.org/wiki/Erwartungstreue
+    Eine \emph{Schätzfunktion}, auch \emph{Schätzstatistik} oder kurz \emph{Schätzer}, dient dazu, aufgrund von vorhandenen empirischen Daten einer Stichprobe einen Schätzwert zu ermitteln und dadurch Informationen über unbekannte Parameter einer Grundgesamtheit zu erhalten.
+
+    Sei ein statistischer Raum $(\mathcal{X}, \mathcal{F}, (\mathcal{P}_{\vartheta})_{\vartheta \in \Theta})$ gegeben, der ein statistisches Experiment beschreibt.
+    Dieses besteht aus einer Menge $\mathcal{X}$, dem Stichprobenraum, einer $\sigma$-Algebra $\mathcal{F}$ auf $\mathcal{X}$ und einer Familie von Wahrscheinlichkeitsmaßen $(\mathcal{P}_{\vartheta})_{\vartheta \in \Theta}$ auf $(\mathcal{X}, \mathcal{F})$.
+
+    Die Zufallsvariable $X: (\Omega, \mathcal{A}) \to (\mathcal{X}, \mathcal{F})$ beschreibt die Stichprobe, die aus dem statistischen Experiment gewonnen wird.
+
+    Für eine gegebene Funktion
+    \[
+        \gamma: \Theta \to \mathbb{R}^m,
+    \]
+    die jeder Wahrscheinlichkeitsverteilung $P_{\vartheta}$ die zu schätzende Kennzahl $\gamma(\vartheta)$ (Varianz, Median, Erwartungswert etc.) zuordnet, ist eine Funktion
+    \[
+        \hat{\gamma}: (\mathcal{X}, \mathcal{F}) \to (\mathbb{R}^m, \mathcal{B}^m)
+    \]
+    eine \emph{Schätzfunktion} oder ein \emph{Schätzer} für $\gamma(\vartheta)$.
+    Für eine konkrete realisierte Stichprobe $x \in \mathcal{X}$ ist $\hat{\gamma}(x)$ der \emph{Schätzwert} für $\gamma(\vartheta)$.
+
+    Dabei ist $\dim(\mathcal{X})$ die Anzahl der Beobachtungen und $m$ die Anzahl der zu schätzenden Parameter.
+\end{defi}
+
+\begin{defi}{Mittlerer quadratischer Fehler}
+    % https://de.wikipedia.org/wiki/Sch%C3%A4tzfunktion#Mittlerer_quadratischer_Fehler
+    Beschreibe $X: (\Omega, \mathcal{A}) \to (\mathcal{X}, \mathcal{F})$ eine Zufallsvariable, die eine Stichprobe darstellt.
+
+    Die Genauigkeit einer Schätzfunktion bzw. eines Schätzers wird oft durch seinen \emph{mittleren quadratischen Fehler} (engl. \enquote{mean squared error}) ausgedrückt.
+
+    Eine (dabei nicht notwendigerweise auch erwartungstreue) Schätzfunktion sollte daher stets einen möglichst kleinen \emph{mittleren quadratischen Fehler} aufweisen, der sich rechnerisch als Erwartungswert der quadratischen Abweichung des Schätzers $\hat{\gamma}(X)$ vom wahren Wert des zu schätzenden Parameters $\gamma(\vartheta)$ ergibt:
+    \[
+        \operatorname{MSE}(\hat{\gamma}) = \operatorname{E}_{\vartheta}[(\hat{\gamma}(X) - \gamma(\vartheta))^2] = \int_{\mathcal{X}} (\hat{\gamma}(x) - \gamma(\vartheta))^2 \, \mathrm{d} (\mathcal{P}_{\vartheta}(x)), \quad \vartheta \in \Theta.
+    \]
+\end{defi}
+
+\begin{defi}[Schätzfunktion]{Verzerrung}
+    % https://de.wikipedia.org/wiki/Verzerrung_einer_Sch%C3%A4tzfunktion
+    Die \emph{Verzerrung} oder auch \emph{Bias} oder \emph{systematischer Fehler} einer Schätzfunktion ist diejenige Kennzahl oder Eigenschaft einer Schätzfunktion, welche die systematische Über- oder Unterschätzung der Schätzfunktion quantifiziert.
+
+    Gegeben seien eine zu schätzende Größe $\gamma(\vartheta)$ und ein zugehöriger Schätzer $\hat{\gamma}(X)$ mit
+    \[
+        \gamma: \Theta \to \mathbb{R}^m, \qquad \hat{\gamma}: (\mathcal{X}, \mathcal{F}) \to (\mathbb{R}^m, \mathcal{B}^m).
+    \]
+
+    Existiert für alle $\vartheta \in \Theta$ der Erwartungswert
+    \[
+        \operatorname{E}_{\vartheta}[\hat{\gamma}(X)] = \int_{\mathcal{X}} \hat{\gamma}(x) \, \, \mathrm{d} (\mathcal{P}_{\vartheta}(x)) \in \mathbb{R}^m,
+    \]
+    so ist für den Schätzer $\hat{\gamma}(X)$ die \emph{Verzerrung} bzw. der \emph{Bias bei} $\vartheta$ definiert als
+    \[
+        \operatorname{Bias}_{\vartheta}(\hat{\gamma}) = \operatorname{E}_{\vartheta}[\hat{\gamma}(X)] - \gamma(\vartheta) \in \mathbb{R}^m.
+    \]
+\end{defi}
+
+\begin{defi}[Schätzfunktion]{Erwartungstreue}
+    % https://de.wikipedia.org/wiki/Erwartungstreue#Erwartungstreue_vs._mittlerer_quadratischer_Fehler
+    Ein Schätzer heißt \emph{erwartungstreu}, wenn sein Erwartungswert gleich dem wahren Wert des zu schätzenden Parameters ist:
+    \[
+        \operatorname{E}_{\vartheta}[\hat{\gamma}(X)] = \gamma(\vartheta) \quad \iff \quad \operatorname{Bias}_{\vartheta}(\hat{\gamma}) = 0, \quad \text{für alle } \vartheta \in \Theta.
+    \]
+
+    Ist eine Schätzfunktion nicht erwartungstreu, spricht man davon, dass der Schätzer \emph{verzerrt} ist.
+
+    Für einen erwartungstreuen Schätzer gilt für ein einparametrisches Modell ($\Theta \subset \mathbb{R}$):
+    \[
+        \operatorname{Var}_{\vartheta}(\hat{\gamma}(X)) = \operatorname{MSE}(\hat{\gamma}) \quad \text{für alle } \vartheta \in \Theta.
+    \]
+\end{defi}
+
+\begin{bonus}[Schätzfunktion]{Minimale Varianz}
+    % https://de.wikipedia.org/wiki/Sch%C3%A4tzfunktion#Minimale_Varianz,_Effizienz
+    Die Schätzfunktion soll eine möglichst kleine Varianz haben.
+    Die Schätzfunktion $\hat{\gamma}^*$ aus allen erwartungstreuen Schätzfunktionen $\hat{\gamma}$, welche die kleinste Varianz hat, wird dabei als \emph{effizienter Schätzer} bezeichnet:
+    \[
+        \operatorname{Var}_{\vartheta}(\hat{\gamma}^*) \leq \operatorname{Var}_{\vartheta}(\hat{\gamma}) \quad \text{für alle } \vartheta \in \Theta \text{ und alle } \hat{\gamma} \text{ erwartungstreue Schätzer}.
+    \]
+
+    Unter bestimmten Bedingungen kann durch die Cramér-Rao-Ungleichung eine untere Grenze für $\operatorname{Var}_{\vartheta}(\hat{\gamma})$ gefunden werden.
+    Das heißt, für eine Schätzfunktion kann gezeigt werden, dass es keine effizienteren Schätzfunktionen geben kann; höchstens noch genauso effiziente Schätzfunktionen.
+\end{bonus}
+
+\begin{defi}{Fisher-Information}
+    % https://de.wikipedia.org/wiki/Fisher-Information#Definition
+    Gegeben sei ein einparametrisches statistisches Modell $(X, \mathcal{A},(P_{\vartheta})_{\vartheta \in \Theta})$, das heißt,
+    \begin{itemize}
+        \item es ist $\Theta \subset \mathbb{R}$ eine offene Menge,
+        \item die $P_{\vartheta}$ besitzen alle eine Dichtefunktion $f(x, \vartheta)$ bezüglich eines festen $\sigma$-endlichen Maßes $\mu$.
+    \end{itemize}
+
+    Weiterhin existiere die \emph{Score-Funktion}
+    \[
+        S_{\vartheta}(x) := \frac{\partial}{\partial \vartheta} \ln f(x, \vartheta) < \infty
+    \]
+
+    und sei die Score-Funktion zentriert ($\operatorname{E}_{\vartheta}[S_{\vartheta}(X)] = 0$), das heißt
+    \[
+        \int_{X} \frac{\partial}{\partial \vartheta} f(x, \vartheta) \, \mathrm{d} \mu = \frac{\partial}{\partial \vartheta} \int_{X} f(x, \vartheta) \, \mathrm{d} \mu = 0.
+    \]
+
+    Dann ist die \emph{Fisher-Information} definiert als
+    \[
+        I(\vartheta) := \operatorname{Var}_{\vartheta}(S_{\vartheta}(X)) = \operatorname{E}_{\vartheta}[(S_{\vartheta}(X))^2].
+    \]
+\end{defi}
+
+\begin{defi}[Fisher-Information]{Fisher-Informationsmatrix}
+    % https://de.wikipedia.org/wiki/Fisher-Information#Erweiterungen_auf_h%C3%B6here_Dimensionen
+    Falls das Modell von mehreren Parametern $\vartheta_i$ mit $1 \leq i \leq k$ abhängt, lässt sich die Fisher-Information als symmetrische Matrix $\mathcal{I}(\vartheta) = (\mathcal{I}_{ij}(\vartheta))_{i,j=1,\dotsc,k}$ definieren, wobei
+    \[
+        \mathcal{I}_{ij}(\vartheta) = \operatorname{E}_{\vartheta} \left[ \frac{\partial}{\partial \vartheta_i} \ln f(X, \vartheta) \cdot \frac{\partial}{\partial \vartheta_j} \ln f(X, \vartheta) \right]
+    \]
+    gilt.
+    Sie wird als \emph{Fisher-Informationsmatrix} bezeichnet.
+
+    Unter der Bedingung, dass die Score-Funktion $S_{\vartheta_i}$ für alle $1 \leq i \leq k$ zentriert ist, ist die Fisher-Informationsmatrix die Kovarianzmatrix der einzelnen Score-Funktionen:
+    \[
+        \mathcal{I}(\vartheta) = \operatorname{Cov} \begin{pmatrix} S_{\vartheta_1}(X) \\ \vdots \\ S_{\vartheta_k}(X) \end{pmatrix} = \operatorname{E}_{\vartheta} \left[ \begin{pmatrix} S_{\vartheta_1}(X) \\ \vdots \\ S_{\vartheta_k}(X) \end{pmatrix} \begin{pmatrix} S_{\vartheta_1}(X) \\ \vdots \\ S_{\vartheta_k}(X) \end{pmatrix}^\top \right].
+    \]
+\end{defi}
+
+\begin{defi}{Cramér-Rao-Ungleichung}
+    % https://de.wikipedia.org/wiki/Cram%C3%A9r-Rao-Ungleichung#Aussage
+    Gegeben sei ein einparametrisches statistisches Modell $(X,{\mathcal {A}},(P_{\vartheta })_{\vartheta \in \Theta })$, das heißt, es ist $\Theta \subset \mathbb{R}$ und jedes der $P_{\vartheta}$ besitzt eine Dichtefunktion $f(x,\vartheta)$ bezüglich des Maßes $\mu$.
+
+    Des Weiteren seien die \emph{Cramér-Rao-Regularitätsbedingungen} erfüllt:
+
+    \begin{itemize}
+        \item $\Theta$ ist eine offene Menge.
+        \item Die Dichtefunktion $f(x, \vartheta)$ ist auf ganz $X \times \Theta$ echt größer als $0$.
+        \item Die Score-Funktion
+              \[
+                  S_{\vartheta}(x) = \frac{\partial}{\partial \vartheta} \ln f(x, \vartheta)
+              \]
+              existiert und ist endlich.
+        \item Die Fisher-Information $I(\vartheta)$ ist echt positiv und endlich.
+        \item Es gilt die Vertauschungsrelation
+              \[
+                  \int \frac{\partial}{\partial \vartheta} f(x, \vartheta) \, \mathrm{d} \mu(x) = \frac{\partial}{\partial \vartheta} \int f(x, \vartheta) \, \mathrm{d} \mu(x).
+              \]
+    \end{itemize}
+
+    Ist dann $\hat{\gamma}$ ein Schätzer mit endlicher Varianz für $\gamma(\vartheta)$, so gilt die \emph{Cramér-Rao-Ungleichung}:
+    \[
+        \operatorname{Var}_{\vartheta}(\hat{\gamma}(X)) \geq \frac{\gamma'(\vartheta)^2}{I(\vartheta)}.
+    \]
+
+    Ist $\hat{\gamma}$ erwartungstreu, so gilt die \emph{Cramér-Rao-Schranke}:
+    \[
+        \operatorname{Var}_{\vartheta}(\hat{\gamma}(X)) \geq \frac{\gamma'(\vartheta)^2}{I(\vartheta)} = \frac{1}{I(\vartheta)}, \quad \text{für alle } \vartheta \in \Theta.
+    \]
+\end{defi}
+
+\begin{defi}[Cramér-Rao-Ungleichung]{Mehrdimensionale Formulierung}
+    % https://de.wikipedia.org/wiki/Cram%C3%A9r-Rao-Ungleichung#Mehrdimensionale_Formulierung
+    Unter ähnlichen Regularitätsbedingungen ist die Cramér-Rao-Ungleichung auch im Falle mehrdimensionaler Parameter formulierbar.
+
+    Sei ein unbekannter $k$-dimensionaler Parametervektor $\vartheta = (\vartheta_1, \dotsc, \vartheta_k)^\top$ gegeben, sei $\hat{\gamma} = (\hat{\gamma}_1, \dotsc, \hat{\gamma}_k)^\top$ ein Schätzer für $\gamma(\vartheta)$ und $X: (\Omega, \mathcal{A}) \to (\mathcal{X}, \mathcal{F})$ eine multivariate Zufallsvariable.
+
+    Sei weiterhin $\Delta(\vartheta)$ definiert als Gradient des Erwartungswertes der Schätzfunktion:
+    \[
+        \Delta_{ij}(\vartheta) = \nabla \operatorname{E}_{\vartheta}(\hat{\gamma}(X)) = \frac{\partial}{\partial \vartheta_i} \operatorname{E}_{\vartheta_i}[\hat{\gamma}_j(X)] = \operatorname{E}_{\vartheta_i} \left[ \frac{\partial}{\partial \vartheta_i} \hat{\gamma}_j(X) \right]
+    \]
+    und $\mathcal{I}(\vartheta)$ die Fisher-Informationsmatrix:
+    \[
+        \mathcal{I}_{ij}(\vartheta) = \operatorname{Cov}_{\vartheta} \begin{pmatrix} S_{\vartheta_1}(X) \\ \vdots \\ S_{\vartheta_k}(X) \end{pmatrix} = \operatorname{E}_{\vartheta} \left[ \frac{\partial}{\partial \vartheta_i} \ln \prod_{l=1}^k f(X_l, \vartheta) \cdot \frac{\partial}{\partial \vartheta_j} \ln \prod_{l=1}^k f(X_l, \vartheta) \right].
+    \]
+
+    Dann gilt die \emph{Cramér-Rao-Ungleichung in der mehrdimensionalen Form}:
+    \[
+        \operatorname{Cov}_{\vartheta}(\hat{\gamma}(X)) \succeq \Delta(\vartheta) \mathcal{I}(\vartheta)^{-1} \Delta(\vartheta)^\top, \quad \text{für alle } \vartheta \in \Theta,
+    \]
+    wobei $\succeq$ die Löwner-Halbordnung für Matrizen bezeichnet.
+
+    Im Fall $\gamma(\vartheta) = \vartheta$ und Erwartungstreue, also $\operatorname{E}_{\vartheta}[\hat{\gamma}(X)] = \gamma(\vartheta) = \vartheta$ ist $\Delta(\vartheta) = I_k$ die Einheitsmatrix und die Cramér-Rao-Ungleichung vereinfacht sich zu
+    \[
+        \operatorname{Cov}_{\vartheta}(\hat{\gamma}(X)) \succeq \mathcal{I}(\vartheta)^{-1}, \quad \text{für alle } \vartheta \in \Theta.
+    \]
+\end{defi}
+
+\begin{bonus}{Löwner-Halbordnung}
+    % https://de.wikipedia.org/wiki/Loewner-Halbordnung
+    Gegeben sei der reelle Vektorraum der symmetrischen reellen Matrizen
+    \[
+        \mathbb{S}^n := \{ A \in \mathbb{R}^{n \times n} \mid A = A^\top \}.
+    \]
+    Die \emph{Löwner-Halbordnung} auf $\mathbb{S}^n$ ist definiert durch
+    \[
+        A \succeq 0 \quad \iff \quad A \text{ ist positiv semidefinit}
+    \]
+    und
+    \[
+        A \succeq B \quad \iff \quad A - B \succeq 0 \quad \iff \quad A - B \text{ ist positiv semidefinit}
+    \]
+    sowie
+    \[
+        A \preceq B \quad \iff \quad B - A \succeq 0 \quad \iff \quad B - A \text{ ist positiv semidefinit}.
+    \]
+
+    Äquivalent dazu, dass $A$ positiv semidefinit ist, ist:
+    \begin{itemize}
+        \item $A$ hat nur nichtnegative Eigenwerte $\lambda_i \geq 0$.
+        \item $A$ ist als Skalarprodukt positiv semidefinit, das heißt, für alle $x \in \mathbb{R}^n$ gilt $x^\top A x \geq 0$.
+    \end{itemize}
+\end{bonus}
+
+\begin{defi}{Gleichmäßig bester erwartungstreuer Schätzer}
+    % https://de.wikipedia.org/wiki/Gleichm%C3%A4%C3%9Fig_bester_erwartungstreuer_Sch%C3%A4tzer
+    Aufgrund der Zufälligkeit der Stichprobe streut jeder erwartungstreue Schätzer, manche jedoch weniger als andere.
+    \emph{Gleichmäßig beste erwartungstreue Schätzer} sind dann diejenigen erwartungstreuen Schätzer, die für das gegebene Problem weniger streuen als jeder weitere erwartungstreue Schätzer.
+
+    Gegeben sei ein statistisches Modell $(X, \mathcal{A}, (P_{\vartheta})_{\vartheta \in \Theta})$ und eine zu schätzende Parameterfunktion
+    \[
+        \gamma: \Theta \to \mathbb{R}^m.
+    \]
+
+    Dann heißt ein erwartungstreuer Schätzer $\hat{\gamma}^*$ für $\gamma(\vartheta)$ \emph{gleichmäßig bester erwartungstreuer Schätzer}, wenn für jeden anderen erwartungstreuen Schätzer $\hat{\gamma}$ für $\gamma(\vartheta)$ gilt:
+    \[
+        \operatorname{Var}_{\vartheta}(\hat{\gamma}^*) \leq \operatorname{Var}_{\vartheta}(\hat{\gamma}(X)), \quad \text{für alle } \vartheta \in \Theta.
+    \]
+
+    Aufgrund der Erwartungstreue ist äquivalent dazu, dass
+    \[
+        \operatorname{E}_{\vartheta}[(\hat{\gamma}^*(X) - \gamma(\vartheta))^2] \leq \operatorname{E}_{\vartheta}[(\hat{\gamma}(X) - \gamma(\vartheta))^2], \quad \text{für alle } \vartheta \in \Theta
+    \]
+    bzw.
+    \[
+        \operatorname{MSE}(\hat{\gamma}^*) \leq \operatorname{MSE}(\hat{\gamma}) \quad \text{für alle } \vartheta \in \Theta.
+    \]
+
+    Gleichmäßig beste erwartungstreue Schätzer sind fast sicher eindeutig.
+\end{defi}
+
+\begin{defi}{Kovarianzmethode von Rao}
+    % https://de.wikipedia.org/wiki/Gleichm%C3%A4%C3%9Fig_bester_erwartungstreuer_Sch%C3%A4tzer#Kovarianzmethode
+    Die \emph{Kovarianzmethode von Rao} liefert eine Möglichkeit, mittels der Kovarianz gleichmäßig beste Schätzer zu konstruieren oder für einen gegebenen Schätzer zu überprüfen, ob er ein gleichmäßig bester Schätzer ist.
+
+    Sei die Menge aller \emph{Null-Schätzer} definiert als
+    \[
+        D_0 := \{ \hat{\gamma}: (\mathcal{X}, \mathcal{F}) \to (\mathbb{R}^m, \mathcal{B}^m) \forall \vartheta \in \Theta : \operatorname{E}_{\vartheta}[\hat{\gamma}(X)] = 0\}.
+    \]
+
+    Ist ein erwartungstreuer Schätzer $\hat{\gamma}^*$ für $\gamma(\vartheta)$ mit endlicher Varianz gegeben, so ist $\hat{\gamma}^*$ genau dann ein gleichmäßig bester erwartungstreuer Schätzer, wenn:
+    \[
+        \operatorname{Cov}_{\vartheta}(\hat{\gamma}^*, \hat{\gamma}) = 0, \quad \text{für alle } \vartheta \in \Theta \text{ und alle } \hat{\gamma} \in D_0.
+    \]
+\end{defi}
+
+\subsection{Exponentialfamilien}
+
+\begin{defi}{Einparametrische Exponentialfamilie}
+    % https://de.wikipedia.org/wiki/Exponentialfamilie#Einparametrige_Exponentialfamilie
+    Eine Familie von Wahrscheinlichkeitsmaßen $(P_{\vartheta})_{\vartheta \in \Theta}$ auf dem Messraum $(X, \mathcal{A})$ mit $\Theta \subset \mathbb{R}$ offen, heißt eine \emph{einparametrische Exponentialfamilie}, wenn es ein $\sigma$-endliches Maß $\mu$ gibt, so dass alle $P_{\vartheta}$ eine Dichtefunktion der Gestalt
+    \[
+        f(x, \vartheta) = h(x) \cdot A(\vartheta) \cdot \exp \left( \eta(\vartheta) \cdot T(x) \right)
+    \]
+    bezüglich $\mu$ besitzen.
+    Entsprechend kann man auch schreiben:
+    \[
+        \mathrm{d} P_{\vartheta}(x) = h(x) \cdot A(\vartheta) \cdot \exp \left( \eta(\vartheta) \cdot T(x) \right) \, \mathrm{d} \mu(x).
+    \]
+
+    Meist handelt es sich bei $\mu$ um
+    \begin{itemize}
+        \item das Lebesgue-Maß, die Dichtefunktionen sind dann herkömmliche Wahrscheinlichkeitsdichtefunktionen (stetiger Fall), oder
+        \item das Zählmaß, die Dichtefunktionen sind dann Zähldichten (diskreter Fall).
+    \end{itemize}
+
+    Dabei ist
+    \[
+        T: (X, \mathcal{A}) \to (\mathbb{R}, \mathcal{B})
+    \]
+    eine messbare Funktion, die \emph{(natürliche) suffiziente Statistik} oder \emph{kanonische Statistik} der Exponentialfamilie.
+    Ebenso ist
+    \[
+        h: (X, \mathcal{A}) \to ([0, \infty), \mathcal{B}([0, \infty)))
+    \]
+    eine positive messbare Funktion.
+    Die Funktion
+    \[
+        A: \Theta \to \mathbb{R}
+    \]
+    wird \emph{Normierungsfunktion} oder \emph{Normierungskonstante} genannt und garantiert, dass die in der Definition eines Wahrscheinlichkeitsmaßes geforderte Normierung gegeben ist.
+    Des Weiteren ist
+    \[
+        \eta: \Theta \to \mathbb{R}
+    \]
+    eine beliebige reelle Funktion des Parameters $\vartheta$.
+    Ist $\eta(\vartheta) = \vartheta$, so spricht man von einer \emph{natürlichen Parametrisierung}.
+
+    Zu beachten ist, dass eine einparametrische Exponentialfamilie durchaus eine multivariate Verteilung sein kann.
+    Einparametrig bedeutet hier nur, dass die Dimensionalität des \enquote{Formparameters} $\vartheta$ eins ist.
+    Ob die definierte Wahrscheinlichkeitsverteilung univariat oder multivariat ist, hängt von der Dimensionalität des Grundraumes $X$ ab, an die keine Anforderungen gestellt sind.
+\end{defi}
+
+\begin{example}[Einparametrische Exponentialfamilie]{Exponentialverteilung}
+    % https://de.wikipedia.org/wiki/Exponentialfamilie#Exponentialverteilung
+    \emph{Exponentialverteilungen} sind auf $([0, \infty), \mathcal{B}([0, \infty))$ definiert mit $\vartheta \in (0, \infty)$ und besitzen die Wahrscheinlichkeitsdichtefunktion
+    \[
+        f(x, \vartheta) = \vartheta \exp(-\vartheta x).
+    \]
+    Somit sind in diesem Fall:
+    \[
+        T(x) = x, \quad h(x) = 1, \quad A(\vartheta) = \vartheta, \quad \text{und} \quad \eta(\vartheta) = -\vartheta.
+    \]
+\end{example}
+
+\begin{example}[Einparametrische Exponentialfamilie]{Normalverteilung}
+    % https://www.uni-ulm.de/fileadmin/website_uni_ulm/mawi.inst.110/lehre/ss13/Stochastik_I/Skript_7.pdf
+    Sei $\sigma^2 > 0$ als Varianz einer Normalverteilung bekannt.
+
+    Die \emph{Normalverteilung} ist dann definiert auf $(\mathbb{R}, \mathcal{B}(\mathbb{R}))$ mit $\vartheta = \mu \in \mathbb{R}$ und besitzt die Dichtefunktion
+    \[
+        f(x, \vartheta) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left( -\frac{\vartheta}{2 \sigma^2} \right) \exp\left( -\frac{x^2}{2 \sigma^2} \right) \exp\left( \frac{\vartheta}{\sigma^2}x \right).
+    \]
+
+    Somit sind in diesem Fall:
+    \[
+        T(x) = x, \quad h(x) = \exp\left( -\frac{x^2}{2 \sigma^2} \right), \quad A(\vartheta) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left( -\frac{\vartheta^2}{2 \sigma^2} \right), \quad \eta(\vartheta) = \frac{\vartheta}{\sigma^2}.
+    \]
+\end{example}
+
+\begin{example}[Einparametrische Exponentialfamilie]{Binomialverteilung}
+    % https://de.wikipedia.org/wiki/Exponentialfamilie#Binomialverteilung
+    \emph{Binomialverteilungen} sind auf $X = \{ 1, \dotsc, n \}$ definiert mit $\mathcal{A} = \mathcal{P}(X)$ und $\vartheta \in (0, 1)$ und besitzen die Wahrscheinlichkeitsfunktion (bzw. die Dichtefunktion bzgl. des Zählmaßes)
+    \[
+        f(x, \vartheta) = \binom{n}{x} \vartheta^x (1 - \vartheta)^{n - x} = \binom{n}{x} (1 - \vartheta)^n \exp\left( x \ln\left(\frac{\vartheta}{1 - \vartheta}\right) \right).
+    \]
+
+    Somit sind in diesem Fall:
+    \[
+        T(x) = x, \quad h(x) = \binom{n}{x}, \quad A(\vartheta) = (1 - \vartheta)^n, \quad \text{und} \quad  \eta(\vartheta) = \ln\left(\frac{\vartheta}{1 - \vartheta}\right).
+    \]
+\end{example}
+
+
+\begin{defi}{Mehrparametrische Exponentialfamilie}
+    % https://de.wikipedia.org/wiki/Exponentialfamilie#k-parametrige_Exponentialfamilie
+    Eine Familie von Wahrscheinlichkeitsmaßen $(P_{\vartheta})_{\vartheta \in \Theta}$ auf dem Messraum $(X, \mathcal{A})$ mit $\Theta \subset \mathbb{R}^k$ offen, heißt eine \emph{k-parametrische Exponentialfamilie}, wenn es ein $\sigma$-endliches Maß $\mu$ gibt, so dass alle $P_{\vartheta}$ eine Dichtefunktion der Gestalt
+    \[
+        f(x, \vartheta) = h(x) \cdot A(\vartheta) \cdot \exp \left( \sum_{i=1}^{k} \eta_i(\vartheta) \cdot T_i(x) \right)
+    \]
+    bezüglich $\mu$ besitzen.
+    Oftmals wird der Parameter $\vartheta = (\vartheta_1, \dotsc, \vartheta_k)$ geschrieben.
+
+    Dabei sind
+    \[
+        h, T_1, \dotsc, T_k: (X, \mathcal{A}) \to (\mathbb{R}, \mathcal{B})
+    \]
+    messbare Funktionen und
+    \[
+        A, \eta_1, \dotsc, \eta_k: \Theta \to \mathbb{R}
+    \]
+    reelle Funktionen des Parameters $\vartheta$.
+    Hier wird wie im einparametrischen Fall die Funktion $T = (T_1, \dotsc, T_k)$ die \emph{(natürliche) suffiziente Statistik} oder \emph{kanonische Statistik} der Exponentialfamilie genannt.
+
+    Auch hier gilt wieder: eine $k$-parametrische Exponentialfamilie kann durchaus eine Wahrscheinlichkeitsverteilung in nur einer Dimension beschreiben.
+    Die Zahl $k$ gibt nur die Anzahl der Formparameter an, nicht die Dimensionalität der Verteilung.
+\end{defi}
+
+\begin{example}[Mehrparametrische Exponentialfamilie]{Normalverteilung}
+    % https://de.wikipedia.org/wiki/Exponentialfamilie#Normalverteilung
+    Klassisches Beispiel für eine zweiparametrige Exponentialfamilie ist die \emph{Normalverteilung}.
+    Es ist $(X, \mathcal{A}) = (\mathbb{R}, \mathcal{B}(\mathbb{R}))$ sowie $\Theta = \mathbb{R} \times (0, \infty)$.
+    Jedes $\vartheta \in \Theta$ ist dann von der Form $\vartheta = (\vartheta_1, \vartheta_2)$.
+    Mit den Parametrisierungen $\mu = \vartheta_1$ sowie $\sigma^2 = \vartheta_2^2$ erhält man aus der üblichen Dichtefunktion der Normalverteilung
+    \[
+        f(x, \vartheta) = f(x, \vartheta_1, \vartheta_2) = \frac{1}{\sqrt{2 \pi \vartheta_2^2}} \exp\left( -\frac{\vartheta_1^2}{2 \vartheta_2^2} \right) \exp\left( \frac{\vartheta_1}{\vartheta_2^2}x - \frac{1}{2 \vartheta_2^2}x^2 \right).
+    \]
+
+    Somit sind in diesem Fall:
+    \[
+        T_1(x) = x, \quad T_2(x) = x^2,
+    \]
+    sowie
+    \[
+        A(\vartheta_1, \vartheta_2) = \frac{1}{\sqrt{2 \pi \vartheta_2^2}} \exp\left( -\frac{\vartheta_1^2}{2 \vartheta_2^2} \right), \quad \eta_1(\vartheta_1, \vartheta_2) = \frac{\vartheta_1}{\vartheta_2^2} \quad \text{und} \quad \eta_2(\vartheta_1, \vartheta_2) = -\frac{1}{2 \vartheta_2^2}.
+    \]
+\end{example}
+
+\begin{defi}{Suffiziente Statistik}
+    TODO
+\end{defi}
+
+\subsection{Momentenschätzer}
+
+\begin{defi}{Momentenschätzer}
+    %   https://de.wikipedia.org/wiki/Momentenmethode#Rahmenbedingungen
+    Gegeben sei eine Familie von Wahrscheinlichkeitsmaßen $(P_{\vartheta})_{\vartheta \in \Theta}$ auf den reellen Zahlen, die mit einer beliebigen Indexmenge $\Theta$ indiziert ist.
+    Es bezeichne $P_{\vartheta}^n$ das $n$-fache Produktmaß der Wahrscheinlichkeitsverteilung $P_{\vartheta}$.
+
+    Das statistische Modell sei gegeben als das $n$-fache Produktmodell $(\mathbb{R}^n, \mathcal{B}^n, (P_{\vartheta}^n)_{\vartheta \in \Theta})$.
+
+    Sei $X = (X_1, \dotsc, X_n)$ eine Stichprobe aus diesem Modell, wobei $X_i$ die $i$-te Stichprobenvariable ist und alle $X_i$ i.i.d. verteilt sind.
+    Es bezeichne $\operatorname{E}_{\vartheta}$ die Bildung des Erwartungswertes bezüglich $P_{\vartheta}$ und
+    \[
+        m_j(\vartheta) = \operatorname{E}_{\vartheta}[X_1^j]
+    \]
+    das $j$-te \emph{Moment} einer nach $P_{\vartheta}$ verteilten Zufallsvariable bzw. des Wahrscheinlichkeitsmaßes $P_{\vartheta}$.
+
+    Des Weiteren sei
+    \[
+        m_j(X) = \frac{1}{n} \sum_{i=1}^n X_i^j
+    \]
+    das $j$-te \emph{Stichprobenmoment} oder \emph{empirische Moment} von $X$ ein erwartungstreuer Schätzer für $m_j(\vartheta)$.
+
+    Geschätzt werden soll eine Parameterfunktion
+    \[
+        q: \Theta \to \mathbb{R}^k.
+    \]
+
+    Es gelten folgende weitere Bedingungen:
+    \begin{itemize}
+        \item Es existiert ein $l \in \mathbb{N}$, so dass für alle $\vartheta \in \Theta$ und alle $j \leq l$ die Momente $m_j(\vartheta)$ existieren.
+        \item Es existiert eine stetige \emph{Momentenschätzfunktion} $g: \mathbb{R}^k \to \mathbb{R}^k$, so dass
+              \[
+                  q(\vartheta) = g(m_1(\vartheta), \dotsc, m_k(\vartheta)).
+              \]
+    \end{itemize}
+    Die zu schätzende Funktion lässt sich also als Funktion der Momente darstellen.
+
+    Dann ist
+    \[
+        \hat{q}(X) = g(m_1(X), \dotsc, m_k(X)) = g\left( \frac{1}{n} \sum_{i=1}^n X_i, \dotsc, \frac{1}{n} \sum_{i=1}^n X_i^k \right)
+    \]
+    der \emph{Momentenschätzer} für $q(\vartheta)$.
+
+    Man erhält also eine Schätzfunktion, indem man in der zu schätzenden Funktion die Momente $m_j(\vartheta)$ der Wahrscheinlichkeitsverteilung durch die Stichprobenmomente $m_j(X)$ ersetzt.
+\end{defi}
+
+\begin{defi}{Konsistenz}
+    % https://de.wikipedia.org/wiki/Konsistente_Sch%C3%A4tzfolge
+    Gegeben sei eine Folge von Zufallsvariablen $(X_n)_{n \in \mathbb{N}}$, die $n$-dimensionale Stichproben beschreiben, mit
+    \[
+        X_n: (\Omega, \mathcal{A}) \to (\mathcal{X}^n, \mathcal{F}^n)
+    \]
+    und eine zu schätzende Parameterfunktion
+    \[
+        \gamma: \Theta \to \mathbb{R}^k.
+    \]
+
+    Sei
+    \[
+        \hat{\gamma}_n: (\mathcal{X}^n, \mathcal{F}^n) \to (\mathbb{R}^m, \mathcal{B}^m)
+    \]
+    eine Folge von Punktschätzern $(\hat{\gamma}_n)_{n \in \mathbb{N}}$ für $\gamma(\vartheta)$.
+
+    Die Folge $(\hat{\gamma}_n)_{n \in \mathbb{N}}$ heißt \emph{(schwach) konsistent} für $\gamma(\vartheta)$, wenn für alle $\vartheta \in \Theta$ gilt:
+    \[
+        \forall \epsilon > 0 : \lim_{n\to\infty} P_{\vartheta} (|\hat{\gamma}_n - \gamma(\vartheta)| > \varepsilon) = 0 \quad \iff \quad \hat{\gamma}_n \xrightarrow{P_{\vartheta}} \gamma(\vartheta).
+    \]
+
+    Die Folge $(\hat{\gamma}_n)_{n \in \mathbb{N}}$ heißt \emph{stark konsistent} für $\gamma(\vartheta)$, wenn für alle $\vartheta \in \Theta$ gilt:
+    \[
+        P_{\vartheta} \left( \lim_{n\to\infty} \hat{\gamma}_n = \gamma(\vartheta) \right) = 1 \quad \iff \quad \hat{\gamma}_n \xrightarrow{P_{\vartheta}\text{-f. s.}} \gamma(\vartheta).
+    \]
+\end{defi}
+
+\begin{defi}{Delta-Methode}
+    % https://en.wikipedia.org/wiki/Delta_method#Multivariate_delta_method
+    Die \emph{Delta-Methode} (eine Abwandlung des \emph{Fehlerfortpflanzungsgesetzes}) liefert eine Aussage über die asymptotische Verteilung des Momentenschätzers.
+
+    Gegeben seien zu schätzende Parameter $\vartheta = (\vartheta_1, \dotsc, \vartheta_m) \in \Theta$ und eine Folge von konsistenten Momentenschätzern $(\hat{\vartheta}_n)_{n \in \mathbb{N}}$ für $\vartheta$, wobei $n$ die Stichprobengröße darstellt.
+
+    Sei $(X_n)_{n \in \mathbb{N}}$ eine Folge von Zufallsvariablen, die die $n$-dimensionale Stichproben beschreiben, mit
+    \[
+        X_n: (\Omega, \mathcal{A}) \to (\mathcal{X}^n, \mathcal{F}^n).
+    \]
+
+    Sei $\Sigma(\vartheta)$ die positiv definite Kovarianzmatrix von $\hat{\vartheta}_n$.
+    Mit dem mehrdimensionalen zentralen Grenzwertsatz folgt dann:
+    \[
+        \sqrt{n} \left( \hat{\vartheta}_n - \vartheta \right) \xrightarrow{V} N(0, \Sigma(\vartheta)),
+    \]
+
+    Es soll nun eine Aussage über die Varianz einer differenzierbaren Funktion $g$ von $\vartheta$ getroffen werden:
+    \[
+        g: \Theta \to \mathbb{R}^m, \quad g \in C^1(\Theta).
+    \]
+
+    Die Jacobimatrix von $g$ an der Stelle $\vartheta$ ist gegeben als
+    \[
+        J_g(\vartheta) = \begin{pmatrix}
+            \frac{\partial g_1}{\partial \vartheta_1}(\vartheta) & \cdots & \frac{\partial g_1}{\partial \vartheta_k}(\vartheta) \\
+            \vdots                                               & \ddots & \vdots                                               \\
+            \frac{\partial g_m}{\partial \vartheta_1}(\vartheta) & \cdots & \frac{\partial g_m}{\partial \vartheta_k}(\vartheta)
+        \end{pmatrix} = \begin{pmatrix}
+            \nabla g_1(\vartheta)^\top \\
+            \vdots                     \\
+            \nabla g_m(\vartheta)^\top
+        \end{pmatrix}.
+    \]
+
+    Dann gilt für die asymptotische Verteilung des Schätzers nach der \emph{Delta-Methode}:
+    \[
+        \sqrt{n} \left( g(\hat{\vartheta}_n) - g(\vartheta) \right) \xrightarrow{V} N(0, J_g(\vartheta) \Sigma(\vartheta) J_g(\vartheta)^\top).
+    \]
+\end{defi}
+
+\subsection{Maximum-Likelihood-Schätzer}
+
+\begin{defi}{Maximum-Likelihood-Schätzer}
+    % https://de.wikipedia.org/wiki/Maximum-Likelihood-Methode#Definition
+    Bei der \emph{Maximum-Likelihood-Methode} wird von einer Zufallsvariablen
+    \[
+        X: (\Omega, \mathcal{A}) \to (\mathcal{X}, \mathcal{F})
+    \]
+    ausgegangen, deren Dichte- bzw. Wahrscheinlichkeitsfunktion $P_\vartheta^X = f$ von einem unbekannten Parameter $\vartheta \in \Theta \subset \mathbb{R}^k$ abhängt.
+    Liegt eine einfache Zufallsstichprobe mit $n$ Realisierungen $x_1, \dotsc, x_n$ von $n$ unabhängig und identisch verteilten Zufallsvariablen $X_1, \dotsc, X_n$ vor, so lässt sich die gemeinsame Dichtefunktion bzw. Wahrscheinlichkeitsfunktion wie folgt faktorisieren:
+    \[
+        P_\vartheta^X = f(x, \vartheta) = f(x_1, \dotsc, x_n, \vartheta) = \prod_{i=1}^n f(x_i, \vartheta).
+    \]
+
+    Statt nun für einen festen Parameter $\vartheta$ die Dichte für beliebige Werte $x_1, \dotsc, x_n$ auszuwerten, kann umgekehrt für beobachtete und somit feste Realisierungen $x_1, \dotsc, x_n$ die gemeinsame Dichte als Funktion von $\vartheta$ interpretiert werden.
+    Dies führt zur \emph{Likelihood-Funktion}
+    \[
+        L(\vartheta) = f(x_1, \dotsc, x_n, \vartheta) = \prod_{i=1}^n f(x_i, \vartheta).
+    \]
+
+    Die Likelihood-Funktion ist algebraisch identisch zur gemeinsamen Dichte $f(x_1, x_2, \dotsc, x_n, \vartheta)$.
+    Wird diese Funktion in Abhängigkeit von $\vartheta$ maximiert
+    \[
+        \hat{\vartheta}: (\mathcal{X}, \mathcal{F}) \to (\mathbb{R}^k, \mathcal{B}^k), \quad x \mapsto \argmax_{\vartheta \in \Theta} L(\vartheta),
+    \]
+    so erhält man die \emph{Maximum-Likelihood-Schätzfunktion} für den unbekannten Parameter $\vartheta$.
+
+    Es wird also der Wert von $\vartheta$ gesucht, bei dem die Stichprobenwerte $x_1, \dotsc, x_n$ die größte Dichte- bzw. Wahrscheinlichkeitsfunktion haben.
+    Es ist naheliegend, einen Parameterwert $\vartheta$ als umso plausibler anzusehen, je höher die Likelihood.
+
+    Der \emph{Maximum-Likelihood-Schätzer} $\hat{\vartheta}(X)$ ist in diesem Sinne der plausibelste Parameterwert für die Realisierungen $x_1, \dotsc, x_n$ der Zufallsvariablen $X$.
+    Für eine konkrete Realisierung $x \in \mathcal{X}$ der Zufallsvariablen $X$ heißt $\hat{\vartheta}(x)$ der \emph{Maximum-Likelihood-Schätzwert} für den Parameter $\vartheta$.
+
+    Ist $L \in C^1(\Theta)$ differenzierbar, so kann der Maximum-Likelihood-Schätzer auch durch Nullsetzen des Gradienten der Likelihood-Funktion gefunden werden.
+    Da dies bei Dichtefunktionen mit komplizierten Exponentenausdrücken sehr aufwändig werden kann, wird häufig die \emph{Log-Likelihood-Funktion} verwendet, da sie aufgrund der Monotonie des Logarithmus ihr Maximum an derselben Stelle wie die Likelihood-Funktion erreicht, jedoch einfacher zu berechnen ist:
+    \[
+        \ell(\vartheta) := \ln L(\vartheta) = \sum_{i=1}^n \underbrace{\ln f(x_i, \vartheta)}_{\ell_i(\vartheta)} = \sum_{i=1}^n \ell_i(\vartheta).
+    \]
+\end{defi}
+
+\begin{example}[Maximum-Likelihood-Schätzer]{Normalverteilung}
+    Sei $X = (X_1, \dotsc, X_n)$ mit unabhängigen Zufallsvariablen $X_1, \dotsc, X_n$ und $X_i \sim \mathcal{N}(\mu, \sigma^2)$ mit unbekannten Parametern $\mu \in \mathbb{R}$ und $\sigma^2 \in (0, \infty)$ und $n \geq 2$.
+
+    Die Dichtefunktion für jede einzelne Realisierung ist dann gegeben durch
+    \[
+        f(x_i, \mu, \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left( -\frac{(x_i - \mu)^2}{2 \sigma^2} \right).
+    \]
+
+    Dann ist
+    \[
+        L(\vartheta) = \prod_{i=1}^n f_{\vartheta}(x_i) = \prod_{i=1}^n \frac{1}{\sqrt{2 \pi \sigma^2}} \exp\left( -\frac{(x_i - \mu)^2}{2 \sigma^2} \right) = \frac{1}{(2\pi\sigma^2)^{\frac{n}{2}}} \exp\left( -\frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2 \right).
+    \]
+    die Likelihood-Funktion von $\vartheta = (\mu, \sigma^2) \in \Theta = \mathbb{R} \times (0, \infty)$.
+
+    Als Log-Likelihood-Funktion ergibt sich
+    \[
+        \ell(\vartheta) = \ln L(\vartheta) = -\frac{n}{2} \ln(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{i=1}^n (x_i - \mu)^2.
+    \]
+
+    Setzt man die partiellen Ableitungen von $\ell(\vartheta)$ nach $\mu$ und $\sigma^2$ (die Score-Funktionen) auf Null, erhält man die beiden \emph{Likelihood-Gleichungen}:
+    \[
+        \frac{\partial \ell}{\partial \mu} = \frac{1}{\sigma^2} \sum_{i=1}^n (x_i - \mu) \stackrel{!}{=} 0 \quad \text{und} \quad \frac{\partial \ell}{\partial \sigma^2} = -\frac{n}{2\sigma^2} + \frac{1}{2\sigma^4} \sum_{i=1}^n (x_i - \mu)^2 \stackrel{!}{=} 0.
+    \]
+
+    Die Lösung dieser Gleichungen ergibt die \emph{Maximum-Likelihood-Schätzer} für $\mu$ und $\sigma^2$:
+    \[
+        \hat{\mu} = \frac{1}{n} \sum_{i=1}^n x_i = \overline{x} \quad \text{und} \quad \hat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (x_i - \hat{\mu})^2.
+    \]
+
+    Es gilt für die Schätzer:
+    \[
+        \operatorname{E}[\hat{\mu}] = \mu \quad \text{und} \quad \operatorname{E}[\hat{\sigma}^2] = \frac{n-1}{n} \sigma^2.
+    \]
+    Also ist $\hat{\mu}$ erwartungstreu, $\hat{\sigma}^2$ jedoch nicht.
+    Allerdings kann man zeigen, dass der Maximum-Likelihood-Schätzer $\hat{\sigma}^2$ asymptotisch erwartungstreu für $\sigma^2$ ist.
+\end{example}
+
+\begin{defi}[Maximum-Likelihood-Schätzer]{Existenz}
+    % https://de.wikipedia.org/wiki/Maximum-Likelihood-Methode#Existenz
+    Es gelten folgende Regularitätsbedingungen:
+    \begin{itemize}
+        \item Der Parameterraum $\Theta$ ist offen.
+        \item Seien $X_i: (\Omega, \mathcal{A}) \to (\mathcal{X}, \mathcal{F})$ unter jedem $P_{\vartheta}$ unabhängig und identisch verteilt.
+        \item Für jedes $\vartheta \in \Theta$ sei $P_{\vartheta}^{X_i}$ absolut stetig bzgl. einem Maß $\mu$, also $P_{\vartheta}^{X_i} \ll \mu$.
+        \item Die Abbildung $\vartheta \mapsto P_{\vartheta}^{X_i}$ sei injektiv:
+              \[
+                  \vartheta \neq \vartheta' \implies P_{\vartheta}^{X_i} \neq P_{\vartheta'}^{X_i}.
+              \]
+        \item Die Menge der Werte $x \in \mathcal{X}$, für die die Dichte nicht verschwindet, hängt nicht von $\vartheta$ ab:
+              \[
+                  \{ x \in \mathcal{X} \mid f(x, \vartheta) > 0 \} = \{ x \in \mathcal{X} \mid f(x, \vartheta') > 0 \} \quad \text{für alle } \vartheta, \vartheta' \in \Theta.
+              \]
+        \item Die Dichte $f(x, \vartheta) \in C^1(\Theta)$ ist stetig differenzierbar bezüglich $\vartheta$.
+    \end{itemize}
+
+    Sei $\vartheta^*$ der wahre Parameterwert.
+
+    Dann existiert eine Nullmenge $N \in \mathcal{X}$, so dass für alle $\omega \in \Omega \setminus N$ für genügend große $n \in \mathbb{N}$ gilt:
+    \[
+        \sum_{i=1}^n \frac{\partial}{\partial \vartheta} \ln f(X_i(\omega), \vartheta) \Big|_{\vartheta = \vartheta^*(\omega)} = 0
+    \]
+    und
+    \[
+        \lim_{n \to \infty} \hat{\vartheta}_n(\omega) = \vartheta^*.
+    \]
+
+    Gelten diese Voraussetzungen, dann hat die Log-Likelihood-Gleichung
+    \[
+        \sum_{i=1}^n \frac{\partial}{\partial \vartheta} \ln f(X_i, \vartheta) = 0
+    \]
+    eine eindeutige Lösung $\vartheta \in \Theta$.
+
+    Damit existiert die Maximum-Likelihood-Schätzfunktion $\hat{\vartheta}_n: (\mathcal{X}^n, \mathcal{F}^n) \to (\Theta, \mathcal{B}(\Theta))$, sodass
+    \[
+        \sum_{i=1}^n \frac{\partial}{\partial \vartheta} \ln f(X_i, \vartheta) \Big|_{\vartheta = \hat{\vartheta}_n(x_1, \dotsc, x_n)} = 0
+    \]
+    für alle $x \in \mathcal{X}^n$.
+
+    Die Schätzfunktion $\hat{\vartheta}_n$ ist stark konsistent für $\vartheta^*$ und für jedes $\vartheta \in \Theta$ gilt:
+    \[
+        \hat{\vartheta}_n (X_1(\omega), \dotsc, X_n(\omega)) \in \Omega \quad P_{\vartheta}^n\text{-f. s.} \text{ für alle } \omega \in \Omega
+    \]
+\end{defi}
+
+\begin{defi}[Maximum-Likelihood-Schätzer]{Asymptotische Normalität}
+    % https://de.wikipedia.org/wiki/Maximum-Likelihood-Methode#Asymptotische_Normalit%C3%A4t
+    Es gelten folgende Regularitätsbedingungen:
+    \begin{itemize}
+        \item Der Parameterraum $\Theta$ ist offen.
+        \item Seien $X_i: (\Omega, \mathcal{A}) \to (\mathcal{X}, \mathcal{F})$ unter jedem $P_{\vartheta}$ unabhängig und identisch verteilt.
+        \item Für jedes $\vartheta \in \Theta$ sei $P_{\vartheta}^{X_i}$ absolut stetig bzgl. einem Maß $\mu$, also $P_{\vartheta}^{X_i} \ll \mu$.
+        \item Die Abbildung $\vartheta \mapsto P_{\vartheta}^{X_i}$ sei injektiv:
+              \[
+                  \vartheta \neq \vartheta' \implies P_{\vartheta}^{X_i} \neq P_{\vartheta'}^{X_i}.
+              \]
+        \item Die Menge der Werte $x \in \mathcal{X}$, für die die Dichte nicht verschwindet, hängt nicht von $\vartheta$ ab:
+              \[
+                  \{ x \in \mathcal{X} \mid f(x, \vartheta) > 0 \} = \{ x \in \mathcal{X} \mid f(x, \vartheta') > 0 \} \quad \text{für alle } \vartheta, \vartheta' \in \Theta.
+              \]
+        \item Die Dichte $f(x, \vartheta) \in C^1(\Theta)$ ist stetig differenzierbar bezüglich $\vartheta$.
+        \item Die Dichte $f(x, \vartheta) \in C^2(\mathcal{A})$ ist zweimal stetig differenzierbar bezüglich $x$.
+        \item Die erwartete Fisher-Information $I(\vartheta)$ ist endlich für alle $\vartheta \in \Theta$.
+        \item TODO
+    \end{itemize}
+
+    Für jedes $n \in \mathbb{N}$ sei $\hat{\vartheta}_n: (\mathcal{X}^n, \mathcal{F}^n) \to (\Theta, \mathcal{B}(\Theta))$ der Maximum-Likelihood-Schätzer für $\vartheta$ und es gelte damit
+    \[
+        \hat{\vartheta}_n \xrightarrow{P_{\vartheta}^n\text{-f. s.}} \vartheta, \quad \text{für alle } \vartheta \in \Theta,
+    \]
+    sowie
+    \[
+        \frac{1}{\sqrt{n}} \sum_{i=1}^n \frac{\partial}{\partial \vartheta} \ln f(X_i, \vartheta) \Big|_{\vartheta = \vartheta^*(X_1, \dotsc, X_n)} \xrightarrow{P_{\vartheta}^n\text{-f. s.}} 0 \quad \text{für alle } \vartheta \in \Theta.
+    \]
+
+    Dann folgt für den Maximum-Likelihood-Schätzer $\hat{\vartheta}_n$ und alle $\vartheta \in \Theta$:
+    \[
+        \sqrt{n} (\hat{\vartheta}_n(X_1, \dotsc, X_n) - \vartheta) \xrightarrow{D} N(0, I(\vartheta)^{-1}).
+    \]
+\end{defi}
+
+\begin{defi}{Le Cam Theorem}
+    TODO
+\end{defi}
+
+\begin{defi}{Asymptotische Effizienz}
+    TODO
+\end{defi}

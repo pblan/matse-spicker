@@ -339,7 +339,7 @@ Die angegebenen Varianten von bedingten Wahrscheinlichkeiten und Erwartungswerte
 \begin{defi}[Filtration]{Natürliche Filtration}
     Ist $(X_{t})_{t\in T}$ ein stochastischer Prozess, so wird das durch
     \[
-        \mathcal{F}_{t}:=\sigma ({X_{s}({\mathcal{A}});s\leq t})
+        \mathcal{F}_{t}:=\sigma ({X_{s}({\mathcal{A}}) \mid s\leq t})
     \]
     (d. h. der einhüllenden, minimalen $\sigma$-Algebra auf der Menge aller Bilder der Zufallsvariablen $X_{s}$ der Elemente der $\sigma$-Algebra $\mathcal{A}$ für alle bisher vergangenen Zeitpunkte $s$, wobei $\sigma$ den $\sigma$-Algebren-Operator bezeichnet) erzeugte System $({\mathcal{F}}_{t})_{t\in T}$ als natürliche Filtrierung des Prozesses bezeichnet.
 
@@ -853,7 +853,7 @@ Was ein dummer Scheiß
     \]
 \end{defi}
 
-\begin{example}[Value at Risk]{Value at Risk für normalverteilte Zufallsvariablen}
+\begin{example}[Value at Risk]{Wurzelformel}
     % https://de.wikipedia.org/wiki/Value_at_Risk#Beispiele
     Ist $X$ eine normalverteilte Verlustvariable mit dem Erwartungswert $\mu$ und der Standardabweichung $\sigma$, also $X \sim \mathcal{N}(\mu, \sigma^2)$, so ist der \emph{Value at Risk zum Konfidenzniveau $\gamma$} gegeben durch
     \[
@@ -867,21 +867,7 @@ Was ein dummer Scheiß
     \]
 \end{example}
 
-\begin{example}[Value at Risk]{Value at Risk für normalverteilte Zufallsvariablen}
-    % https://de.wikipedia.org/wiki/Value_at_Risk#Beispiele
-    Ist $X$ eine normalverteilte Verlustvariable mit dem Erwartungswert $\mu$ und der Standardabweichung $\sigma$, also $X \sim \mathcal{N}(\mu, \sigma^2)$, so ist der \emph{Value at Risk zum Konfidenzniveau $\gamma$} gegeben durch
-    \[
-        \operatorname{VaR}_{\gamma}[X] = \mu + \sigma \cdot \Phi^{-1}(\gamma), \quad \gamma \in (0, 1),
-    \]
-    wobei $\Phi$ die Verteilungsfunktion der Standardnormalverteilung ist.
-
-    Dies folgt aus:
-    \[
-        P\left( X \leq \sigma \cdot \Phi^{-1}(\gamma) + \mu \right) = P \left( \frac{X - \mu}{\sigma} \leq \Phi^{-1}(\gamma) \right) = \gamma.
-    \]
-\end{example}
-
-\begin{example}[Value at Risk]{Value at Risk für eine Summe normalverteilter Zufallsvariablen}
+\begin{example}[Value at Risk]{Standardformel}
     % https://de.wikipedia.org/wiki/Value_at_Risk#Beispiele
     Für die Verlustvariablen $X_{t}=\sum _{j=1}^{t}U_{j}$ mit stochastisch unabhängigen und identisch normalverteilten Zufallsvariablen $U_{j}\sim {\mathcal {N}}(0,\sigma ^{2})$ für $j=1,\dots ,t$ gilt $X_{t}\sim {\mathcal {N}}(0,t\sigma ^{2})$ und daher
     \[

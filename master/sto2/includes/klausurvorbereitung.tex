@@ -1,0 +1,1372 @@
+\section{Selbstlernfragen}
+
+\section*{Fehlerfortpflanzungsgesetz}
+
+\begin{QandA}
+    \item Welche Voraussetzungen müssen für die Anwendung des Fehlerfortpflanzungsgesetzes gelten?
+    \begin{answered}
+        \begin{itemize}
+            \item $Z_n$, $n \in \mathbb{N}$ sind $d$-dimensionale Zufallsvektoren.
+            \item $\mu \in \mathbb{R}^d$ (Erwartungswert von $Z_n$) existiert.
+            \item $\Sigma \in \mathbb{R}^{d \times d}$ (Kovarianzmatrix von $Z_n$) symmetrisch und positiv semidefinit.
+            \item $\sqrt{n}(Z_n - \mu) \xrightarrow{V} \mathcal{N}(0, \Sigma)$ für $n \to \infty$.
+            \item $f: \mathbb{R}^d \to \mathbb{R}^k$ ist eine differenzierbare Funktion.
+        \end{itemize}
+    \end{answered}
+
+    \item Was besagt das Fehlerfortpflanzungsgesetz?
+    \begin{answered}
+        \[
+            \sqrt{n}(f(Z_n) - f(\mu)) \xrightarrow{V} \mathcal{N}_k(0, J_f(\mu) \Sigma J_f(\mu)^T),
+        \]
+        mit $J_f(\mu)$ als Jacobi-Matrix von $f$ an der Stelle $\mu$.
+    \end{answered}
+
+    \item Wie sieht die Beweisskizze des Fehlerfortpflanzungsgesetzes aus?
+    \begin{answered}
+        \begin{itemize}
+            \item Taylor-Entwicklung von $f$ um $\mu$:
+                  \[
+                      f(Z_n) = f(\mu) + J_f(\mu)(Z_n - \mu) + R_n
+                  \]
+                  mit
+                  \[
+                      R_n \xrightarrow{V} 0 \quad \text{und} \quad Z_n \xrightarrow{P} \mu \quad \text{für} \quad n \to \infty
+                  \]
+            \item Anwendung des Lemma von Slutsky und des Satzes der stetigen Abbildung:
+                  \[
+                      \underbrace{\sqrt{n} (Z_n - \mu)}_{\xrightarrow{V} \mathcal{N}(0, \Sigma)} \cdot \underbrace{R_n}_{\xrightarrow{V} 0} \xrightarrow{V} 0
+                  \]
+                  und
+                  \[
+                      J_f(\mu) \sqrt{n}(Z_n - \mu) \xrightarrow{V} \mathcal{N}_k(0, J_f(\mu) \Sigma J_f(\mu)^T).
+                  \]
+            \item Erneute Anwendung des Lemma von Slutsky:
+                  \[
+                      \sqrt{n}(f(Z_n) - f(\mu)) \xrightarrow{V} \mathcal{N}_k(0, J_f(\mu) \Sigma J_f(\mu)^T).
+                  \]
+        \end{itemize}
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Schema von Zufallsvariablen}
+
+\begin{QandA}
+    \item Wie ist ein (Dreiecks-)Schema von Zufallsvariablen definiert?
+    \begin{answered}
+        \begin{itemize}
+            \item Ein Schema von Zufallsvariablen ist eine doppelt-indizierte Folge von Zufallsvariablen
+                  \[
+                      X_{n,k} \quad \text{für} \quad n \in \mathbb{N} \quad \text{und} \quad k = 1, \ldots, k_n.
+                  \]
+            \item Für jedes $n \geq 2$ sind die Zufallsvariablen $X_{n,1, \ldots, k_n}$ auf dem gleichen Wahrscheinlichkeitsraum definiert und unabhängig.
+        \end{itemize}
+    \end{answered}
+
+    \item Wann ist ein Schema unabhängig?
+    \begin{answered}
+        Ein Schema von Zufallsvariablen ist unabhängig, wenn für jedes $n \geq 2$ die Zufallsvariablen $X_{n,1, \ldots, k_n}$ stochastisch unabhängig sind.
+    \end{answered}
+
+    \item Wann ist ein Schema zentriert?
+    \begin{answered}
+        Ein Schema von Zufallsvariablen ist zentriert, wenn alle Zufallsvariablen $X_{n,k}$ den Erwartungswert $0$ haben.
+    \end{answered}
+
+    \item Wann ist ein Schema normiert?
+    \begin{answered}
+        Ein Schema von Zufallsvariablen ist normiert, wenn die Summe der Zufallsvariablen $S_n := \sum_{k=1}^{k_n} X_{n,k}$ die (Gesamt-)Varianz $1$ hat.
+    \end{answered}
+
+    \item Wann ist ein Schema asymptotisch vernachlässigbar?
+    \begin{answered}
+        Ein Schema von Zufallsvariablen heißt asymptotisch vernachlässigbar, wenn
+        \[
+            \lim_{n \to \infty} \max_{1 \leq k \leq k_n} P(|X_{n,k}| \geq \varepsilon) = 0 \quad \text{für alle} \quad \varepsilon > 0.
+        \]
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Grenzwertsatz von Lindeberg-Feller}
+
+\begin{QandA}
+    \item Was ist die entscheidende Aussage von Lindeberg-Feller?
+    \begin{answered}
+        Der zentrale Grenzwertsatz von Lindeberg-Feller ist eine Verallgemeinerung des zentralen Grenzwertsatzes von Lindeberg-Lévy.
+    \end{answered}
+
+    \item Welche Voraussetzungen müssen für die Anwendung des Grenzwertsatzes von Lindeberg-Feller gelten?
+    \begin{answered}
+        \begin{itemize}
+            \item $X_{n,j}$ ist ein unabhängiges Schema von Zufallsvariablen.
+            \item Der Erwartungswert $\operatorname{E}[X_{n,j}] < \infty$ und die Standardabweichung $0 < \sigma_n < \infty$ existieren.
+            \item Alle Zufallsvariablen sind quadratisch integrierbar.
+        \end{itemize}
+    \end{answered}
+
+    \item Was ist die Lindeberg-Bedingung?
+    \begin{answered}
+        Sei $Y_{n,j}$ die standardisierte Zufallsvariable
+        \[
+            Y_{n,j} := \frac{X_{n,j} - \operatorname{E}[X_{n,j}]}{\sigma_n}
+        \]
+        Dann ist die Lindeberg-Bedingung gegeben durch
+        \[
+            L_n (\varepsilon) := \lim_{n \to \infty}\sum_{j = 1}^{k_n} \operatorname{E}[Y_{n,j}^2 \cdot I_{\{|Y_{n,j}| \geq \varepsilon\}}] = 0 \quad \text{für alle} \quad \varepsilon > 0.
+        \]
+    \end{answered}
+
+    \item Was besagt der Grenzwertsatz von Lindeberg-Feller?
+    \begin{answered}
+        Gilt für ein Schema von Zufallsvariablen $X_{n,k}$ die Lindeberg-Bedingung, so konvergiert die Verteilung der standardisierten Summe der Zufallsvariablen $S_n$
+        \[
+            S_n := \sum_{j=1}^{k_n} \frac{X_{n,j} - \operatorname{E}[X_{n,j}]}{\sigma_n} = \sum_{j=1}^{k_n} Y_{n,j}
+        \]
+        gegen die Standardnormalverteilung:
+        \[
+            S_{n} \xrightarrow{V} \mathcal{N}(0, 1).
+        \]
+    \end{answered}
+
+    \item Was ist die Feller-Bedingung?
+    \begin{answered}
+        Sei
+        \[
+            s_n^2 := \sum_{j=1}^{k_n} \sigma_{n,j}^2
+        \]
+        Dann ist die Feller-Bedingung gegeben durch
+        \[
+            \lim_{n \to \infty} \max_{1 \leq j \leq k_n} \frac{\sigma_{n,j}^2}{s_n^2} = 0.
+        \]
+    \end{answered}
+
+    \item Was ist die Ljapunow-Bedingung?
+    \begin{answered}
+        Gegeben sei ein unabhängiges zentriertes Schema von Zufallsvariablen $(X_{n,l})$, bei dem jede Zufallsvariable $X_{n,l}$ quadratintegrierbar ist, und sei
+        \[
+            S_n := \sum_{l=1}^{k_n} X_{n,l}.
+        \]
+
+        Das Schema genügt der Ljapunow-Bedingung genau dann, wenn ein $\delta > 0$ existiert, sodass
+        \[
+            \lim_{n \to \infty} \frac{1}{\operatorname{Var}(S_n)^{1 + \frac{\delta}{2}}} \sum_{l=1}^{k_n} \operatorname{E} \left[ |X_{n,l}|^{2 + \delta} \right] = 0.
+        \]
+        Damit gilt direkt der zentrale Grenzwertsatz.
+    \end{answered}
+
+    \item Wie hängen Ljapunow-Bedingung, Lindeberg-Bedingung, Feller-Bedingung und der zentrale Grenzwertsatz von Lindeberg-Lévy (ZGWS) und zusammen?
+    \begin{answered}
+        \[
+            \text{Ljapunow-Bedingung} \implies \text{Lindeberg-Bedingung} \iff (\text{Feller-Bedingung} \land \text{ZGWS})
+        \]
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Momenterzeugende Funktion}
+
+\begin{QandA}
+    \item Was ist die momenterzeugende Funktion einer Zufallsvariablen $X$?
+    \begin{answered}
+        Die momenterzeugende Funktion einer Zufallsvariablen $X$ an der Stelle $t$ ist definiert als
+        \[
+            M_X(t) := \operatorname{E}[e^{tX}].
+        \]
+    \end{answered}
+
+    \item Was kann man zur Eindeutigkeit der momenterzeugenden Funktion sagen?
+    \begin{answered}
+        Ist die momenterzeugende Funktion einer Zufallsvariablen $X$ in einer Umgebung von $0$ definiert, so ist sie (und die Verteilung von $X$) eindeutig bestimmt.
+    \end{answered}
+
+    \item Wie werden die Momente einer Zufallsvariablen $X$ aus der momenterzeugenden Funktion berechnet?
+    \begin{answered}
+        Die $k$-te Ableitung der momenterzeugenden Funktion $M_X(t)$ an der Stelle $0$ ergibt das $k$-te Moment der Zufallsvariablen $X$:
+        \[
+            \frac{\mathrm{d}^k}{\mathrm{d}t^k} M_X(t) \Big|_{t=0} = \operatorname{E}[X^k] = m_X^k.
+        \]
+    \end{answered}
+
+    \item Wann existiert die momenterzeugende Funktion einer Zufallsvariablen $X$?
+    \begin{answered}
+        Wenn die momenterzeugende Funktion einer Verteilung in einer Umgebung von 0 existiert, so hat die Verteilung von $X$ eine momenterzeugende Funktion.
+
+        Existiert $M_{X}(t)$ nur für $t=0$, dann hat die Verteilung von $X$ keine momenterzeugende Funktion.
+    \end{answered}
+
+    \item Was sind Beispiele für Verteilungen, die durch ihre Momente definiert sind?
+    \begin{answered}
+        \begin{itemize}
+            \item Normalverteilung:
+                  \[
+                      M_X(t) = \exp\left(\mu t + \frac{\sigma^2 t^2}{2}\right)
+                  \]
+            \item Bernouliverteilung:
+                  \[
+                      M_X(t) = 1 - p + p e^t
+                  \]
+            \item Poissonverteilung:
+                  \[
+                      M_X(t) = \exp(\lambda(e^t - 1))
+                  \]
+            \item Exponentialverteilung:
+                  \[
+                      M_X(t) = \frac{\lambda}{\lambda - t}
+                  \]
+        \end{itemize}
+    \end{answered}
+
+    \item Wie hängen Verteilungskonvergenz und Konvergenz der momenterzeugenden Funktion zusammen?
+    \begin{answered}
+        Seien $X_n$ und $X$ Zufallsvariablen. Dann gilt:
+        \[
+            X_n \xrightarrow{V} X \iff \lim_{n\to\infty} M_{X_n}(t) = M_X(t) \quad \text{für alle} \quad t \in \mathbb{R}.
+        \]
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Bedingte Erwartungen und bedingte Verteilungen}
+
+\begin{QandA}
+    \item Wie ist der bedingte Erwartungswert definiert?
+    \begin{answered}
+        Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega, \mathcal{A}, P)$ und eine $\sigma$-Algebra $\mathcal{B} \subseteq \mathcal{A}$.
+
+        Der bedingte Erwartungswert von $X$ gegeben $\mathcal{B}$ ist definiert als die $\mathcal{B}$-messbare Funktion $Y$ mit
+        \begin{equation}
+            \tag{Testgleichung}
+            \operatorname{E}[X \mid \mathcal{B}] = Y \quad \text{und} \quad \operatorname{E}[X \cdot 1_B] = \operatorname{E}[Y \cdot 1_B] \quad \text{für alle} \quad B \in \mathcal{B}.
+        \end{equation}
+        Für $X$ stetig gilt:
+        \[
+            \operatorname{E}[X \mid \mathcal{B}] = Y \quad \text{und} \quad \int_B X \, \mathrm{d}P = \int_B Y \, \mathrm{d}P \quad \text{für alle} \quad B \in \mathcal{B}.
+        \]
+        Für $X$ diskret gilt:
+        \[
+            \operatorname{E}[X \mid \mathcal{B}] = Y \quad \text{und} \quad \sum_{x \in B} x \cdot P(X = x) = \sum_{x \in B} Y(x) \cdot P(X = x) \quad \text{für alle} \quad B \in \mathcal{B}.
+        \]
+    \end{answered}
+
+    \item Was ist die Testgleichung?
+    \begin{answered}
+        Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega, \mathcal{A}, P)$ und eine $\sigma$-Algebra $\mathcal{B} \subseteq \mathcal{A}$ und Zufallsvariablen $X$ und $Y$ ($\mathcal{B}$-messbar):
+        \begin{equation}
+            \tag{Testgleichung}
+            \operatorname{E}[X \mid \mathcal{B}] = Y \quad \text{und} \quad \operatorname{E}[X \cdot 1_B] = \operatorname{E}[Y \cdot 1_B] \quad \text{für alle} \quad B \in \mathcal{B}.
+        \end{equation}
+    \end{answered}
+
+    \item Was sind Eigenschaften des bedingten Erwartungswerts?
+    \begin{answered}
+        \begin{itemize}
+            \item Linearität:
+                  \[ \operatorname{E}[aX + bY \mid \mathcal{B}] = a \operatorname{E}[X \mid \mathcal{B}] + b \operatorname{E}[Y \mid \mathcal{B}] \]
+            \item Monotonie:
+                  \[ X \leq Y \implies \operatorname{E}[X \mid \mathcal{B}] \leq \operatorname{E}[Y \mid \mathcal{B}] \]
+            \item Dreiecksungleichung:
+                  \[ |\operatorname{E}[X \mid \mathcal{B}]| \leq \operatorname{E}[|X| \mid \mathcal{B}] \]
+            \item Herausziehen bekannter Faktoren: ($X$ ist $\mathcal{B}$-messbar)
+                  \[ \operatorname{E} (X \mid{\mathcal{B}}) = X \quad \text{und} \quad \operatorname{E} (XY \mid{\mathcal{B}}) = X \operatorname{E} (Y \mid{\mathcal{B}}) \]
+            \item Totaler Erwartungswert:
+                  \[ \operatorname{E}[\operatorname{E}[X \mid \mathcal{B}]] = \operatorname{E}[X] \]
+            \item Turmeigenschaft: (Teil-$\sigma$-Algebren $\mathcal{B}_{1}\subset{\mathcal{B}}_{2}\subset{\mathcal{A}}$)
+                  \[ \operatorname{E} (\operatorname{E} (X\mid{\mathcal{B}}_{2})\mid{\mathcal{B}}_{1})=\operatorname{E} (X\mid{\mathcal{B}}_{1})(=\operatorname{E} (\operatorname{E} (X\mid{\mathcal{B}}_{1})\mid{\mathcal{B}}_{2})) \]
+        \end{itemize}
+    \end{answered}
+
+    \item Was sind Rechenregeln für bedingte Erwartungswerte?
+    \begin{answered}
+        \begin{itemize}
+            \item Satz der monotonen Konvergenz:
+                  \[ X_n \uparrow X \implies \operatorname{E}[X_n \mid \mathcal{B}] \uparrow \operatorname{E}[X \mid \mathcal{B}] \]
+            \item Satz von der majorisierten Konvergenz:
+                  \[ |X_n| \leq Y \land X_n \to X \implies \operatorname{E}[X_n \mid \mathcal{B}] \to \operatorname{E}[X \mid \mathcal{B}] \]
+            \item Lemma von Fatou:
+                  \[ \operatorname{E}[\liminf_{n \to \infty} X_n \mid \mathcal{B}] \leq \liminf_{n \to \infty} \operatorname{E}[X_n \mid \mathcal{B}] \]
+        \end{itemize}
+    \end{answered}
+
+    \item Was ist die orthogonale Projektion?
+    \begin{answered}
+        Allgemein ist die orthogonale Projektion eines Vektors $X \in V$ auf einen Unterraum $U \subseteq V$ definiert als der Vektor $Y \in U$, der den kleinsten Abstand zu $X$ hat.
+    \end{answered}
+
+    \item Was ist der Untervektorraum der $\mathcal{B}$-messbaren Funktionen?
+    \begin{answered}
+        Der Untervektorraum der $\mathcal{B}$-messbaren Funktionen ist definiert als
+        \[
+            L^2(\mathcal{B}) := \{ Y \mid Y \text{ ist } \mathcal{B}\text{-messbar und } \operatorname{E}[Y^2] < \infty \}.
+        \]
+    \end{answered}
+
+    \item Was bedeutet die Aussage \enquote{Der Erwartungswert ist die beste Approximation von $X$ durch eine $\mathcal{B}$-messbare Funktion von $X$}?
+    \begin{answered}
+        Der bedingte Erwartungswert $\operatorname{E}[X \mid \mathcal{B}]$ ist im Sinne des Skalarprodukts von $L^2(\mathcal{B})$ die beste Approximation von $X$ durch eine $\mathcal{B}$-messbare Funktion von $X$.
+    \end{answered}
+
+    \item Wie ist die bedingte Varianz definiert?
+    \begin{answered}
+        \[
+            \operatorname{Var}[X \mid \mathcal{B}] := \operatorname{E}[(X - \operatorname{E}[X \mid \mathcal{B}])^2 \mid \mathcal{B}] = \operatorname{E}[X^2 \mid \mathcal{B}] - \operatorname{E}[X \mid \mathcal{B}]^2.
+        \]
+    \end{answered}
+
+    \item Wie funktioniert die Varianzzerlegung?
+    \begin{answered}
+        \[
+            \operatorname{Var}[X] = \operatorname{E}[\operatorname{Var}[X \mid \mathcal{B}]] + \operatorname{Var}[\operatorname{E}[X \mid \mathcal{B}]].
+        \]
+    \end{answered}
+
+    \item Was ist die Faktorisierung des bedingten Erwartungswertes?
+    \begin{answered}
+        Der bedingte Erwartungswert $\operatorname{E}[X \mid X_1, \ldots, X_n]$ lässt sich faktorisieren durch eine messbare Funktion $f$ als
+        \[
+            \operatorname{E}[X \mid X_1, \ldots, X_n](\omega) = f(X_1(\omega), \ldots, X_n(\omega)) \quad \text{für fast alle} \quad \omega \in \Omega,
+        \]
+        bzw.
+        \[
+            \operatorname{E}[X \mid X_1 = x_1, \ldots, X_n = x_n] = f(x_1, \ldots, x_n).
+        \]
+    \end{answered}
+
+    \item Wie funktioniert der Beweis der Faktorisierung des bedingten Erwartungswertes?
+    \begin{answered}
+        Sei $X: (\Omega, \mathcal{A}) \to (\mathbb{R}, \mathcal{B}(\mathbb{R}))$ und $Y: (\Omega, \mathcal{A}) \to (\mathbb{R}^d, \mathcal{B}(\mathbb{R}^d))$ Zufallsvariablen.
+
+        Dann existiere eine Abbildung $f: \mathbb{R}^d \to \mathbb{R}$, sodass
+        \[
+            Z := \operatorname{E}[X \mid Y] = f(Y) \quad \text{für} \quad \text{fast alle} \quad \omega \in \Omega.
+        \]
+
+        Beweis über algebraische Induktion:
+        \begin{enumerate}
+            \item Indikatorfunktion:
+                  \[
+                      Z = I_{\{Y^{-1}(B)\}} \quad \text{für} \quad B \in \mathcal{B}(\mathbb{R}^d) \implies Z = f(Y) = I_{\{y \in B\}} \quad \text{für} \quad y \in \mathbb{R}^d.
+                  \]
+            \item Primitive Funktion:
+                  \[
+                      Z = \sum_{i=1}^{n} \alpha_i I_{\{Y^{-1}(B_i)\}} = \sum_{i=1}^{n} \alpha_i f_i(Y) = f(Y)
+                  \]
+            \item Positive messbare Funktion:
+                  \[
+                      Z \geq 0 \implies \exists (f_n)_{n \in \mathbb{N}} : f_n \uparrow f = \sup_{n \in \mathbb{N}} f_n = f(Y)
+                  \]
+            \item Allgemeine messbare Funktion:
+                  \[
+                      Z = Z^+ - Z^- = f^+ - f^- = f(Y)
+                  \]
+        \end{enumerate}
+    \end{answered}
+
+    \item Gegeben seien zwei Zufallsvariablen $(X, Y) \sim \mathcal{N}^2((\mu_1, \mu_2), \Sigma)$ mit $\Sigma$ als Kovarianzmatrix.
+    Wie lautet die bedingte Verteilung von $X$ gegeben $Y = y$?
+    Wie lautet der bedingte Erwartungswert von $X$ gegeben $Y = y$?
+    \begin{answered}
+        % Übung 08, Aufgabe 2
+        Es ist
+        \[
+            \Sigma = \begin{pmatrix} \sigma_1^2 & \rho \\ \rho & \sigma_2^2 \end{pmatrix} \quad \text{mit} \quad \rho = \frac{\operatorname{Cov}(X, Y)}{\sigma_1 \sigma_2}
+        \]
+        Dann gilt
+        \[
+            \det(\Sigma) = \sigma_1^2 \sigma_2^2 (1 - \rho^2) \quad \text{und} \quad \Sigma^{-1} = \frac{1}{\det(\Sigma)} \begin{pmatrix} \sigma_2^2 & -\rho \\ -\rho & \sigma_1^2 \end{pmatrix}.
+        \]
+
+        Die gemeinsame Dichte ist gegeben durch
+        \[
+            f_{X,Y}(x, y) = \frac{1}{2 \pi} \cdot \frac{1}{\sigma_1 \sigma_2 \sqrt{1 - \rho^2}} e^{-\frac{1}{2} \cdot \frac{1}{(1-\rho)^2} \cdot \left( \frac{(x-\rho)^2}{\sigma_1^2} - 2 \rho \frac{(x-\mu_1)(y-\mu_2)}{\sigma_1 \sigma_2} + \frac{(y-\mu_2)^2}{\sigma_2^2} \right)}.
+        \]
+
+        Die Dichte von $Y$ ist gegeben durch
+        \[
+            f_Y(y) = \frac{1}{\sqrt{2 \pi} \sigma_2} e^{-\frac{1}{2} \frac{(y - \mu_2)^2}{\sigma_2^2}}.
+        \]
+
+        Die bedingte Verteilung von $X$ gegeben $Y = y$ ist mit der bedingten Dichteformel gegeben durch
+        \[
+            \begin{aligned}
+                f_{X \mid Y = y}(x) & = \frac{f_{X,Y}(x, y)}{f_Y(y)}                                                                                                                                                                      \\
+                                    & = \ldots                                                                                                                                                                                            \\
+                                    & = \frac{1}{\sqrt{2 \pi} \sigma_1 \sqrt{1 - \rho^2}} e^{-\frac{1}{2} \frac{1}{1 - \rho^2} \left( \frac{(x - \mu_1 - \rho \frac{\sigma_1}{\sigma_2} (y - \mu_2))^2}{\sigma_1^2 (1 - \rho^2)} \right)}
+            \end{aligned}
+        \]
+
+        Es gilt also:
+        \[
+            P_{X \mid Y = y} \sim \mathcal{N}(\mu_1 + \rho \frac{\sigma_1}{\sigma_2} (y - \mu_2), \sigma_1^2 (1 - \rho^2)).
+        \]
+
+        Für den bedingten Erwartungswert von $X$ gegeben $Y = y$ gilt:
+        \[
+            \operatorname{E}[X \mid Y = y] = \mu_1 + \rho \frac{\sigma_1}{\sigma_2} (y - \mu_2).
+        \]
+    \end{answered}
+
+    \item Was besagt das Kovarianzprinzip bei normalverteilten Zufallsvariablen?
+    \begin{answered}
+        Gegeben seien zwei stochastisch unabhängige normalverteilte Zufallsvariablen $X \sim \mathcal{N}(\mu_1, \sigma_1^2)$ und $Y \sim \mathcal{N}(\mu_2, \sigma_2^2)$.
+
+        Dann gilt:
+        \begin{equation}
+            \tag{Kovarianzprinzip}
+            \operatorname{E}[X \mid Y] = \operatorname{E}[X] + \frac{\operatorname{Cov}(X, Y)}{\operatorname{Var}(Y)} (Y - \operatorname{E}[Y])
+        \end{equation}
+    \end{answered}
+
+    \item Was ist ein Übergangskern?
+    \begin{answered}
+        Gegeben seien zwei Messräume $(\Omega_0, \mathcal{A}_0)$ und $(\Omega_1, \mathcal{A}_1)$.
+
+        Eine Abbildung $K: \Omega_0 \times \mathcal{A}_1 \to [0, \infty]$ heißt ein Übergangskern von $(\Omega_0, \mathcal{A}_0)$ nach $(\Omega_1, \mathcal{A}_1)$, wenn gilt:
+        \begin{itemize}
+            \item Für jedes $x \in \Omega_0$ ist $K(x, \cdot)$ ein Maß auf $(\Omega_1, \mathcal{A}_1)$.
+            \item Für jedes $A_1 \in \mathcal{A}_1$ ist $K(\cdot, A_1)$ eine $\mathcal{A}_0$-messbare Funktion.
+        \end{itemize}
+    \end{answered}
+
+    \item Nennen Sie ein Beispiel für einen Übergangskern.
+    \begin{answered}
+        Die Poisson-Verteilung ist ein Beispiel für einen Übergangskern von $(\mathbb{R}^+, \mathcal{B}(\mathbb{R}^+))$ nach $(\mathbb{N}, \mathcal{P}(\mathbb{N}))$:
+        \[
+            K(x, A) = \operatorname{Poi}_x(A) = \frac{e^{-x} x^{|A|}}{|A|!} \quad \text{für} \quad x \in \mathbb{R}^+ \quad \text{und} \quad A \in \mathcal{B}(\mathbb{N}).
+        \]
+
+        Im diskreten Fall jede stochastische Matrix $A \in \mathbb{R}^{n \times n}$ ein Übergangskern von $(\mathbb{N}_{\leq n}, \mathcal{P}(\mathbb{N}_{\leq n}))$ nach $(\mathbb{N}_{\leq n}, \mathcal{P}(\mathbb{N}_{\leq n}))$.
+    \end{answered}
+
+    \item Wie ist eine (reguläre) bedingte Verteilung definiert? (Übergangskern!)
+    \begin{answered}
+        Gegeben seien ein Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ und ein Messraum $(\mathbb{R}^d,{\mathcal{B}}^d)$.
+
+        Sei $Y$ eine Zufallsvariable von $(\Omega ,{\mathcal{A}})$ nach $(\mathbb{R}^d,{\mathcal{B}}^d)$ und $\mathcal{F}$ eine Unter-$\sigma$-Algebra von ${\mathcal{A}}$.
+
+        Ein Markow-Kern $\kappa_{Y,{\mathcal{F}}}$ von $(\Omega ,{\mathcal{A}})$ nach $(\mathbb{R}^d,{\mathcal{B}}^d)$ heißt eine reguläre Version der bedingten Verteilung der Zufallsvariable $Y$ gegeben $\mathcal{F}$, wenn
+        \[
+            \kappa_{Y,{\mathcal{F}}}(\omega ,B)=P(Y^{-1}(B)\mid{\mathcal{F}})(\omega )
+        \]
+        für alle $B \in{\mathcal{B}^d}$ und für $P$-fast alle $\omega$ gilt.
+
+        Es gilt also explizit:
+        \begin{itemize}
+            \item $\kappa_{Y,{\mathcal{F}}}(\cdot, B)$ ist ein Wahrscheinlichkeitsmaß auf $(\mathbb{R}^d,{\mathcal{B}}^d)$.
+            \item $\kappa_{Y,{\mathcal{F}}}(\omega, \cdot )$ ist eine $\mathcal{F}$-messbare Funktion.
+            \item $\int_F \kappa_{Y,{\mathcal{F}}}(\omega, B) \, P(\operatorname{d}\omega) = P(Y^{-1}(B) \cap F)$ für alle $B \in{\mathcal{B}^d}$ und $F \in{\mathcal{F}}$.
+        \end{itemize}
+    \end{answered}
+
+    \item Was besagt der Eindeutigkeitssatz für (reguläre) bedingte Verteilungen?
+    \begin{answered}
+        Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ und eine Unter-$\sigma$-Algebra $\mathcal{F}$ von ${\mathcal{A}}$.
+
+        Seien $\kappa_{Y,{\mathcal{F}}}$ und $\kappa'_{Y,{\mathcal{F}}}$ zwei reguläre Versionen der bedingten Verteilung einer Zufallsvariable $Y$ gegeben $\mathcal{F}$.
+
+        Dann gilt
+        \[
+            \kappa_{Y,{\mathcal{F}}}(\omega ,B)=\kappa'_{Y,{\mathcal{F}}}(\omega ,B)
+        \]
+        für alle $B \in{\mathcal{B}^d}$ und für $P$-fast alle $\omega$.
+    \end{answered}
+
+    \item Wie ist der bedingte Erwartungswert einer (regulären) bedingten Verteilung definiert?
+    \begin{answered}
+        Ist $\kappa_{Y,{\mathcal{F}}}$ eine reguläre Version der (regulären) bedingten Verteilung einer integrierbaren reellwertigen Zufallsvariable $Y$ gegeben $\mathcal{F}$, dann gilt für den bedingten Erwartungswert von $Y$ gegeben $\mathcal{F}$
+        \[
+            \operatorname{E} [Y\mid{\mathcal{F}}](\omega )=\int_{\mathbb{R}} y\,\kappa_{Y,{\mathcal{F}}}(\omega ,dy)
+        \]
+        für $P$-fast alle $\omega \in \Omega$.
+    \end{answered}
+
+    \item Wie funktioniert der Beweis?
+    \begin{answered}
+        TODO
+
+        Irgendwas algebraische Induktion und Satz der monotonen Konvergenz.
+    \end{answered}
+
+    \item Wie können Sie bedingte Wahrscheinlichkeiten approximieren?
+    \begin{answered}
+        Seien $X$, $Y$ reelle Zufallsvariablen und $(X_i, Y_i)$ unabhängige Kopien von $(X, Y)$.
+
+        Dann kann die bedingte Wahrscheinlichkeit $P(X \in A \mid Y = y)$ approximiert werden durch
+        \[
+            P(X \in A \mid Y = y) \approx \frac{\sum_{i=1}^{n} I_{\{X_i \in A \land Y_i \in (y \pm \varepsilon)\}}}{\sum_{i=1}^{n} I_{\{Y_i \in (y \pm \varepsilon)\}}}
+        \]
+    \end{answered}
+
+    \item Wie können Sie bedingte Erwartungswerte approximieren?
+    \begin{answered}
+        Seien $X$, $Y$ reelle Zufallsvariablen und $(X_i, Y_i)$ unabhängige Kopien von $(X, Y)$.
+
+        Dann kann der bedingte Erwartungswert $\operatorname{E}[X \mid Y]$ approximiert werden durch
+        \[
+            \operatorname{E} [X \mid Y = y] \approx \frac{\sum_{i=1}^{n} X_i \cdot I_{\{Y_i \in (y \pm \varepsilon)\}}}{\sum_{i=1}^{n} I_{\{Y_i \in (y \pm \varepsilon)\}}}
+        \]
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Bedingte Dichteformel}
+
+\begin{QandA}
+    \item Was ist die bedingte Dichteformel?
+    \begin{answered}
+        Seien $\mu$ und $\nu$ $\sigma$-endliche Maße auf den Messräumen $(\Omega_1, \mathcal{A}_1)$ und $(\Omega_2, \mathcal{A}_2)$.
+
+        Weiterhin sei $P_{X,Y}$ das gemeinsame Maß von zwei Zufallsvariablen $X$ und $Y$ auf $(\Omega_1, \mathcal{A}_1)$ und $(\Omega_2, \mathcal{A}_2)$ absolut stetig bzgl. $\mu \otimes \nu$ ($P_{X,Y} \ll \mu \otimes \nu$) mit der gemeinsamen $\mu \otimes \nu$-Dichte $f_{X,Y}$.
+
+        Dann ist auch das Maß $P_Y$ absolut stetig bzgl. $\nu$ ($P_Y \ll \nu$) mit der $\nu$-Dichte
+        \[
+            f_Y(y) = \int_{\Omega_1} f_{X,Y}(x,y) \, \mu(\operatorname{d}x).
+        \]
+
+        Weiter ist für $P_Y$-fast alle $y \in \Omega_2$ das Maß $P_{X\mid Y=y}$ absolut stetig bzgl. $\mu$ ($P_{X\mid Y=y} \ll \mu$) und für die zugehörige $\mu$-Dichte $f_{X\mid Y=y}$ gilt die bedingte Dichteformel
+        \begin{equation}
+            \tag{Bedingte Dichteformel}
+            f_{X\mid Y=y}(x) = \frac{f_{X,Y}(x,y)}{f_Y(y)}.
+        \end{equation}
+    \end{answered}
+
+    \item Was muss für die bedingte Dichteformel gelten?
+    \begin{answered}
+        \begin{itemize}
+            \item $\mu$ und $\nu$ sind $\sigma$-endlich.
+            \item $P_{X,Y} \ll \mu \otimes \nu$.
+            \item $P_Y \ll \nu$.
+        \end{itemize}
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Stoppzeit}
+
+\begin{QandA}
+    \item Was ist eine Stoppzeit?
+    \begin{answered}
+        Gegeben sei eine geordnete Indexmenge $T \in \{\mathbb{N}_0, \mathbb{R}_+ \}$.
+
+        Ist eine Filtrierung $({\mathcal{F}}_{t})_{t\in T}$ in $\mathcal{A}$ gegeben, so heißt eine Zufallsvariable
+        \[
+            \tau : \Omega \to T \cup \{\infty \}
+        \]
+        eine Stoppzeit bezüglich der Filtrierung $\mathcal{F}$, wenn
+        \[
+            \{\tau \leq t \} = \{\omega \in \Omega \mid \tau(\omega) \leq t \} \in \mathcal{F}_t \quad \text{für alle } t \in T.
+        \]
+        Eine Stoppzeit kann man als die Wartezeit interpretieren, die vergeht, bis ein bestimmtes zufälliges Ereignis eintritt.
+        Wenn wie üblich die Filtrierung die vorhandene Information zu verschiedenen Zeitpunkten angibt, bedeutet die obige Bedingung also, dass zu jeder Zeit bekannt sein soll, ob dieses Ereignis bereits eingetreten ist oder nicht.
+    \end{answered}
+
+    \item Was ist die $\sigma$-Algebra der $\tau$-Vergangenheit?
+    \begin{answered}
+        Gegeben sei ein Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ sowie eine Filtrierung $({\mathcal{F}}_{t})_{t\in T}$ bezüglich der Ober-$\sigma$-Algebra $\mathcal{A}$ und eine Stoppzeit $\tau$ bezüglich $\mathcal{F}$.
+
+        Dann heißt
+        \[
+            \mathcal{F}_{\tau} = \{A\in{\mathcal{A}} \mid A\cap \{\tau \leq t\}\in{\mathcal{F}}_{t}{\text{ für alle }}t\in T\}
+        \]
+
+        die $\sigma$-Algebra der $\tau$-Vergangenheit.
+
+        Sind $\sigma ,\tau$ Stoppzeiten und ist $\sigma \leq \tau$, so ist $\mathcal{F}_{\sigma }\subset{\mathcal{F}}_{\tau }$.
+    \end{answered}
+
+    \item Was ist die Ersteintrittszeit?
+    \begin{answered}
+        Ist $(X_{t})_{t\geq 0}$ ein reellwertiger, adaptierter Càdlàg-Prozess, also ein stochastischer Prozess, dessen Pfade alle rechtsseitig stetig sind und Grenzwerte von links besitzen, und ist $A\subseteq \mathbb{R}$ eine abgeschlossene Menge, so ist die Ersteintrittszeit von $X$ in $A$
+        \[
+            \tau_{A}(\omega ):=\inf\{t\geq 0 \mid X_{t}(\omega )\in A\}
+        \]
+        eine Stoppzeit.
+    \end{answered}
+
+    \item Was ist ein gestoppter Prozes?
+    \begin{answered}
+        Gegeben sei ein stochastischer Prozess $X=(X_{t})_{t\in T}$ mit höchstens abzählbarer Indexmenge $T$ und eine Stoppzeit $\tau$ mit Werten in $T$.
+        Dann heißt der Prozess
+        \[
+            X^{\tau} := (X_{t \land \tau })_{t\in T} = (X_{\min(t,\tau )})_{t\in T}
+        \]
+        der gestoppte Prozess bezüglich $\tau$.
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Stochastische Prozesse}
+
+\begin{QandA}
+    \item Was ist ein stochastischer Prozess?
+    \begin{answered}
+        Ein stochastischer Prozess $(X_{t})_{t\in T}$ ist dann eine Familie von Zufallsvariablen $X_t: \Omega \to Z$ für $t \in T$, also eine Abbildung
+        \[
+            X: \Omega \times T \to Z, \quad (\omega, t) \mapsto X_t(\omega),
+        \]
+        sodass $X_t: \omega \mapsto X_t(\omega)$ für jedes $t \in T$ eine $\mathcal{F}$-$\mathcal{Z}$-messbare Funktion ist.
+    \end{answered}
+
+    \item Was ist ein Martingal?
+    \begin{answered}
+        Sind ein Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ sowie eine beliebige, geordnete Indexmenge $T$ (meist $T\subset \mathbb{R}$) und eine Filtrierung $\mathcal{F} =({\mathcal{F}}_{t})_{t\in T}$ gegeben, so heißt ein integrierbarer, an $\mathcal{F}$-adaptierter Prozess $X=(X_{t})_{t\in T}$ ein Martingal (bezüglich $\mathcal{F}$), wenn für alle $s,t\in T$ gilt
+        \[
+            \operatorname{E} (X_{t}\mid \mathcal{F}_{s})=X_{s} \quad P\text{-f.s.} \quad \text{für alle} \quad s\leq t.
+        \]
+    \end{answered}
+
+    \item Was ist ein Sub- bzw. Supermartingal?
+    \begin{answered}
+        Submartingal:
+        \[
+            \operatorname{E} [X_{t} \mid{\mathcal{F}}_{s}] \geq X_{s} \quad P\text{-f.s.} \quad \text{für alle} \quad s\leq t.
+        \]
+        Supermartingal:
+        \[
+            \operatorname{E} [X_{t} \mid{\mathcal{F}}_{s}] \leq X_{s} \quad P\text{-f.s.} \quad \text{für alle} \quad s\leq t.
+        \]
+    \end{answered}
+
+    \item Was ist eine Filtration?
+    \begin{answered}
+        Seien $(\Omega ,{\mathcal{A}},P)$ ein Wahrscheinlichkeitsraum, $T \subseteq \mathbb{R}_+$ eine Indexmenge und $({\mathcal{F}}_{t})_{t\in T}$ eine aufsteigend geordnete Familie von Unter-$\sigma$-Algebren von $\mathcal{A}$.
+
+        Dann heißt die Familie von $\sigma$-Algebren
+        \[
+            \mathcal{F} = ({\mathcal{F}}_{t})_{t\in T}
+        \]
+        eine Filtration in $\mathcal{A}$ oder auf dem Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$.
+    \end{answered}
+
+    \item Was ist die natürliche Filtration?
+    \begin{answered}
+        Ist $(X_{t})_{t\in T}$ ein stochastischer Prozess, so ist die natürliche Filtration von $X$ gegeben durch
+        \[
+            \mathcal{F}_{t}:=\sigma ({X_{s}({\mathcal{A}}) \mid s\leq t})
+        \]
+    \end{answered}
+
+    \item Was ist ein adaptierter stochastischer Prozess?
+    \begin{answered}
+        Sei $(\Omega, \mathcal{F}, P)$ ein Wahrscheinlichkeitsraum, $(Z, \mathcal{Z})$ ein mit einer $\sigma$-Algebra versehener Raum und $T$ eine Indexmenge.
+        Sei $\mathcal{F} = ({\mathcal{F}}_{t})_{t\in T}$ eine Filtrierung von $\mathcal{A}$.
+
+        Dann heißt ein stochastischer Prozess $\mathcal{F}$-adaptiert, wenn für jedes $t \in T$ gilt:
+        \[
+            X_t \text{ ist }{\mathcal{F}}_{t}\text{-messbar}.
+        \]
+    \end{answered}
+
+    \item Was ist die ein- bzw. mehrdimensionale Randverteilung?
+    \begin{answered}
+        Ein-dimensionale Randverteilung:
+        \[
+            P_{X_{t}}(A) = P(X_{t} \in A) \quad \text{für alle } A \in \mathcal{B}(\mathbb{R}).
+        \]
+        Mehrdimensionale Randverteilung:
+        \[
+            P_{(X_{t_1}, \ldots, X_{t_n})}(A) = P((X_{t_1}, \ldots, X_{t_n}) \in A) \quad \text{für alle } A \in \mathcal{B}(\mathbb{R}^n).
+        \]
+    \end{answered}
+
+    \item Wie ist ein Pfad definiert?
+    \begin{answered}
+        Gegeben sei ein stochastischer Prozess $X=(X_{t})_{t\in I}$ auf dem Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ mit Indexmenge $I\subset \mathbb{R}$, der Werte in $\mathbb{R}$ annimmt.
+
+        Dann heißt für $\omega \in \Omega$ die Abbildung
+        \[
+            t: I \to \mathbb{R}, \quad t\mapsto X_{t}(\omega)
+        \]
+        ein Pfad von $X$.
+    \end{answered}
+
+    \item Was ist ein Punktprozess?
+    \begin{answered}
+        Ein stochastischer Prozess $N=(N(t))_{t\geq 0}$ heißt Zählprozess, wenn es eine Folge positiver Zufallsgrößen $(Y_{n})_{n\in \mathbb{N}}$, die sogenannten Zwischenankunftszeiten, derart gibt, dass mit $S_{n}:=Y_{1}+\dotsb +Y_{n}$ gilt:
+        \[
+            N(t) =
+            \begin{cases}
+                0                                             & \text{falls } t < Y_{1}, \\
+                \max \{ n \in \mathbb{N} \mid S_{n} \leq t \} & \text{sonst}
+            \end{cases}
+        \]
+        Die Folge der $S_{n}$ bildet dann einen Punktprozess auf $\mathbb{R}^{+}$.
+        Dieser positioniert zufällige Punkte auf der positiven Zahlengerade, deren Abstände gemäß den Zwischenankunftszeiten verteilt sind.
+        Der Zählprozess läuft dann mit konstanter Geschwindigkeit die positiven Zahlen ab und zählt, wie viele Punkte er bis zum Zeitpunkt $t$ bereits angetroffen hat.
+
+        \textit{Aufgrund dieser engen Verbindung werden Zählprozess und Punktprozess teils auch synonym verwendet.}
+    \end{answered}
+
+    \item Wie ist der Poisson-Prozess definiert?
+    \begin{answered}
+        Die Verteilung der Zuwächse hat einen Parameter $\lambda$, dieser wird als Intensität des Prozesses bezeichnet, da pro Zeitspanne genau $\lambda$ Sprünge erwartet werden (Erwartungswert der Poisson-Verteilung ist ebenfalls $\lambda$).
+        Die Höhe jedes Sprunges ist 1, die Zeiten zwischen den Sprüngen sind exponentialverteilt.
+        Der Poisson-Prozess ist also ein diskreter Prozess in stetiger (d. h. kontinuierlicher) Zeit.
+
+        Ein Zählprozess bzw. Punktprozess $N=(N(t))_{t\geq 0}$ heißt (homogener) Poisson-Prozess mit Intensität $\lambda > 0$, wenn gilt:
+        \begin{itemize}
+            \item $(N_{t})_{t\geq 0}$ besitzt unabhängige Zuwächse.
+            \item Für alle $t>0$ sind die Zuwächse $N(t)$ Poisson-verteilt mit Parameter $\lambda t$:
+                  \[
+                      P(N(t)=k) = \frac{(\lambda t)^{k}}{k!} e^{-\lambda t} \quad \text{für } 1 \leq k \in \mathbb{N}.
+                  \]
+            \item Für alle $s<t$ sind die Zuwächse $N(t) - N(s)$ Poisson-verteilt mit Parameter $\lambda (t-s)$:
+                  \[
+                      P(N(t) - N(s) = k) = \frac{(\lambda (t-s))^{k}}{k!} e^{-\lambda (t-s)} \quad \text{für } 1 \leq k \in \mathbb{N}.
+                  \]
+        \end{itemize}
+    \end{answered}
+
+    \item Was ist ein kompensierter Poisson-Prozess?
+    \begin{answered}
+        Sei $(N_t)_{t \in \mathbb{N}}$ ein Poisson-Prozess mit Intensität $\lambda$.
+
+        Der kompensierte Poisson-Prozess $(M_t)_{t \in \mathbb{N}}$ ist definiert als
+        \[
+            M_t := N_t - \lambda t
+        \]
+
+        Es gilt:
+        \begin{itemize}
+            \item $M_t$ ist ein Martingal
+            \item $[M_t]_t = \lambda t$
+        \end{itemize}
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Markow-Prozess}
+
+\begin{QandA}
+    \item Was ist eine Markow-Prozess?
+    \begin{answered}
+        Gegeben sei eine Indexmenge $T \subset \mathbb{R}$ sowie ein stochastischer Prozess $X = (X_{t})_{t\in T}$ mit Werten in $(\Omega ,{\mathcal{A}})$ und mit erzeugter Filtrierung $\mathcal{F} =({\mathcal{F}}_{t})_{t\in T}$.
+
+        $X$ heißt Markow-Prozess, wenn für jedes $A \in{\mathcal{A}}$ und alle $s,t\in T$ mit $s\leq t$ gilt, dass
+        \begin{equation}
+            \tag{Gedächtnislosigkeit}
+            P(X_{t}\in A\mid{\mathcal{F}}_{s})=P(X_{t}\in A\mid\sigma (X_{s})) \quad P\text{-f.s.}
+        \end{equation}
+    \end{answered}
+
+    \item Wann heißt ein Markow-Prozess homogen?
+    \begin{answered}
+        Ein Markow-Prozess $X = (X_{t})_{t\in T}$ heißt homogen, wenn alle Übergangswahrscheinlichkeiten gleich sind, also
+        \[
+            p_{ij}(t) := P(X_{t+1} = s_j \mid X_t = s_i) = p_{ij} \quad \text{für alle } i,j \in E \text{ und } t \in T.
+        \]
+    \end{answered}
+
+    \item Was besagt die schwache Markoweigenschaft?
+    \begin{answered}
+        Ein Prozess $(X_{t})_{t\in T}$ hat die schwache Markoweigenschaft, wenn für beliebiges $s, t \in T$ und alle $A \in{\mathcal{B}}(E)$ und alle $x \in E$ gilt, dass
+        \[
+            P_x(X_{s+t} \in A \mid{\mathcal{F}}_s) = \kappa_t(X_s, A) \quad P_x\text{-f.s.}
+        \]
+        Die elementare Markoweigenschaft ist allgemeiner als die Schwache Markoweigenschaft.
+        Diese fordert die Existenz eines Markowkerns, der die Übergangswahrscheinlichkeiten beschreibt.
+        Außerdem fordert sie im Gegensatz zur elementaren Markoweigenschaft, dass die Übergangswahrscheinlichkeiten zeitunabhängig sind, sie wird also nur von homogenen Markowprozessen erfüllt.
+    \end{answered}
+
+    \item Was besagt die starke Markoweigenschaft?
+    \begin{answered}
+        Ein Prozess $(X_{t})_{t\in T}$ hat die starke Markoweigenschaft, wenn für jede beschränkte messbare Funktion $f$ und für jede endliche Stoppzeit $\tau$ und alle $x\in E$ gilt, dass
+        \[
+            \operatorname{E}_{x}(f((X_{\tau +t})_{t\in T})|{\mathcal{F}}_{\tau})=\operatorname{E}_{X_{\tau}}(f(X))
+        \]
+        Die starke Markoweigenschaft ist eine Verschärfung der schwachen Markoweigenschaft, bei der ein deterministischer Zeitpunkt durch eine (zufällige) Stoppzeit ersetzt wird.
+    \end{answered}
+
+    \item Was besagt die Martingalungleichung?
+    \begin{answered}
+        Sei $(X_{t})_{t\in T}$ ein càdlàg-Martingal (Pfade sind rechtsseitig stetig und haben linksseitige Grenzwerte) und $X_n \geq 0$ für alle $n \in \mathbb{N}$.
+
+        Dann gilt für alle $t \in T$ und alle $\lambda > 0$:
+        \[
+            P\left(\sup_{0 \leq s \leq t} X_s \geq \lambda\right) \leq \frac{1}{\lambda} \operatorname{E}[X_T]
+        \]
+
+        Die Martingalungleichung beschreibt die Wahrscheinlichkeit, dass ein Martingal einen bestimmten Schwellenwert $\lambda$ überschreitet.
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Risikoneutrale Bewertung}
+
+\begin{QandA}
+    \item Was besagt die risikoneutrale Bewertungsformel?
+    \begin{answered}
+        Seien $S^{(0)}_{t}$ und $S^{(i)}_{t}$ ($i \in \mathbb{N}$) zwei adaptierte stochastische Prozesse auf $\Omega$ mit Filtration $\mathcal{F} =({\mathcal{F}}_{t})_{t\in T}$, die die Preise eines risikolosen ($S^{(0)}$) und mehrerer risikobehafteter Wertpapiere ($S^{(i)}$) beschreiben.
+
+        Sei $Q$ ein Martingalmaß bzw. risikoneutrales Maß auf $(\Omega, \mathcal{F})$.
+
+        Dann gilt die risikoneutrale Bewertungsformel
+        \[
+            S^{(i)}_{t} = \operatorname{E}^{Q}\left[\left.\frac{S^{(i)}_{t}}{S^{(0)}_{t}} \right| \mathcal{F}_{s}\right] \cdot S^{(0)}_{t} \quad \text{für alle } 0 \leq s \leq t \leq T \text{ und } i \in \{1, \ldots, n\}.
+        \]
+
+        Die risikoneutrale Bewertungsformel besagt, dass der Preis eines risikobehafteten Wertpapiers $S^{(i)}$ zum Zeitpunkt $t$ gleich dem erwarteten Preis des Wertpapiers $S^{(i)}$ zum Zeitpunkt $t$ unter dem risikoneutralen Maß $Q$ ist.
+    \end{answered}
+
+    \item Was bedeutet \enquote{Value at Risk}?
+    \begin{answered}
+        Der Value-at-Risk ($\operatorname{VaR}_\gamma$) ist ein Risikomaß, das den maximalen Verlust angibt, der mit einer vorgegebenen Wahrscheinlichkeit $\gamma$ nicht überschritten wird.
+
+        Der Value-at-Risk ist definiert als
+        \[
+            \operatorname{VaR}_\gamma = \inf \{ \omega \in \Omega \mid P(X \leq \omega) \geq \gamma \}.
+        \]
+    \end{answered}
+
+    \item Wie berechnet man den Value at Risk?
+    \begin{answered}
+        \begin{itemize}
+            \item $X \sim \mathcal{N}(\mu, \sigma^2)$:
+                  \begin{equation}
+                      \tag{Wurzelformel}
+                      \operatorname{VaR}_\gamma(X) = \mu + \sigma \cdot \Phi^{-1}(\gamma)
+                  \end{equation}
+            \item $X_i \sim \mathcal{N}(0, \sigma^2)$ stochastisch unabhängig und $X = \sum_{i=1}^t X_i$:
+                  \begin{equation}
+                      \tag{Standardformel}
+                      \operatorname{VaR}_\gamma(X) = \sqrt{t} \cdot \sigma \cdot \Phi^{-1}(\gamma) = \sqrt{t} \cdot \operatorname{VaR}_\gamma(X_i)
+                  \end{equation}
+        \end{itemize}
+    \end{answered}
+\end{QandA}
+
+
+
+\newpage
+\section*{Nichtparametrische Regression}
+
+\begin{QandA}
+    \item Was ist die nichtparametrische Regression? Was ist gegeben? Was ist gesucht?
+    \begin{answered}
+        Gegeben seien $n$ Datenpunkte $(X_i, Y_i)$, $i = 1, \ldots, n$, wobei $X_i$ die unabhängige Variable und $Y_i$ die abhängige Variable ist.
+
+        Gesucht ist eine Funktion $f: x \mapsto f(x)$, die die abhängige Variable $Y$ möglichst gut in Abhängigkeit der unabhängigen Variable $X$ beschreibt.
+    \end{answered}
+
+    \item Was ist ein Kerndichteschätzer?
+    \begin{answered}
+        Ein Kerndichteschätzer $\hat{f}$ zur Bandweite $h>0$ ist eine Schätzung der unbekannten Dichtefunktion $f$ einer Variablen.
+
+        Ist $x_{1},\ldots ,x_{n}$ eine Stichprobe, $K$ ein Kern, so ist die Kerndichteschätzung definiert als:
+        \[
+            \hat{f}(x) = \frac{1}{n} \sum _{j=1}^{n}K_{h}(x-x_{j})={\frac{1}{nh}}\sum _{j=1}^{n}K\left({\frac{x-x_{j}}{h}}\right).
+        \]
+        Der Kerndichteschätzer stellt eine Überlagerung in Form der Summe entsprechend skalierter Kerne dar, die abhängig von der Stichprobenrealisierung positioniert werden.
+        Die Skalierung und ein Vorfaktor gewährleisten, dass die resultierende Summe wiederum die Dichte eines Wahrscheinlichkeitsmaßes darstellt.
+    \end{answered}
+
+    \item Was ist der Nadaraya-Watson-Schätzer?
+    \begin{answered}
+        Der Nadaraya-Watson-Schätzer schätzt eine unbekannte Regressionsfunktion $m(x)$ aus den Beobachtungsdaten $(x_{1},y_{1}),\dots ,(x_{n},y_{n})$ als
+        \[
+            \hat{m}(x)={\frac{\sum _{i=1}^{n}y_{i}K_{h}(x-x_{i})}{\sum _{i=1}^{n}K_{h}(x-x_{i})}} \quad \text{mit} \quad K_{h}(u)=\frac{1}{h}\cdot K\left(\frac{u}{h}\right)
+        \]
+        und einem Kern $K$ und einer Bandweite $h>0$.
+    \end{answered}
+
+    \item Was ist eine Copula?
+    \begin{answered}
+        Eine $n$-dimensionale Copula ist eine Verteilungsfunktion $C: [0, 1]^n \to [0, 1]$ eines Zufallsvektors $X \in \mathbb{R}^n$, dessen Randverteilungen $F_1, \ldots, F_n$ alle gleich der $[0, 1]$-Gleichverteilung sind.
+    \end{answered}
+
+    \item Was besagt der Satz von Sklar?
+    \begin{answered}
+        Sei $F$ eine $n$-dimensionale Verteilungsfunktion mit Randverteilungen $F_1, \ldots, F_n$.
+
+        So existiert eine eindeutige Copula $C: [0, 1]^n \to [0, 1]$ mit
+        \[
+            F(x_1, \ldots, x_n) = C(F_1(x_1), \ldots, F_n(x_n)).
+        \]
+        Die Copula ist eindeutig, wenn die Randverteilungen stetig sind.
+
+        Das bedeutet, dass jede multivariate Verteilungsfunktion $F$ sowohl durch ihre Randverteilungen als auch durch ihre Copula $C$, wobei alle Randverteilungen gleich der $[0, 1]$-Gleichverteilung sind, beschrieben werden kann.
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Brownsche Bewegung}
+
+\begin{QandA}
+    \item Was ist die Brownsche Bewegung?
+    \begin{answered}
+        Die Brownsche Bewegung ist ein stochastischer Prozess, der die zufällige Bewegung eines Teilchens in einem Medium beschreibt.
+    \end{answered}
+
+    \item Was ist der Wiener-Prozess?
+    \begin{answered}
+        Ein stochastischer Prozess $(W_{t})_{t \geq 0}$ auf dem Wahrscheinlichkeitsraum $(\Omega ,{\mathcal{A}},P)$ heißt Wiener-Prozess, wenn folgende vier Bedingungen gelten:
+        \begin{enumerate}
+            \item $W_{0}=0$ $P$-fast sicher.
+            \item Für gegebene Zeitpunkte $0\leq t_{0}<t_{1}<t_{2}<\dotsb <t_{m}$ sind die Zuwächse $W_{t_{1}}-W_{t_{0}},W_{t_{2}}-W_{t_{1}},\dotsc ,W_{t_{m}}-W_{t_{m-1}}$ stochastisch unabhängig.
+                  Der Wiener-Prozess hat also unabhängige Zuwächse.
+            \item Für alle $0\leq s<t$ gilt $W_{t}-W_{s} \sim{\mathcal{N}}\left(0,t-s\right)$.
+                  Die Zuwächse sind also stationär und normalverteilt mit dem Erwartungswert $0$ und der Varianz $t-s$.
+            \item Die einzelnen Pfade sind $P$-fast sicher stetig.
+        \end{enumerate}
+    \end{answered}
+
+    \item Welche Eigenschaften (Kennzahlen) hat der Wiener-Prozess?
+    \begin{answered}
+        Für $s, t \geq 0$ gilt:
+        \begin{itemize}
+            \item Erwartungswert: $\operatorname{E}[W_t] = 0$
+            \item Varianz: $\operatorname{Var}[W_t] = t$
+            \item Kovarianz: $\operatorname{Cov}[W_s, W_t] = \min(s, t)$
+            \item Korrelation: $\operatorname{Korr}[W_s, W_t] = \min(\sqrt{\frac{s}{t}}, \sqrt{\frac{t}{s}})$
+            \item Erste Variation: $V_a^b(W) = \infty$
+            \item Quadratische Variation: $[W]_t = t$
+        \end{itemize}
+    \end{answered}
+
+    \item Welche Eigenschaften haben die Pfade des Wiener-Prozesses?
+    \begin{answered}
+        Ist $(W_t)_{t \geq 0}$ ein Wiener-Prozess, so gilt für fast alle $\omega \in \Omega$:
+        \begin{itemize}
+            \item Die Pfade sind an keiner Stelle differenzierbar.
+            \item Die Pfade sind von endlicher Varianz.
+            \item Die Pfade haben in jedem Intervall $[s, t]$ fast sicher unendliche Variation.
+            \item Die Pfade sind stetig.
+        \end{itemize}
+    \end{answered}
+
+    \item Skizzieren Sie einen Pfad des Wiener-Prozesses.
+    \begin{answered}
+        Wichtig:
+        \begin{itemize}
+            \item Beginnt bei $0$.
+            \item Ist stetig.
+            \item Ist nicht differenzierbar.
+            \item Ist selbstähnlich.
+        \end{itemize}
+    \end{answered}
+
+    \item Was ist die geometrische Brownsche Bewegung?
+    \begin{answered}
+        Sei $W_{t}$ ein Wiener-Prozess.
+
+        So ist
+        \[
+            S_t = a \exp\left(\left(\mu - \frac{\sigma^2}{2}\right)t + \sigma W_t\right)
+        \]
+        eine geometrische brownsche Bewegung mit den Parametern $a > 0$, $\mu \in \mathbb{R}$ und $\sigma > 0$.
+
+        Die Parameter sind:
+        \begin{itemize}
+            \item $a$: Startwert (z. B. $a = S_0$)
+            \item $\mu$: Drift (deterministische Tendenz)
+                  \begin{itemize}
+                      \item für $\mu = 0$ Martingal
+                      \item für $\mu > 0$ Submartingal
+                      \item für $\mu < 0$ Supermartingal
+                  \end{itemize}
+            \item $\sigma$: Volatilität (steuert Einfluss des Zufalls)
+        \end{itemize}
+    \end{answered}
+
+    \item Welche Differentialgleichung beschreibt die geometrische Brownsche Bewegung?
+    \begin{answered}
+        \[
+            \mathrm {d} S_{t}=\mu S_{t}\,\mathrm {d} t+\sigma S_{t}\,\mathrm {d} W_{t},\quad t\geq 0,\quad S_{0}=a
+        \]
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Variationen}
+
+\begin{QandA}
+    \item Wie ist die Partition eines Intervalls definiert?
+    \begin{answered}
+        Die Partition $\tau$ eines reellen kompakten Intervalls $[a, b]$, wobei $a,b\in \mathbb{R} \cup \{\pm \infty \}$, ist eine endliche Folge $\tau=(t_{0},t_{1},\dots ,t_{n})$, so dass
+        \[
+            a = t_0 < t_1 < \dots < t_{n-1} < t_n = b.
+        \]
+
+        Wir definieren die Norm $|\tau|$ der Partition $\tau$ als
+        \[
+            |\tau| = \sup_{i=1,\dots,n} |t_i - t_{i-1}|.
+        \]
+    \end{answered}
+
+    \item Was ist die (erste) Variation eines stetigen Prozesses?
+    \begin{answered}
+        Die Variation $V_a^b(f)$ von $f$ ist definiert durch
+        \[
+            V_a^b(f) = \sup \left\{ \sum_{i=1}^{n} |f(t_{i})-f(t_{i-1})| \mid \tau = (t_{0},\dots ,t_{n}) \text{ Partition von } [a,b] \right\}
+        \]
+        also durch die kleinste obere Schranke (Supremum), die alle Summen majorisiert, die sich durch eine beliebig feine Partition $a \leq t_{0} < t_{1} < \dotsb < t_{n} \leq b$ des Intervalls $[a,b]$ ergeben.
+        Falls sich keine reelle Zahl finden lässt, die alle Summen majorisiert, so wird das Supremum auf plus unendlich gesetzt.
+    \end{answered}
+
+    \item Was ist die quadratische Variation eines stetigen Prozesses?
+    \begin{answered}
+        \[
+            [X]_{t} = \lim_{|\tau |\to 0} \sum_{i=1}^{n} (X_{t_{i}}-X_{t_{i-1}})^{2}.
+        \]
+
+        Falls $X$ stetig und von endlicher erster Variation ist, so gilt
+        \[
+            [X]_{t} = 0.
+        \]
+    \end{answered}
+
+    \item Wie ist die quadratische Kovariation definiert?
+    \begin{answered}
+        \[
+            [X,Y]_{t} = \lim_{|\tau |\to 0} \sum_{i=1}^{n} (X_{t_{i}}-X_{t_{i-1}})(Y_{t_{i}}-Y_{t_{i-1}}).
+        \]
+    \end{answered}
+
+    \item Was ist die Polarisationsformel?
+    \begin{answered}
+        \[
+            [X,Y]_{t} = \frac{1}{2} ([X+Y]_{t} - [X]_{t} - [Y]_{t}).
+        \]
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Itō-Integral}
+
+\begin{QandA}
+    \item Was ist das Itō-Integral?
+    \begin{answered}
+        Sei $W:= (W_{t})_{t\geq 0}$ ein Wiener-Prozess und $X := (X_{t})_{t\geq 0}$ ein càdlàg-Prozess.
+        Ist $\tau = (t_{0},\dots ,t_{n})$ eine Partition von $[0,t]$, dann ist das Itō-Integral von $X$ bezüglich $W$ bis zum Zeitpunkt $t$ definiert als Zufallsvariable
+        \[
+            \int_{0}^{t} X \, \mathrm{d}W := \lim_{n\to \infty } \sum_{i=1}^{n} X_{t_{i-1}}(W_{t_{i}}-W_{t_{i-1}}).
+        \]
+    \end{answered}
+
+    \item Welche Voraussetzungen müssen für die Anwendung des Itō-Integrals gelten?
+    \begin{answered}
+        \begin{itemize}
+            \item $X$ ist ein rechtsstetiger Prozess mit linksseitigen Grenzwerten (càdlàg).
+            \item $W$ ist ein Semimartingal (z. B. Wiener-Prozess).
+        \end{itemize}
+    \end{answered}
+
+    \item Was ist die Itō-Formel?
+    \begin{answered}
+        Sei $(W_{t})_{t\geq 0}$ ein (Standard-)Wiener-Prozess und $f\colon \mathbb{R} \to \mathbb{R}$ eine zweimal stetig differenzierbare Funktion.
+        Dann gilt die Itō-Formel für den durch $Y_{t}=f(W_{t})$ definierten Prozess:
+        \[
+            f(W_{t})=f(W_{0})+\int_{0}^{t}f'(W_{s})\,{\mathrm{d}}W_{s}+{\frac{1}{2}}\int_{0}^{t}f''(W_{s})\,{\mathrm{d}}[W]_s\,.
+        \]
+        Dabei ist das erste Integral als Itō-Integral und das zweite Integral als ein gewöhnliches Riemann-Integral (über die stetigen Pfade des Integranden) zu verstehen, also mit der Partition $\tau = (t_{0},\dots ,t_{n})$ von $[0,t]$:
+        \[
+            \int_{0}^{t}f'(W_{s})\,{\mathrm{d}}W_{s} = \lim_{n\to \infty }\sum_{i=1}^{n}f'(W_{t_{i-1}})(W_{t_{i}}-W_{t_{i-1}}).
+        \]
+    \end{answered}
+
+    \item Was für Voraussetzungen müssen für die Anwendung der Itō-Formel gelten?
+    \begin{answered}
+        \begin{itemize}
+            \item $W$ ist ein Semimartingal (z. B. Wiener-Prozess).
+            \item $f$ ist zweimal stetig differenzierbar.
+        \end{itemize}
+    \end{answered}
+
+    \item Wie ist die mehrdimensionale Itō-Formel definiert?
+    \begin{answered}
+        Seien $n$ Itō-Prozesse $X = (X^{(1)},\dotsc ,X^{(n)})$ mit stetiger Kovariation $[X^{(i)},X^{(j)}]_{t}$ gegeben.
+
+        Ist $f: \mathbb{R}^{n} \to \mathbb{R}$ eine zweimal stetig differenzierbare Funktion ($f \in C^{2}$), dann gilt für den durch $Y_{t}=f(X_{t})$ definierten Prozess die mehrdimensionale Itō-Formel:
+        \[
+            f(X_{t})=f(X_{0})+\sum_{i=1}^{n}\int_{0}^{t}\frac{\partial f}{\partial x_{i}}(X_{s})\,{\mathrm{d}}X_{s}^{(i)}+\frac{1}{2}\sum_{i,j=1}^{n}\int_{0}^{t}\frac{\partial^{2}f}{\partial x_{i}\partial x_{j}}(X_{s})\,{\mathrm{d}}[X^{(i)},X^{(j)}]_{s}.
+        \]
+    \end{answered}
+
+    \item Wie ist die Produktregel für das Itō-Integral definiert?
+    \begin{answered}
+        Seien $X_{t}$ und $Y_{t}$ zwei stetige stochastiche Prozesse mit stetiger quadratischen Variationen $[X]_{t}$ und $[Y]_{t}$ und stetiger Kovariation $[X,Y]_{t}$.
+
+        Dann gilt für das Produkt $Z_{t} = X_{t}Y_{t}$ der beiden Prozesse die Produktregel für Itō-Prozesse:
+        \[
+            Z_{t} = X_{0}Y_{0} + \int_{0}^{t} Y_{s}\,{\mathrm{d}}X_{s} + \int_{0}^{t} X_{s}\,{\mathrm{d}}Y_{s} + [X,Y]_{t}.
+        \]
+    \end{answered}
+
+    \item Wie ist die Itō-Formel für zeitabhängige Prozesse definiert?
+    \begin{answered}
+        Sei $X_{t}$ ein stochastiche Prozess mit stetiger quadratischen Variationen $[X]_{t}$ und eine Funktion $f(t,x)$, die von der Zeit $t$ und dem Prozess $X_{t}$ abhängt und stetig partiell differenzierbar in $t$ und zweimal stetig differenzierbar in $X$ ist.
+
+        Dann gilt für den durch $f(t,X_{t})$ definierten Prozess die Itō-Formel für zeitabhängige Prozesse:
+        \[
+            f(t,X_{t}) = f(0,X_{0}) + \int_{0}^{t} \frac{\partial f}{\partial t}(s,X_{s})\,{\mathrm{d}}s + \int_{0}^{t} \frac{\partial f}{\partial x}(s,X_{s})\,{\mathrm{d}}X_{s} + \frac{1}{2} \int_{0}^{t} \frac{\partial^{2} f}{\partial x^{2}}(s,X_{s})\,{\mathrm{d}}[X]_{s}.
+        \]
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Das Black-Scholes-Modell}
+
+\begin{QandA}
+    \item Welche Eigenschaften gelten für den betrachteten Finanzmarkt?
+    \begin{answered}
+        \begin{itemize}
+            \item Der Preis des Basiswertes folgt einer geometrischen brownschen Bewegung.
+            \item Es gibt keine Beschränkungen für Leerverkäufe.
+            \item Es gibt keine Transaktionskosten oder Steuern.
+            \item Alle Finanzinstrumente sind in beliebig kleinen Einheiten handelbar.
+            \item Es gibt keine Arbitragemöglichkeiten. (Arbitrage: risikoloser Gewinn)
+            \item Keine Dividenden.
+            \item Finanzinstrumente werden kontinuierlich gehandelt.
+            \item Es existiert ein risikofreier Zinssatz, der zeitlich konstant und für alle Laufzeiten konstant ist.
+        \end{itemize}
+    \end{answered}
+
+    \item Was ist ein Terminal Value Claim?
+    \begin{answered}
+        Ein Terminal Value Claim ist ein Finanzderivat, dessen Auszahlung von einem Wert abhängt, der zum Zeitpunkt $T$ festgelegt ist.
+        Beispiele für solche Derivate sind europäische Optionen, die nur zum Zeitpunkt $T$ ausgeübt werden können
+    \end{answered}
+
+    \item Wie funktioniert die Markow-Hedging-Strategie?
+    \begin{answered}
+        Eine Markow-Hedging-Strategie ist eine Hedging-Strategie, die nur vom aktuellen Preis des Basiswertes abhängt.
+        Sie wird verwendet, um den Wert eines Derivats zu neutralisieren.
+
+        Eine Markow-Hedging-Strategie ist gegeben durch ein Paar von glatten Funktionen $(\Phi_t(S), \Psi_t(S))$, wobei $\Phi_t(S_t^1)$ die Anzahl der Einheiten des Optionen (z. B. Aktien) und $\Psi_t(S_t^1)$ die Anteil der Einheiten des Basiswertes (z. B. Sparbuch) im Portfolio ist.
+
+        Der Wert des Portfolios aus Basiswert und Derivat ist dann gegeben durch
+        \[
+            V_t(S_t^1) = S_t^1 \cdot \Phi_t(S_t^1) + S_t^0 \cdot \Psi_t(S_t^1).
+        \]
+    \end{answered}
+
+    \item Wie kann der Gewinnprozess modelliert werden?
+    \begin{answered}
+        \[
+            G_t := \int_{0}^{T} \Phi_t(S_t^1) \, \mathrm{d}S_t^1 + \int_{0}^{T}  \Psi_t(S_t^1) \, \mathrm{d}S_t^0
+        \]
+    \end{answered}
+
+    \item Was ist eine selbstfinanzierende Strategie?
+    \begin{answered}
+        Die Strategie ist selbstfinanzierend, wenn für einen Startwert $V_0$ für alle $t$ aus einer Partition $\tau$ mit $|\tau| \to 0$ gilt:
+        \[
+            V_t^n(S_t^1) = V_0 + \sum_{i = 1}^{n} \Phi_{t_i}(S_{t_i}^1) \cdot (S_{t_i}^1 - S_{t_{i - 1}}^1) + \sum_{i = 1}^{n} \Psi_{t_i}(S_{t_i}^1) \cdot (S_{t_i}^0 - S_{t_{i - 1}}^0).
+        \]
+        Aufgrund der Definition des Itō-Integrals konvergiert dieser Ausdruck gegen
+        \[
+            V_t(S_t^1) = V_0 + \underbrace{\int_{0}^{T} \Phi_t(S_t^1) \, \mathrm{d}S_t^1 + \int_{0}^{T}  \Psi_t(S_t^1) \, \mathrm{d}S_t^0}_{=: \, G_t \, \text{(\emph{Gewinnprozess} bzw. \emph{Gewinn})}}.
+        \]
+    \end{answered}
+
+    \item Was ist eine Replikationsstrategie eines Terminal Value Claims?
+    \begin{answered}
+        Eine selbstfinanzierende Strategie ist eine Replikationsstrategie eines Terminal Value Claims mit Payoff $h(S_T^1)$, wenn der Gewinnprozess $G_t$ des Portfolios den Terminal Value Claim $V_T(S_T^1)$ repliziert:
+        \[
+            V_T(S_T^1) = h(S_T^1).
+        \]
+        $V_t(S_t^1)$ heißt fairer Preis des Terminal Value Claims $h(S_T^1)$ zum Zeitpunkt $t$.
+    \end{answered}
+
+    \item Wie sieht die Black-Scholes-Differentialgleichung aus?
+    \begin{answered}
+        Da das Portfolio risikolos ist und laut Annahmen keine Arbitragemöglichkeiten bestehen, muss das Portfolio über kurze Zeiträume genau die risikolose Rendite $r$ erwirtschaften, also
+        \[
+            \mathrm{d} V_t(S_t) = r \cdot V_t(S_t) \mathrm{d} t
+        \]
+
+        Durch Einsetzen in die letzte Gleichung erhält man die Black-Scholes-Differentialgleichung
+        \[
+            \frac{\partial V}{\partial t}+r \cdot S \cdot \frac{\partial V}{\partial S} + {\frac{\sigma^{2}}{2}} \cdot S^{2} \cdot \frac{\partial ^{2}V}{\partial S^{2}} = r \cdot V.
+        \]
+    \end{answered}
+
+    \item Was benötigt man für die Black-Scholes-Differentialgleichung?
+    \begin{answered}
+        \begin{itemize}
+            \item Der Preis des Basiswertes (also der Aktienpreis) folgt einer geometrischen brownschen Bewegung mit konstantem Drift und Volatilität.
+            \item Der Leerverkauf von Finanzinstrumenten ist uneingeschränkt möglich.
+            \item Es gibt keine Transaktionskosten oder Steuern. Alle Finanzinstrumente sind in beliebig kleinen Einheiten handelbar.
+            \item Von Abschluss bis Fälligkeit des Derivats gibt es keine Dividendenzahlung auf die zugrunde liegende Aktie.
+            \item Es gibt keine risikolose Möglichkeit zur Arbitrage (Arbitragefreiheit).
+            \item Finanzinstrumente werden kontinuierlich gehandelt.
+            \item Es existiert ein risikofreier Zinssatz, der zeitlich konstant und für alle Laufzeiten gleich ist.
+        \end{itemize}
+    \end{answered}
+
+    \item Was heißt es, wenn $V$ die Black-Scholes-Differentialgleichung erfüllt?
+    \begin{answered}
+        Der Grundgedanke ist, aus dem Derivat und der Aktie ein risikoloses Portfolio zu konstruieren.
+        \enquote{Risikolos} meint in diesem Zusammenhang, dass der Wert des Portfolios für kurze Zeiträume (gleichbedeutend mit kleinen Änderungen des Aktienkurses) nicht vom Kurs der Aktie abhängt.
+    \end{answered}
+
+    \item Wie sieht die Black-Scholes-Formel für eine europäische Call-Option aus?
+    \begin{answered}
+        \[
+            C_t(S_t) = S_t \cdot \Phi(d_1) - K \cdot e^{-r(T-t)} \cdot \Phi(d_2),
+        \]
+        wobei
+        \[
+            \begin{aligned}
+                d_1 & := \frac{\ln(\frac{S_t}{K}) + (r + \frac{\sigma^2}{2})(T-t)}{\sigma \sqrt{T-t}},                            \\
+                d_2 & := \frac{\ln(\frac{S_t}{K}) + (r - \frac{\sigma^2}{2})(T-t)}{\sigma \sqrt{T-t}} = d_1 - \sigma \sqrt{T-t} ,
+            \end{aligned}
+        \]
+        und $\Phi$ die Verteilungsfunktion der Standardnormalverteilung ist.
+    \end{answered}
+
+    \item Welche Parameter sind in der Black-Scholes-Formel enthalten?
+    \begin{answered}
+        Der Wert einer Option ist also durch folgende Parameter bestimmt:
+        \begin{itemize}
+            \item $S_t$: Aktienkurs zum Zeitpunkt $t$.
+            \item $K$: Ausübungspreis der Option.
+            \item $T-t$: Restlaufzeit der Option mit Gesamtlaufzeit $T$ zum Zeitpunkt $t$.
+            \item $r$: risikofreier Zinssatz.
+            \item $\sigma$: Volatilität des Basiswertes.
+        \end{itemize}
+    \end{answered}
+
+    \item Was ist die Put-Call-Parität?
+    \begin{answered}
+        Gemäß der Put-Call-Parität
+        \[
+            C_t(S_t) - P_t(S_t) = S_t - K \cdot e^{-r(T-t)}
+        \]
+        lässt sich der Preis einer europäischen Put-Option $P_t(S_t)$ berechnen durch
+        \[
+            P_t(S_t) = - S_t \cdot \Phi(-d_1) + K \cdot e^{-r(T-t)} \cdot \Phi(-d_2).
+        \]
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Volatilitätsschätzung}
+
+\begin{QandA}
+    \item Was ist die Volatilität?
+    \begin{answered}
+        Die Volatilität ist ein Maß für die Schwankungsbreite eines Finanzinstruments.
+    \end{answered}
+
+    \item Was ist die historische Volatilität?
+    \begin{answered}
+        Die historische Volatilität beschreibt die Schwankungsbreite eines Finanzinstruments in der Vergangenheit.
+
+        Die logarithmische historische Volatilität ist definiert als
+        \[
+            Y_i = \ln\left(\frac{S_i}{S_{i-1}}\right) \quad \text{für } i = 1, \ldots, n.
+        \]
+    \end{answered}
+
+    \item Was ist die implizite Volatilität?
+    \begin{answered}
+        Sei eine Call-Option mit Strike $K$ und Laufzeit (Maturität) $T$ zum Zeitpunkt $t$ mit gegebenem Aktienpreis $\hat{S}_t$ gehandelt zum Preis $\hat{C}_t$.
+        Die implizierte Volatilität $\hat{\sigma}$ ist diejenige Volatilität, die im Black-Scholes-Modell den beobachteten Preis $\hat{C}_t$ für die Call-Option ergibt:
+        \[
+            \hat{C}_t \stackrel{!}{=} C_t(\hat{S}_t, K, T, r, \hat{\sigma}).
+        \]
+        Da $C_t$ streng monoton wachsend und stetig in $\sigma$ ist, existiert eine eindeutige Lösung für $\hat{\sigma}$.
+    \end{answered}
+\end{QandA}
+
+\newpage
+\section*{Bonds und Zinsen}
+
+\begin{QandA}
+    \item Was ist ein Zero-Coupon-Bond?
+    \begin{answered}
+        Ein Zero-Coupon-Bond bzw. T-Bond mit Maturität $T > 0$ ist eine Anleihe, die keine laufenden Zinsen zahlt, sondern nur zum Nennwert zurückgezahlt wird.
+
+        Der Preis eines Zero-Coupon-Bond zum Zeitpunkt $t \in [0, T]$ sei definiert als $P_t(T)$ mit $P_T(T) = 1$.
+
+        Dann gilt:
+        \[
+            P_t(T) = \operatorname{E} \left[ \left. e^{-\int_{t}^{T} r_s \, \mathrm{d} s} \right| \mathcal{F}_t \right].
+        \]
+        Das Modell ist arbitragefrei und $P_T(T) = 1$ gilt automatisch.
+    \end{answered}
+
+    \item Wie kann man eine risikolose Anleihe (z. B. Sparbuch) modellieren?
+    \begin{answered}
+        Ein risikoloses Sparbuch werde mit $S_t^0$ bezeichnet.
+
+        Bei einer deterministischen festen Zinsrate gilt:
+        \[
+            S_t^0 = e^{rt}.
+        \]
+
+        Bei einer stochastischen Zinsrate $r_t$ gilt:
+        \[
+            S_t^0 = \exp\left(\int_{0}^{t} r_s \, \mathrm{d} s\right).
+        \]
+    \end{answered}
+
+    \item Was ist die Short-Rate?
+    \begin{answered}
+        Die Short-Rate $r_{t}$ ist der (annualisierte) Zinssatz, zu dem ein Marktteilnehmer Geld für einen infinitesimalen Zeitraum $[t,t+\mathrm{d} t]$ ausborgen kann.
+        Aus dem jetzigen Momentanzins folgt noch nicht der Verlauf der gesamten Zinsstrukturkurve.
+    \end{answered}
+
+    \item Wie kann die Short-Rate modelliert werden?
+    \begin{answered}
+        \[
+            P_t(T)=\operatorname{E} \left[\left.\exp \left(-\int _{t}^{T}r_{s}\,\mathrm {d} s\right) \right|{\mathcal {F}}_{t}\right]
+        \]
+        Dabei ist $\mathcal {F}_{t}$ die natürliche Filtration des Prozesses.
+        Das heißt, dass ein Modell für die zukünftige Entwicklung des Momentanzinses die Preise von allen Anleihen bestimmt.
+    \end{answered}
+
+    \item Wie kann eine Short-Rate modelliert werden?
+    \begin{answered}
+        Die Short-Rate $r_t$ kann modelliert werden durch
+        \[
+            \mathrm{d} r_t = \mu_t(r_t) \, \mathrm{d} t + \sigma_t(r_t) \, \mathrm{d} W_t
+        \]
+        mit stochastischen Prozessen $\mu_t$ und $\sigma_t$ und einem Wiener-Prozess $W_t$.
+    \end{answered}
+
+    \item Welche Voraussetzungen müssen für die Modellierung der Short-Rate gelten?
+    \begin{answered}
+        Wir nehmen an, dass unter dem Martingalmaß $Q$ die Short-Rate $r_t$ eine Dynamik hat, gemäß
+        \[
+            \mathrm{d} r_t = \mu_t (r_t) \, \mathrm{d} t + \sigma_t (r_t) \, \mathrm{d} W_t
+        \]
+        mit $\mu_t$ und $\sigma_t$ als stochastische Prozesse und $W_t$ als Wiener-Prozess bzw. Brownsche Bewegung.
+    \end{answered}
+
+    \item Wovon hängt die Short-Rate ab?
+    \begin{answered}
+        Die Short-Rate hängt von der Zeit $t$ und dem aktuellen Zinssatz $r_t$ ab.
+
+        TODO
+    \end{answered}
+
+    \item Was besagt die Zinsstrukturgleichung?
+    \begin{answered}
+        Gegeben sei ein Short-Rate-Modell $r_t$ mit
+        \[
+            \mathrm{d} r_t = \mu_t(r_t) \, \mathrm{d} t + \sigma_t(r_t) \, \mathrm{d} W_t.
+        \]
+
+        Löst der Preisprozess $P_t(T)$ für alle $T > t$ die Differentialgleichung
+        \begin{equation}
+            \tag{Zinsstrukturgleichung}
+            \frac{\partial P}{\partial t} + \mu \cdot \frac{\partial P}{\partial t} + \frac{\sigma^2}{2} \cdot \frac{\partial^2 P}{\partial r^2} = r \cdot P,
+        \end{equation}
+        so entspricht der Preis einer Anleihe dem erwarteten Wert der Rückzahlung zum Zeitpunkt $T$ unter Berücksichtigung der Zinsen.
+    \end{answered}
+
+    \item Wie funktioniert Kalibrierung?
+    \begin{answered}
+        Die Short-Rate kann auf Basis von historischen Daten kalibriert werden einer Zeitreihe $(r_s)_{s \in [0, T]}$.
+
+        Alternativ kann die Short-Rate auch anhand beobachteter Preise von Anleihen kalibriert werden:
+        \begin{itemize}
+            \item Fixieren eines Modells (z. B. Vasicek-Modell oder CIR-Modell) mit Parameter $\theta = (a, b, \sigma)$.
+            \item Lösen der Zinsstrukturgleichung für die Preise $P_t(T)$ für alle $T$.
+            \item Minimieren der Differenz zwischen beobachteten Preisen und berechneten Preisen.
+        \end{itemize}
+    \end{answered}
+\end{QandA}

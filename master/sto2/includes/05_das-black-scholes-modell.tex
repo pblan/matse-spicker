@@ -75,12 +75,12 @@
     Dazu wird ein Portfolio aus Basiswert und Derivat zusammengestellt, das den Wert des Derivats neutralisiert.
 \end{bonus}
 
-\begin{defi}{Markov-Hedging}
+\begin{defi}{Markow-Hedging}
     % https://www.math.uni-frankfurt.de/~ismi/kuehn/continuous_time.pdf
-    Eine \emph{Markov-Hedging-Strategie} ist eine Hedging-Strategie, die nur vom aktuellen Preis des Basiswertes abhängt.
+    Eine \emph{Markow-Hedging-Strategie} ist eine Hedging-Strategie, die nur vom aktuellen Preis des Basiswertes abhängt.
     Sie wird verwendet, um den Wert eines Derivats zu neutralisieren.
 
-    Eine Markov-Hedging-Strategie ist gegeben durch ein Paar von glatten Funktionen $(\Phi_t(S), \Psi_t(S))$, wobei $\Phi_t(S_t^1)$ die Anzahl der Einheiten des Optionen (z. B. Aktien) und $\Psi_t(S_t^1)$ die Anteil der Einheiten des Basiswertes (z. B. Sparbuch) im Portfolio ist.
+    Eine Markow-Hedging-Strategie ist gegeben durch ein Paar von glatten Funktionen $(\Phi_t(S), \Psi_t(S))$, wobei $\Phi_t(S_t^1)$ die Anzahl der Einheiten des Optionen (z. B. Aktien) und $\Psi_t(S_t^1)$ die Anteil der Einheiten des Basiswertes (z. B. Sparbuch) im Portfolio ist.
 
     Der Wert des Portfolios aus Basiswert und Derivat ist dann gegeben durch
     \[
@@ -419,7 +419,7 @@
     \]
     mit $\mu_t$ und $\sigma_t$ als stochastische Prozesse und $W_t$ als Wiener-Prozess bzw. Brownsche Bewegung.
 
-    Unter dieser Annahme ist die Short-Rate ein Markov-Prozess und es gilt für den Preis einer Nullkuponanleihe
+    Unter dieser Annahme ist die Short-Rate ein Markow-Prozess und es gilt für den Preis einer Nullkuponanleihe
     \[
         P_t(T) = \operatorname{E} \left[ \left. \exp \left( - \int_{t}^{T} r_s \, \mathrm{d} s \right) \right| \mathcal{F}_t \right] := F^T(t, r_t)
     \]

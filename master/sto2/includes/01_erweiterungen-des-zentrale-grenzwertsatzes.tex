@@ -38,15 +38,18 @@
     ein Schema von Zufallsvariablen.
     Die Zufallsvariablen werden also immer in Gruppen der Größe $k_n$ zusammengefasst.
 
-    Ein Schema von Zufallsvariablen heißt \emph{unabhängig}, wenn die Zufallsvariablen innerhalb der Gruppen unabhängig sind und die Gruppen untereinander unabhängig sind.
+    Ein Schema von Zufallsvariablen heißt \emph{unabhängig}, wenn für alle $n\in \mathbb {N}$ die Zufallsvariablen $(X_{n,l})_{l=1,\dots ,k_{n}}$ stochastisch unabhängig sind.
 
-    Ein Schema von Zufallsvariablen heißt \emph{zentriert}, wenn die Erwartungswerte der Zufallsvariablen innerhalb der Gruppen 0 sind.
+    Ein Schema von Zufallsvariablen heißt \emph{zentriert}, wenn  wenn $\operatorname {E} (X_{n,l})=0$ ist für alle $n,l$.
 
-    Ein Schema von Zufallsvariablen heißt \emph{normiert}, wenn die Varianzen der Zufallsvariablen innerhalb der Gruppen gleich 1 sind.
+    Ein Schema von Zufallsvariablen heißt \emph{normiert}, wenn für alle $n\in \mathbb {N}$ gilt, dass
+    \[
+        \displaystyle \sum _{l=1}^{k_{n}}\operatorname {Var} (X_{n,l})=1.
+    \]
 
     Ein Schema von Zufallsvariablen heißt \emph{asymptotisch vernachlässigbar}, wenn
     \[
-        \lim_{n \to \infty} \max_{1 \leq l \leq k_n} P(|X_{n,l}| > \varepsilon) = 0 \quad \text{für alle} \quad \varepsilon > 0.
+        \lim _{n\to \infty }\max _{1\leq l\leq k_{n}}P(|X_{n,l}|>\varepsilon )=0 \quad \text{für alle} \quad \varepsilon >0.
     \]
 \end{defi}
 
@@ -90,6 +93,8 @@
 
 \begin{defi}[Lindeberg-Bedingung]{Formulierung für Schemata von Zufallsvariablen}
     % https://de.wikipedia.org/wiki/Lindeberg-Bedingung#Formulierung_f%C3%BCr_Schemata_von_Zufallsvariablen
+    TODO: Besser über eine normalisierte Variable gehen.
+
     Gegeben sei ein zentriertes Schema von Zufallsvariablen $(X_{n,l})_{n \in \mathbb{N}, l \in \{1, \ldots, k_n\}}$, bei dem jede Zufallsvariable $X_{n,l}$ quadratintegrierbar ist, und seien
     \[
         S_n := \sum_{l=1}^{k_n} X_{n,l}

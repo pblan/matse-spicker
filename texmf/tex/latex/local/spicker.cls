@@ -709,7 +709,6 @@
         }{%
     \end{minipage}\bigbreak}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Citations 
 
@@ -718,6 +717,12 @@
     backend=bibtex,
     sorting=none
 ]{biblatex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Exam Prep
+
+\newenvironment{QandA}{\begin{itemize}[label=Frage:]\bfseries}{\end{itemize}}
+\newenvironment{answered}{\par\normalfont}{}
 
 % Add Disclaimer
 \newcommand{\disclaimer}{%
